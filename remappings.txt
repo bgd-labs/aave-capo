@@ -1,0 +1,4 @@
+forge-std/=lib/forge-std/src/
+aave-address-book/=lib/aave-address-book/src/
+cl-synchronicity-price-adapter/=lib/cl-synchronicity-price-adapter/src/
+aave-v3-core/=lib/aave-address-book/lib/aave-v3-core/
