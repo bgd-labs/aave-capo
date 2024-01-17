@@ -4,7 +4,7 @@ pragma solidity ^0.8.19;
 import {IACLManager} from 'aave-address-book/AaveV3.sol';
 import {IERC4626} from 'forge-std/interfaces/IERC4626.sol';
 
-import {PriceCapAdapterBase} from './PriceCapAdapterBase.sol';
+import {PriceCapAdapterBase, IPriceCapAdapter} from './PriceCapAdapterBase.sol';
 
 /**
  * @title SDAIGnosisPriceCapAdapter
@@ -14,23 +14,27 @@ import {PriceCapAdapterBase} from './PriceCapAdapterBase.sol';
  */
 contract SDAIGnosisPriceCapAdapter is PriceCapAdapterBase {
   /**
-   * @notice sDAI token contract to get the exchange rate
+   * @notice sDAI token contract, ratio provider for (sDAI / DAI)
    */
-  IERC4626 public immutable sDAI;
+  IERC4626 public immutable sDAI; // TODO: I would better generalise it
 
   /**
-   * @param daiToBaseAggregatorAddress the address of DAI / BASE feed
-   * @param sDaiAddress the address of the sDAI
+   * @param aclManager ACL manager contract
+   * @param daiToBaseAggregatorAddress the address of (DAI / USD) feed
+   * @param sDaiAddress the address of the sDAI, the (sDAI / DAI) ratio feed
    * @param pairName name identifier
+   * @param snapshotRatio The latest exchange ratio
+   * @param snapshotTimestamp The timestamp of the latest exchange ratio
+   * @param maxYearlyRatioGrowthPercent Maximum growth of the underlying asset value per year, 100_00 is equal 100%
    */
   constructor(
     IACLManager aclManager,
     address daiToBaseAggregatorAddress,
     address sDaiAddress,
     string memory pairName,
-    uint256 snapshotRatio,
-    uint256 snapshotTimestamp,
-    uint16 maxYearlyRatioGrowth
+    uint104 snapshotRatio,
+    uint48 snapshotTimestamp,
+    uint16 maxYearlyRatioGrowthPercent
   )
     PriceCapAdapterBase(
       aclManager,
@@ -39,15 +43,15 @@ contract SDAIGnosisPriceCapAdapter is PriceCapAdapterBase {
       IERC4626(sDaiAddress).decimals(),
       snapshotRatio,
       snapshotTimestamp,
-      maxYearlyRatioGrowth
+      maxYearlyRatioGrowthPercent
     )
   {
     sDAI = IERC4626(sDaiAddress);
   }
 
-  function _getRatio() internal view override returns (int256) {
-    int256 ratio = int256(sDAI.convertToAssets(10 ** RATIO_DECIMALS));
-
-    return ratio;
+  /// @inheritdoc IPriceCapAdapter
+  function getRatio() public view override returns (int256) {
+    return int256(sDAI.convertToAssets(10 ** RATIO_DECIMALS)); // TODO: not sure that RATIO_DECIMALS used appropriate here
+    // TODO: sounds like it's actually asset decimals, or priced unit decimals
   }
 }

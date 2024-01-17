@@ -22,13 +22,13 @@ interface IPriceCapAdapter is ICLSynchronicityPriceAdapter {
 
   /**
    * @notice Updates price cap parameters
-   * @param snapshotRatio The latest exchange index
-   * @param snapshotTimestamp The timestamp of the latest exchange index
+   * @param snapshotRatio The latest exchange ratio
+   * @param snapshotTimestamp The timestamp of the latest exchange ratio
    * @param maxYearlyRatioGrowthPercent Maximum growth of the underlying asset value per year, 100_00 is equal 100%
    */
   function setCapParameters(
-    uint256 snapshotRatio,
-    uint256 snapshotTimestamp,
+    uint104 snapshotRatio,
+    uint48 snapshotTimestamp,
     uint16 maxYearlyRatioGrowthPercent
   ) external;
 
@@ -52,7 +52,15 @@ interface IPriceCapAdapter is ICLSynchronicityPriceAdapter {
    */
   function DECIMALS() external view returns (uint8);
 
+  /**
+   * @notice Number of decimal places of the capped asset to underlying ratio
+   */
   function RATIO_DECIMALS() external view returns (uint8);
+
+  /**
+   * @notice Returns the current exchange ratio of lst to the underlying(base) asset
+   */
+  function getRatio() external view returns (int256);
 
   /**
    * @notice Returns the latest snapshot ratio

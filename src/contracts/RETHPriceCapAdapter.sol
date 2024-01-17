@@ -2,8 +2,9 @@
 pragma solidity ^0.8.19;
 
 import {IACLManager} from 'aave-address-book/AaveV3.sol';
-import {PriceCapAdapterBase} from './PriceCapAdapterBase.sol';
 import {IrETH} from 'cl-synchronicity-price-adapter/interfaces/IrETH.sol';
+
+import {PriceCapAdapterBase, IPriceCapAdapter} from './PriceCapAdapterBase.sol';
 
 /**
  * @title RETHPriceCapAdapter
@@ -18,18 +19,22 @@ contract RETHPriceCapAdapter is PriceCapAdapterBase {
   IrETH public immutable RETH;
 
   /**
-   * @param rETHToBaseAggregatorAddress the address of cbETH / BASE feed
-   * @param rethAddress the address of the rETH token
+   * @param aclManager ACL manager contract
+   * @param rETHToBaseAggregatorAddress the address of (rETH / USD) feed
+   * @param rETHAddress the address of the rETH token, the (rETH / ETH) ratio feed
    * @param pairName name identifier
+   * @param snapshotRatio The latest exchange ratio
+   * @param snapshotTimestamp The timestamp of the latest exchange ratio
+   * @param maxYearlyRatioGrowthPercent Maximum growth of the underlying asset value per year, 100_00 is equal 100%
    */
   constructor(
     IACLManager aclManager,
     address rETHToBaseAggregatorAddress,
-    address rethAddress,
+    address rETHAddress,
     string memory pairName,
-    uint256 snapshotRatio,
-    uint256 snapshotTimestamp,
-    uint16 maxYearlyRatioGrowth
+    uint104 snapshotRatio,
+    uint48 snapshotTimestamp,
+    uint16 maxYearlyRatioGrowthPercent
   )
     PriceCapAdapterBase(
       aclManager,
@@ -38,15 +43,14 @@ contract RETHPriceCapAdapter is PriceCapAdapterBase {
       18,
       snapshotRatio,
       snapshotTimestamp,
-      maxYearlyRatioGrowth
+      maxYearlyRatioGrowthPercent
     )
   {
-    RETH = IrETH(rethAddress);
+    RETH = IrETH(rETHAddress);
   }
 
-  function _getRatio() internal view override returns (int256) {
-    int256 ratio = int256(RETH.getExchangeRate());
-
-    return ratio;
+  /// @inheritdoc IPriceCapAdapter
+  function getRatio() public view override returns (int256) {
+    return int256(RETH.getExchangeRate());
   }
 }

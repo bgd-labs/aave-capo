@@ -2,8 +2,9 @@
 pragma solidity ^0.8.19;
 
 import {IACLManager} from 'aave-address-book/AaveV3.sol';
-import {PriceCapAdapterBase} from './PriceCapAdapterBase.sol';
 import {ICbEthRateProvider} from 'cl-synchronicity-price-adapter/interfaces/ICbEthRateProvider.sol';
+
+import {PriceCapAdapterBase, IPriceCapAdapter} from './PriceCapAdapterBase.sol';
 
 /**
  * @title CbETHPriceCapAdapter
@@ -13,23 +14,27 @@ import {ICbEthRateProvider} from 'cl-synchronicity-price-adapter/interfaces/ICbE
  */
 contract CbETHPriceCapAdapter is PriceCapAdapterBase {
   /**
-   * @notice rate provider for (cbETH / Base)
+   * @notice ratio provider for (cbETH / Base)
    */
-  ICbEthRateProvider public immutable RATE_PROVIDER;
+  ICbEthRateProvider public immutable RATIO_PROVIDER;
 
   /**
+   * @param aclManager ACL manager contract
    * @param cbETHToBaseAggregatorAddress the address of cbETH / BASE feed
-   * @param rateProviderAddress the address of the rate provider
+   * @param ratioProviderAddress the address of the (cbETH / ETH) ratio provider
    * @param pairName name identifier
+   * @param snapshotRatio The latest exchange ratio
+   * @param snapshotTimestamp The timestamp of the latest exchange ratio
+   * @param maxYearlyRatioGrowthPercent Maximum growth of the underlying asset value per year, 100_00 is equal 100%
    */
   constructor(
     IACLManager aclManager,
     address cbETHToBaseAggregatorAddress,
-    address rateProviderAddress,
+    address ratioProviderAddress,
     string memory pairName,
-    uint256 snapshotRatio,
-    uint256 snapshotTimestamp,
-    uint16 maxYearlyRatioGrowth
+    uint104 snapshotRatio,
+    uint48 snapshotTimestamp,
+    uint16 maxYearlyRatioGrowthPercent
   )
     PriceCapAdapterBase(
       aclManager,
@@ -38,15 +43,14 @@ contract CbETHPriceCapAdapter is PriceCapAdapterBase {
       18,
       snapshotRatio,
       snapshotTimestamp,
-      maxYearlyRatioGrowth
+      maxYearlyRatioGrowthPercent
     )
   {
-    RATE_PROVIDER = ICbEthRateProvider(rateProviderAddress);
+    RATIO_PROVIDER = ICbEthRateProvider(ratioProviderAddress);
   }
 
-  function _getRatio() internal view override returns (int256) {
-    int256 ratio = int256(RATE_PROVIDER.exchangeRate());
-
-    return ratio;
+  /// @inheritdoc IPriceCapAdapter
+  function getRatio() public view override returns (int256) {
+    return int256(RATIO_PROVIDER.exchangeRate());
   }
 }

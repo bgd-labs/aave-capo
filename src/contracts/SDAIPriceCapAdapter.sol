@@ -2,8 +2,9 @@
 pragma solidity ^0.8.19;
 
 import {IACLManager} from 'aave-address-book/AaveV3.sol';
-import {PriceCapAdapterBase} from './PriceCapAdapterBase.sol';
 import {IPot} from 'cl-synchronicity-price-adapter/interfaces/IPot.sol';
+
+import {PriceCapAdapterBase, IPriceCapAdapter} from './PriceCapAdapterBase.sol';
 
 /**
  * @title SDAIPriceCapAdapter
@@ -13,40 +14,43 @@ import {IPot} from 'cl-synchronicity-price-adapter/interfaces/IPot.sol';
  */
 contract SDAIPriceCapAdapter is PriceCapAdapterBase {
   /**
-   * @notice rate provider for (sDAI / DAI)
+   * @notice ratio provider for (sDAI / DAI)
    */
-  IPot public immutable RATE_PROVIDER;
+  IPot public immutable RATIO_PROVIDER;
 
   /**
-   * @param daiToBaseAggregatorAddress the address of DAI / BASE feed
-   * @param potAddress the address of the sDAI pot
+   * @param aclManager ACL manager contract
+   * @param daiToBaseAggregatorAddress the address of (DAI / USD) feed
+   * @param potAddress the address of the sDAI pot, the (sDAI / DAI) ratio feed
    * @param pairName name identifier
+   * @param snapshotRatio The latest exchange ratio
+   * @param snapshotTimestamp The timestamp of the latest exchange ratio
+   * @param maxYearlyRatioGrowthPercent Maximum growth of the underlying asset value per year, 100_00 is equal 100%
    */
   constructor(
     IACLManager aclManager,
     address daiToBaseAggregatorAddress,
     address potAddress,
     string memory pairName,
-    uint256 snapshotRatio,
-    uint256 snapshotTimestamp,
-    uint16 maxYearlyRatioGrowth
+    uint104 snapshotRatio,
+    uint48 snapshotTimestamp,
+    uint16 maxYearlyRatioGrowthPercent
   )
     PriceCapAdapterBase(
       aclManager,
       daiToBaseAggregatorAddress,
       pairName,
-      27,
+      27, // TODO: very likely that it's incorrect, and useless
       snapshotRatio,
       snapshotTimestamp,
-      maxYearlyRatioGrowth
+      maxYearlyRatioGrowthPercent
     )
   {
-    RATE_PROVIDER = IPot(potAddress);
+    RATIO_PROVIDER = IPot(potAddress);
   }
 
-  function _getRatio() internal view override returns (int256) {
-    int256 ratio = int256(RATE_PROVIDER.chi());
-
-    return ratio;
+  /// @inheritdoc IPriceCapAdapter
+  function getRatio() public view override returns (int256) {
+    return int256(RATIO_PROVIDER.chi());
   }
 }

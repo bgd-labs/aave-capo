@@ -7,6 +7,7 @@ import {AaveV3Ethereum} from 'aave-address-book/AaveV3Ethereum.sol';
 import {BaseAggregatorsMainnet} from 'cl-synchronicity-price-adapter/lib/BaseAggregators.sol';
 
 import {WstETHPriceCapAdapter} from '../src/contracts/WstETHPriceCapAdapter.sol';
+import {IPriceCapAdapter} from '../src/interfaces/IPriceCapAdapter.sol';
 import {MissingAssetsMainnet} from '../src/lib/MissingAssetsMainnet.sol';
 
 contract WstETHPriceCapAdapterTest is Test {
@@ -96,7 +97,7 @@ contract WstETHPriceCapAdapterTest is Test {
       2_00
     );
 
-    vm.expectRevert(bytes('ONLY_RISK_ADMIN'));
+    vm.expectRevert(IPriceCapAdapter.CallerIsNotRiskAdmin.selector);
 
     adapter.setCapParameters(1151642949000000000, 1723743921, 20_00);
   }

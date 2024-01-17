@@ -2,8 +2,9 @@
 pragma solidity ^0.8.19;
 
 import {IACLManager} from 'aave-address-book/AaveV3.sol';
-import {PriceCapAdapterBase} from './PriceCapAdapterBase.sol';
 import {IStETH} from 'cl-synchronicity-price-adapter/interfaces/IStETH.sol';
+
+import {PriceCapAdapterBase, IPriceCapAdapter} from './PriceCapAdapterBase.sol';
 
 /**
  * @title WstETHPriceCapAdapter
@@ -13,13 +14,13 @@ import {IStETH} from 'cl-synchronicity-price-adapter/interfaces/IStETH.sol';
  */
 contract WstETHPriceCapAdapter is PriceCapAdapterBase {
   /**
-   * @notice stETH token contract to get ratio
+   * @notice ratio provider for (wstETH / stETH)
    */
   IStETH public immutable STETH;
 
   /**
-   * @param ethToBaseAggregatorAddress the address of ETH / BASE feed
-   * @param stEthAddress the address of the stETH contract
+   * @param ethToBaseAggregatorAddress the address of (ETH / USD) feed
+   * @param stEthAddress the address of the stETH contract, the (wStETH / ETH) ratio fee
    * @param pairName name identifier
    */
   constructor(
@@ -27,8 +28,8 @@ contract WstETHPriceCapAdapter is PriceCapAdapterBase {
     address ethToBaseAggregatorAddress,
     address stEthAddress,
     string memory pairName,
-    uint256 snapshotRatio,
-    uint256 snapshotTimestamp,
+    uint104 snapshotRatio,
+    uint48 snapshotTimestamp,
     uint16 maxYearlyRatioGrowth
   )
     PriceCapAdapterBase(
@@ -44,9 +45,8 @@ contract WstETHPriceCapAdapter is PriceCapAdapterBase {
     STETH = IStETH(stEthAddress);
   }
 
-  function _getRatio() internal view override returns (int256) {
-    int256 ratio = int256(STETH.getPooledEthByShares(10 ** RATIO_DECIMALS));
-
-    return ratio;
+  /// @inheritdoc IPriceCapAdapter
+  function getRatio() public view override returns (int256) {
+    return int256(STETH.getPooledEthByShares(10 ** RATIO_DECIMALS));
   }
 }

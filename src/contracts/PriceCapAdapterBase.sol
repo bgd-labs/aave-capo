@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: BUSL-1.1
 pragma solidity ^0.8.19;
 
-import {PercentageMath} from 'aave-v3-core/contracts/protocol/libraries/math/PercentageMath.sol';
 import {IACLManager} from 'aave-address-book/AaveV3.sol';
 
 import {IChainlinkAggregator} from 'cl-synchronicity-price-adapter/interfaces/IChainlinkAggregator.sol';
@@ -13,7 +12,8 @@ import {IPriceCapAdapter, ICLSynchronicityPriceAdapter} from '../interfaces/IPri
  * @notice Price adapter to cap the price of the underlying asset.
  */
 abstract contract PriceCapAdapterBase is IPriceCapAdapter {
-  using PercentageMath for uint256;
+  // Maximum percentage factor (100.00%)
+  uint256 internal constant PERCENTAGE_FACTOR = 1e4;
 
   /// @inheritdoc IPriceCapAdapter
   uint256 public constant SECONDS_PER_YEAR = 365 days;
@@ -38,29 +38,34 @@ abstract contract PriceCapAdapterBase is IPriceCapAdapter {
   /**
    * @notice Ratio at the time of snapshot
    */
-  uint256 private _snapshotRatio;
+  uint104 private _snapshotRatio;
 
   /**
    * @notice Timestamp at the time of snapshot
    */
-  uint256 private _snapshotTimestamp;
+  uint48 private _snapshotTimestamp;
 
   /**
    * @notice Ratio growth per second
    */
-  uint256 private _maxRatioGrowthPerSecond;
+  uint104 private _maxRatioGrowthPerSecond;
 
   /**
-   * @param baseAggregatorAddress the address of BASE_CURRENCY / USD feed
-   * @param pairDescription description
+   * @param aclManager ACL manager contract
+   * @param baseAggregatorAddress The address of BASE_CURRENCY / USD price feed
+   * @param pairDescription The capped asset to underlying pair description
+   * @param ratioDecimals The number of decimal places of the capped asset to underlying ratio
+   * @param snapshotRatio The latest exchange ratio
+   * @param snapshotTimestamp The timestamp of the latest exchange ratio
+   * @param maxYearlyRatioGrowthPercent Maximum growth of the underlying asset value per year, 100_00 is equal 100%
    */
   constructor(
     IACLManager aclManager,
     address baseAggregatorAddress,
     string memory pairDescription,
     uint8 ratioDecimals,
-    uint256 snapshotRatio,
-    uint256 snapshotTimestamp,
+    uint104 snapshotRatio,
+    uint48 snapshotTimestamp,
     uint16 maxYearlyRatioGrowthPercent
   ) {
     ACL_MANAGER = aclManager;
@@ -100,8 +105,8 @@ abstract contract PriceCapAdapterBase is IPriceCapAdapter {
 
   /// @inheritdoc IPriceCapAdapter
   function setCapParameters(
-    uint256 snapshotRatio,
-    uint256 snapshotTimestamp,
+    uint104 snapshotRatio,
+    uint48 snapshotTimestamp,
     uint16 maxYearlyRatioGrowthPercent
   ) external {
     if (!ACL_MANAGER.isRiskAdmin(msg.sender)) {
@@ -113,8 +118,8 @@ abstract contract PriceCapAdapterBase is IPriceCapAdapter {
 
   /// @inheritdoc ICLSynchronicityPriceAdapter
   function latestAnswer() external view override returns (int256) {
-    // get the current ratio
-    int256 currentRatio = _getRatio();
+    // get the current lst to underlying ratio
+    int256 currentRatio = getRatio();
 
     // calculate the ratio based on snapshot ratio and max growth rate
     int256 maxRatio = int256(
@@ -135,8 +140,8 @@ abstract contract PriceCapAdapterBase is IPriceCapAdapter {
   }
 
   function _setCapParameters(
-    uint256 snapshotRatio,
-    uint256 snapshotTimestamp,
+    uint104 snapshotRatio,
+    uint48 snapshotTimestamp,
     uint16 maxYearlyRatioGrowthPercent
   ) internal {
     if (snapshotRatio == 0) {
@@ -145,9 +150,9 @@ abstract contract PriceCapAdapterBase is IPriceCapAdapter {
     _snapshotRatio = snapshotRatio;
     _snapshotTimestamp = snapshotTimestamp;
 
-    _maxRatioGrowthPerSecond =
-      (_snapshotRatio.percentMul(maxYearlyRatioGrowthPercent)) /
-      (SECONDS_PER_YEAR);
+    _maxRatioGrowthPerSecond = uint104(
+      (_snapshotRatio * maxYearlyRatioGrowthPercent) / PERCENTAGE_FACTOR / SECONDS_PER_YEAR
+    );
 
     emit CapParametersUpdated(
       snapshotRatio,
@@ -157,8 +162,6 @@ abstract contract PriceCapAdapterBase is IPriceCapAdapter {
     );
   }
 
-  /**
-   * @notice Returns the current exchange ratio to the underlying(base) asset
-   */
-  function _getRatio() internal view virtual returns (int256);
+  /// @inheritdoc IPriceCapAdapter
+  function getRatio() public view virtual returns (int256); // TODO: make it public?
 }
