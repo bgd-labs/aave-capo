@@ -4,8 +4,10 @@ pragma solidity ^0.8.0;
 import {Test} from 'forge-std/Test.sol';
 
 import {AaveV3Ethereum} from 'aave-address-book/AaveV3Ethereum.sol';
-import {WstETHPriceCapAdapter} from '../src/contracts/WstETHPriceCapAdapter.sol';
 import {BaseAggregatorsMainnet} from 'cl-synchronicity-price-adapter/lib/BaseAggregators.sol';
+
+import {WstETHPriceCapAdapter} from '../src/contracts/WstETHPriceCapAdapter.sol';
+import {MissingAssetsMainnet} from '../src/lib/MissingAssetsMainnet.sol';
 
 contract WstETHPriceCapAdapterTest is Test {
   function setUp() public {
@@ -16,7 +18,7 @@ contract WstETHPriceCapAdapterTest is Test {
     WstETHPriceCapAdapter adapter = new WstETHPriceCapAdapter(
       AaveV3Ethereum.ACL_MANAGER,
       BaseAggregatorsMainnet.ETH_USD_AGGREGATOR,
-      BaseAggregatorsMainnet.STETH,
+      MissingAssetsMainnet.STETH,
       'wstETH/stETH/USD',
       1151642949000000000,
       1703743921,
@@ -36,7 +38,7 @@ contract WstETHPriceCapAdapterTest is Test {
     WstETHPriceCapAdapter adapter = new WstETHPriceCapAdapter(
       AaveV3Ethereum.ACL_MANAGER,
       BaseAggregatorsMainnet.ETH_USD_AGGREGATOR,
-      BaseAggregatorsMainnet.STETH,
+      MissingAssetsMainnet.STETH,
       'wstETH/stETH/USD',
       1151642949000000000,
       1703743921,
@@ -56,7 +58,7 @@ contract WstETHPriceCapAdapterTest is Test {
     WstETHPriceCapAdapter adapter = new WstETHPriceCapAdapter(
       AaveV3Ethereum.ACL_MANAGER,
       BaseAggregatorsMainnet.ETH_USD_AGGREGATOR,
-      BaseAggregatorsMainnet.STETH,
+      MissingAssetsMainnet.STETH,
       'wstETH/stETH/USD',
       1151642949000000000,
       1703743921,
@@ -87,7 +89,7 @@ contract WstETHPriceCapAdapterTest is Test {
     WstETHPriceCapAdapter adapter = new WstETHPriceCapAdapter(
       AaveV3Ethereum.ACL_MANAGER,
       BaseAggregatorsMainnet.ETH_USD_AGGREGATOR,
-      BaseAggregatorsMainnet.STETH,
+      MissingAssetsMainnet.STETH,
       'wstETH/stETH/USD',
       1151642949000000000,
       1703743921,

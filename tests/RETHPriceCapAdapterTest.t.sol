@@ -4,8 +4,9 @@ pragma solidity ^0.8.0;
 import {Test} from 'forge-std/Test.sol';
 
 import {AaveV3Ethereum} from 'aave-address-book/AaveV3Ethereum.sol';
-import {RETHPriceCapAdapter} from '../src/contracts/RETHPriceCapAdapter.sol';
 import {BaseAggregatorsMainnet} from 'cl-synchronicity-price-adapter/lib/BaseAggregators.sol';
+import {RETHPriceCapAdapter} from '../src/contracts/RETHPriceCapAdapter.sol';
+import {MissingAssetsMainnet} from '../src/lib/MissingAssetsMainnet.sol';
 
 contract RETHPriceCapAdapterTest is Test {
   function setUp() public {
@@ -16,7 +17,7 @@ contract RETHPriceCapAdapterTest is Test {
     RETHPriceCapAdapter adapter = new RETHPriceCapAdapter(
       AaveV3Ethereum.ACL_MANAGER,
       BaseAggregatorsMainnet.ETH_USD_AGGREGATOR,
-      BaseAggregatorsMainnet.RETH,
+      MissingAssetsMainnet.RETH,
       'rETH / ETH / USD',
       1093801647000000000,
       1703743921,
@@ -36,7 +37,7 @@ contract RETHPriceCapAdapterTest is Test {
     RETHPriceCapAdapter adapter = new RETHPriceCapAdapter(
       AaveV3Ethereum.ACL_MANAGER,
       BaseAggregatorsMainnet.ETH_USD_AGGREGATOR,
-      BaseAggregatorsMainnet.RETH,
+      MissingAssetsMainnet.RETH,
       'rETH / ETH / USD',
       1093801647000000000,
       1703743921,
