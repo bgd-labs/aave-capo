@@ -169,5 +169,5 @@ abstract contract PriceCapAdapterBase is IPriceCapAdapter {
   }
 
   /// @inheritdoc IPriceCapAdapter
-  function getRatio() public view virtual returns (int256); // TODO: make it public?
+  function getRatio() public view virtual returns (int256);
 }
