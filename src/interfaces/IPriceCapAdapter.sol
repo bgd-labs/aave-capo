@@ -82,6 +82,8 @@ interface IPriceCapAdapter is ICLSynchronicityPriceAdapter {
    */
   function getMaxYearlyGrowthRatePercent() external view returns (uint256);
 
+  error ACLManagerIsZeroAddress();
   error SnapshotRatioIsZero();
+  error InvalidRatioTimestamp(uint48);
   error CallerIsNotRiskAdmin();
 }

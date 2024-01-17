@@ -73,6 +73,9 @@ abstract contract PriceCapAdapterBase is IPriceCapAdapter {
     uint48 snapshotTimestamp,
     uint16 maxYearlyRatioGrowthPercent
   ) {
+    if (address(aclManager) == address(0)) {
+      revert ACLManagerIsZeroAddress();
+    }
     ACL_MANAGER = aclManager;
     BASE_TO_USD_AGGREGATOR = IChainlinkAggregator(baseAggregatorAddress);
     RATIO_PROVIDER = ratioProviderAddress;
@@ -106,7 +109,7 @@ abstract contract PriceCapAdapterBase is IPriceCapAdapter {
 
   /// @inheritdoc IPriceCapAdapter
   function getMaxYearlyGrowthRatePercent() external view returns (uint256) {
-    return _maxRatioGrowthPerSecond * SECONDS_PER_YEAR;
+    return _maxRatioGrowthPerSecond * SECONDS_PER_YEAR; // TODO: it's not percent :'/ should be changed
   }
 
   /// @inheritdoc IPriceCapAdapter
@@ -126,6 +129,13 @@ abstract contract PriceCapAdapterBase is IPriceCapAdapter {
   function latestAnswer() external view override returns (int256) {
     // get the current lst to underlying ratio
     int256 currentRatio = getRatio();
+    // get the base price
+    int256 basePrice = BASE_TO_USD_AGGREGATOR.latestAnswer();
+
+    // TODO: check, does it make sense or not, but before we had such check on cbETH at least
+    if (basePrice <= 0 || currentRatio <= 0) {
+      return 0;
+    }
 
     // calculate the ratio based on snapshot ratio and max growth rate
     int256 maxRatio = int256(
@@ -135,9 +145,6 @@ abstract contract PriceCapAdapterBase is IPriceCapAdapter {
     if (maxRatio < currentRatio) {
       currentRatio = maxRatio;
     }
-
-    // get the base price
-    int256 basePrice = BASE_TO_USD_AGGREGATOR.latestAnswer();
 
     // calculate the price of the underlying asset
     int256 price = (basePrice * currentRatio) / int256(10 ** RATIO_DECIMALS);
@@ -153,13 +160,16 @@ abstract contract PriceCapAdapterBase is IPriceCapAdapter {
     if (snapshotRatio == 0) {
       revert SnapshotRatioIsZero();
     }
+    // new snapshot timestamp should be gt then stored one, but not gt then timestamp of the current block
+    if (_snapshotTimestamp >= snapshotTimestamp || snapshotTimestamp > block.timestamp) {
+      revert InvalidRatioTimestamp(snapshotTimestamp);
+    }
     _snapshotRatio = snapshotRatio;
     _snapshotTimestamp = snapshotTimestamp;
 
     _maxRatioGrowthPerSecond = uint104(
       (_snapshotRatio * maxYearlyRatioGrowthPercent) / PERCENTAGE_FACTOR / SECONDS_PER_YEAR
     );
-
     emit CapParametersUpdated(
       snapshotRatio,
       snapshotTimestamp,
