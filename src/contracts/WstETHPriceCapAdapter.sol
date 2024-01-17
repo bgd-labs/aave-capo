@@ -14,14 +14,13 @@ import {PriceCapAdapterBase, IPriceCapAdapter} from './PriceCapAdapterBase.sol';
  */
 contract WstETHPriceCapAdapter is PriceCapAdapterBase {
   /**
-   * @notice ratio provider for (wstETH / stETH)
-   */
-  IStETH public immutable STETH;
-
-  /**
+   * @param aclManager ACL manager contract
    * @param ethToBaseAggregatorAddress the address of (ETH / USD) feed
-   * @param stEthAddress the address of the stETH contract, the (wStETH / ETH) ratio fee
+   * @param stEthAddress the address of the stETH contract, the (wStETH / ETH) ratio feed
    * @param pairName name identifier
+   * @param snapshotRatio the latest exchange ratio
+   * @param snapshotTimestamp the timestamp of the latest exchange ratio
+   * @param maxYearlyRatioGrowthPercent maximum growth of the underlying asset value per year, 100_00 is equal 100%
    */
   constructor(
     IACLManager aclManager,
@@ -30,23 +29,22 @@ contract WstETHPriceCapAdapter is PriceCapAdapterBase {
     string memory pairName,
     uint104 snapshotRatio,
     uint48 snapshotTimestamp,
-    uint16 maxYearlyRatioGrowth
+    uint16 maxYearlyRatioGrowthPercent
   )
     PriceCapAdapterBase(
       aclManager,
       ethToBaseAggregatorAddress,
+      stEthAddress,
       pairName,
       18,
       snapshotRatio,
       snapshotTimestamp,
-      maxYearlyRatioGrowth
+      maxYearlyRatioGrowthPercent
     )
-  {
-    STETH = IStETH(stEthAddress);
-  }
+  {}
 
   /// @inheritdoc IPriceCapAdapter
   function getRatio() public view override returns (int256) {
-    return int256(STETH.getPooledEthByShares(10 ** RATIO_DECIMALS));
+    return int256(IStETH(RATIO_PROVIDER).getPooledEthByShares(10 ** RATIO_DECIMALS));
   }
 }

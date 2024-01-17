@@ -15,18 +15,13 @@ import {PriceCapAdapterBase, IPriceCapAdapter} from './PriceCapAdapterBase.sol';
  */
 contract MaticPriceCapAdapter is PriceCapAdapterBase {
   /**
-   * @notice Ratio provider for  (lst Matic / MATIC) pair
-   */
-  IMaticRateProvider public immutable RATIO_PROVIDER;
-
-  /**
    * @param aclManager ACL manager contract
    * @param maticToBaseAggregatorAddress the address of MATIC / USD feed
-   * @param ratioProviderAddress the address of the lst Matic token
+   * @param ratioProviderAddress the address of (lst Matic / MATIC) pair ratio feed
    * @param pairName name identifier
-   * @param snapshotRatio The latest exchange ratio
-   * @param snapshotTimestamp The timestamp of the latest exchange ratio
-   * @param maxYearlyRatioGrowthPercent Maximum growth of the underlying asset value per year, 100_00 is equal 100%
+   * @param snapshotRatio the latest exchange ratio
+   * @param snapshotTimestamp the timestamp of the latest exchange ratio
+   * @param maxYearlyRatioGrowthPercent maximum growth of the underlying asset value per year, 100_00 is equal 100%
    */
   constructor(
     IACLManager aclManager,
@@ -40,18 +35,17 @@ contract MaticPriceCapAdapter is PriceCapAdapterBase {
     PriceCapAdapterBase(
       aclManager,
       maticToBaseAggregatorAddress,
+      ratioProviderAddress,
       pairName,
       18,
       snapshotRatio,
       snapshotTimestamp,
       maxYearlyRatioGrowthPercent
     )
-  {
-    RATIO_PROVIDER = IMaticRateProvider(ratioProviderAddress);
-  }
+  {}
 
   /// @inheritdoc IPriceCapAdapter
   function getRatio() public view override returns (int256) {
-    return int256(RATIO_PROVIDER.getRate());
+    return int256(IMaticRateProvider(RATIO_PROVIDER).getRate());
   }
 }

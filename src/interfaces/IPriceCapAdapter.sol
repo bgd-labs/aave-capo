@@ -40,7 +40,12 @@ interface IPriceCapAdapter is ICLSynchronicityPriceAdapter {
   /**
    * @notice Price feed for (BASE_ASSET / USD) pair
    */
-  function BASE_TO_USD() external view returns (IChainlinkAggregator);
+  function BASE_TO_USD_AGGREGATOR() external view returns (IChainlinkAggregator);
+
+  /**
+   * @notice Ratio feed for (LST_ASSET / BASE_ASSET) pair
+   */
+  function RATIO_PROVIDER() external view returns (address);
 
   /**
    * @notice ACL manager contract

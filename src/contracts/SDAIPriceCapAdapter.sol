@@ -14,18 +14,13 @@ import {PriceCapAdapterBase, IPriceCapAdapter} from './PriceCapAdapterBase.sol';
  */
 contract SDAIPriceCapAdapter is PriceCapAdapterBase {
   /**
-   * @notice ratio provider for (sDAI / DAI)
-   */
-  IPot public immutable RATIO_PROVIDER;
-
-  /**
    * @param aclManager ACL manager contract
    * @param daiToBaseAggregatorAddress the address of (DAI / USD) feed
-   * @param potAddress the address of the sDAI pot, the (sDAI / DAI) ratio feed
+   * @param potAddress the address of the sDAI pot, used the (sDAI / DAI) ratio feed
    * @param pairName name identifier
-   * @param snapshotRatio The latest exchange ratio
-   * @param snapshotTimestamp The timestamp of the latest exchange ratio
-   * @param maxYearlyRatioGrowthPercent Maximum growth of the underlying asset value per year, 100_00 is equal 100%
+   * @param snapshotRatio the latest exchange ratio
+   * @param snapshotTimestamp the timestamp of the latest exchange ratio
+   * @param maxYearlyRatioGrowthPercent maximum growth of the underlying asset value per year, 100_00 is equal 100%
    */
   constructor(
     IACLManager aclManager,
@@ -39,18 +34,17 @@ contract SDAIPriceCapAdapter is PriceCapAdapterBase {
     PriceCapAdapterBase(
       aclManager,
       daiToBaseAggregatorAddress,
+      potAddress,
       pairName,
-      27, // TODO: very likely that it's incorrect, and useless
+      27,
       snapshotRatio,
       snapshotTimestamp,
       maxYearlyRatioGrowthPercent
     )
-  {
-    RATIO_PROVIDER = IPot(potAddress);
-  }
+  {}
 
   /// @inheritdoc IPriceCapAdapter
   function getRatio() public view override returns (int256) {
-    return int256(RATIO_PROVIDER.chi());
+    return int256(IPot(RATIO_PROVIDER).chi());
   }
 }

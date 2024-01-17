@@ -14,18 +14,13 @@ import {ISAvax} from '../interfaces/ISAvax.sol';
  */
 contract SAvaxPriceCapAdapter is PriceCapAdapterBase {
   /**
-   * @notice sAvax contract
-   */
-  ISAvax public immutable SAVAX;
-
-  /**
    * @param aclManager ACL manager contract
    * @param avaxToBaseAggregatorAddress the address of (AVAX / USD) feed
    * @param sAVAXAddress the address of the sAVAX token, the (sAVAX / AVAX) ratio feed
    * @param pairName name identifier
-   * @param snapshotRatio The latest exchange ratio
-   * @param snapshotTimestamp The timestamp of the latest exchange ratio
-   * @param maxYearlyRatioGrowthPercent Maximum growth of the underlying asset value per year, 100_00 is equal 100%
+   * @param snapshotRatio the latest exchange ratio
+   * @param snapshotTimestamp the timestamp of the latest exchange ratio
+   * @param maxYearlyRatioGrowthPercent maximum growth of the underlying asset value per year, 100_00 is equal 100%
    */
   constructor(
     IACLManager aclManager,
@@ -39,18 +34,17 @@ contract SAvaxPriceCapAdapter is PriceCapAdapterBase {
     PriceCapAdapterBase(
       aclManager,
       avaxToBaseAggregatorAddress,
+      sAVAXAddress,
       pairName,
       18,
       snapshotRatio,
       snapshotTimestamp,
       maxYearlyRatioGrowthPercent
     )
-  {
-    SAVAX = ISAvax(sAVAXAddress);
-  }
+  {}
 
   /// @inheritdoc IPriceCapAdapter
   function getRatio() public view override returns (int256) {
-    return int256(SAVAX.getPooledAvaxByShares(1 ether)); // TODO: RATIO_DECIMALS should be used ??
+    return int256(ISAvax(RATIO_PROVIDER).getPooledAvaxByShares(10 ** RATIO_DECIMALS));
   }
 }

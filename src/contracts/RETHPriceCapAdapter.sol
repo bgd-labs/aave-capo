@@ -14,18 +14,13 @@ import {PriceCapAdapterBase, IPriceCapAdapter} from './PriceCapAdapterBase.sol';
  */
 contract RETHPriceCapAdapter is PriceCapAdapterBase {
   /**
-   * @notice rETH token contract
-   */
-  IrETH public immutable RETH;
-
-  /**
    * @param aclManager ACL manager contract
    * @param rETHToBaseAggregatorAddress the address of (rETH / USD) feed
    * @param rETHAddress the address of the rETH token, the (rETH / ETH) ratio feed
    * @param pairName name identifier
-   * @param snapshotRatio The latest exchange ratio
-   * @param snapshotTimestamp The timestamp of the latest exchange ratio
-   * @param maxYearlyRatioGrowthPercent Maximum growth of the underlying asset value per year, 100_00 is equal 100%
+   * @param snapshotRatio the latest exchange ratio
+   * @param snapshotTimestamp the timestamp of the latest exchange ratio
+   * @param maxYearlyRatioGrowthPercent maximum growth of the underlying asset value per year, 100_00 is equal 100%
    */
   constructor(
     IACLManager aclManager,
@@ -39,18 +34,17 @@ contract RETHPriceCapAdapter is PriceCapAdapterBase {
     PriceCapAdapterBase(
       aclManager,
       rETHToBaseAggregatorAddress,
+      rETHAddress,
       pairName,
       18,
       snapshotRatio,
       snapshotTimestamp,
       maxYearlyRatioGrowthPercent
     )
-  {
-    RETH = IrETH(rETHAddress);
-  }
+  {}
 
   /// @inheritdoc IPriceCapAdapter
   function getRatio() public view override returns (int256) {
-    return int256(RETH.getExchangeRate());
+    return int256(IrETH(RATIO_PROVIDER).getExchangeRate());
   }
 }

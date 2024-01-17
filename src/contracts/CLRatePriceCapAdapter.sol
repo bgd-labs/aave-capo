@@ -9,27 +9,22 @@ import {PriceCapAdapterBase, IPriceCapAdapter} from './PriceCapAdapterBase.sol';
 /**
  * @title CLRatePriceCapAdapter
  * @author BGD Labs
- * @notice Price capped adapter to calculate price of (Asset / USD) pair by using
- * @notice Chainlink data feeds for (PEG / USD) and (ASSET / PEG).
+ * @notice Price capped adapter to calculate price of (lstASSET / USD) pair by using
+ * @notice Chainlink data feeds for (ASSET / USD) and (lstASSET / ASSET).
  */
 contract CLRatePriceCapAdapter is PriceCapAdapterBase {
   /**
-   * @notice Ratio provider for  (Asset / PEG) pair
-   */
-  IChainlinkAggregator public immutable RATIO_PROVIDER;
-
-  /**
    * @param aclManager ACL manager contract
-   * @param pegToBaseAggregatorAddress the address of (PEG / USD) feed
-   * @param ratioProviderAddress the address of the (ASSET / PEG) ratio feed
+   * @param assetToBaseAggregatorAddress the address of (ASSET / USD) feed
+   * @param ratioProviderAddress the address of the (lstASSET / ASSET) ratio feed
    * @param pairName name identifier
-   * @param snapshotRatio The latest exchange ratio
-   * @param snapshotTimestamp The timestamp of the latest exchange ratio
-   * @param maxYearlyRatioGrowthPercent Maximum growth of the underlying asset value per year, 100_00 is equal 100%
+   * @param snapshotRatio the latest exchange ratio
+   * @param snapshotTimestamp the timestamp of the latest exchange ratio
+   * @param maxYearlyRatioGrowthPercent maximum growth of the underlying asset value per year, 100_00 is equal 100%
    */
   constructor(
     IACLManager aclManager,
-    address pegToBaseAggregatorAddress,
+    address assetToBaseAggregatorAddress,
     address ratioProviderAddress,
     string memory pairName,
     uint104 snapshotRatio,
@@ -38,19 +33,18 @@ contract CLRatePriceCapAdapter is PriceCapAdapterBase {
   )
     PriceCapAdapterBase(
       aclManager,
-      pegToBaseAggregatorAddress,
+      assetToBaseAggregatorAddress,
+      ratioProviderAddress,
       pairName,
       IChainlinkAggregator(ratioProviderAddress).decimals(),
       snapshotRatio,
       snapshotTimestamp,
       maxYearlyRatioGrowthPercent
     )
-  {
-    RATIO_PROVIDER = IChainlinkAggregator(ratioProviderAddress);
-  }
+  {}
 
   /// @inheritdoc IPriceCapAdapter
   function getRatio() public view override returns (int256) {
-    return RATIO_PROVIDER.latestAnswer();
+    return IChainlinkAggregator(RATIO_PROVIDER).latestAnswer();
   }
 }

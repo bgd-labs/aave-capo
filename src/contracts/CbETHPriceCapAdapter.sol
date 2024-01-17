@@ -14,18 +14,13 @@ import {PriceCapAdapterBase, IPriceCapAdapter} from './PriceCapAdapterBase.sol';
  */
 contract CbETHPriceCapAdapter is PriceCapAdapterBase {
   /**
-   * @notice ratio provider for (cbETH / Base)
-   */
-  ICbEthRateProvider public immutable RATIO_PROVIDER;
-
-  /**
    * @param aclManager ACL manager contract
    * @param cbETHToBaseAggregatorAddress the address of cbETH / BASE feed
    * @param ratioProviderAddress the address of the (cbETH / ETH) ratio provider
    * @param pairName name identifier
-   * @param snapshotRatio The latest exchange ratio
-   * @param snapshotTimestamp The timestamp of the latest exchange ratio
-   * @param maxYearlyRatioGrowthPercent Maximum growth of the underlying asset value per year, 100_00 is equal 100%
+   * @param snapshotRatio the latest exchange ratio
+   * @param snapshotTimestamp the timestamp of the latest exchange ratio
+   * @param maxYearlyRatioGrowthPercent maximum growth of the underlying asset value per year, 100_00 is equal 100%
    */
   constructor(
     IACLManager aclManager,
@@ -39,18 +34,17 @@ contract CbETHPriceCapAdapter is PriceCapAdapterBase {
     PriceCapAdapterBase(
       aclManager,
       cbETHToBaseAggregatorAddress,
+      ratioProviderAddress,
       pairName,
       18,
       snapshotRatio,
       snapshotTimestamp,
       maxYearlyRatioGrowthPercent
     )
-  {
-    RATIO_PROVIDER = ICbEthRateProvider(ratioProviderAddress);
-  }
+  {}
 
   /// @inheritdoc IPriceCapAdapter
   function getRatio() public view override returns (int256) {
-    return int256(RATIO_PROVIDER.exchangeRate());
+    return int256(ICbEthRateProvider(RATIO_PROVIDER).exchangeRate());
   }
 }

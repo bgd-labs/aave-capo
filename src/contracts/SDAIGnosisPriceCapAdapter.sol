@@ -14,14 +14,9 @@ import {PriceCapAdapterBase, IPriceCapAdapter} from './PriceCapAdapterBase.sol';
  */
 contract SDAIGnosisPriceCapAdapter is PriceCapAdapterBase {
   /**
-   * @notice sDAI token contract, ratio provider for (sDAI / DAI)
-   */
-  IERC4626 public immutable sDAI; // TODO: I would better generalise it
-
-  /**
    * @param aclManager ACL manager contract
    * @param daiToBaseAggregatorAddress the address of (DAI / USD) feed
-   * @param sDaiAddress the address of the sDAI, the (sDAI / DAI) ratio feed
+   * @param sDaiAddress the address of the sDAI, used as the (sDAI / DAI) ratio feed
    * @param pairName name identifier
    * @param snapshotRatio The latest exchange ratio
    * @param snapshotTimestamp The timestamp of the latest exchange ratio
@@ -39,19 +34,17 @@ contract SDAIGnosisPriceCapAdapter is PriceCapAdapterBase {
     PriceCapAdapterBase(
       aclManager,
       daiToBaseAggregatorAddress,
+      sDaiAddress,
       pairName,
       IERC4626(sDaiAddress).decimals(),
       snapshotRatio,
       snapshotTimestamp,
       maxYearlyRatioGrowthPercent
     )
-  {
-    sDAI = IERC4626(sDaiAddress);
-  }
+  {}
 
   /// @inheritdoc IPriceCapAdapter
   function getRatio() public view override returns (int256) {
-    return int256(sDAI.convertToAssets(10 ** RATIO_DECIMALS)); // TODO: not sure that RATIO_DECIMALS used appropriate here
-    // TODO: sounds like it's actually asset decimals, or priced unit decimals
+    return int256(IERC4626(RATIO_PROVIDER).convertToAssets(10 ** RATIO_DECIMALS));
   }
 }

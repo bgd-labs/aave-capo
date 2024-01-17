@@ -19,10 +19,13 @@ abstract contract PriceCapAdapterBase is IPriceCapAdapter {
   uint256 public constant SECONDS_PER_YEAR = 365 days;
 
   /// @inheritdoc IPriceCapAdapter
-  IChainlinkAggregator public immutable BASE_TO_USD;
+  IChainlinkAggregator public immutable BASE_TO_USD_AGGREGATOR;
 
   /// @inheritdoc IPriceCapAdapter
   IACLManager public immutable ACL_MANAGER;
+
+  /// @inheritdoc IPriceCapAdapter
+  address public immutable RATIO_PROVIDER;
 
   /// @inheritdoc IPriceCapAdapter
   uint8 public immutable DECIMALS;
@@ -52,16 +55,18 @@ abstract contract PriceCapAdapterBase is IPriceCapAdapter {
 
   /**
    * @param aclManager ACL manager contract
-   * @param baseAggregatorAddress The address of (underlyingAsset / USD) price feed
-   * @param pairDescription The capped (lstAsset / underlyingAsset) pair description
-   * @param ratioDecimals The number of decimal places of the (lstAsset / underlyingAsset) ratio feed
-   * @param snapshotRatio The latest exchange ratio
-   * @param snapshotTimestamp The timestamp of the latest exchange ratio
-   * @param maxYearlyRatioGrowthPercent Maximum growth of the underlying asset value per year, 100_00 is equal 100%
+   * @param baseAggregatorAddress the address of (underlyingAsset / USD) price feed
+   * @param ratioProviderAddress the address of (lst /underlyingAsset) ratio feed
+   * @param pairDescription the capped (lstAsset / underlyingAsset) pair description
+   * @param ratioDecimals the number of decimal places of the (lstAsset / underlyingAsset) ratio feed
+   * @param snapshotRatio the latest exchange ratio
+   * @param snapshotTimestamp the timestamp of the latest exchange ratio
+   * @param maxYearlyRatioGrowthPercent maximum growth of the underlying asset value per year, 100_00 is equal 100%
    */
   constructor(
     IACLManager aclManager,
     address baseAggregatorAddress,
+    address ratioProviderAddress,
     string memory pairDescription,
     uint8 ratioDecimals,
     uint104 snapshotRatio,
@@ -69,8 +74,9 @@ abstract contract PriceCapAdapterBase is IPriceCapAdapter {
     uint16 maxYearlyRatioGrowthPercent
   ) {
     ACL_MANAGER = aclManager;
-    BASE_TO_USD = IChainlinkAggregator(baseAggregatorAddress);
-    DECIMALS = BASE_TO_USD.decimals();
+    BASE_TO_USD_AGGREGATOR = IChainlinkAggregator(baseAggregatorAddress);
+    RATIO_PROVIDER = ratioProviderAddress;
+    DECIMALS = BASE_TO_USD_AGGREGATOR.decimals();
     RATIO_DECIMALS = ratioDecimals;
 
     _description = pairDescription;
@@ -131,7 +137,7 @@ abstract contract PriceCapAdapterBase is IPriceCapAdapter {
     }
 
     // get the base price
-    int256 basePrice = BASE_TO_USD.latestAnswer();
+    int256 basePrice = BASE_TO_USD_AGGREGATOR.latestAnswer();
 
     // calculate the price of the underlying asset
     int256 price = (basePrice * currentRatio) / int256(10 ** RATIO_DECIMALS);
