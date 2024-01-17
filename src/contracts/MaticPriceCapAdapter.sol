@@ -6,26 +6,23 @@ import {IMaticRateProvider} from 'cl-synchronicity-price-adapter/interfaces/IMat
 
 import {PriceCapAdapterBase, IPriceCapAdapter} from './PriceCapAdapterBase.sol';
 
-// TODO: compare MaticX and stMATIC implementations, and take actions based on that
-
-// TODO: should I use MaticX reference everywhere, or it's more generic?
-// TODO: also title and contract name maybe MaticXPriceCapAdapter?
 /**
  * @title MaticPriceCapAdapter
  * @author BGD Labs
- * @notice Price capped adapter to calculate price of (MaticX / USD) pair by using
- * @notice Chainlink data feed for (MATIC / USD) and (MaticX / MATIC) ratio.
+ * @notice Price capped adapter to calculate price of (lst Matic / USD) pair by using
+ * @notice Chainlink data feed for (MATIC / USD) and (lst Matic / MATIC) ratio.
+ * @notice can be used as it is for stMatic and MaticX on Polygon network
  */
 contract MaticPriceCapAdapter is PriceCapAdapterBase {
   /**
-   * @notice Ratio provider for  (MaticX / MATIC) pair
+   * @notice Ratio provider for  (lst Matic / MATIC) pair
    */
   IMaticRateProvider public immutable RATIO_PROVIDER;
 
   /**
    * @param aclManager ACL manager contract
-   * @param maticToBaseAggregatorAddress the address of MaticX / USD feed
-   * @param ratioProviderAddress the address of the MaticX token
+   * @param maticToBaseAggregatorAddress the address of MATIC / USD feed
+   * @param ratioProviderAddress the address of the lst Matic token
    * @param pairName name identifier
    * @param snapshotRatio The latest exchange ratio
    * @param snapshotTimestamp The timestamp of the latest exchange ratio
@@ -35,7 +32,7 @@ contract MaticPriceCapAdapter is PriceCapAdapterBase {
     IACLManager aclManager,
     address maticToBaseAggregatorAddress,
     address ratioProviderAddress,
-    string memory pairName, // TODO: does it make any sense, or I can just hardcode it with MaticX/MATIC
+    string memory pairName,
     uint104 snapshotRatio,
     uint48 snapshotTimestamp,
     uint16 maxYearlyRatioGrowthPercent

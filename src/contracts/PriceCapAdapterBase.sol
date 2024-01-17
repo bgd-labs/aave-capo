@@ -52,9 +52,9 @@ abstract contract PriceCapAdapterBase is IPriceCapAdapter {
 
   /**
    * @param aclManager ACL manager contract
-   * @param baseAggregatorAddress The address of BASE_CURRENCY / USD price feed
-   * @param pairDescription The capped asset to underlying pair description
-   * @param ratioDecimals The number of decimal places of the capped asset to underlying ratio
+   * @param baseAggregatorAddress The address of (underlyingAsset / USD) price feed
+   * @param pairDescription The capped (lstAsset / underlyingAsset) pair description
+   * @param ratioDecimals The number of decimal places of the (lstAsset / underlyingAsset) ratio feed
    * @param snapshotRatio The latest exchange ratio
    * @param snapshotTimestamp The timestamp of the latest exchange ratio
    * @param maxYearlyRatioGrowthPercent Maximum growth of the underlying asset value per year, 100_00 is equal 100%

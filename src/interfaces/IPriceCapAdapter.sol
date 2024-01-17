@@ -53,7 +53,7 @@ interface IPriceCapAdapter is ICLSynchronicityPriceAdapter {
   function DECIMALS() external view returns (uint8);
 
   /**
-   * @notice Number of decimal places of the capped asset to underlying ratio
+   * @notice Number of decimals for (lst asset / underlying asset) ratio
    */
   function RATIO_DECIMALS() external view returns (uint8);
 
