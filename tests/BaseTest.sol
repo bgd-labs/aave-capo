@@ -54,14 +54,35 @@ abstract contract BaseTest is Test {
       snapshotTimestamp,
       maxYearlyRatioGrowthPercent
     );
-    assertEq(address(adapter.ACL_MANAGER()), address(aclManager));
-    assertEq(address(adapter.BASE_TO_USD_AGGREGATOR()), baseAggregatorAddress);
-    assertEq(adapter.RATIO_PROVIDER(), ratioProviderAddress);
-    assertEq(adapter.getSnapshotRatio(), snapshotRatio);
-    assertEq(adapter.description(), pairDescription);
-    assertEq(adapter.decimals(), decimals);
-    assertEq(adapter.getSnapshotTimestamp(), snapshotTimestamp);
-    assertEq(adapter.getMaxYearlyGrowthRatePercent(), maxYearlyRatioGrowthPercent);
+    assertEq(address(adapter.ACL_MANAGER()), address(aclManager), 'aclManager not set properly');
+    assertEq(
+      address(adapter.BASE_TO_USD_AGGREGATOR()),
+      baseAggregatorAddress,
+      'baseAggregatorAddress not set properly'
+    );
+    assertEq(
+      adapter.RATIO_PROVIDER(),
+      ratioProviderAddress,
+      'ratioProviderAddress not set properly'
+    );
+    assertEq(adapter.getSnapshotRatio(), snapshotRatio, 'snapshotRatio not set properly');
+    assertEq(adapter.description(), pairDescription, 'pairDescription not set properly');
+    assertEq(adapter.decimals(), decimals, 'decimals not set properly');
+    assertEq(
+      adapter.getSnapshotTimestamp(),
+      snapshotTimestamp,
+      'snapshotTimestamp not set properly'
+    );
+    assertEq(
+      adapter.getMaxRatioGrowthPerSecond(),
+      (snapshotRatio * maxYearlyRatioGrowthPercent) / 100_00 / 365 days,
+      'getMaxRatioGrowthPerSecond not set properly'
+    );
+    assertEq(
+      adapter.getMaxYearlyGrowthRatePercent(),
+      maxYearlyRatioGrowthPercent,
+      'maxYearlyRatioGrowthPercent not set properly'
+    );
   }
 
   function test_latestAnswer(uint16 maxGrowth) public {

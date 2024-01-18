@@ -54,6 +54,11 @@ abstract contract PriceCapAdapterBase is IPriceCapAdapter {
   uint104 private _maxRatioGrowthPerSecond;
 
   /**
+   * @notice Max yearly growth percent
+   */
+  uint16 private _maxYearlyRatioGrowthPercent;
+
+  /**
    * @param aclManager ACL manager contract
    * @param baseAggregatorAddress the address of (underlyingAsset / USD) price feed
    * @param ratioProviderAddress the address of (lst /underlyingAsset) ratio feed
@@ -109,7 +114,12 @@ abstract contract PriceCapAdapterBase is IPriceCapAdapter {
 
   /// @inheritdoc IPriceCapAdapter
   function getMaxYearlyGrowthRatePercent() external view returns (uint256) {
-    return _maxRatioGrowthPerSecond * SECONDS_PER_YEAR; // TODO: it's not percent :'/ should be changed
+    return _maxYearlyRatioGrowthPercent;
+  }
+
+  /// @inheritdoc IPriceCapAdapter
+  function getMaxRatioGrowthPerSecond() external view returns (uint256) {
+    return _maxRatioGrowthPerSecond;
   }
 
   /// @inheritdoc IPriceCapAdapter
@@ -157,6 +167,10 @@ abstract contract PriceCapAdapterBase is IPriceCapAdapter {
     uint48 snapshotTimestamp,
     uint16 maxYearlyRatioGrowthPercent
   ) internal {
+    // if the ratio on the current growth speed can overflow less then in a 3 years, revert
+    if ((snapshotRatio * maxYearlyRatioGrowthPercent * 3) / 100_00 > type(uint104).max) {
+      revert SnapshotMayOverflowSoon(snapshotRatio, maxYearlyRatioGrowthPercent);
+    }
     if (snapshotRatio == 0) {
       revert SnapshotRatioIsZero();
     }
@@ -166,6 +180,7 @@ abstract contract PriceCapAdapterBase is IPriceCapAdapter {
     }
     _snapshotRatio = snapshotRatio;
     _snapshotTimestamp = snapshotTimestamp;
+    _maxYearlyRatioGrowthPercent = maxYearlyRatioGrowthPercent;
 
     _maxRatioGrowthPerSecond = uint104(
       (_snapshotRatio * maxYearlyRatioGrowthPercent) / PERCENTAGE_FACTOR / SECONDS_PER_YEAR

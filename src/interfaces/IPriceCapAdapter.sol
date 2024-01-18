@@ -78,12 +78,18 @@ interface IPriceCapAdapter is ICLSynchronicityPriceAdapter {
   function getSnapshotTimestamp() external view returns (uint256);
 
   /**
+   * @notice Returns the max ratio growth per second
+   */
+  function getMaxRatioGrowthPerSecond() external view returns (uint256);
+
+  /**
    * @notice Returns the max yearly ratio growth
    */
   function getMaxYearlyGrowthRatePercent() external view returns (uint256);
 
   error ACLManagerIsZeroAddress();
   error SnapshotRatioIsZero();
-  error InvalidRatioTimestamp(uint48);
+  error SnapshotMayOverflowSoon(uint104 snapshotRatio, uint16 maxYearlyRatioGrowthPercent);
+  error InvalidRatioTimestamp(uint48 timestamp);
   error CallerIsNotRiskAdmin();
 }
