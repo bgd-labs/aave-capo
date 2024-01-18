@@ -12,8 +12,11 @@ import {IPriceCapAdapter, ICLSynchronicityPriceAdapter} from '../interfaces/IPri
  * @notice Price adapter to cap the price of the underlying asset.
  */
 abstract contract PriceCapAdapterBase is IPriceCapAdapter {
-  // Maximum percentage factor (100.00%)
-  uint256 internal constant PERCENTAGE_FACTOR = 1e4;
+  /// @inheritdoc IPriceCapAdapter
+  uint256 public constant PERCENTAGE_FACTOR = 1e4;
+
+  /// @inheritdoc IPriceCapAdapter
+  uint256 public constant MINIMAL_RATIO_INCREASE_LIFETIME = 3;
 
   /// @inheritdoc IPriceCapAdapter
   uint256 public constant SECONDS_PER_YEAR = 365 days;
@@ -128,8 +131,8 @@ abstract contract PriceCapAdapterBase is IPriceCapAdapter {
     uint48 snapshotTimestamp,
     uint16 maxYearlyRatioGrowthPercent
   ) external {
-    if (!ACL_MANAGER.isRiskAdmin(msg.sender)) {
-      revert CallerIsNotRiskAdmin();
+    if (!ACL_MANAGER.isRiskAdmin(msg.sender) && !ACL_MANAGER.isPoolAdmin(msg.sender)) {
+      revert CallerIsNotRiskOrPoolAdmin();
     }
 
     _setCapParameters(snapshotRatio, snapshotTimestamp, maxYearlyRatioGrowthPercent);
@@ -142,7 +145,6 @@ abstract contract PriceCapAdapterBase is IPriceCapAdapter {
     // get the base price
     int256 basePrice = BASE_TO_USD_AGGREGATOR.latestAnswer();
 
-    // TODO: check, does it make sense or not, but before we had such check on cbETH at least
     if (basePrice <= 0 || currentRatio <= 0) {
       return 0;
     }
@@ -167,13 +169,11 @@ abstract contract PriceCapAdapterBase is IPriceCapAdapter {
     uint48 snapshotTimestamp,
     uint16 maxYearlyRatioGrowthPercent
   ) internal {
-    // if the ratio on the current growth speed can overflow less then in a 3 years, revert
-    if ((snapshotRatio * maxYearlyRatioGrowthPercent * 3) / 100_00 > type(uint104).max) {
-      revert SnapshotMayOverflowSoon(snapshotRatio, maxYearlyRatioGrowthPercent);
-    }
+    // if snapshot ratio is 0 then growth will not work as expected
     if (snapshotRatio == 0) {
       revert SnapshotRatioIsZero();
     }
+
     // new snapshot timestamp should be gt then stored one, but not gt then timestamp of the current block
     if (_snapshotTimestamp >= snapshotTimestamp || snapshotTimestamp > block.timestamp) {
       revert InvalidRatioTimestamp(snapshotTimestamp);
@@ -183,8 +183,18 @@ abstract contract PriceCapAdapterBase is IPriceCapAdapter {
     _maxYearlyRatioGrowthPercent = maxYearlyRatioGrowthPercent;
 
     _maxRatioGrowthPerSecond = uint104(
-      (_snapshotRatio * maxYearlyRatioGrowthPercent) / PERCENTAGE_FACTOR / SECONDS_PER_YEAR
+      (uint256(snapshotRatio) * maxYearlyRatioGrowthPercent) / PERCENTAGE_FACTOR / SECONDS_PER_YEAR
     );
+
+    // if the ratio on the current growth speed can overflow less then in a MINIMAL_RATIO_INCREASE_LIFETIME years, revert
+    if (
+      uint256(_snapshotRatio) +
+        (_maxRatioGrowthPerSecond * SECONDS_PER_YEAR * MINIMAL_RATIO_INCREASE_LIFETIME) >
+      type(uint104).max
+    ) {
+      revert SnapshotMayOverflowSoon(snapshotRatio, maxYearlyRatioGrowthPercent);
+    }
+
     emit CapParametersUpdated(
       snapshotRatio,
       snapshotTimestamp,

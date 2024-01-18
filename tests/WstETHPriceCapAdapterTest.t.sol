@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: BUSL-1.1
 pragma solidity ^0.8.0;
 
-import {BaseTest} from './BaseTest.sol';
+import './BaseTest.sol';
 
 import {AaveV3Ethereum, AaveV3EthereumAssets, IACLManager} from 'aave-address-book/AaveV3Ethereum.sol';
 import {BaseAggregatorsMainnet} from 'cl-synchronicity-price-adapter/lib/BaseAggregators.sol';
@@ -53,7 +53,7 @@ contract WstETHPriceCapAdapterTest is BaseTest {
   }
 
   function getCurrentNotCappedPrice() public view override returns (int256) {
-    return ICLSynchronicityPriceAdapter(AaveV3EthereumAssets.wstETH_ORACLE).latestAnswer();
+    return notCappedAdapter.latestAnswer();
   }
 
   ICLSynchronicityPriceAdapter public constant notCappedAdapter =
@@ -63,25 +63,7 @@ contract WstETHPriceCapAdapterTest is BaseTest {
     vm.createSelectFork(vm.rpcUrl('mainnet'), 18961286);
   }
 
-  // TODO: test that constructor sets params as expected
   // TODO: test that setParams func sets params as expected
-
-  function test_latestAnswer(string memory name, uint16 maxGrowth) public {
-    WstETHPriceCapAdapter adapter = new WstETHPriceCapAdapter(
-      AaveV3Ethereum.ACL_MANAGER,
-      BaseAggregatorsMainnet.ETH_USD_AGGREGATOR,
-      MissingAssetsMainnet.STETH,
-      name,
-      uint104(uint256(IStETH(MissingAssetsMainnet.STETH).getPooledEthByShares(10 ** 18))),
-      uint40(block.timestamp),
-      maxGrowth
-    );
-
-    int256 price = adapter.latestAnswer();
-    int256 priceOfNotCappedAdapter = notCappedAdapter.latestAnswer();
-
-    assertEq(price, priceOfNotCappedAdapter);
-  }
 
   function test_cappedLatestAnswer() public {
     WstETHPriceCapAdapter adapter = new WstETHPriceCapAdapter(
@@ -149,7 +131,8 @@ contract WstETHPriceCapAdapterTest is BaseTest {
       2_00
     );
 
-    vm.expectRevert(IPriceCapAdapter.CallerIsNotRiskAdmin.selector);
+    // TODO: fuzzing?
+    vm.expectRevert(IPriceCapAdapter.CallerIsNotRiskOrPoolAdmin.selector);
     adapter.setCapParameters(snapshotRatio, snapshotTimestamp, maxYearlyRatioGrowthPercent);
   }
 }

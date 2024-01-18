@@ -1,35 +1,64 @@
 // SPDX-License-Identifier: BUSL-1.1
 pragma solidity ^0.8.0;
 
-import {Test} from 'forge-std/Test.sol';
+import './BaseTest.sol';
 
-import {AaveV3Ethereum} from 'aave-address-book/AaveV3Ethereum.sol';
-import {SDAIPriceCapAdapter} from '../src/contracts/SDAIPriceCapAdapter.sol';
+import {AaveV3Ethereum, AaveV3EthereumAssets} from 'aave-address-book/AaveV3Ethereum.sol';
 import {BaseAggregatorsMainnet} from 'cl-synchronicity-price-adapter/lib/BaseAggregators.sol';
 
-contract SDAIPriceCapAdapterTest is Test {
-  function setUp() public {
-    vm.createSelectFork(vm.rpcUrl('mainnet'), 18961286);
+import {SDAIPriceCapAdapter, IPot} from '../src/contracts/SDAIPriceCapAdapter.sol';
+
+contract SDAIPriceCapAdapterTest is BaseTest {
+  function createAdapter(
+    IACLManager aclManager,
+    address baseAggregatorAddress,
+    address ratioProviderAddress,
+    string memory pairDescription,
+    uint104 snapshotRatio,
+    uint48 snapshotTimestamp,
+    uint16 maxYearlyRatioGrowthPercent
+  ) public override returns (IPriceCapAdapter) {
+    return
+      new SDAIPriceCapAdapter(
+        aclManager,
+        baseAggregatorAddress,
+        ratioProviderAddress,
+        pairDescription,
+        snapshotRatio,
+        snapshotTimestamp,
+        maxYearlyRatioGrowthPercent
+      );
   }
 
-  function test_latestAnswer() public {
-    SDAIPriceCapAdapter adapter = new SDAIPriceCapAdapter(
-      AaveV3Ethereum.ACL_MANAGER,
-      BaseAggregatorsMainnet.DAI_USD_AGGREGATOR,
-      BaseAggregatorsMainnet.SDAI_POT,
-      'sDAI / DAI / USD',
-      1048947230000000000000000000,
-      1703743921,
-      5_00
-    );
+  function createAdapterSimple(
+    uint48 snapshotTimestamp,
+    uint16 maxYearlyRatioGrowthPercent
+  ) public override returns (IPriceCapAdapter) {
+    return
+      new SDAIPriceCapAdapter(
+        AaveV3Ethereum.ACL_MANAGER,
+        BaseAggregatorsMainnet.DAI_USD_AGGREGATOR,
+        BaseAggregatorsMainnet.SDAI_POT,
+        'sDAI / DAI / USD',
+        getCurrentRatio(),
+        snapshotTimestamp,
+        maxYearlyRatioGrowthPercent
+      );
+  }
 
-    int256 price = adapter.latestAnswer();
+  function getCurrentRatio() public view override returns (uint104) {
+    return uint104(IPot(BaseAggregatorsMainnet.SDAI_POT).chi());
+  }
 
-    assertApproxEqAbs(
-      uint256(price),
-      105035394, // value for selected block
-      100000000
-    );
+  function getCurrentNotCappedPrice() public view override returns (int256) {
+    return notCappedAdapter.latestAnswer();
+  }
+
+  ICLSynchronicityPriceAdapter public constant notCappedAdapter =
+    ICLSynchronicityPriceAdapter(AaveV3EthereumAssets.sDAI_ORACLE);
+
+  function setUp() public {
+    vm.createSelectFork(vm.rpcUrl('mainnet'), 18961286);
   }
 
   function test_cappedLatestAnswer() public {

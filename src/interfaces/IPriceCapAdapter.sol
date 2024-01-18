@@ -33,6 +33,16 @@ interface IPriceCapAdapter is ICLSynchronicityPriceAdapter {
   ) external;
 
   /**
+   * @notice Maximum percentage factor (100.00%)
+   */
+  function PERCENTAGE_FACTOR() external view returns (uint256);
+
+  /**
+   * @notice Minimal time while ratio should not overflow, in years
+   */
+  function MINIMAL_RATIO_INCREASE_LIFETIME() external view returns (uint256);
+
+  /**
    * @notice Number of seconds per year (365 days)
    */
   function SECONDS_PER_YEAR() external view returns (uint256);
@@ -91,5 +101,5 @@ interface IPriceCapAdapter is ICLSynchronicityPriceAdapter {
   error SnapshotRatioIsZero();
   error SnapshotMayOverflowSoon(uint104 snapshotRatio, uint16 maxYearlyRatioGrowthPercent);
   error InvalidRatioTimestamp(uint48 timestamp);
-  error CallerIsNotRiskAdmin();
+  error CallerIsNotRiskOrPoolAdmin();
 }
