@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: UNLICENSED
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
 import {IACLManager} from 'aave-address-book/AaveV3.sol';
@@ -8,10 +8,10 @@ import {IChainlinkAggregator} from 'cl-synchronicity-price-adapter/interfaces/IC
 interface IPriceCapAdapter is ICLSynchronicityPriceAdapter {
   /**
    * @dev Emitted when the cap parameters are updated
-   * @param snapshotRatio The ratio at the time of snapshot
-   * @param snapshotTimestamp The timestamp at the time of snapshot
-   * @param maxRatioGrowthPerSecond Max ratio growth per second
-   * @param maxYearlyRatioGrowthPercent Max yearly ratio growth percent
+   * @param snapshotRatio the ratio at the time of snapshot
+   * @param snapshotTimestamp the timestamp at the time of snapshot
+   * @param maxRatioGrowthPerSecond max ratio growth per second
+   * @param maxYearlyRatioGrowthPercent max yearly ratio growth percent
    **/
   event CapParametersUpdated(
     uint256 snapshotRatio,
@@ -22,9 +22,9 @@ interface IPriceCapAdapter is ICLSynchronicityPriceAdapter {
 
   /**
    * @notice Updates price cap parameters
-   * @param snapshotRatio The latest exchange ratio
-   * @param snapshotTimestamp The timestamp of the latest exchange ratio
-   * @param maxYearlyRatioGrowthPercent Maximum growth of the underlying asset value per year, 100_00 is equal 100%
+   * @param snapshotRatio the latest exchange ratio
+   * @param snapshotTimestamp the timestamp of the latest exchange ratio
+   * @param maxYearlyRatioGrowthPercent maximum growth of the underlying asset value per year, 100_00 is equal 100%
    */
   function setCapParameters(
     uint104 snapshotRatio,
