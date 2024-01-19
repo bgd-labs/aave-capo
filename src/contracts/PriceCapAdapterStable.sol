@@ -35,6 +35,9 @@ contract PriceCapAdapterStable is IPriceCapAdapterStable {
     string memory adapterDescription,
     int256 priceCap
   ) {
+    if (address(aclManager) == address(0)) {
+      revert ACLManagerIsZeroAddress();
+    }
     ASSET_TO_USD_AGGREGATOR = assetToUsdAggregator;
     ACL_MANAGER = aclManager;
     description = adapterDescription;
@@ -46,9 +49,10 @@ contract PriceCapAdapterStable is IPriceCapAdapterStable {
   /// @inheritdoc ICLSynchronicityPriceAdapter
   function latestAnswer() external view override returns (int256) {
     int256 basePrice = ASSET_TO_USD_AGGREGATOR.latestAnswer();
+    int256 priceCap = _priceCap;
 
-    if (basePrice > _priceCap) {
-      return _priceCap;
+    if (basePrice > priceCap) {
+      return priceCap;
     }
 
     return basePrice;

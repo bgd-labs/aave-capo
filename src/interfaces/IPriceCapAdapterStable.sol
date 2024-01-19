@@ -30,5 +30,6 @@ interface IPriceCapAdapterStable is ICLSynchronicityPriceAdapter {
   function setPriceCap(int256 priceCap) external;
 
   error NegativePrice(int256 price);
+  error ACLManagerIsZeroAddress();
   error CallerIsNotRiskOrPoolAdmin();
 }
