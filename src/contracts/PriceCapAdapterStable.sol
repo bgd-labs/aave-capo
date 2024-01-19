@@ -23,16 +23,22 @@ contract PriceCapAdapterStable is IPriceCapAdapterStable {
 
   int256 internal _priceCap;
 
+  /**
+   * @param aclManager ACL manager contract
+   * @param assetToUsdAggregator the address of (underlyingAsset / USD) price feed
+   * @param adapterDescription the capped (lstAsset / underlyingAsset) pair description
+   * @param priceCap the price cap
+   */
   constructor(
     IACLManager aclManager,
-    IChainlinkAggregator baseToUsdAggregator,
+    IChainlinkAggregator assetToUsdAggregator,
     string memory adapterDescription,
     int256 priceCap
   ) {
-    ASSET_TO_USD_AGGREGATOR = baseToUsdAggregator;
+    ASSET_TO_USD_AGGREGATOR = assetToUsdAggregator;
     ACL_MANAGER = aclManager;
     description = adapterDescription;
-    decimals = baseToUsdAggregator.decimals();
+    decimals = assetToUsdAggregator.decimals();
 
     _setPriceCap(priceCap);
   }
