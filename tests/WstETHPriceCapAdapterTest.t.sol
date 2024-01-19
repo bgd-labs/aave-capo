@@ -11,6 +11,8 @@ import {IPriceCapAdapter, ICLSynchronicityPriceAdapter} from '../src/interfaces/
 import {MissingAssetsMainnet} from '../src/lib/MissingAssetsMainnet.sol';
 
 contract WstETHPriceCapAdapterTest is BaseTest {
+  constructor() BaseTest(AaveV3EthereumAssets.wstETH_ORACLE) {}
+
   function createAdapter(
     IACLManager aclManager,
     address baseAggregatorAddress,
@@ -33,6 +35,7 @@ contract WstETHPriceCapAdapterTest is BaseTest {
   }
 
   function createAdapterSimple(
+    uint104 currentRatio,
     uint48 snapshotTimestamp,
     uint16 maxYearlyRatioGrowthPercent
   ) public override returns (IPriceCapAdapter) {
@@ -42,7 +45,7 @@ contract WstETHPriceCapAdapterTest is BaseTest {
         BaseAggregatorsMainnet.ETH_USD_AGGREGATOR,
         MissingAssetsMainnet.STETH,
         'wstETH/stETH/USD',
-        getCurrentRatio(),
+        currentRatio,
         snapshotTimestamp,
         maxYearlyRatioGrowthPercent
       );
@@ -51,13 +54,6 @@ contract WstETHPriceCapAdapterTest is BaseTest {
   function getCurrentRatio() public view override returns (uint104) {
     return uint104(uint256(IStETH(MissingAssetsMainnet.STETH).getPooledEthByShares(10 ** 18)));
   }
-
-  function getCurrentNotCappedPrice() public view override returns (int256) {
-    return notCappedAdapter.latestAnswer();
-  }
-
-  ICLSynchronicityPriceAdapter public constant notCappedAdapter =
-    ICLSynchronicityPriceAdapter(AaveV3EthereumAssets.wstETH_ORACLE);
 
   function setUp() public {
     vm.createSelectFork(vm.rpcUrl('mainnet'), 18961286);

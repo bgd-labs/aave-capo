@@ -10,6 +10,8 @@ import {RETHPriceCapAdapter, IrETH} from '../src/contracts/RETHPriceCapAdapter.s
 import {MissingAssetsMainnet} from '../src/lib/MissingAssetsMainnet.sol';
 
 contract RETHPriceCapAdapterTest is BaseTest {
+  constructor() BaseTest(AaveV3EthereumAssets.rETH_ORACLE) {}
+
   function createAdapter(
     IACLManager aclManager,
     address baseAggregatorAddress,
@@ -32,6 +34,7 @@ contract RETHPriceCapAdapterTest is BaseTest {
   }
 
   function createAdapterSimple(
+    uint104 currentRatio,
     uint48 snapshotTimestamp,
     uint16 maxYearlyRatioGrowthPercent
   ) public override returns (IPriceCapAdapter) {
@@ -41,7 +44,7 @@ contract RETHPriceCapAdapterTest is BaseTest {
         BaseAggregatorsMainnet.ETH_USD_AGGREGATOR,
         MissingAssetsMainnet.RETH,
         'rETH / ETH / USD',
-        getCurrentRatio(),
+        currentRatio,
         snapshotTimestamp,
         maxYearlyRatioGrowthPercent
       );
@@ -51,35 +54,8 @@ contract RETHPriceCapAdapterTest is BaseTest {
     return uint104(IrETH(MissingAssetsMainnet.RETH).getExchangeRate());
   }
 
-  function getCurrentNotCappedPrice() public view override returns (int256) {
-    return notCappedAdapter.latestAnswer();
-  }
-
-  ICLSynchronicityPriceAdapter public constant notCappedAdapter =
-    ICLSynchronicityPriceAdapter(AaveV3EthereumAssets.rETH_ORACLE);
-
   function setUp() public {
     vm.createSelectFork(vm.rpcUrl('mainnet'), 18961286);
-  }
-
-  function test_latestAnswer() public {
-    RETHPriceCapAdapter adapter = new RETHPriceCapAdapter(
-      AaveV3Ethereum.ACL_MANAGER,
-      BaseAggregatorsMainnet.ETH_USD_AGGREGATOR,
-      MissingAssetsMainnet.RETH,
-      'rETH / ETH / USD',
-      1093801647000000000,
-      1703743921,
-      5_00
-    );
-
-    int256 price = adapter.latestAnswer();
-
-    assertApproxEqAbs(
-      uint256(price),
-      243682110000, // value for selected block
-      100000000
-    );
   }
 
   function test_cappedLatestAnswer() public {
