@@ -1,59 +1,35 @@
-# BGD forge template
+# Correlated-assets price oracle
 
-Basic template with prettier and rest configuration
+Price oracle adapter smart contracts, introducing different types of range price protection on oracle feeds used by the Aave protocol.
 
-To create a new project using this template run
+## Types
 
-```shell
-$ forge init --template bgd-labs/bgd-forge-template my_new_project
-```
+### [RatioCapPriceAdapter](./src/contracts/PriceCapAdapterBase.sol)
 
-## Recommended modules
+Certain assets like LSTs (Liquid Staking Tokens) are highly correlated to an underlying, with an additional growth component on top of it, and sometimes, slashing dynamics. This initial version of an adapter for this use case adds an upper side protection.
 
-[bgd-labs/solidity-utils](https://github.com/bgd-labs/solidity-utils) - common contracts we use everywhere, ie transparent proxy and around
+High-level, the idea is doing periodic updates on 3 parameters: a snapshot ratio, its timestamp, and a max allowed ratio growth in yearly percentage.
+Every time the price adapter is queried, it will get the current ratio of the asset/underlying and compared it with a dynamically calculated upper value of that ratio, using the previously defined parameters.
+If the current ratio is above the ratio cap, the ratio cap is returned. If not, the current ratio is.
 
-[bgd-labs/aave-address-book](https://github.com/bgd-labs/aave-address-book) - the best and only source about all deployed Aave ecosystem related contracts across all the chains
+**Misc considerations**
 
-[bgd-labs/aave-helpers](https://github.com/bgd-labs/aave-helpers) - useful utils for integration, and not only testing related to Aave ecosystem contracts
+- Maximum precision is not the objective of this implementation, as anyway, the cap is thought to have a good margin, given that the risk parameters of the Aave protocol should protect enough.
+- Some basic safety checks are applied when setting parameters, but as this is access controlled to a trusted entity (e.g. Aave governance), they are not designed to be exhaustive. The idea is to build additional update layers on top of this system (e.g. Risk Stewards) to cover extra limitations.
+- Timestamp of snapshots should not decrease from one parameters update to the next.
+- To optimise calculations, the maximum yearly ratio growth received in yearly bps (e.g. 5_00 for 5%) is converted to ratio growth per second internally. We expose in yearly bps percentage to follow similar approach as on other Aave systems (BGD config engine), and because we believe it is more intuitive for integrations.
+- Given that each asset on which to apply this adapter has its own characteristics, the base contract is `abstract` to allow the child to define its own specificities (mainly the way of calculating/fetching the current ratio). 
 
-[Rari-Capital/solmate](https://github.com/Rari-Capital/solmate) - one of the best sources of base contracts for ERC20, ERC21, which will work with transparent proxy pattern out of the box
+<br>
 
-[OpenZeppelin/openzeppelin-contracts](https://github.com/OpenZeppelin/openzeppelin-contracts) - another very reputable and well organized source of base contracts for tokens, access control and many others
+### [FixCapPriceAdapter](./src/contracts/PriceCapAdapterStable.sol)
 
-## Development
+In some cases, the relation between an underlying asset and its correlated is direct, without any type of continuous growth expected. For example, this is the case of USD-pegged stable coins, where USD is the underlying and let's say USDC is the correlated asset.
 
-This project uses [Foundry](https://getfoundry.sh). See the [book](https://book.getfoundry.sh/getting-started/installation.html) for detailed instructions on how to install and use Foundry.
-The template ships with sensible default so you can use default `foundry` commands without resorting to `MakeFile`.
+Initially we thought to model this as a sub-case of `RatioCapPriceAdapter`, with 0 ratio growth, but finally we decided to create a simplified version of the adapter, removing completely the growth component.
 
-### Setup
+<br>
 
-```sh
-cp .env.example .env
-forge install
-```
-
-### Test
-
-```sh
-forge test
-```
-
-## Advanced features
-
-### Diffing
-
-For contracts upgrading implementations it's quite important to diff the implementation code to spot potential issues and ensure only the intended changes are included.
-Therefore the `Makefile` includes some commands to streamline the diffing process.
-
-#### Download
-
-You can `download` the current contract code of a deployed contract via `make download chain=polygon address=0x00`. This will download the contract source for specified address to `src/etherscan/chain_address`. This command works for all chains with a etherscan compatible block explorer.
-
-#### Git diff
-
-You can `git-diff` a downloaded contract against your src via `make git-diff before=./etherscan/chain_address after=./src out=filename`. This command will diff the two folders via git patience algorithm and write the output to `diffs/filename.md`.
-
-**Caveat**: If the onchain implementation was verified using flatten, for generating the diff you need to flatten the new contract via `forge flatten` and supply the flattened file instead fo the whole `./src` folder.
 
 ## License
 
