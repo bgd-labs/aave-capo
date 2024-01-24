@@ -16,6 +16,7 @@ contract SAvaxPriceCapAdapterTest is BaseTest {
     address baseAggregatorAddress,
     address ratioProviderAddress,
     string memory pairDescription,
+    uint48 rewardsAligningInterval,
     uint104 snapshotRatio,
     uint48 snapshotTimestamp,
     uint16 maxYearlyRatioGrowthPercent
@@ -26,6 +27,7 @@ contract SAvaxPriceCapAdapterTest is BaseTest {
         baseAggregatorAddress,
         ratioProviderAddress,
         pairDescription,
+        rewardsAligningInterval,
         snapshotRatio,
         snapshotTimestamp,
         maxYearlyRatioGrowthPercent
@@ -33,6 +35,7 @@ contract SAvaxPriceCapAdapterTest is BaseTest {
   }
 
   function createAdapterSimple(
+    uint48 rewardsAligningInterval,
     uint104 currentRatio,
     uint48 snapshotTimestamp,
     uint16 maxYearlyRatioGrowthPercent
@@ -43,6 +46,7 @@ contract SAvaxPriceCapAdapterTest is BaseTest {
         AaveV3AvalancheAssets.WAVAX_ORACLE,
         AaveV3AvalancheAssets.sAVAX_UNDERLYING,
         'sAvax / Avax / USD',
+        rewardsAligningInterval,
         currentRatio,
         snapshotTimestamp,
         maxYearlyRatioGrowthPercent

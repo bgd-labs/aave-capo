@@ -19,6 +19,7 @@ contract MaticPriceCapAdapter is PriceCapAdapterBase {
    * @param maticToBaseAggregatorAddress the address of MATIC / USD feed
    * @param ratioProviderAddress the address of (lst Matic / MATIC) pair ratio feed
    * @param pairName name identifier
+   * @param rewardsAligningInterval the interval in seconds, used to align rewards distribution, to keep them in sync with the yearly APY
    * @param snapshotRatio the latest exchange ratio
    * @param snapshotTimestamp the timestamp of the latest exchange ratio
    * @param maxYearlyRatioGrowthPercent maximum growth of the underlying asset value per year, 100_00 is equal 100%
@@ -28,6 +29,7 @@ contract MaticPriceCapAdapter is PriceCapAdapterBase {
     address maticToBaseAggregatorAddress,
     address ratioProviderAddress,
     string memory pairName,
+    uint48 rewardsAligningInterval,
     uint104 snapshotRatio,
     uint48 snapshotTimestamp,
     uint16 maxYearlyRatioGrowthPercent
@@ -38,6 +40,7 @@ contract MaticPriceCapAdapter is PriceCapAdapterBase {
       ratioProviderAddress,
       pairName,
       18,
+      rewardsAligningInterval,
       snapshotRatio,
       snapshotTimestamp,
       maxYearlyRatioGrowthPercent
