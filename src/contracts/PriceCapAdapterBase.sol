@@ -34,7 +34,7 @@ abstract contract PriceCapAdapterBase is IPriceCapAdapter {
   uint8 public immutable RATIO_DECIMALS;
 
   /// @inheritdoc IPriceCapAdapter
-  uint48 public immutable REWARDS_ALIGNING_INTERVAL;
+  uint48 public immutable MINIMUM_SNAPSHOT_DELAY;
 
   /**
    * @notice Description of the pair
@@ -67,7 +67,7 @@ abstract contract PriceCapAdapterBase is IPriceCapAdapter {
    * @param ratioProviderAddress the address of (lst /underlyingAsset) ratio feed
    * @param pairDescription the capped (lstAsset / underlyingAsset) pair description
    * @param ratioDecimals the number of decimal places of the (lstAsset / underlyingAsset) ratio feed
-   * @param rewardsAligningInterval the interval in seconds, used to align rewards distribution, to keep them in sync with the yearly APY
+   * @param minimumSnapshotDelay minimum time (in seconds) that should have passed from the snapshot timestamp to the current block.timestamp
    * @param snapshotRatio the latest exchange ratio
    * @param snapshotTimestamp the timestamp of the latest exchange ratio
    * @param maxYearlyRatioGrowthPercent maximum growth of the underlying asset value per year, 100_00 is equal 100%
@@ -78,7 +78,7 @@ abstract contract PriceCapAdapterBase is IPriceCapAdapter {
     address ratioProviderAddress,
     string memory pairDescription,
     uint8 ratioDecimals,
-    uint48 rewardsAligningInterval,
+    uint48 minimumSnapshotDelay,
     uint104 snapshotRatio,
     uint48 snapshotTimestamp,
     uint16 maxYearlyRatioGrowthPercent
@@ -91,7 +91,7 @@ abstract contract PriceCapAdapterBase is IPriceCapAdapter {
     RATIO_PROVIDER = ratioProviderAddress;
     DECIMALS = BASE_TO_USD_AGGREGATOR.decimals();
     RATIO_DECIMALS = ratioDecimals;
-    REWARDS_ALIGNING_INTERVAL = rewardsAligningInterval;
+    MINIMUM_SNAPSHOT_DELAY = minimumSnapshotDelay;
 
     _description = pairDescription;
 
@@ -180,7 +180,7 @@ abstract contract PriceCapAdapterBase is IPriceCapAdapter {
     // new snapshot timestamp should be gt then stored one, but not gt then timestamp of the current block
     if (
       _snapshotTimestamp >= snapshotTimestamp ||
-      snapshotTimestamp > block.timestamp - REWARDS_ALIGNING_INTERVAL
+      snapshotTimestamp > block.timestamp - MINIMUM_SNAPSHOT_DELAY
     ) {
       revert InvalidRatioTimestamp(snapshotTimestamp);
     }

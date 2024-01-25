@@ -18,7 +18,7 @@ contract SDAIPriceCapAdapter is PriceCapAdapterBase {
    * @param daiToBaseAggregatorAddress the address of (DAI / USD) feed
    * @param potAddress the address of the sDAI pot, used the (sDAI / DAI) ratio feed
    * @param pairName name identifier
-   * @param rewardsAligningInterval the interval in seconds, used to align rewards distribution, to keep them in sync with the yearly APY
+   * @param minimumSnapshotDelay minimum time (in seconds) that should have passed from the snapshot timestamp to the current block.timestamp
    * @param snapshotRatio the latest exchange ratio
    * @param snapshotTimestamp the timestamp of the latest exchange ratio
    * @param maxYearlyRatioGrowthPercent maximum growth of the underlying asset value per year, 100_00 is equal 100%
@@ -28,7 +28,7 @@ contract SDAIPriceCapAdapter is PriceCapAdapterBase {
     address daiToBaseAggregatorAddress,
     address potAddress,
     string memory pairName,
-    uint48 rewardsAligningInterval,
+    uint48 minimumSnapshotDelay,
     uint104 snapshotRatio,
     uint48 snapshotTimestamp,
     uint16 maxYearlyRatioGrowthPercent
@@ -39,7 +39,7 @@ contract SDAIPriceCapAdapter is PriceCapAdapterBase {
       potAddress,
       pairName,
       27,
-      rewardsAligningInterval,
+      minimumSnapshotDelay,
       snapshotRatio,
       snapshotTimestamp,
       maxYearlyRatioGrowthPercent

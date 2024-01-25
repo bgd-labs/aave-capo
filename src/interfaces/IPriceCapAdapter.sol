@@ -73,9 +73,9 @@ interface IPriceCapAdapter is ICLSynchronicityPriceAdapter {
   function RATIO_DECIMALS() external view returns (uint8);
 
   /**
-   * @notice The interval in seconds, used to align rewards distribution, to keep them in sync with the yearly APY
+   * @notice Minimum time (in seconds) that should have passed from the snapshot timestamp to the current block.timestamp
    */
-  function REWARDS_ALIGNING_INTERVAL() external view returns (uint48);
+  function MINIMUM_SNAPSHOT_DELAY() external view returns (uint48);
 
   /**
    * @notice Returns the current exchange ratio of lst to the underlying(base) asset

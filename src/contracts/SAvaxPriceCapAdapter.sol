@@ -18,7 +18,7 @@ contract SAvaxPriceCapAdapter is PriceCapAdapterBase {
    * @param avaxToBaseAggregatorAddress the address of (AVAX / USD) feed
    * @param sAVAXAddress the address of the sAVAX token, the (sAVAX / AVAX) ratio feed
    * @param pairName name identifier
-   * @param rewardsAligningInterval the interval in seconds, used to align rewards distribution, to keep them in sync with the yearly APY
+   * @param minimumSnapshotDelay minimum time (in seconds) that should have passed from the snapshot timestamp to the current block.timestamp
    * @param snapshotRatio the latest exchange ratio
    * @param snapshotTimestamp the timestamp of the latest exchange ratio
    * @param maxYearlyRatioGrowthPercent maximum growth of the underlying asset value per year, 100_00 is equal 100%
@@ -28,7 +28,7 @@ contract SAvaxPriceCapAdapter is PriceCapAdapterBase {
     address avaxToBaseAggregatorAddress,
     address sAVAXAddress,
     string memory pairName,
-    uint48 rewardsAligningInterval,
+    uint48 minimumSnapshotDelay,
     uint104 snapshotRatio,
     uint48 snapshotTimestamp,
     uint16 maxYearlyRatioGrowthPercent
@@ -39,7 +39,7 @@ contract SAvaxPriceCapAdapter is PriceCapAdapterBase {
       sAVAXAddress,
       pairName,
       18,
-      rewardsAligningInterval,
+      minimumSnapshotDelay,
       snapshotRatio,
       snapshotTimestamp,
       maxYearlyRatioGrowthPercent

@@ -18,7 +18,7 @@ contract WstETHPriceCapAdapterTest is BaseTest {
     address baseAggregatorAddress,
     address ratioProviderAddress,
     string memory pairDescription,
-    uint48 rewardsAligningInterval,
+    uint48 minimumSnapshotDelay,
     uint104 snapshotRatio,
     uint48 snapshotTimestamp,
     uint16 maxYearlyRatioGrowthPercent
@@ -29,7 +29,7 @@ contract WstETHPriceCapAdapterTest is BaseTest {
         baseAggregatorAddress,
         ratioProviderAddress,
         pairDescription,
-        rewardsAligningInterval,
+        minimumSnapshotDelay,
         snapshotRatio,
         snapshotTimestamp,
         maxYearlyRatioGrowthPercent
@@ -37,7 +37,7 @@ contract WstETHPriceCapAdapterTest is BaseTest {
   }
 
   function createAdapterSimple(
-    uint48 rewardsAligningInterval,
+    uint48 minimumSnapshotDelay,
     uint104 currentRatio,
     uint48 snapshotTimestamp,
     uint16 maxYearlyRatioGrowthPercent
@@ -48,7 +48,7 @@ contract WstETHPriceCapAdapterTest is BaseTest {
         BaseAggregatorsMainnet.ETH_USD_AGGREGATOR,
         MissingAssetsMainnet.STETH,
         'wstETH/stETH/USD',
-        rewardsAligningInterval,
+        minimumSnapshotDelay,
         currentRatio,
         snapshotTimestamp,
         maxYearlyRatioGrowthPercent

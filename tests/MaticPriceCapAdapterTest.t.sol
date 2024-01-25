@@ -26,7 +26,7 @@ abstract contract BaseMaticPriceCapAdapterTest is BaseTest {
     address baseAggregatorAddress,
     address ratioProviderAddress,
     string memory pairDescription,
-    uint48 rewardsAligningInterval,
+    uint48 minimumSnapshotDelay,
     uint104 snapshotRatio,
     uint48 snapshotTimestamp,
     uint16 maxYearlyRatioGrowthPercent
@@ -37,7 +37,7 @@ abstract contract BaseMaticPriceCapAdapterTest is BaseTest {
         baseAggregatorAddress,
         ratioProviderAddress,
         pairDescription,
-        rewardsAligningInterval,
+        minimumSnapshotDelay,
         snapshotRatio,
         snapshotTimestamp,
         maxYearlyRatioGrowthPercent
@@ -45,7 +45,7 @@ abstract contract BaseMaticPriceCapAdapterTest is BaseTest {
   }
 
   function createAdapterSimple(
-    uint48 rewardsAligningInterval,
+    uint48 minimumSnapshotDelay,
     uint104 currentRatio,
     uint48 snapshotTimestamp,
     uint16 maxYearlyRatioGrowthPercent
@@ -56,7 +56,7 @@ abstract contract BaseMaticPriceCapAdapterTest is BaseTest {
         BaseAggregatorsPolygon.MATIC_USD_AGGREGATOR,
         RATE_PROVIDER,
         _pairName,
-        rewardsAligningInterval,
+        minimumSnapshotDelay,
         currentRatio,
         snapshotTimestamp,
         maxYearlyRatioGrowthPercent
