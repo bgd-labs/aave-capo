@@ -2,6 +2,8 @@
 
 Price oracle adapter smart contracts, introducing different types of range price protection on oracle feeds used by the Aave protocol.
 
+<br>
+
 ## Types
 
 ### [RatioCapPriceAdapter](./src/contracts/PriceCapAdapterBase.sol)
@@ -12,13 +14,18 @@ High-level, the idea is doing periodic updates on 3 parameters: a snapshot ratio
 Every time the price adapter is queried, it will get the current ratio of the asset/underlying and compared it with a dynamically calculated upper value of that ratio, using the previously defined parameters.
 If the current ratio is above the ratio cap, the ratio cap is returned. If not, the current ratio is.
 
+<br>
+
 **Misc considerations**
 
 - Maximum precision is not the objective of this implementation, as anyway, the cap is thought to have a good margin, given that the risk parameters of the Aave protocol should protect enough.
 - Some basic safety checks are applied when setting parameters, but as this is access controlled to a trusted entity (e.g. Aave governance), they are not designed to be exhaustive. The idea is to build additional update layers on top of this system (e.g. Risk Stewards) to cover extra limitations.
 - Timestamp of snapshots should not decrease from one parameters update to the next.
 - To optimise calculations, the maximum yearly ratio growth received in yearly bps (e.g. 5_00 for 5%) is converted to ratio growth per second internally. We expose in yearly bps percentage to follow similar approach as on other Aave systems (BGD config engine), and because we believe it is more intuitive for integrations.
-- Given that each asset on which to apply this adapter has its own characteristics, the base contract is `abstract` to allow the child to define its own specificities (mainly the way of calculating/fetching the current ratio). 
+- Given that each asset on which to apply this adapter has its own characteristics, the base contract is `abstract` to allow the child to define its own specificities (mainly the way of calculating/fetching the current ratio).
+- On construction, an extra `MINIMUM_SNAPSHOT_DELAY` is configured, indicating the minimum time (in seconds) to have passed since the snapshot ratio timestamp, and the current moment (block.timestamp). This is required because frequently, the update of the ration in a correlated asset is a "discrete" event, which causes a spike of value by time until enough time passes. E.g. if the snapshot ratio is set 1 second before the ratio was updated in an LST, 2 seconds after the increase by unit of time would be really high.
+
+  Defining a proper value depends on specific characteristics of the correlated asset, but generally, a conservative way would be setting a long enough delay, like 7 days.
 
 <br>
 
@@ -30,6 +37,7 @@ Initially we thought to model this as a sub-case of `RatioCapPriceAdapter`, with
 
 <br>
 
+<br>
 
 ## License
 
