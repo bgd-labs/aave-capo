@@ -17,6 +17,7 @@ contract SDAIGnosisPriceCapAdapterTest is BaseTest {
     address baseAggregatorAddress,
     address ratioProviderAddress,
     string memory pairDescription,
+    uint48 minimumSnapshotDelay,
     uint104 snapshotRatio,
     uint48 snapshotTimestamp,
     uint16 maxYearlyRatioGrowthPercent
@@ -27,6 +28,7 @@ contract SDAIGnosisPriceCapAdapterTest is BaseTest {
         baseAggregatorAddress,
         ratioProviderAddress,
         pairDescription,
+        minimumSnapshotDelay,
         snapshotRatio,
         snapshotTimestamp,
         maxYearlyRatioGrowthPercent
@@ -34,6 +36,7 @@ contract SDAIGnosisPriceCapAdapterTest is BaseTest {
   }
 
   function createAdapterSimple(
+    uint48 minimumSnapshotDelay,
     uint104 currentRatio,
     uint48 snapshotTimestamp,
     uint16 maxYearlyRatioGrowthPercent
@@ -44,6 +47,7 @@ contract SDAIGnosisPriceCapAdapterTest is BaseTest {
         BaseAggregatorsGnosis.DAI_USD_AGGREGATOR,
         AaveV3GnosisAssets.sDAI_UNDERLYING,
         'sDAIGno / DAI / USD',
+        minimumSnapshotDelay,
         currentRatio,
         snapshotTimestamp,
         maxYearlyRatioGrowthPercent

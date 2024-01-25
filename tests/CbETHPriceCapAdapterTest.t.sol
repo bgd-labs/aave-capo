@@ -41,6 +41,7 @@ contract CbETHPriceCapAdapterTest is Test {
       BaseAggregatorsMainnet.ETH_USD_AGGREGATOR,
       BaseAggregatorsMainnet.CBETH,
       'cbETH / ETH / USD',
+      7 days,
       1059523963000000000,
       1703743921,
       2_00

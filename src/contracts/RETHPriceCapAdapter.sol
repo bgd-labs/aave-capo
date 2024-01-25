@@ -18,6 +18,7 @@ contract RETHPriceCapAdapter is PriceCapAdapterBase {
    * @param rETHToBaseAggregatorAddress the address of (rETH / USD) feed
    * @param rETHAddress the address of the rETH token, the (rETH / ETH) ratio feed
    * @param pairName name identifier
+   * @param minimumSnapshotDelay minimum time (in seconds) that should have passed from the snapshot timestamp to the current block.timestamp
    * @param snapshotRatio the latest exchange ratio
    * @param snapshotTimestamp the timestamp of the latest exchange ratio
    * @param maxYearlyRatioGrowthPercent maximum growth of the underlying asset value per year, 100_00 is equal 100%
@@ -27,6 +28,7 @@ contract RETHPriceCapAdapter is PriceCapAdapterBase {
     address rETHToBaseAggregatorAddress,
     address rETHAddress,
     string memory pairName,
+    uint48 minimumSnapshotDelay,
     uint104 snapshotRatio,
     uint48 snapshotTimestamp,
     uint16 maxYearlyRatioGrowthPercent
@@ -37,6 +39,7 @@ contract RETHPriceCapAdapter is PriceCapAdapterBase {
       rETHAddress,
       pairName,
       18,
+      minimumSnapshotDelay,
       snapshotRatio,
       snapshotTimestamp,
       maxYearlyRatioGrowthPercent

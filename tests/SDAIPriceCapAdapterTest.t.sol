@@ -16,6 +16,7 @@ contract SDAIPriceCapAdapterTest is BaseTest {
     address baseAggregatorAddress,
     address ratioProviderAddress,
     string memory pairDescription,
+    uint48 minimumSnapshotDelay,
     uint104 snapshotRatio,
     uint48 snapshotTimestamp,
     uint16 maxYearlyRatioGrowthPercent
@@ -26,6 +27,7 @@ contract SDAIPriceCapAdapterTest is BaseTest {
         baseAggregatorAddress,
         ratioProviderAddress,
         pairDescription,
+        minimumSnapshotDelay,
         snapshotRatio,
         snapshotTimestamp,
         maxYearlyRatioGrowthPercent
@@ -33,6 +35,7 @@ contract SDAIPriceCapAdapterTest is BaseTest {
   }
 
   function createAdapterSimple(
+    uint48 minimumSnapshotDelay,
     uint104 currentRatio,
     uint48 snapshotTimestamp,
     uint16 maxYearlyRatioGrowthPercent
@@ -43,6 +46,7 @@ contract SDAIPriceCapAdapterTest is BaseTest {
         BaseAggregatorsMainnet.DAI_USD_AGGREGATOR,
         BaseAggregatorsMainnet.SDAI_POT,
         'sDAI / DAI / USD',
+        minimumSnapshotDelay,
         currentRatio,
         snapshotTimestamp,
         maxYearlyRatioGrowthPercent
@@ -63,6 +67,7 @@ contract SDAIPriceCapAdapterTest is BaseTest {
       BaseAggregatorsMainnet.DAI_USD_AGGREGATOR,
       BaseAggregatorsMainnet.SDAI_POT,
       'sDAI / DAI / USD',
+      7 days,
       1048947230000000000000000000,
       1703743921,
       1_00

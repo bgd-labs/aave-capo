@@ -73,6 +73,11 @@ interface IPriceCapAdapter is ICLSynchronicityPriceAdapter {
   function RATIO_DECIMALS() external view returns (uint8);
 
   /**
+   * @notice Minimum time (in seconds) that should have passed from the snapshot timestamp to the current block.timestamp
+   */
+  function MINIMUM_SNAPSHOT_DELAY() external view returns (uint48);
+
+  /**
    * @notice Returns the current exchange ratio of lst to the underlying(base) asset
    */
   function getRatio() external view returns (int256);

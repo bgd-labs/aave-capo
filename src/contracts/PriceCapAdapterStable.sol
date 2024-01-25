@@ -38,6 +38,7 @@ contract PriceCapAdapterStable is IPriceCapAdapterStable {
     if (address(aclManager) == address(0)) {
       revert ACLManagerIsZeroAddress();
     }
+
     ASSET_TO_USD_AGGREGATOR = assetToUsdAggregator;
     ACL_MANAGER = aclManager;
     description = adapterDescription;

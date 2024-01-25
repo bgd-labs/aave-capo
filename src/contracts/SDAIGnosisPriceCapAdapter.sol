@@ -18,6 +18,7 @@ contract SDAIGnosisPriceCapAdapter is PriceCapAdapterBase {
    * @param daiToBaseAggregatorAddress the address of (DAI / USD) feed
    * @param sDaiAddress the address of the sDAI, used as the (sDAI / DAI) ratio feed
    * @param pairName name identifier
+   * @param minimumSnapshotDelay minimum time (in seconds) that should have passed from the snapshot timestamp to the current block.timestamp
    * @param snapshotRatio The latest exchange ratio
    * @param snapshotTimestamp The timestamp of the latest exchange ratio
    * @param maxYearlyRatioGrowthPercent Maximum growth of the underlying asset value per year, 100_00 is equal 100%
@@ -27,6 +28,7 @@ contract SDAIGnosisPriceCapAdapter is PriceCapAdapterBase {
     address daiToBaseAggregatorAddress,
     address sDaiAddress,
     string memory pairName,
+    uint48 minimumSnapshotDelay,
     uint104 snapshotRatio,
     uint48 snapshotTimestamp,
     uint16 maxYearlyRatioGrowthPercent
@@ -37,6 +39,7 @@ contract SDAIGnosisPriceCapAdapter is PriceCapAdapterBase {
       sDaiAddress,
       pairName,
       IERC4626(sDaiAddress).decimals(),
+      minimumSnapshotDelay,
       snapshotRatio,
       snapshotTimestamp,
       maxYearlyRatioGrowthPercent

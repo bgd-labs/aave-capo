@@ -18,19 +18,28 @@ abstract contract BaseTest is Test {
     address baseAggregatorAddress,
     address ratioProviderAddress,
     string memory pairDescription,
+    uint48 minimumSnapshotDelay,
     uint104 snapshotRatio,
     uint48 snapshotTimestamp,
     uint16 maxYearlyRatioGrowthPercent
   ) public virtual returns (IPriceCapAdapter);
 
   function createAdapterSimple(
+    uint48 minimumSnapshotDelay,
     uint48 snapshotTimestamp,
     uint16 maxYearlyRatioGrowthPercent
   ) public virtual returns (IPriceCapAdapter) {
-    return createAdapterSimple(getCurrentRatio(), snapshotTimestamp, maxYearlyRatioGrowthPercent);
+    return
+      createAdapterSimple(
+        minimumSnapshotDelay,
+        getCurrentRatio(),
+        snapshotTimestamp,
+        maxYearlyRatioGrowthPercent
+      );
   }
 
   function createAdapterSimple(
+    uint48 minimumSnapshotDelay,
     uint104 currentRatio,
     uint48 snapshotTimestamp,
     uint16 maxYearlyRatioGrowthPercent
@@ -39,11 +48,13 @@ abstract contract BaseTest is Test {
   function getCurrentRatio() public view virtual returns (uint104);
 
   function deploySimpleAndSetParams(
+    uint48 minimumSnapshotDelay,
     uint16 maxYearlyRatioGrowthPercentInitial,
     uint16 maxYearlyRatioGrowthPercentUpdated
   ) public {
     IPriceCapAdapter adapter = createAdapterSimple(
-      uint48(block.timestamp),
+      minimumSnapshotDelay,
+      uint48(block.timestamp) - minimumSnapshotDelay,
       maxYearlyRatioGrowthPercentInitial
     );
 
@@ -56,7 +67,7 @@ abstract contract BaseTest is Test {
     );
     adapter.setCapParameters(
       uint104(adapter.getSnapshotRatio()) + 1,
-      uint48(block.timestamp),
+      uint48(block.timestamp) - minimumSnapshotDelay,
       maxYearlyRatioGrowthPercentUpdated
     );
   }
@@ -67,6 +78,7 @@ abstract contract BaseTest is Test {
     address ratioProviderAddress,
     string memory pairDescription,
     uint104 snapshotRatio,
+    uint16 minimumSnapshotDelay,
     uint8 decimals,
     uint48 snapshotTimestamp,
     uint16 maxYearlyRatioGrowthPercent
@@ -74,7 +86,7 @@ abstract contract BaseTest is Test {
     vm.assume(baseAggregatorAddress != 0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f);
     vm.assume(address(aclManager) != address(0) && baseAggregatorAddress != address(0));
     vm.assume(snapshotRatio > 0);
-    vm.assume(snapshotTimestamp > 0 && snapshotTimestamp <= block.timestamp);
+    vm.assume(snapshotTimestamp > 0 && snapshotTimestamp <= block.timestamp - minimumSnapshotDelay);
 
     uint256 maxRatioGrowthInMinimalLifetime = ((uint256(snapshotRatio) *
       maxYearlyRatioGrowthPercent) /
@@ -94,6 +106,7 @@ abstract contract BaseTest is Test {
       baseAggregatorAddress,
       ratioProviderAddress,
       pairDescription,
+      minimumSnapshotDelay,
       snapshotRatio,
       snapshotTimestamp,
       maxYearlyRatioGrowthPercent
@@ -130,11 +143,15 @@ abstract contract BaseTest is Test {
   }
 
   function test_setParams(
+    uint16 minimumSnapshotDelay,
     uint16 maxYearlyRatioGrowthPercentInitial,
     uint16 maxYearlyRatioGrowthPercentUpdated
   ) public {
+    vm.assume(block.timestamp > minimumSnapshotDelay);
+
     IPriceCapAdapter adapter = createAdapterSimple(
-      uint48(block.timestamp),
+      minimumSnapshotDelay,
+      uint48(block.timestamp) - minimumSnapshotDelay,
       maxYearlyRatioGrowthPercentInitial
     );
 
@@ -147,32 +164,40 @@ abstract contract BaseTest is Test {
     );
     adapter.setCapParameters(
       uint104(adapter.getSnapshotRatio()) + 1,
-      uint48(block.timestamp),
+      uint48(block.timestamp) - minimumSnapshotDelay,
       maxYearlyRatioGrowthPercentUpdated
     );
   }
 
-  function test_revert_constructor_timestamp_gt_current_block_timestamp(
+  function test_revert_constructor_timestamp_gt_aligning_interval(
+    uint16 minimumSnapshotDelay,
     uint16 maxYearlyRatioGrowthPercentInitial,
     uint48 timestamp
   ) public {
-    vm.assume(timestamp > block.timestamp);
+    vm.assume(timestamp > block.timestamp - minimumSnapshotDelay);
 
     uint104 currentRatio = getCurrentRatio();
     vm.expectRevert(
       abi.encodeWithSelector(IPriceCapAdapter.InvalidRatioTimestamp.selector, timestamp)
     );
-    createAdapterSimple(currentRatio, timestamp, maxYearlyRatioGrowthPercentInitial);
+    createAdapterSimple(
+      minimumSnapshotDelay,
+      currentRatio,
+      timestamp,
+      maxYearlyRatioGrowthPercentInitial
+    );
   }
 
   function test_revert_setParams_timestamp_lt_existing_timestamp(
+    uint16 minimumSnapshotDelay,
     uint48 timestamp,
     uint48 timestampUpdate
   ) public {
-    vm.assume(timestamp <= block.timestamp);
+    vm.assume(block.timestamp > minimumSnapshotDelay);
+    vm.assume(timestamp <= block.timestamp - minimumSnapshotDelay);
     vm.assume(timestampUpdate < timestamp);
 
-    IPriceCapAdapter adapter = createAdapterSimple(1, timestamp, 1);
+    IPriceCapAdapter adapter = createAdapterSimple(minimumSnapshotDelay, 1, timestamp, 1);
 
     vm.mockCall(
       address(adapter.ACL_MANAGER()),
@@ -192,7 +217,7 @@ abstract contract BaseTest is Test {
     vm.assume(timestamp < block.timestamp);
 
     vm.expectRevert(abi.encodeWithSelector(IPriceCapAdapter.SnapshotRatioIsZero.selector));
-    createAdapterSimple(0, timestamp, maxYearlyRatioGrowthPercentInitial);
+    createAdapterSimple(0, 0, timestamp, maxYearlyRatioGrowthPercentInitial);
   }
 
   function test_revert_updateParams_by_not_risk_or_pool_admin() public {
@@ -215,6 +240,7 @@ abstract contract BaseTest is Test {
 
   function test_latestAnswer(uint16 maxYearlyRatioGrowthPercent) public {
     IPriceCapAdapter adapter = createAdapterSimple(
+      0,
       uint40(block.timestamp),
       maxYearlyRatioGrowthPercent
     );
