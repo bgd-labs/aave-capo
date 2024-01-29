@@ -27,9 +27,7 @@ abstract contract BaseMaticPriceCapAdapterTest is BaseTest {
     address ratioProviderAddress,
     string memory pairDescription,
     uint48 minimumSnapshotDelay,
-    uint104 snapshotRatio,
-    uint48 snapshotTimestamp,
-    uint16 maxYearlyRatioGrowthPercent
+    IPriceCapAdapter.PriceCapUpdateParams memory priceCapParams
   ) public override returns (IPriceCapAdapter) {
     return
       new MaticPriceCapAdapter(
@@ -38,9 +36,7 @@ abstract contract BaseMaticPriceCapAdapterTest is BaseTest {
         ratioProviderAddress,
         pairDescription,
         minimumSnapshotDelay,
-        snapshotRatio,
-        snapshotTimestamp,
-        maxYearlyRatioGrowthPercent
+        priceCapParams
       );
   }
 
@@ -51,7 +47,7 @@ abstract contract BaseMaticPriceCapAdapterTest is BaseTest {
     uint16 maxYearlyRatioGrowthPercent
   ) public override returns (IPriceCapAdapter) {
     return
-      new MaticPriceCapAdapter(
+      createAdapter(
         AaveV3Polygon.ACL_MANAGER,
         BaseAggregatorsPolygon.MATIC_USD_AGGREGATOR,
         RATE_PROVIDER,

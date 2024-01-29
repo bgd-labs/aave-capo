@@ -17,9 +17,7 @@ contract SAvaxPriceCapAdapterTest is BaseTest {
     address ratioProviderAddress,
     string memory pairDescription,
     uint48 minimumSnapshotDelay,
-    uint104 snapshotRatio,
-    uint48 snapshotTimestamp,
-    uint16 maxYearlyRatioGrowthPercent
+    IPriceCapAdapter.PriceCapUpdateParams memory priceCapParams
   ) public override returns (IPriceCapAdapter) {
     return
       new SAvaxPriceCapAdapter(
@@ -28,9 +26,7 @@ contract SAvaxPriceCapAdapterTest is BaseTest {
         ratioProviderAddress,
         pairDescription,
         minimumSnapshotDelay,
-        snapshotRatio,
-        snapshotTimestamp,
-        maxYearlyRatioGrowthPercent
+        priceCapParams
       );
   }
 
@@ -41,7 +37,7 @@ contract SAvaxPriceCapAdapterTest is BaseTest {
     uint16 maxYearlyRatioGrowthPercent
   ) public override returns (IPriceCapAdapter) {
     return
-      new SAvaxPriceCapAdapter(
+      createAdapter(
         AaveV3Avalanche.ACL_MANAGER,
         AaveV3AvalancheAssets.WAVAX_ORACLE,
         AaveV3AvalancheAssets.sAVAX_UNDERLYING,
