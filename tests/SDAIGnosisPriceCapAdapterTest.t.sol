@@ -6,7 +6,6 @@ import './BaseTest.sol';
 import {AaveV3Gnosis, AaveV3GnosisAssets} from 'aave-address-book/AaveV3Gnosis.sol';
 import {BaseAggregatorsGnosis} from 'cl-synchronicity-price-adapter/lib/BaseAggregators.sol';
 import {IERC4626} from 'forge-std/interfaces/IERC4626.sol';
-import {IERC20} from 'forge-std/interfaces/IERC20.sol';
 
 import {SDAIGnosisPriceCapAdapter} from '../src/contracts/SDAIGnosisPriceCapAdapter.sol';
 
@@ -21,11 +20,6 @@ contract SDAIGnosisPriceCapAdapterTest is BaseTest {
     uint48 minimumSnapshotDelay,
     IPriceCapAdapter.PriceCapUpdateParams memory priceCapParams
   ) public override returns (IPriceCapAdapter) {
-    vm.mockCall(
-      ratioProviderAddress,
-      abi.encodeWithSelector(IERC20.decimals.selector),
-      abi.encode(18)
-    );
     return
       new SDAIGnosisPriceCapAdapter(
         aclManager,

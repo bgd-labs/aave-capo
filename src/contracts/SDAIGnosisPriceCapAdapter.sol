@@ -34,7 +34,7 @@ contract SDAIGnosisPriceCapAdapter is PriceCapAdapterBase {
       daiToBaseAggregatorAddress,
       sDaiAddress,
       pairName,
-      IERC4626(sDaiAddress).decimals(),
+      18,
       minimumSnapshotDelay,
       priceCapParams
     )

@@ -134,6 +134,11 @@ abstract contract BaseTest is Test {
       365 days;
     vm.assume(snapshotRatio + maxRatioGrowthInMinimalLifetime <= type(uint104).max);
 
+    IPriceCapAdapter.PriceCapUpdateParams memory priceCapParams;
+    priceCapParams.snapshotRatio = snapshotRatio;
+    priceCapParams.snapshotTimestamp = snapshotTimestamp;
+    priceCapParams.maxYearlyRatioGrowthPercent = maxYearlyRatioGrowthPercent;
+
     vm.mockCall(
       baseAggregatorAddress,
       abi.encodeWithSelector(ICLSynchronicityPriceAdapter.decimals.selector),
@@ -145,9 +150,7 @@ abstract contract BaseTest is Test {
       ratioProviderAddress,
       pairDescription,
       minimumSnapshotDelay,
-      snapshotRatio,
-      snapshotTimestamp,
-      maxYearlyRatioGrowthPercent
+      priceCapParams
     );
     assertEq(address(adapter.ACL_MANAGER()), address(aclManager), 'aclManager not set properly');
     assertEq(
