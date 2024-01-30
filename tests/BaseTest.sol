@@ -19,10 +19,34 @@ abstract contract BaseTest is Test {
     address ratioProviderAddress,
     string memory pairDescription,
     uint48 minimumSnapshotDelay,
+    IPriceCapAdapter.PriceCapUpdateParams memory priceCapParams
+  ) public virtual returns (IPriceCapAdapter);
+
+  function createAdapter(
+    IACLManager aclManager,
+    address baseAggregatorAddress,
+    address ratioProviderAddress,
+    string memory pairDescription,
+    uint48 minimumSnapshotDelay,
     uint104 snapshotRatio,
     uint48 snapshotTimestamp,
     uint16 maxYearlyRatioGrowthPercent
-  ) public virtual returns (IPriceCapAdapter);
+  ) public virtual returns (IPriceCapAdapter) {
+    IPriceCapAdapter.PriceCapUpdateParams memory priceCapParams;
+    priceCapParams.snapshotRatio = snapshotRatio;
+    priceCapParams.snapshotTimestamp = snapshotTimestamp;
+    priceCapParams.maxYearlyRatioGrowthPercent = maxYearlyRatioGrowthPercent;
+
+    return
+      createAdapter(
+        aclManager,
+        baseAggregatorAddress,
+        ratioProviderAddress,
+        pairDescription,
+        minimumSnapshotDelay,
+        priceCapParams
+      );
+  }
 
   function createAdapterSimple(
     uint48 minimumSnapshotDelay,
@@ -45,6 +69,19 @@ abstract contract BaseTest is Test {
     uint16 maxYearlyRatioGrowthPercent
   ) public virtual returns (IPriceCapAdapter);
 
+  function setCapParameters(
+    IPriceCapAdapter adapter,
+    uint104 currentRatio,
+    uint48 snapshotTimestamp,
+    uint16 maxYearlyRatioGrowthPercent
+  ) public {
+    IPriceCapAdapter.PriceCapUpdateParams memory priceCapParams;
+    priceCapParams.snapshotRatio = currentRatio;
+    priceCapParams.snapshotTimestamp = snapshotTimestamp;
+    priceCapParams.maxYearlyRatioGrowthPercent = maxYearlyRatioGrowthPercent;
+    adapter.setCapParameters(priceCapParams);
+  }
+
   function getCurrentRatio() public view virtual returns (uint104);
 
   function deploySimpleAndSetParams(
@@ -65,7 +102,8 @@ abstract contract BaseTest is Test {
       abi.encodeWithSelector(BasicIACLManager.isRiskAdmin.selector),
       abi.encode(true)
     );
-    adapter.setCapParameters(
+    setCapParameters(
+      adapter,
       uint104(adapter.getSnapshotRatio()) + 1,
       uint48(block.timestamp) - minimumSnapshotDelay,
       maxYearlyRatioGrowthPercentUpdated
@@ -96,6 +134,11 @@ abstract contract BaseTest is Test {
       365 days;
     vm.assume(snapshotRatio + maxRatioGrowthInMinimalLifetime <= type(uint104).max);
 
+    IPriceCapAdapter.PriceCapUpdateParams memory priceCapParams;
+    priceCapParams.snapshotRatio = snapshotRatio;
+    priceCapParams.snapshotTimestamp = snapshotTimestamp;
+    priceCapParams.maxYearlyRatioGrowthPercent = maxYearlyRatioGrowthPercent;
+
     vm.mockCall(
       baseAggregatorAddress,
       abi.encodeWithSelector(ICLSynchronicityPriceAdapter.decimals.selector),
@@ -107,9 +150,7 @@ abstract contract BaseTest is Test {
       ratioProviderAddress,
       pairDescription,
       minimumSnapshotDelay,
-      snapshotRatio,
-      snapshotTimestamp,
-      maxYearlyRatioGrowthPercent
+      priceCapParams
     );
     assertEq(address(adapter.ACL_MANAGER()), address(aclManager), 'aclManager not set properly');
     assertEq(
@@ -162,7 +203,8 @@ abstract contract BaseTest is Test {
       abi.encodeWithSelector(BasicIACLManager.isRiskAdmin.selector),
       abi.encode(true)
     );
-    adapter.setCapParameters(
+    setCapParameters(
+      adapter,
       uint104(adapter.getSnapshotRatio()) + 1,
       uint48(block.timestamp) - minimumSnapshotDelay,
       maxYearlyRatioGrowthPercentUpdated
@@ -207,7 +249,7 @@ abstract contract BaseTest is Test {
     vm.expectRevert(
       abi.encodeWithSelector(IPriceCapAdapter.InvalidRatioTimestamp.selector, timestampUpdate)
     );
-    adapter.setCapParameters(1, timestampUpdate, 1);
+    setCapParameters(adapter, 1, timestampUpdate, 1);
   }
 
   function test_revert_constructor_current_ratio_is_0(
@@ -235,10 +277,10 @@ abstract contract BaseTest is Test {
       abi.encode(false)
     );
     vm.expectRevert(IPriceCapAdapter.CallerIsNotRiskOrPoolAdmin.selector);
-    adapter.setCapParameters(1, 1, 1);
+    setCapParameters(adapter, 1, 1, 1);
   }
 
-  function test_latestAnswer(uint16 maxYearlyRatioGrowthPercent) public {
+  function test_latestAnswer(uint16 maxYearlyRatioGrowthPercent) public virtual {
     IPriceCapAdapter adapter = createAdapterSimple(
       0,
       uint40(block.timestamp),
@@ -248,6 +290,10 @@ abstract contract BaseTest is Test {
     int256 price = adapter.latestAnswer();
     int256 priceOfNotCappedAdapter = NOT_CAPPED_ADAPTER.latestAnswer();
 
-    assertEq(price, priceOfNotCappedAdapter);
+    assertEq(
+      price,
+      priceOfNotCappedAdapter,
+      'uncapped price is not equal to the existing adapter price'
+    );
   }
 }

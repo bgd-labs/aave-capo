@@ -19,9 +19,7 @@ contract WstETHPriceCapAdapterTest is BaseTest {
     address ratioProviderAddress,
     string memory pairDescription,
     uint48 minimumSnapshotDelay,
-    uint104 snapshotRatio,
-    uint48 snapshotTimestamp,
-    uint16 maxYearlyRatioGrowthPercent
+    IPriceCapAdapter.PriceCapUpdateParams memory priceCapParams
   ) public override returns (IPriceCapAdapter) {
     return
       new WstETHPriceCapAdapter(
@@ -30,9 +28,7 @@ contract WstETHPriceCapAdapterTest is BaseTest {
         ratioProviderAddress,
         pairDescription,
         minimumSnapshotDelay,
-        snapshotRatio,
-        snapshotTimestamp,
-        maxYearlyRatioGrowthPercent
+        priceCapParams
       );
   }
 
@@ -43,7 +39,7 @@ contract WstETHPriceCapAdapterTest is BaseTest {
     uint16 maxYearlyRatioGrowthPercent
   ) public override returns (IPriceCapAdapter) {
     return
-      new WstETHPriceCapAdapter(
+      createAdapter(
         AaveV3Ethereum.ACL_MANAGER,
         BaseAggregatorsMainnet.ETH_USD_AGGREGATOR,
         MissingAssetsMainnet.STETH,
@@ -66,7 +62,7 @@ contract WstETHPriceCapAdapterTest is BaseTest {
   // TODO: test that setParams func sets params as expected
 
   function test_cappedLatestAnswer() public {
-    WstETHPriceCapAdapter adapter = new WstETHPriceCapAdapter(
+    IPriceCapAdapter adapter = createAdapter(
       AaveV3Ethereum.ACL_MANAGER,
       BaseAggregatorsMainnet.ETH_USD_AGGREGATOR,
       MissingAssetsMainnet.STETH,
@@ -87,7 +83,7 @@ contract WstETHPriceCapAdapterTest is BaseTest {
   }
 
   function test_updateParameters_cappedLatestAnswer() public {
-    WstETHPriceCapAdapter adapter = new WstETHPriceCapAdapter(
+    IPriceCapAdapter adapter = createAdapter(
       AaveV3Ethereum.ACL_MANAGER,
       BaseAggregatorsMainnet.ETH_USD_AGGREGATOR,
       MissingAssetsMainnet.STETH,
@@ -107,7 +103,7 @@ contract WstETHPriceCapAdapterTest is BaseTest {
     );
 
     vm.prank(AaveV3Ethereum.CAPS_PLUS_RISK_STEWARD);
-    adapter.setCapParameters(1151642955000000000, 1703743931, 20_00);
+    setCapParameters(adapter, 1151642955000000000, 1703743931, 20_00);
 
     price = adapter.latestAnswer();
 
@@ -123,7 +119,7 @@ contract WstETHPriceCapAdapterTest is BaseTest {
     uint48 snapshotTimestamp,
     uint16 maxYearlyRatioGrowthPercent
   ) public {
-    WstETHPriceCapAdapter adapter = new WstETHPriceCapAdapter(
+    IPriceCapAdapter adapter = createAdapter(
       AaveV3Ethereum.ACL_MANAGER,
       BaseAggregatorsMainnet.ETH_USD_AGGREGATOR,
       MissingAssetsMainnet.STETH,
@@ -136,6 +132,6 @@ contract WstETHPriceCapAdapterTest is BaseTest {
 
     // TODO: fuzzing?
     vm.expectRevert(IPriceCapAdapter.CallerIsNotRiskOrPoolAdmin.selector);
-    adapter.setCapParameters(snapshotRatio, snapshotTimestamp, maxYearlyRatioGrowthPercent);
+    setCapParameters(adapter, snapshotRatio, snapshotTimestamp, maxYearlyRatioGrowthPercent);
   }
 }

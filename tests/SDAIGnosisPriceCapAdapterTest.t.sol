@@ -18,9 +18,7 @@ contract SDAIGnosisPriceCapAdapterTest is BaseTest {
     address ratioProviderAddress,
     string memory pairDescription,
     uint48 minimumSnapshotDelay,
-    uint104 snapshotRatio,
-    uint48 snapshotTimestamp,
-    uint16 maxYearlyRatioGrowthPercent
+    IPriceCapAdapter.PriceCapUpdateParams memory priceCapParams
   ) public override returns (IPriceCapAdapter) {
     return
       new SDAIGnosisPriceCapAdapter(
@@ -29,9 +27,7 @@ contract SDAIGnosisPriceCapAdapterTest is BaseTest {
         ratioProviderAddress,
         pairDescription,
         minimumSnapshotDelay,
-        snapshotRatio,
-        snapshotTimestamp,
-        maxYearlyRatioGrowthPercent
+        priceCapParams
       );
   }
 
@@ -42,7 +38,7 @@ contract SDAIGnosisPriceCapAdapterTest is BaseTest {
     uint16 maxYearlyRatioGrowthPercent
   ) public override returns (IPriceCapAdapter) {
     return
-      new SDAIGnosisPriceCapAdapter(
+      createAdapter(
         AaveV3Gnosis.ACL_MANAGER,
         BaseAggregatorsGnosis.DAI_USD_AGGREGATOR,
         AaveV3GnosisAssets.sDAI_UNDERLYING,

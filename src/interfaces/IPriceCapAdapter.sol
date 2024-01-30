@@ -21,16 +21,20 @@ interface IPriceCapAdapter is ICLSynchronicityPriceAdapter {
   );
 
   /**
-   * @notice Updates price cap parameters
-   * @param snapshotRatio the latest exchange ratio
-   * @param snapshotTimestamp the timestamp of the latest exchange ratio
-   * @param maxYearlyRatioGrowthPercent maximum growth of the underlying asset value per year, 100_00 is equal 100%
+   * @notice Parameters to update price cap
+   * @param priceCapParams parameters to set price cap
    */
-  function setCapParameters(
-    uint104 snapshotRatio,
-    uint48 snapshotTimestamp,
-    uint16 maxYearlyRatioGrowthPercent
-  ) external;
+  struct PriceCapUpdateParams {
+    uint104 snapshotRatio;
+    uint48 snapshotTimestamp;
+    uint16 maxYearlyRatioGrowthPercent;
+  }
+
+  /**
+   * @notice Updates price cap parameters
+   * @param priceCapParams parameters to set price cap
+   */
+  function setCapParameters(PriceCapUpdateParams memory priceCapParams) external;
 
   /**
    * @notice Maximum percentage factor (100.00%)

@@ -17,9 +17,7 @@ contract SDAIPriceCapAdapterTest is BaseTest {
     address ratioProviderAddress,
     string memory pairDescription,
     uint48 minimumSnapshotDelay,
-    uint104 snapshotRatio,
-    uint48 snapshotTimestamp,
-    uint16 maxYearlyRatioGrowthPercent
+    IPriceCapAdapter.PriceCapUpdateParams memory priceCapParams
   ) public override returns (IPriceCapAdapter) {
     return
       new SDAIPriceCapAdapter(
@@ -28,9 +26,7 @@ contract SDAIPriceCapAdapterTest is BaseTest {
         ratioProviderAddress,
         pairDescription,
         minimumSnapshotDelay,
-        snapshotRatio,
-        snapshotTimestamp,
-        maxYearlyRatioGrowthPercent
+        priceCapParams
       );
   }
 
@@ -41,7 +37,7 @@ contract SDAIPriceCapAdapterTest is BaseTest {
     uint16 maxYearlyRatioGrowthPercent
   ) public override returns (IPriceCapAdapter) {
     return
-      new SDAIPriceCapAdapter(
+      createAdapter(
         AaveV3Ethereum.ACL_MANAGER,
         BaseAggregatorsMainnet.DAI_USD_AGGREGATOR,
         BaseAggregatorsMainnet.SDAI_POT,
@@ -62,7 +58,7 @@ contract SDAIPriceCapAdapterTest is BaseTest {
   }
 
   function test_cappedLatestAnswer() public {
-    SDAIPriceCapAdapter adapter = new SDAIPriceCapAdapter(
+    IPriceCapAdapter adapter = createAdapter(
       AaveV3Ethereum.ACL_MANAGER,
       BaseAggregatorsMainnet.DAI_USD_AGGREGATOR,
       BaseAggregatorsMainnet.SDAI_POT,

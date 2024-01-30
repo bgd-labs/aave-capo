@@ -18,9 +18,7 @@ contract RETHPriceCapAdapterTest is BaseTest {
     address ratioProviderAddress,
     string memory pairDescription,
     uint48 minimumSnapshotDelay,
-    uint104 snapshotRatio,
-    uint48 snapshotTimestamp,
-    uint16 maxYearlyRatioGrowthPercent
+    IPriceCapAdapter.PriceCapUpdateParams memory priceCapParams
   ) public override returns (IPriceCapAdapter) {
     return
       new RETHPriceCapAdapter(
@@ -29,9 +27,7 @@ contract RETHPriceCapAdapterTest is BaseTest {
         ratioProviderAddress,
         pairDescription,
         minimumSnapshotDelay,
-        snapshotRatio,
-        snapshotTimestamp,
-        maxYearlyRatioGrowthPercent
+        priceCapParams
       );
   }
 
@@ -42,7 +38,7 @@ contract RETHPriceCapAdapterTest is BaseTest {
     uint16 maxYearlyRatioGrowthPercent
   ) public override returns (IPriceCapAdapter) {
     return
-      new RETHPriceCapAdapter(
+      createAdapter(
         AaveV3Ethereum.ACL_MANAGER,
         BaseAggregatorsMainnet.ETH_USD_AGGREGATOR,
         MissingAssetsMainnet.RETH,
@@ -63,7 +59,7 @@ contract RETHPriceCapAdapterTest is BaseTest {
   }
 
   function test_cappedLatestAnswer() public {
-    RETHPriceCapAdapter adapter = new RETHPriceCapAdapter(
+    IPriceCapAdapter adapter = createAdapter(
       AaveV3Ethereum.ACL_MANAGER,
       BaseAggregatorsMainnet.ETH_USD_AGGREGATOR,
       MissingAssetsMainnet.RETH,
