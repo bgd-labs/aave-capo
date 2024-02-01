@@ -40,8 +40,8 @@ contract RETHPriceCapAdapterTest is BaseTest {
     return
       createAdapter(
         AaveV3Ethereum.ACL_MANAGER,
-        BaseAggregatorsMainnet.ETH_USD_AGGREGATOR,
-        MissingAssetsMainnet.RETH,
+        AaveV3EthereumAssets.WETH_ORACLE,
+        AaveV3EthereumAssets.rETH_UNDERLYING,
         'rETH / ETH / USD',
         minimumSnapshotDelay,
         currentRatio,
@@ -61,8 +61,8 @@ contract RETHPriceCapAdapterTest is BaseTest {
   function test_cappedLatestAnswer() public {
     IPriceCapAdapter adapter = createAdapter(
       AaveV3Ethereum.ACL_MANAGER,
-      BaseAggregatorsMainnet.ETH_USD_AGGREGATOR,
-      MissingAssetsMainnet.RETH,
+      AaveV3EthereumAssets.WETH_ORACLE,
+      AaveV3EthereumAssets.rETH_UNDERLYING,
       'rETH / ETH / USD',
       7 days,
       1093801647000000000,

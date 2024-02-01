@@ -41,7 +41,7 @@ contract WstETHPriceCapAdapterTest is BaseTest {
     return
       createAdapter(
         AaveV3Ethereum.ACL_MANAGER,
-        BaseAggregatorsMainnet.ETH_USD_AGGREGATOR,
+        AaveV3EthereumAssets.WETH_ORACLE,
         MissingAssetsMainnet.STETH,
         'wstETH/stETH/USD',
         minimumSnapshotDelay,
@@ -64,7 +64,7 @@ contract WstETHPriceCapAdapterTest is BaseTest {
   function test_cappedLatestAnswer() public {
     IPriceCapAdapter adapter = createAdapter(
       AaveV3Ethereum.ACL_MANAGER,
-      BaseAggregatorsMainnet.ETH_USD_AGGREGATOR,
+      AaveV3EthereumAssets.WETH_ORACLE,
       MissingAssetsMainnet.STETH,
       'wstETH/stETH/USD',
       7 days,
@@ -85,7 +85,7 @@ contract WstETHPriceCapAdapterTest is BaseTest {
   function test_updateParameters_cappedLatestAnswer() public {
     IPriceCapAdapter adapter = createAdapter(
       AaveV3Ethereum.ACL_MANAGER,
-      BaseAggregatorsMainnet.ETH_USD_AGGREGATOR,
+      AaveV3EthereumAssets.WETH_ORACLE,
       MissingAssetsMainnet.STETH,
       'wstETH/stETH/USD',
       7 days,
@@ -121,7 +121,7 @@ contract WstETHPriceCapAdapterTest is BaseTest {
   ) public {
     IPriceCapAdapter adapter = createAdapter(
       AaveV3Ethereum.ACL_MANAGER,
-      BaseAggregatorsMainnet.ETH_USD_AGGREGATOR,
+      AaveV3EthereumAssets.WETH_ORACLE,
       MissingAssetsMainnet.STETH,
       'wstETH/stETH/USD',
       7 days,

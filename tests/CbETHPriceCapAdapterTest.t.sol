@@ -40,8 +40,8 @@ contract CbETHPriceCapAdapterTest is BaseTest {
     return
       createAdapter(
         AaveV3Ethereum.ACL_MANAGER,
-        BaseAggregatorsMainnet.ETH_USD_AGGREGATOR,
-        BaseAggregatorsMainnet.CBETH,
+        AaveV3EthereumAssets.WETH_ORACLE,
+        AaveV3EthereumAssets.cbETH_UNDERLYING,
         'cbETH / ETH / USD',
         minimumSnapshotDelay,
         currentRatio,
@@ -51,7 +51,7 @@ contract CbETHPriceCapAdapterTest is BaseTest {
   }
 
   function getCurrentRatio() public view override returns (uint104) {
-    return uint104(ICbEthRateProvider(BaseAggregatorsMainnet.CBETH).exchangeRate());
+    return uint104(ICbEthRateProvider(AaveV3EthereumAssets.cbETH_UNDERLYING).exchangeRate());
   }
 
   function setUp() public {
@@ -87,8 +87,8 @@ contract CbETHPriceCapAdapterTest is BaseTest {
   function test_cappedLatestAnswer() public {
     IPriceCapAdapter adapter = createAdapter(
       AaveV3Ethereum.ACL_MANAGER,
-      BaseAggregatorsMainnet.ETH_USD_AGGREGATOR,
-      BaseAggregatorsMainnet.CBETH,
+      AaveV3EthereumAssets.WETH_ORACLE,
+      AaveV3EthereumAssets.cbETH_UNDERLYING,
       'cbETH / ETH / USD',
       7 days,
       1059523963000000000,
