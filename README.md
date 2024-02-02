@@ -1,4 +1,4 @@
-# Correlated-assets price oracle
+# Aave Correlated-assets price oracle (CAPO)
 
 Price oracle adapter smart contracts, introducing different types of range price protection on oracle feeds used by the Aave protocol.
 
