@@ -2,13 +2,15 @@
 pragma solidity ^0.8.0;
 import {GovV3Helpers} from 'aave-helpers/GovV3Helpers.sol';
 import {EthereumScript} from 'aave-helpers/ScriptUtils.sol';
-import {AaveV3Ethereum, AaveV3EthereumAssets, IACLManager} from 'aave-address-book/AaveV3Ethereum.sol';
+import {AaveV3Ethereum, AaveV3EthereumAssets} from 'aave-address-book/AaveV3Ethereum.sol';
 import {AaveV2EthereumAssets} from 'aave-address-book/AaveV2Ethereum.sol';
+import {BaseAggregatorsMainnet} from 'cl-synchronicity-price-adapter/lib/BaseAggregatorsMainnet.sol';
 
 import {PriceCapAdapterStable} from '../src/contracts/PriceCapAdapterStable.sol';
-import {CbETHPriceCapAdapter} from '../src/contracts/CbETHPriceCapAdapter.sol';
+import {CbETHPriceCapAdapter, IPriceCapAdapter} from '../src/contracts/CbETHPriceCapAdapter.sol';
 import {RETHPriceCapAdapter} from '../src/contracts/RETHPriceCapAdapter.sol';
 import {WstETHPriceCapAdapter} from '../src/contracts/WstETHPriceCapAdapter.sol';
+import {SDAIPriceCapAdapter} from '../src/contracts/SDAIPriceCapAdapter.sol';
 import {AaveV3EthereumPayload} from '../src/contracts/payloads/AaveV3EthereumPayload.sol';
 
 library CapAdaptersCodeEthereum {
@@ -40,6 +42,22 @@ library CapAdaptersCodeEthereum {
         AaveV3EthereumAssets.DAI_ORACLE,
         'Capped DAI/USD',
         int256(1.1 * 1e8) // TODO: SET
+      )
+    );
+  bytes public constant sDAI_ADAPTER_CODE =
+    abi.encodePacked(
+      type(SDAIPriceCapAdapter).creationCode,
+      abi.encode(
+        AaveV3Ethereum.ACL_MANAGER,
+        AaveV3EthereumAssets.DAI_ORACLE,
+        BaseAggregatorsMainnet.SDAI_POT,
+        'Capped sDAI / DAI / USD',
+        7 days, // TODO: SET
+        IPriceCapAdapter.PriceCapUpdateParams({
+          snapshotRatio: 0,
+          snapshotTimestamp: 0,
+          maxYearlyRatioGrowthPercent: 0
+        })
       )
     );
   bytes public constant LUSD_ADAPTER_CODE =
@@ -81,9 +99,11 @@ library CapAdaptersCodeEthereum {
         AaveV3EthereumAssets.cbETH_UNDERLYING,
         'Capped cbETH / ETH / USD',
         7 days, // TODO: SET
-        0,
-        0,
-        0
+        IPriceCapAdapter.PriceCapUpdateParams({
+          snapshotRatio: 0,
+          snapshotTimestamp: 0,
+          maxYearlyRatioGrowthPercent: 0
+        })
       )
     );
   bytes public constant rETH_ADAPTER_CODE =
@@ -95,9 +115,11 @@ library CapAdaptersCodeEthereum {
         AaveV3EthereumAssets.rETH_UNDERLYING,
         'Capped rETH / ETH / USD',
         7 days, // TODO: SET
-        0,
-        0,
-        0
+        IPriceCapAdapter.PriceCapUpdateParams({
+          snapshotRatio: 0,
+          snapshotTimestamp: 0,
+          maxYearlyRatioGrowthPercent: 0
+        })
       )
     );
   bytes public constant wstETH_ADAPTER_CODE =
@@ -109,9 +131,11 @@ library CapAdaptersCodeEthereum {
         AaveV2EthereumAssets.stETH_UNDERLYING,
         'Capped wstETH / stETH(ETH) / USD', // TODO: is it actually going to STETH, but then using ETH feed
         7 days, // TODO: SET
-        0,
-        0,
-        0
+        IPriceCapAdapter.PriceCapUpdateParams({
+          snapshotRatio: 0,
+          snapshotTimestamp: 0,
+          maxYearlyRatioGrowthPercent: 0
+        })
       )
     );
 }
@@ -128,6 +152,9 @@ contract DeployEthereum is EthereumScript {
     );
     adapters.daiAdapter = GovV3Helpers.deployDeterministic(
       CapAdaptersCodeEthereum.DAI_ADAPTER_CODE
+    );
+    adapters.sDaiAdapter = GovV3Helpers.deployDeterministic(
+      CapAdaptersCodeEthereum.sDAI_ADAPTER_CODE
     );
     adapters.lusdAdapter = GovV3Helpers.deployDeterministic(
       CapAdaptersCodeEthereum.LUSD_ADAPTER_CODE
