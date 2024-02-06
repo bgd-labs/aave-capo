@@ -64,6 +64,16 @@ library CapAdaptersStablesCodeEthereum {
         int256(1.1 * 1e8) // TODO: SET
       )
     );
+  bytes public constant crvUSD_ADAPTER_CODE =
+    abi.encodePacked(
+      type(PriceCapAdapterStable).creationCode,
+      abi.encode(
+        AaveV3Ethereum.ACL_MANAGER,
+        AaveV3EthereumAssets.crvUSD_ORACLE,
+        'Capped crvUSD/USD',
+        int256(1.1 * 1e8) // TODO: SET
+      )
+    );
 }
 
 library CapAdaptersCodeEthereum {
@@ -81,16 +91,6 @@ library CapAdaptersCodeEthereum {
           snapshotTimestamp: 0,
           maxYearlyRatioGrowthPercent: 0
         })
-      )
-    );
-  bytes public constant crvUSD_ADAPTER_CODE =
-    abi.encodePacked(
-      type(PriceCapAdapterStable).creationCode,
-      abi.encode(
-        AaveV3Ethereum.ACL_MANAGER,
-        AaveV3EthereumAssets.crvUSD_ORACLE,
-        'Capped crvUSD/USD',
-        int256(1.1 * 1e8) // TODO: SET
       )
     );
   bytes public constant cbETH_ADAPTER_CODE =
@@ -166,7 +166,7 @@ contract DeployEthereum is EthereumScript {
       CapAdaptersStablesCodeEthereum.FRAX_ADAPTER_CODE
     );
     adapters.crvUsdAdapter = GovV3Helpers.deployDeterministic(
-      CapAdaptersCodeEthereum.crvUSD_ADAPTER_CODE
+      CapAdaptersStablesCodeEthereum.crvUSD_ADAPTER_CODE
     );
     adapters.cbEthAdapter = GovV3Helpers.deployDeterministic(
       CapAdaptersCodeEthereum.cbETH_ADAPTER_CODE
