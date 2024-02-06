@@ -13,7 +13,7 @@ import {WstETHPriceCapAdapter} from '../src/contracts/WstETHPriceCapAdapter.sol'
 import {SDAIPriceCapAdapter} from '../src/contracts/SDAIPriceCapAdapter.sol';
 import {AaveV3EthereumPayload} from '../src/contracts/payloads/AaveV3EthereumPayload.sol';
 
-library CapAdaptersCodeEthereum {
+library CapAdaptersStablesCodeEthereum {
   bytes public constant USDT_ADAPTER_CODE =
     abi.encodePacked(
       type(PriceCapAdapterStable).creationCode,
@@ -44,22 +44,6 @@ library CapAdaptersCodeEthereum {
         int256(1.1 * 1e8) // TODO: SET
       )
     );
-  bytes public constant sDAI_ADAPTER_CODE =
-    abi.encodePacked(
-      type(SDAIPriceCapAdapter).creationCode,
-      abi.encode(
-        AaveV3Ethereum.ACL_MANAGER,
-        AaveV3EthereumAssets.DAI_ORACLE,
-        BaseAggregatorsMainnet.SDAI_POT,
-        'Capped sDAI / DAI / USD',
-        7 days, // TODO: SET
-        IPriceCapAdapter.PriceCapUpdateParams({
-          snapshotRatio: 0,
-          snapshotTimestamp: 0,
-          maxYearlyRatioGrowthPercent: 0
-        })
-      )
-    );
   bytes public constant LUSD_ADAPTER_CODE =
     abi.encodePacked(
       type(PriceCapAdapterStable).creationCode,
@@ -78,6 +62,25 @@ library CapAdaptersCodeEthereum {
         AaveV3EthereumAssets.FRAX_ORACLE,
         'Capped FRAX/USD',
         int256(1.1 * 1e8) // TODO: SET
+      )
+    );
+}
+
+library CapAdaptersCodeEthereum {
+  bytes public constant sDAI_ADAPTER_CODE =
+    abi.encodePacked(
+      type(SDAIPriceCapAdapter).creationCode,
+      abi.encode(
+        AaveV3Ethereum.ACL_MANAGER,
+        AaveV3EthereumAssets.DAI_ORACLE,
+        BaseAggregatorsMainnet.SDAI_POT,
+        'Capped sDAI / DAI / USD',
+        7 days, // TODO: SET
+        IPriceCapAdapter.PriceCapUpdateParams({
+          snapshotRatio: 0,
+          snapshotTimestamp: 0,
+          maxYearlyRatioGrowthPercent: 0
+        })
       )
     );
   bytes public constant crvUSD_ADAPTER_CODE =
@@ -145,22 +148,22 @@ contract DeployEthereum is EthereumScript {
     AaveV3EthereumPayload.Adapters memory adapters;
 
     adapters.usdtAdapter = GovV3Helpers.deployDeterministic(
-      CapAdaptersCodeEthereum.USDT_ADAPTER_CODE
+      CapAdaptersStablesCodeEthereum.USDT_ADAPTER_CODE
     );
     adapters.usdcAdapter = GovV3Helpers.deployDeterministic(
-      CapAdaptersCodeEthereum.USDC_ADAPTER_CODE
+      CapAdaptersStablesCodeEthereum.USDC_ADAPTER_CODE
     );
     adapters.daiAdapter = GovV3Helpers.deployDeterministic(
-      CapAdaptersCodeEthereum.DAI_ADAPTER_CODE
+      CapAdaptersStablesCodeEthereum.DAI_ADAPTER_CODE
     );
     adapters.sDaiAdapter = GovV3Helpers.deployDeterministic(
       CapAdaptersCodeEthereum.sDAI_ADAPTER_CODE
     );
     adapters.lusdAdapter = GovV3Helpers.deployDeterministic(
-      CapAdaptersCodeEthereum.LUSD_ADAPTER_CODE
+      CapAdaptersStablesCodeEthereum.LUSD_ADAPTER_CODE
     );
     adapters.fraxAdapter = GovV3Helpers.deployDeterministic(
-      CapAdaptersCodeEthereum.FRAX_ADAPTER_CODE
+      CapAdaptersStablesCodeEthereum.FRAX_ADAPTER_CODE
     );
     adapters.crvUsdAdapter = GovV3Helpers.deployDeterministic(
       CapAdaptersCodeEthereum.crvUSD_ADAPTER_CODE
