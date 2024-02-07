@@ -25,7 +25,7 @@ contract AaveV3BnbPayloadTest is Test, DeployBnbAdaptersAndPayload {
 
     GovV3Helpers.executePayload(vm, payload);
 
-    address usdtNew = AaveV3BNB.ORACLE.getSourceOfAsset(AaveV3BNBAssets.USDC_UNDERLYING);
+    address usdtNew = AaveV3BNB.ORACLE.getSourceOfAsset(AaveV3BNBAssets.USDT_UNDERLYING);
     assertEq(usdtNew, usdtPredicted);
 
     address usdcNew = AaveV3BNB.ORACLE.getSourceOfAsset(AaveV3BNBAssets.USDC_UNDERLYING);

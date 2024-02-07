@@ -19,7 +19,7 @@ contract AaveV3BnbPayload is AaveV3PayloadBnb {
   }
 
   function priceFeedsUpdates() public view override returns (IEngine.PriceFeedUpdate[] memory) {
-    IEngine.PriceFeedUpdate[] memory updates = new IEngine.PriceFeedUpdate[](3);
+    IEngine.PriceFeedUpdate[] memory updates = new IEngine.PriceFeedUpdate[](2);
     updates[0].asset = AaveV3BNBAssets.USDT_UNDERLYING;
     updates[0].priceFeed = USDT_ADAPTER;
 
