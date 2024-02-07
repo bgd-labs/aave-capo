@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: BUSL-1.1
 pragma solidity ^0.8.0;
+
 import {GovV3Helpers} from 'aave-helpers/GovV3Helpers.sol';
 import {ArbitrumScript} from 'aave-helpers/ScriptUtils.sol';
 import {AaveV3Arbitrum, AaveV3ArbitrumAssets} from 'aave-address-book/AaveV3Arbitrum.sol';
@@ -70,9 +71,9 @@ library CapAdaptersCodeArbitrum {
         'Capped rETH / ETH / USD',
         7 days, // TODO: SET
         IPriceCapAdapter.PriceCapUpdateParams({
-          snapshotRatio: 1,
-          snapshotTimestamp: 1,
-          maxYearlyRatioGrowthPercent: 0
+          snapshotRatio: 1093801647000000000,
+          snapshotTimestamp: 1703743921,
+          maxYearlyRatioGrowthPercent: 10_00
         })
       )
     );
@@ -86,9 +87,9 @@ library CapAdaptersCodeArbitrum {
         'Capped wstETH / stETH(ETH) / USD', // TODO: is it actually going to STETH, but then using ETH feed
         7 days, // TODO: SET
         IPriceCapAdapter.PriceCapUpdateParams({
-          snapshotRatio: 1,
-          snapshotTimestamp: 1,
-          maxYearlyRatioGrowthPercent: 0
+          snapshotRatio: 1151642949000000000,
+          snapshotTimestamp: 1703743921,
+          maxYearlyRatioGrowthPercent: 10_00
         })
       )
     );
@@ -121,7 +122,7 @@ contract DeployArbitrumAdaptersAndPayload {
     );
 
     address payload = GovV3Helpers.deployDeterministic(
-      abi.encode(type(AaveV3ArbitrumPayload).creationCode, abi.encode(adapters))
+      abi.encodePacked(type(AaveV3ArbitrumPayload).creationCode, abi.encode(adapters))
     );
 
     return payload;
