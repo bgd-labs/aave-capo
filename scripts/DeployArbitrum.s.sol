@@ -70,8 +70,8 @@ library CapAdaptersCodeArbitrum {
         'Capped rETH / ETH / USD',
         7 days, // TODO: SET
         IPriceCapAdapter.PriceCapUpdateParams({
-          snapshotRatio: 0,
-          snapshotTimestamp: 0,
+          snapshotRatio: 1,
+          snapshotTimestamp: 1,
           maxYearlyRatioGrowthPercent: 0
         })
       )
@@ -86,8 +86,8 @@ library CapAdaptersCodeArbitrum {
         'Capped wstETH / stETH(ETH) / USD', // TODO: is it actually going to STETH, but then using ETH feed
         7 days, // TODO: SET
         IPriceCapAdapter.PriceCapUpdateParams({
-          snapshotRatio: 0,
-          snapshotTimestamp: 0,
+          snapshotRatio: 1,
+          snapshotTimestamp: 1,
           maxYearlyRatioGrowthPercent: 0
         })
       )
