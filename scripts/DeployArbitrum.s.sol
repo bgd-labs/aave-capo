@@ -94,8 +94,8 @@ library CapAdaptersCodeArbitrum {
     );
 }
 
-contract DeployArbitrum is ArbitrumScript {
-  function run() external broadcast {
+contract DeployArbitrumAdaptersAndPayload {
+  function _deploy() internal returns (address) {
     AaveV3ArbitrumPayload.Adapters memory adapters;
 
     adapters.usdtAdapter = GovV3Helpers.deployDeterministic(
@@ -120,8 +120,16 @@ contract DeployArbitrum is ArbitrumScript {
       CapAdaptersCodeArbitrum.wstETH_ADAPTER_CODE
     );
 
-    GovV3Helpers.deployDeterministic(
+    address payload = GovV3Helpers.deployDeterministic(
       abi.encode(type(AaveV3ArbitrumPayload).creationCode, abi.encode(adapters))
     );
+
+    return payload;
+  }
+}
+
+contract DeployArbitrum is ArbitrumScript, DeployArbitrumAdaptersAndPayload {
+  function run() external broadcast {
+    _deploy();
   }
 }
