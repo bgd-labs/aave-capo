@@ -30,15 +30,22 @@ library CapAdaptersCodeBnb {
     );
 }
 
-contract DeployBNB is BNBScript {
-  function run() external broadcast {
+contract DeployBnbAdaptersAndPayload {
+  function _deploy() internal returns (address) {
     AaveV3BnbPayload.Adapters memory adapters;
 
     adapters.usdtAdapter = GovV3Helpers.deployDeterministic(CapAdaptersCodeBnb.USDT_ADAPTER_CODE);
     adapters.usdcAdapter = GovV3Helpers.deployDeterministic(CapAdaptersCodeBnb.USDC_ADAPTER_CODE);
 
-    GovV3Helpers.deployDeterministic(
-      abi.encode(type(AaveV3BnbPayload).creationCode, abi.encode(adapters))
-    );
+    return
+      GovV3Helpers.deployDeterministic(
+        abi.encodePacked(type(AaveV3BnbPayload).creationCode, abi.encode(adapters))
+      );
+  }
+}
+
+contract DeployBNB is BNBScript, DeployBnbAdaptersAndPayload {
+  function run() external broadcast {
+    _deploy();
   }
 }

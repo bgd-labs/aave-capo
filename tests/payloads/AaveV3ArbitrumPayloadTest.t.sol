@@ -2,7 +2,6 @@
 pragma solidity ^0.8.0;
 
 import 'forge-std/Test.sol';
-import 'forge-std/console.sol';
 import {GovV3Helpers} from 'aave-helpers/GovV3Helpers.sol';
 import {AaveV3Arbitrum, AaveV3ArbitrumAssets} from 'aave-address-book/AaveV3Arbitrum.sol';
 

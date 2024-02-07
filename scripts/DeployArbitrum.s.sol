@@ -121,11 +121,10 @@ contract DeployArbitrumAdaptersAndPayload {
       CapAdaptersCodeArbitrum.wstETH_ADAPTER_CODE
     );
 
-    address payload = GovV3Helpers.deployDeterministic(
-      abi.encodePacked(type(AaveV3ArbitrumPayload).creationCode, abi.encode(adapters))
-    );
-
-    return payload;
+    return
+      GovV3Helpers.deployDeterministic(
+        abi.encodePacked(type(AaveV3ArbitrumPayload).creationCode, abi.encode(adapters))
+      );
   }
 }
 

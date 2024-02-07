@@ -40,8 +40,8 @@ library CapAdaptersCodeMetis {
     );
 }
 
-contract DeployMetis is MetisScript {
-  function run() external broadcast {
+contract DeployMetisAdaptersAndPayload {
+  function _deploy() internal returns (address) {
     AaveV3MetisPayload.Adapters memory adapters;
 
     adapters.mUsdtAdapter = GovV3Helpers.deployDeterministic(
@@ -52,8 +52,15 @@ contract DeployMetis is MetisScript {
     );
     adapters.mDaiAdapter = GovV3Helpers.deployDeterministic(CapAdaptersCodeMetis.mDAI_ADAPTER_CODE);
 
-    GovV3Helpers.deployDeterministic(
-      abi.encode(type(AaveV3MetisPayload).creationCode, abi.encode(adapters))
-    );
+    return
+      GovV3Helpers.deployDeterministic(
+        abi.encodePacked(type(AaveV3MetisPayload).creationCode, abi.encode(adapters))
+      );
+  }
+}
+
+contract DeployMetis is MetisScript, DeployMetisAdaptersAndPayload {
+  function run() external broadcast {
+    _deploy();
   }
 }
