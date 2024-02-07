@@ -40,7 +40,12 @@ library CapAdaptersCodeGnosis {
         AaveV3GnosisAssets.WXDAI_ORACLE,
         AaveV3GnosisAssets.sDAI_UNDERLYING,
         'Capped sDAI / DAI / USD',
-        int256(1.1 * 1e8) // TODO: SET
+        7 days, // TODO: SET
+        IPriceCapAdapter.PriceCapUpdateParams({
+          snapshotRatio: 1048947230000000000000000000,
+          snapshotTimestamp: 1703743921,
+          maxYearlyRatioGrowthPercent: 10_00
+        })
       )
     );
 
@@ -54,16 +59,16 @@ library CapAdaptersCodeGnosis {
         'Capped wstETH / stETH(ETH) / USD', // TODO: is it actually going to STETH, but then using ETH feed
         7 days, // TODO: SET
         IPriceCapAdapter.PriceCapUpdateParams({
-          snapshotRatio: 0,
-          snapshotTimestamp: 0,
-          maxYearlyRatioGrowthPercent: 0
+          snapshotRatio: 1151642949000000000,
+          snapshotTimestamp: 1703743921,
+          maxYearlyRatioGrowthPercent: 10_00
         })
       )
     );
 }
 
-contract DeployGnosis is GnosisScript {
-  function run() external broadcast {
+contract DeployGnosisAdaptersAndPayload {
+  function _deploy() internal returns (address) {
     AaveV3GnosisPayload.Adapters memory adapters;
 
     adapters.usdcAdapter = GovV3Helpers.deployDeterministic(
@@ -79,8 +84,15 @@ contract DeployGnosis is GnosisScript {
       CapAdaptersCodeGnosis.wstETH_ADAPTER_CODE
     );
 
-    GovV3Helpers.deployDeterministic(
-      abi.encode(type(AaveV3GnosisPayload).creationCode, abi.encode(adapters))
-    );
+    return
+      GovV3Helpers.deployDeterministic(
+        abi.encodePacked(type(AaveV3GnosisPayload).creationCode, abi.encode(adapters))
+      );
+  }
+}
+
+contract DeployGnosis is GnosisScript, DeployGnosisAdaptersAndPayload {
+  function run() external broadcast {
+    _deploy();
   }
 }

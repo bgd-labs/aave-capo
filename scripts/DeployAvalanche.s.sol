@@ -60,16 +60,16 @@ library CapAdaptersCodeAvalanche {
         'Capped sAVAX / AVAX / USD',
         7 days, // TODO: SET
         IPriceCapAdapter.PriceCapUpdateParams({
-          snapshotRatio: 0,
-          snapshotTimestamp: 0,
-          maxYearlyRatioGrowthPercent: 0
+          snapshotRatio: 1130451182771024053,
+          snapshotTimestamp: 1703743921,
+          maxYearlyRatioGrowthPercent: 10_00
         })
       )
     );
 }
 
-contract DeployAvalanche is AvalancheScript {
-  function run() external broadcast {
+contract DeployAvalancheAdaptersAndPayload {
+  function _deploy() internal returns (address) {
     AaveV3AvalanchePayload.Adapters memory adapters;
 
     adapters.usdtAdapter = GovV3Helpers.deployDeterministic(
@@ -88,8 +88,15 @@ contract DeployAvalanche is AvalancheScript {
       CapAdaptersCodeAvalanche.sAVAX_ADAPTER_CODE
     );
 
-    GovV3Helpers.deployDeterministic(
-      abi.encode(type(AaveV3AvalanchePayload).creationCode, abi.encode(adapters))
-    );
+    return
+      GovV3Helpers.deployDeterministic(
+        abi.encodePacked(type(AaveV3AvalanchePayload).creationCode, abi.encode(adapters))
+      );
+  }
+}
+
+contract DeployAvalanche is AvalancheScript, DeployAvalancheAdaptersAndPayload {
+  function run() external broadcast {
+    _deploy();
   }
 }

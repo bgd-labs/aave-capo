@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: BUSL-1.1
 pragma solidity ^0.8.0;
+
 import {GovV3Helpers} from 'aave-helpers/GovV3Helpers.sol';
 import {ArbitrumScript} from 'aave-helpers/ScriptUtils.sol';
 import {AaveV3Arbitrum, AaveV3ArbitrumAssets} from 'aave-address-book/AaveV3Arbitrum.sol';
@@ -70,9 +71,9 @@ library CapAdaptersCodeArbitrum {
         'Capped rETH / ETH / USD',
         7 days, // TODO: SET
         IPriceCapAdapter.PriceCapUpdateParams({
-          snapshotRatio: 0,
-          snapshotTimestamp: 0,
-          maxYearlyRatioGrowthPercent: 0
+          snapshotRatio: 1093801647000000000,
+          snapshotTimestamp: 1703743921,
+          maxYearlyRatioGrowthPercent: 10_00
         })
       )
     );
@@ -86,16 +87,16 @@ library CapAdaptersCodeArbitrum {
         'Capped wstETH / stETH(ETH) / USD', // TODO: is it actually going to STETH, but then using ETH feed
         7 days, // TODO: SET
         IPriceCapAdapter.PriceCapUpdateParams({
-          snapshotRatio: 0,
-          snapshotTimestamp: 0,
-          maxYearlyRatioGrowthPercent: 0
+          snapshotRatio: 1151642949000000000,
+          snapshotTimestamp: 1703743921,
+          maxYearlyRatioGrowthPercent: 10_00
         })
       )
     );
 }
 
-contract DeployArbitrum is ArbitrumScript {
-  function run() external broadcast {
+contract DeployArbitrumAdaptersAndPayload {
+  function _deploy() internal returns (address) {
     AaveV3ArbitrumPayload.Adapters memory adapters;
 
     adapters.usdtAdapter = GovV3Helpers.deployDeterministic(
@@ -120,8 +121,15 @@ contract DeployArbitrum is ArbitrumScript {
       CapAdaptersCodeArbitrum.wstETH_ADAPTER_CODE
     );
 
-    GovV3Helpers.deployDeterministic(
-      abi.encode(type(AaveV3ArbitrumPayload).creationCode, abi.encode(adapters))
-    );
+    return
+      GovV3Helpers.deployDeterministic(
+        abi.encodePacked(type(AaveV3ArbitrumPayload).creationCode, abi.encode(adapters))
+      );
+  }
+}
+
+contract DeployArbitrum is ArbitrumScript, DeployArbitrumAdaptersAndPayload {
+  function run() external broadcast {
+    _deploy();
   }
 }

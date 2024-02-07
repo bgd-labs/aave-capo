@@ -54,9 +54,9 @@ library CapAdaptersCodePolygon {
         'Capped wstETH / stETH(ETH) / USD', // TODO: is it actually going to STETH, but then using ETH feed
         7 days, // TODO: SET
         IPriceCapAdapter.PriceCapUpdateParams({
-          snapshotRatio: 0,
-          snapshotTimestamp: 0,
-          maxYearlyRatioGrowthPercent: 0
+          snapshotRatio: 1151642949000000000,
+          snapshotTimestamp: 1703743921,
+          maxYearlyRatioGrowthPercent: 10_00
         })
       )
     );
@@ -70,9 +70,9 @@ library CapAdaptersCodePolygon {
         'Capped stMATIC / MATIC / USD',
         7 days, // TODO: SET
         IPriceCapAdapter.PriceCapUpdateParams({
-          snapshotRatio: 0,
-          snapshotTimestamp: 0,
-          maxYearlyRatioGrowthPercent: 0
+          snapshotRatio: 1105335334964160762,
+          snapshotTimestamp: 1703743921,
+          maxYearlyRatioGrowthPercent: 10_00
         })
       )
     );
@@ -86,16 +86,16 @@ library CapAdaptersCodePolygon {
         'Capped MaticX / MATIC / USD',
         7 days, // TODO: SET
         IPriceCapAdapter.PriceCapUpdateParams({
-          snapshotRatio: 0,
-          snapshotTimestamp: 0,
-          maxYearlyRatioGrowthPercent: 0
+          snapshotRatio: 1098625039344900513,
+          snapshotTimestamp: 1703743921,
+          maxYearlyRatioGrowthPercent: 10_00
         })
       )
     );
 }
 
-contract DeployPolygon is PolygonScript {
-  function run() external broadcast {
+contract DeployPolygonAdaptersAndPayload {
+  function _deploy() internal returns (address) {
     AaveV3PolygonPayload.Adapters memory adapters;
 
     adapters.usdtAdapter = GovV3Helpers.deployDeterministic(
@@ -115,8 +115,15 @@ contract DeployPolygon is PolygonScript {
       CapAdaptersCodePolygon.MaticX_ADAPTER_CODE
     );
 
-    GovV3Helpers.deployDeterministic(
-      abi.encode(type(AaveV3PolygonPayload).creationCode, abi.encode(adapters))
-    );
+    return
+      GovV3Helpers.deployDeterministic(
+        abi.encodePacked(type(AaveV3PolygonPayload).creationCode, abi.encode(adapters))
+      );
+  }
+}
+
+contract DeployPolygon is PolygonScript, DeployPolygonAdaptersAndPayload {
+  function run() external broadcast {
+    _deploy();
   }
 }

@@ -87,9 +87,9 @@ library CapAdaptersCodeEthereum {
         'Capped sDAI / DAI / USD',
         7 days, // TODO: SET
         IPriceCapAdapter.PriceCapUpdateParams({
-          snapshotRatio: 0,
-          snapshotTimestamp: 0,
-          maxYearlyRatioGrowthPercent: 0
+          snapshotRatio: 1048947230000000000000000000,
+          snapshotTimestamp: 1703743921,
+          maxYearlyRatioGrowthPercent: 10_00
         })
       )
     );
@@ -103,9 +103,9 @@ library CapAdaptersCodeEthereum {
         'Capped cbETH / ETH / USD',
         7 days, // TODO: SET
         IPriceCapAdapter.PriceCapUpdateParams({
-          snapshotRatio: 0,
-          snapshotTimestamp: 0,
-          maxYearlyRatioGrowthPercent: 0
+          snapshotRatio: 1059523963000000000,
+          snapshotTimestamp: 1703743921,
+          maxYearlyRatioGrowthPercent: 10_00
         })
       )
     );
@@ -119,9 +119,9 @@ library CapAdaptersCodeEthereum {
         'Capped rETH / ETH / USD',
         7 days, // TODO: SET
         IPriceCapAdapter.PriceCapUpdateParams({
-          snapshotRatio: 0,
-          snapshotTimestamp: 0,
-          maxYearlyRatioGrowthPercent: 0
+          snapshotRatio: 1093801647000000000,
+          snapshotTimestamp: 1703743921,
+          maxYearlyRatioGrowthPercent: 10_00
         })
       )
     );
@@ -135,16 +135,16 @@ library CapAdaptersCodeEthereum {
         'Capped wstETH / stETH(ETH) / USD', // TODO: is it actually going to STETH, but then using ETH feed
         7 days, // TODO: SET
         IPriceCapAdapter.PriceCapUpdateParams({
-          snapshotRatio: 0,
-          snapshotTimestamp: 0,
-          maxYearlyRatioGrowthPercent: 0
+          snapshotRatio: 1151642949000000000,
+          snapshotTimestamp: 1703743921,
+          maxYearlyRatioGrowthPercent: 10_00
         })
       )
     );
 }
 
-contract DeployEthereum is EthereumScript {
-  function run() external broadcast {
+contract DeployEthereumAdaptersAndPayload {
+  function _deploy() internal returns (address) {
     AaveV3EthereumPayload.Adapters memory adapters;
 
     adapters.usdtAdapter = GovV3Helpers.deployDeterministic(
@@ -178,8 +178,15 @@ contract DeployEthereum is EthereumScript {
       CapAdaptersCodeEthereum.wstETH_ADAPTER_CODE
     );
 
-    GovV3Helpers.deployDeterministic(
-      abi.encode(type(AaveV3EthereumPayload).creationCode, abi.encode(adapters))
-    );
+    return
+      GovV3Helpers.deployDeterministic(
+        abi.encodePacked(type(AaveV3EthereumPayload).creationCode, abi.encode(adapters))
+      );
+  }
+}
+
+contract DeployEthereum is EthereumScript, DeployEthereumAdaptersAndPayload {
+  function run() external broadcast {
+    _deploy();
   }
 }

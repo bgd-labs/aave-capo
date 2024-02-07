@@ -31,9 +31,9 @@ library CapAdaptersCodeBase {
         'Capped wstETH / stETH(ETH) / USD', // TODO: is it actually going to STETH, but then using ETH feed
         7 days, // TODO: SET
         IPriceCapAdapter.PriceCapUpdateParams({
-          snapshotRatio: 0,
-          snapshotTimestamp: 0,
-          maxYearlyRatioGrowthPercent: 0
+          snapshotRatio: 1151642949000000000,
+          snapshotTimestamp: 1703743921,
+          maxYearlyRatioGrowthPercent: 10_00
         })
       )
     );
@@ -47,16 +47,16 @@ library CapAdaptersCodeBase {
         'Capped cbETH / ETH / USD', // TODO: is it actually going to STETH, but then using ETH feed
         7 days, // TODO: SET
         IPriceCapAdapter.PriceCapUpdateParams({
-          snapshotRatio: 0,
-          snapshotTimestamp: 0,
-          maxYearlyRatioGrowthPercent: 0
+          snapshotRatio: 1059523963000000000,
+          snapshotTimestamp: 1703743921,
+          maxYearlyRatioGrowthPercent: 10_00
         })
       )
     );
 }
 
-contract DeployBase is BaseScript {
-  function run() external broadcast {
+contract DeployBaseAdaptersAndPayload {
+  function _deploy() internal returns (address) {
     AaveV3BasePayload.Adapters memory adapters;
 
     adapters.usdcAdapter = GovV3Helpers.deployDeterministic(CapAdaptersCodeBase.USDC_ADAPTER_CODE);
@@ -67,8 +67,15 @@ contract DeployBase is BaseScript {
       CapAdaptersCodeBase.wstETH_ADAPTER_CODE
     );
 
-    GovV3Helpers.deployDeterministic(
-      abi.encode(type(AaveV3BasePayload).creationCode, abi.encode(adapters))
-    );
+    return
+      GovV3Helpers.deployDeterministic(
+        abi.encodePacked(type(AaveV3BasePayload).creationCode, abi.encode(adapters))
+      );
+  }
+}
+
+contract DeployBase is BaseScript, DeployBaseAdaptersAndPayload {
+  function run() external broadcast {
+    _deploy();
   }
 }

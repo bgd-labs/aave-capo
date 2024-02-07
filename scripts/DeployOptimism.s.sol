@@ -70,9 +70,9 @@ library CapAdaptersCodeOptimism {
         'Capped rETH / ETH / USD',
         7 days, // TODO: SET
         IPriceCapAdapter.PriceCapUpdateParams({
-          snapshotRatio: 0,
-          snapshotTimestamp: 0,
-          maxYearlyRatioGrowthPercent: 0
+          snapshotRatio: 1093801647000000000,
+          snapshotTimestamp: 1703743921,
+          maxYearlyRatioGrowthPercent: 10_00
         })
       )
     );
@@ -86,16 +86,16 @@ library CapAdaptersCodeOptimism {
         'Capped wstETH / stETH(ETH) / USD', // TODO: is it actually going to STETH, but then using ETH feed
         7 days, // TODO: SET
         IPriceCapAdapter.PriceCapUpdateParams({
-          snapshotRatio: 0,
-          snapshotTimestamp: 0,
-          maxYearlyRatioGrowthPercent: 0
+          snapshotRatio: 1151642949000000000,
+          snapshotTimestamp: 1703743921,
+          maxYearlyRatioGrowthPercent: 10_00
         })
       )
     );
 }
 
-contract DeployOptimism is OptimismScript {
-  function run() external broadcast {
+contract DeployOptimismAdaptersAndPayload {
+  function _deploy() internal returns (address) {
     AaveV3OptimismPayload.Adapters memory adapters;
 
     adapters.usdtAdapter = GovV3Helpers.deployDeterministic(
@@ -120,8 +120,15 @@ contract DeployOptimism is OptimismScript {
       CapAdaptersCodeOptimism.wstETH_ADAPTER_CODE
     );
 
-    GovV3Helpers.deployDeterministic(
-      abi.encode(type(AaveV3OptimismPayload).creationCode, abi.encode(adapters))
-    );
+    return
+      GovV3Helpers.deployDeterministic(
+        abi.encodePacked(type(AaveV3OptimismPayload).creationCode, abi.encode(adapters))
+      );
+  }
+}
+
+contract DeployOptimism is OptimismScript, DeployOptimismAdaptersAndPayload {
+  function run() external broadcast {
+    _deploy();
   }
 }
