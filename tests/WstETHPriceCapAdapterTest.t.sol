@@ -11,7 +11,19 @@ import {WstETHPriceCapAdapter, IStETH} from '../src/contracts/WstETHPriceCapAdap
 import {IPriceCapAdapter, ICLSynchronicityPriceAdapter} from '../src/interfaces/IPriceCapAdapter.sol';
 
 contract WstETHPriceCapAdapterTest is BaseTest {
-  constructor() BaseTest(AaveV3EthereumAssets.wstETH_ORACLE) {}
+  constructor()
+    BaseTest(
+      AaveV3EthereumAssets.wstETH_ORACLE,
+      RetrospectionParams({
+        maxYearlyRatioGrowthPercent: 9_10,
+        minimumSnapshotDelay: 7 days,
+        startBlock: 18061286,
+        finishBlock: 19183379,
+        delayInBlocks: 200000,
+        step: 50000
+      })
+    )
+  {}
 
   function createAdapter(
     IACLManager aclManager,
@@ -136,9 +148,5 @@ contract WstETHPriceCapAdapterTest is BaseTest {
     // TODO: fuzzing?
     vm.expectRevert(IPriceCapAdapter.CallerIsNotRiskOrPoolAdmin.selector);
     setCapParameters(adapter, snapshotRatio, snapshotTimestamp, maxYearlyRatioGrowthPercent);
-  }
-
-  function test_latestAnswerRetrospective() public {
-    _testlatestAnswerRetrospective(9_10, 7 days, 18061286, 19183379, 200000, 50000);
   }
 }

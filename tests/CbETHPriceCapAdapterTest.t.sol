@@ -10,7 +10,20 @@ import {CbETHPriceCapAdapter, ICbEthRateProvider} from '../src/contracts/CbETHPr
 import {ICLSynchronicityPriceAdapter} from '../src/interfaces/IPriceCapAdapter.sol';
 
 contract CbETHPriceCapAdapterTest is BaseTest {
-  constructor() BaseTest(AaveV3EthereumAssets.cbETH_ORACLE) {}
+  constructor()
+    BaseTest(
+      AaveV3EthereumAssets.cbETH_ORACLE,
+      // TODO: SET, currently just mock
+      RetrospectionParams({
+        maxYearlyRatioGrowthPercent: 9_10,
+        minimumSnapshotDelay: 7 days,
+        startBlock: 18061286,
+        finishBlock: 19183379,
+        delayInBlocks: 200000,
+        step: 50000
+      })
+    )
+  {}
 
   function createAdapter(
     IACLManager aclManager,

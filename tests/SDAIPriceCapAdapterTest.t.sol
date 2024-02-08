@@ -9,7 +9,20 @@ import {BaseAggregatorsMainnet} from 'cl-synchronicity-price-adapter/lib/BaseAgg
 import {SDAIPriceCapAdapter, IPot} from '../src/contracts/SDAIPriceCapAdapter.sol';
 
 contract SDAIPriceCapAdapterTest is BaseTest {
-  constructor() BaseTest(AaveV3EthereumAssets.sDAI_ORACLE) {}
+  constructor()
+    BaseTest(
+      AaveV3EthereumAssets.sDAI_ORACLE,
+      // TODO: SET, currently just mock
+      RetrospectionParams({
+        maxYearlyRatioGrowthPercent: 9_10,
+        minimumSnapshotDelay: 7 days,
+        startBlock: 18061286,
+        finishBlock: 19183379,
+        delayInBlocks: 200000,
+        step: 50000
+      })
+    )
+  {}
 
   function createAdapter(
     IACLManager aclManager,

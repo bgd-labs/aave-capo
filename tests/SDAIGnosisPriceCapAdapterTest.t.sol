@@ -10,7 +10,20 @@ import {IERC4626} from 'forge-std/interfaces/IERC4626.sol';
 import {SDAIGnosisPriceCapAdapter} from '../src/contracts/SDAIGnosisPriceCapAdapter.sol';
 
 contract SDAIGnosisPriceCapAdapterTest is BaseTest {
-  constructor() BaseTest(AaveV3GnosisAssets.sDAI_ORACLE) {}
+  constructor()
+    BaseTest(
+      AaveV3GnosisAssets.sDAI_ORACLE,
+      // TODO: SET, currently just mock
+      RetrospectionParams({
+        maxYearlyRatioGrowthPercent: 9_10,
+        minimumSnapshotDelay: 7 days,
+        startBlock: 18061286,
+        finishBlock: 19183379,
+        delayInBlocks: 200000,
+        step: 50000
+      })
+    )
+  {}
 
   function createAdapter(
     IACLManager aclManager,

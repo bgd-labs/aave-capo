@@ -9,7 +9,20 @@ import {BaseAggregatorsMainnet} from 'cl-synchronicity-price-adapter/lib/BaseAgg
 import {RETHPriceCapAdapter, IrETH} from '../src/contracts/RETHPriceCapAdapter.sol';
 
 contract RETHPriceCapAdapterTest is BaseTest {
-  constructor() BaseTest(AaveV3EthereumAssets.rETH_ORACLE) {}
+  constructor()
+    BaseTest(
+      AaveV3EthereumAssets.rETH_ORACLE,
+      // TODO: SET, currently just mock
+      RetrospectionParams({
+        maxYearlyRatioGrowthPercent: 9_10,
+        minimumSnapshotDelay: 7 days,
+        startBlock: 18061286,
+        finishBlock: 19183379,
+        delayInBlocks: 200000,
+        step: 50000
+      })
+    )
+  {}
 
   function createAdapter(
     IACLManager aclManager,

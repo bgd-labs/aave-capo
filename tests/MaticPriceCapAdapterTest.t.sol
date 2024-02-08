@@ -15,8 +15,9 @@ abstract contract BaseMaticPriceCapAdapterTest is BaseTest {
   constructor(
     address notCappedAdapter,
     address rateProvider,
-    string memory pairName
-  ) BaseTest(notCappedAdapter) {
+    string memory pairName,
+    RetrospectionParams memory retrospectionParams
+  ) BaseTest(notCappedAdapter, retrospectionParams) {
     RATE_PROVIDER = rateProvider;
     _pairName = pairName;
   }
@@ -73,7 +74,16 @@ contract MaticXPriceCapAdapterTest is BaseMaticPriceCapAdapterTest {
     BaseMaticPriceCapAdapterTest(
       AaveV3PolygonAssets.MaticX_ORACLE,
       BaseAggregatorsPolygon.MATICX_RATE_PROVIDER,
-      'MaticX / Matic / USD'
+      'MaticX / Matic / USD',
+      // TODO: SET, currently just mock
+      RetrospectionParams({
+        maxYearlyRatioGrowthPercent: 9_10,
+        minimumSnapshotDelay: 7 days,
+        startBlock: 18061286,
+        finishBlock: 19183379,
+        delayInBlocks: 200000,
+        step: 50000
+      })
     )
   {}
 }
@@ -83,7 +93,16 @@ contract StMaticPriceCapAdapterTest is BaseMaticPriceCapAdapterTest {
     BaseMaticPriceCapAdapterTest(
       AaveV3PolygonAssets.stMATIC_ORACLE,
       BaseAggregatorsPolygon.STMATIC_RATE_PROVIDER,
-      'stMATIC / Matic / USD'
+      'stMATIC / Matic / USD',
+      // TODO: SET, currently just mock
+      RetrospectionParams({
+        maxYearlyRatioGrowthPercent: 9_10,
+        minimumSnapshotDelay: 7 days,
+        startBlock: 18061286,
+        finishBlock: 19183379,
+        delayInBlocks: 200000,
+        step: 50000
+      })
     )
   {}
 }

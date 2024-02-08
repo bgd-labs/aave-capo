@@ -9,7 +9,20 @@ import {BaseAggregatorsMainnet} from 'cl-synchronicity-price-adapter/lib/BaseAgg
 import {SAvaxPriceCapAdapter, ISAvax} from '../src/contracts/SAvaxPriceCapAdapter.sol';
 
 contract SAvaxPriceCapAdapterTest is BaseTest {
-  constructor() BaseTest(AaveV3AvalancheAssets.sAVAX_ORACLE) {}
+  constructor()
+    BaseTest(
+      AaveV3AvalancheAssets.sAVAX_ORACLE,
+      // TODO: SET, currently just mock
+      RetrospectionParams({
+        maxYearlyRatioGrowthPercent: 9_10,
+        minimumSnapshotDelay: 7 days,
+        startBlock: 18061286,
+        finishBlock: 19183379,
+        delayInBlocks: 200000,
+        step: 50000
+      })
+    )
+  {}
 
   function createAdapter(
     IACLManager aclManager,
