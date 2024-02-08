@@ -97,12 +97,7 @@ abstract contract BaseTest is Test {
 
     skip(1);
 
-    vm.mockCall(
-      address(adapter.ACL_MANAGER()),
-      abi.encodeWithSelector(BasicIACLManager.isRiskAdmin.selector),
-      abi.encode(true)
-    );
-    setCapParameters(
+    _setCapParametersByAdmin(
       adapter,
       uint104(adapter.getSnapshotRatio()) + 1,
       uint48(block.timestamp) - minimumSnapshotDelay,
@@ -295,5 +290,79 @@ abstract contract BaseTest is Test {
       priceOfNotCappedAdapter,
       'uncapped price is not equal to the existing adapter price'
     );
+  }
+
+  function _setCapParametersByAdmin(
+    IPriceCapAdapter adapter,
+    uint104 currentRatio,
+    uint48 snapshotTimestamp,
+    uint16 maxYearlyRatioGrowthPercent
+  ) internal {
+    vm.mockCall(
+      address(adapter.ACL_MANAGER()),
+      abi.encodeWithSelector(BasicIACLManager.isRiskAdmin.selector),
+      abi.encode(true)
+    );
+
+    setCapParameters(adapter, currentRatio, snapshotTimestamp, maxYearlyRatioGrowthPercent);
+  }
+
+  function _testlatestAnswerRetrospective(
+    uint16 maxYearlyRatioGrowthPercent,
+    uint48 minimumSnapshotDelay,
+    uint256 startBlock,
+    uint256 finishBlock,
+    uint256 delayInBlocks,
+    uint256 step
+  ) internal {
+    uint256 initialBlock = block.number;
+    require(startBlock < finishBlock, 'start block is after finish block');
+
+    vm.rollFork(startBlock);
+
+    // create adapter with initial parameters
+    IPriceCapAdapter adapter = createAdapterSimple(
+      minimumSnapshotDelay,
+      uint40(block.timestamp - minimumSnapshotDelay),
+      maxYearlyRatioGrowthPercent
+    );
+
+    skip(1);
+
+    // persist adapter
+    vm.makePersistent(address(adapter));
+
+    // start rolling fork and check that the price is the same
+    uint256 currentBlock = startBlock;
+
+    while (currentBlock <= finishBlock - delayInBlocks - step) {
+      uint48 snapshotTimestamp = uint48(block.timestamp);
+      uint104 currentRatio = getCurrentRatio();
+
+      currentBlock += delayInBlocks;
+      vm.rollFork(currentBlock);
+
+      _setCapParametersByAdmin(
+        adapter,
+        currentRatio,
+        snapshotTimestamp,
+        maxYearlyRatioGrowthPercent
+      );
+
+      int256 price = adapter.latestAnswer();
+      int256 priceOfNotCappedAdapter = NOT_CAPPED_ADAPTER.latestAnswer();
+
+      assertEq(
+        price,
+        priceOfNotCappedAdapter,
+        'uncapped price is not equal to the existing adapter price'
+      );
+
+      currentBlock += step;
+
+      vm.rollFork(currentBlock);
+    }
+
+    vm.rollFork(initialBlock);
   }
 }

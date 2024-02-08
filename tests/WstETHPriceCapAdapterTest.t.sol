@@ -137,4 +137,8 @@ contract WstETHPriceCapAdapterTest is BaseTest {
     vm.expectRevert(IPriceCapAdapter.CallerIsNotRiskOrPoolAdmin.selector);
     setCapParameters(adapter, snapshotRatio, snapshotTimestamp, maxYearlyRatioGrowthPercent);
   }
+
+  function test_latestAnswerRetrospective() public {
+    _testlatestAnswerRetrospective(9_10, 7 days, 18061286, 19183379, 200000, 50000);
+  }
 }
