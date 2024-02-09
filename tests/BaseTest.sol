@@ -159,6 +159,13 @@ abstract contract BaseTest is Test {
       abi.encodeWithSelector(ICLSynchronicityPriceAdapter.decimals.selector),
       abi.encode(decimals)
     );
+
+    vm.mockCall(
+      ratioProviderAddress,
+      abi.encodeWithSelector(ICLSynchronicityPriceAdapter.decimals.selector),
+      abi.encode(decimals)
+    );
+
     IPriceCapAdapter adapter = createAdapter(
       aclManager,
       baseAggregatorAddress,

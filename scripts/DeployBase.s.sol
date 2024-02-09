@@ -29,7 +29,7 @@ library CapAdaptersCodeBase {
         AaveV3BaseAssets.WETH_ORACLE,
         BaseAggregatorsBase.WSTETH_STETH_AGGREGATOR,
         'Capped wstETH / stETH(ETH) / USD', // TODO: is it actually going to STETH, but then using ETH feed
-        7 days, // TODO: SET
+        7 days,
         IPriceCapAdapter.PriceCapUpdateParams({
           snapshotRatio: 1151642949000000000,
           snapshotTimestamp: 1703743921,
@@ -44,8 +44,8 @@ library CapAdaptersCodeBase {
         AaveV3Base.ACL_MANAGER,
         AaveV3BaseAssets.WETH_ORACLE,
         BaseAggregatorsBase.CBETH_ETH_AGGREGATOR,
-        'Capped cbETH / ETH / USD', // TODO: is it actually going to STETH, but then using ETH feed
-        7 days, // TODO: SET
+        'Capped cbETH / ETH / USD',
+        7 days,
         IPriceCapAdapter.PriceCapUpdateParams({
           snapshotRatio: 1059523963000000000,
           snapshotTimestamp: 1703743921,

@@ -10,8 +10,8 @@ import {CLRatePriceCapAdapter, IPriceCapAdapter} from '../src/contracts/CLRatePr
 import {AaveV3GnosisPayload} from '../src/contracts/payloads/AaveV3GnosisPayload.sol';
 
 library CapAdaptersCodeGnosis {
-  // TODO: move it to address book
   address public constant WSTETH_STETH_AGGREGATOR = 0x0064AC007fF665CF8D0D3Af5E0AD1c26a3f853eA;
+
   bytes public constant USDC_ADAPTER_CODE =
     abi.encodePacked(
       type(PriceCapAdapterStable).creationCode,

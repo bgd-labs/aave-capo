@@ -75,7 +75,6 @@ contract MaticXPriceCapAdapterTest is BaseMaticPriceCapAdapterTest {
       AaveV3PolygonAssets.MaticX_ORACLE,
       BaseAggregatorsPolygon.MATICX_RATE_PROVIDER,
       'MaticX / Matic / USD',
-      // TODO: SET, currently just mock
       RetrospectionParams({
         maxYearlyRatioGrowthPercent: 7_98,
         minimumSnapshotDelay: 14 days,
@@ -94,7 +93,6 @@ contract StMaticPriceCapAdapterTest is BaseMaticPriceCapAdapterTest {
       AaveV3PolygonAssets.stMATIC_ORACLE,
       BaseAggregatorsPolygon.STMATIC_RATE_PROVIDER,
       'stMATIC / Matic / USD',
-      // TODO: SET, currently just mock
       RetrospectionParams({
         maxYearlyRatioGrowthPercent: 8_85,
         minimumSnapshotDelay: 14 days,
