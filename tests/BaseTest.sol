@@ -28,7 +28,7 @@ abstract contract BaseTest is Test {
 
   constructor(
     address notCappedAdapter,
-    ForkParams memory forkParams,
+    ForkParams memory _forkParams,
     // needed for retrospection testing
     RetrospectionParams memory _retrospectionParams
   ) {
@@ -38,6 +38,7 @@ abstract contract BaseTest is Test {
     );
     NOT_CAPPED_ADAPTER = ICLSynchronicityPriceAdapter(notCappedAdapter);
     retrospectionParams = _retrospectionParams;
+    forkParams = _forkParams;
   }
 
   function setUp() public {
