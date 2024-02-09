@@ -320,7 +320,7 @@ abstract contract BaseTest is Test {
     // create adapter with initial parameters
     IPriceCapAdapter adapter = createAdapterSimple(
       retrospectionParams.minimumSnapshotDelay,
-      uint40(block.timestamp - 4 * retrospectionParams.minimumSnapshotDelay),
+      uint40(block.timestamp - 2 * retrospectionParams.minimumSnapshotDelay),
       retrospectionParams.maxYearlyRatioGrowthPercent
     );
 

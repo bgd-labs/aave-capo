@@ -77,8 +77,8 @@ contract MaticXPriceCapAdapterTest is BaseMaticPriceCapAdapterTest {
       'MaticX / Matic / USD',
       // TODO: SET, currently just mock
       RetrospectionParams({
-        maxYearlyRatioGrowthPercent: 9_10,
-        minimumSnapshotDelay: 7 days,
+        maxYearlyRatioGrowthPercent: 7_98,
+        minimumSnapshotDelay: 14 days,
         startBlock: 18061286,
         finishBlock: 19183379,
         delayInBlocks: 200000,
@@ -96,8 +96,8 @@ contract StMaticPriceCapAdapterTest is BaseMaticPriceCapAdapterTest {
       'stMATIC / Matic / USD',
       // TODO: SET, currently just mock
       RetrospectionParams({
-        maxYearlyRatioGrowthPercent: 9_10,
-        minimumSnapshotDelay: 7 days,
+        maxYearlyRatioGrowthPercent: 8_85,
+        minimumSnapshotDelay: 14 days,
         startBlock: 18061286,
         finishBlock: 19183379,
         delayInBlocks: 200000,

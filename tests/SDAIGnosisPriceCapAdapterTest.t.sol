@@ -15,7 +15,7 @@ contract SDAIGnosisPriceCapAdapterTest is BaseTest {
       AaveV3GnosisAssets.sDAI_ORACLE,
       // TODO: SET, currently just mock
       RetrospectionParams({
-        maxYearlyRatioGrowthPercent: 9_10,
+        maxYearlyRatioGrowthPercent: 10_15,
         minimumSnapshotDelay: 7 days,
         startBlock: 18061286,
         finishBlock: 19183379,

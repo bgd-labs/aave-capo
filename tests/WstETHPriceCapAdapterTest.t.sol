@@ -15,12 +15,12 @@ contract WstETHPriceCapAdapterTest is BaseTest {
     BaseTest(
       AaveV3EthereumAssets.wstETH_ORACLE,
       RetrospectionParams({
-        maxYearlyRatioGrowthPercent: 9_10,
+        maxYearlyRatioGrowthPercent: 8_72,
         minimumSnapshotDelay: 7 days,
         startBlock: 18061286,
         finishBlock: 19183379,
-        delayInBlocks: 200000,
-        step: 50000
+        delayInBlocks: 50200,
+        step: 200000
       })
     )
   {}
