@@ -1,26 +1,25 @@
 // SPDX-License-Identifier: BUSL-1.1
 pragma solidity ^0.8.0;
 
-import './BaseTest.sol';
+import '../BaseTest.sol';
 
 import {AaveV3Gnosis, AaveV3GnosisAssets} from 'aave-address-book/AaveV3Gnosis.sol';
 import {BaseAggregatorsGnosis} from 'cl-synchronicity-price-adapter/lib/BaseAggregators.sol';
 import {IERC4626} from 'forge-std/interfaces/IERC4626.sol';
 
-import {SDAIGnosisPriceCapAdapter} from '../src/contracts/SDAIGnosisPriceCapAdapter.sol';
+import {SDAIGnosisPriceCapAdapter} from '../../src/contracts/SDAIGnosisPriceCapAdapter.sol';
 
 contract SDAIGnosisPriceCapAdapterTest is BaseTest {
   constructor()
     BaseTest(
       AaveV3GnosisAssets.sDAI_ORACLE,
-      // TODO: SET, currently just mock
       RetrospectionParams({
         maxYearlyRatioGrowthPercent: 10_15,
         minimumSnapshotDelay: 7 days,
-        startBlock: 18061286,
-        finishBlock: 19183379,
-        delayInBlocks: 200000,
-        step: 50000
+        startBlock: 31114532,
+        finishBlock: 32364499,
+        delayInBlocks: 120000, // 7 days
+        step: 120000
       })
     )
   {}

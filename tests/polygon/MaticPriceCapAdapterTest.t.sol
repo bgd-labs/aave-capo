@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: BUSL-1.1
 pragma solidity ^0.8.0;
 
-import './BaseTest.sol';
+import '../BaseTest.sol';
 
 import {AaveV3Polygon, AaveV3PolygonAssets} from 'aave-address-book/AaveV3Polygon.sol';
 import {BaseAggregatorsPolygon} from 'cl-synchronicity-price-adapter/lib/BaseAggregators.sol';
 
-import {MaticPriceCapAdapter, IMaticRateProvider} from '../src/contracts/MaticPriceCapAdapter.sol';
+import {MaticPriceCapAdapter, IMaticRateProvider} from '../../src/contracts/MaticPriceCapAdapter.sol';
 
 abstract contract BaseMaticPriceCapAdapterTest is BaseTest {
   address public immutable RATE_PROVIDER;
@@ -79,10 +79,10 @@ contract MaticXPriceCapAdapterTest is BaseMaticPriceCapAdapterTest {
       RetrospectionParams({
         maxYearlyRatioGrowthPercent: 7_98,
         minimumSnapshotDelay: 14 days,
-        startBlock: 18061286,
-        finishBlock: 19183379,
-        delayInBlocks: 200000,
-        step: 50000
+        startBlock: 50808790,
+        finishBlock: 53308720,
+        delayInBlocks: 560000, // 14 days
+        step: 280000 // ~ 7 days
       })
     )
   {}
@@ -98,10 +98,10 @@ contract StMaticPriceCapAdapterTest is BaseMaticPriceCapAdapterTest {
       RetrospectionParams({
         maxYearlyRatioGrowthPercent: 8_85,
         minimumSnapshotDelay: 14 days,
-        startBlock: 18061286,
-        finishBlock: 19183379,
-        delayInBlocks: 200000,
-        step: 50000
+        startBlock: 50808790,
+        finishBlock: 53308720,
+        delayInBlocks: 560000, // 14 days
+        step: 280000 // ~ 7 days
       })
     )
   {}

@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: BUSL-1.1
 pragma solidity ^0.8.0;
 
-import './BaseTest.sol';
+import '../BaseTest.sol';
 
 import {AaveV3Avalanche, AaveV3AvalancheAssets} from 'aave-address-book/AaveV3Avalanche.sol';
 import {BaseAggregatorsMainnet} from 'cl-synchronicity-price-adapter/lib/BaseAggregators.sol';
 
-import {SAvaxPriceCapAdapter, ISAvax} from '../src/contracts/SAvaxPriceCapAdapter.sol';
+import {SAvaxPriceCapAdapter, ISAvax} from '../../src/contracts/SAvaxPriceCapAdapter.sol';
 
 contract SAvaxPriceCapAdapterTest is BaseTest {
   constructor()
@@ -16,10 +16,10 @@ contract SAvaxPriceCapAdapterTest is BaseTest {
       RetrospectionParams({
         maxYearlyRatioGrowthPercent: 8_25,
         minimumSnapshotDelay: 14 days,
-        startBlock: 18061286,
-        finishBlock: 19183379,
-        delayInBlocks: 200000,
-        step: 50000
+        startBlock: 39152370,
+        finishBlock: 41448370,
+        delayInBlocks: 605000, // 14 days
+        step: 302500 // 7 days
       })
     )
   {}
