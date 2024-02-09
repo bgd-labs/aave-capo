@@ -320,7 +320,7 @@ abstract contract BaseTest is Test {
     // create adapter with initial parameters
     IPriceCapAdapter adapter = createAdapterSimple(
       retrospectionParams.minimumSnapshotDelay,
-      uint40(block.timestamp - retrospectionParams.minimumSnapshotDelay),
+      uint40(block.timestamp - 4 * retrospectionParams.minimumSnapshotDelay),
       retrospectionParams.maxYearlyRatioGrowthPercent
     );
 
@@ -332,14 +332,12 @@ abstract contract BaseTest is Test {
     // start rolling fork and check that the price is the same
     uint256 currentBlock = retrospectionParams.startBlock;
 
-    while (
-      currentBlock <=
-      retrospectionParams.finishBlock - retrospectionParams.delayInBlocks - retrospectionParams.step
-    ) {
+    while (currentBlock <= retrospectionParams.finishBlock - retrospectionParams.step) {
+      vm.rollFork(currentBlock - retrospectionParams.delayInBlocks);
+
       uint48 snapshotTimestamp = uint48(block.timestamp);
       uint104 currentRatio = getCurrentRatio();
 
-      currentBlock += retrospectionParams.delayInBlocks;
       vm.rollFork(currentBlock);
 
       _setCapParametersByAdmin(
