@@ -13,6 +13,7 @@ contract SDAIGnosisPriceCapAdapterTest is BaseTest {
   constructor()
     BaseTest(
       AaveV3GnosisAssets.sDAI_ORACLE,
+      ForkParams({network: 'gnosis', blockNumber: 32019351}),
       RetrospectionParams({
         maxYearlyRatioGrowthPercent: 10_15,
         minimumSnapshotDelay: 7 days,
@@ -64,9 +65,5 @@ contract SDAIGnosisPriceCapAdapterTest is BaseTest {
 
   function getCurrentRatio() public view override returns (uint104) {
     return uint104(IERC4626(AaveV3GnosisAssets.sDAI_UNDERLYING).convertToAssets(10 ** 18));
-  }
-
-  function setUp() public {
-    vm.createSelectFork(vm.rpcUrl('gnosis'), 32019351);
   }
 }

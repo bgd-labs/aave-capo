@@ -12,6 +12,7 @@ contract SAvaxPriceCapAdapterTest is BaseTest {
   constructor()
     BaseTest(
       AaveV3AvalancheAssets.sAVAX_ORACLE,
+      ForkParams({network: 'avalanche', blockNumber: 40555293}),
       // TODO: SET, currently just mock
       RetrospectionParams({
         maxYearlyRatioGrowthPercent: 8_25,
@@ -64,9 +65,5 @@ contract SAvaxPriceCapAdapterTest is BaseTest {
 
   function getCurrentRatio() public view override returns (uint104) {
     return uint104(ISAvax(AaveV3AvalancheAssets.sAVAX_UNDERLYING).getPooledAvaxByShares(10 ** 18));
-  }
-
-  function setUp() public {
-    vm.createSelectFork(vm.rpcUrl('avalanche'), 40555293);
   }
 }

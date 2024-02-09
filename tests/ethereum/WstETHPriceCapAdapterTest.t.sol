@@ -14,6 +14,7 @@ contract WstETHPriceCapAdapterTest is BaseTest {
   constructor()
     BaseTest(
       AaveV3EthereumAssets.wstETH_ORACLE,
+      ForkParams({network: 'mainnet', blockNumber: 18961286}),
       RetrospectionParams({
         maxYearlyRatioGrowthPercent: 8_72,
         minimumSnapshotDelay: 7 days,
@@ -68,10 +69,6 @@ contract WstETHPriceCapAdapterTest is BaseTest {
       uint104(
         uint256(IStETH(AaveV2EthereumAssets.stETH_UNDERLYING).getPooledEthByShares(10 ** 18))
       );
-  }
-
-  function setUp() public {
-    vm.createSelectFork(vm.rpcUrl('mainnet'), 18961286);
   }
 
   // TODO: test that setParams func sets params as expected

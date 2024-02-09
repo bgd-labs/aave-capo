@@ -12,6 +12,7 @@ contract RETHPriceCapAdapterTest is BaseTest {
   constructor()
     BaseTest(
       AaveV3EthereumAssets.rETH_ORACLE,
+      ForkParams({network: 'mainnet', blockNumber: 18961286}),
       RetrospectionParams({
         maxYearlyRatioGrowthPercent: 7_50,
         minimumSnapshotDelay: 7 days,
@@ -63,10 +64,6 @@ contract RETHPriceCapAdapterTest is BaseTest {
 
   function getCurrentRatio() public view override returns (uint104) {
     return uint104(IrETH(AaveV3EthereumAssets.rETH_UNDERLYING).getExchangeRate());
-  }
-
-  function setUp() public {
-    vm.createSelectFork(vm.rpcUrl('mainnet'), 18961286);
   }
 
   function test_cappedLatestAnswer() public {

@@ -17,7 +17,13 @@ abstract contract BaseMaticPriceCapAdapterTest is BaseTest {
     address rateProvider,
     string memory pairName,
     RetrospectionParams memory retrospectionParams
-  ) BaseTest(notCappedAdapter, retrospectionParams) {
+  )
+    BaseTest(
+      notCappedAdapter,
+      ForkParams({network: 'polygon', blockNumber: 52496345}),
+      retrospectionParams
+    )
+  {
     RATE_PROVIDER = rateProvider;
     _pairName = pairName;
   }
@@ -62,10 +68,6 @@ abstract contract BaseMaticPriceCapAdapterTest is BaseTest {
 
   function getCurrentRatio() public view override returns (uint104) {
     return uint104(IMaticRateProvider(RATE_PROVIDER).getRate());
-  }
-
-  function setUp() public {
-    vm.createSelectFork(vm.rpcUrl('polygon'), 52496345);
   }
 }
 
