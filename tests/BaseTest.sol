@@ -7,6 +7,11 @@ import {IACLManager, BasicIACLManager} from 'aave-address-book/AaveV3.sol';
 import {IPriceCapAdapter, ICLSynchronicityPriceAdapter} from '../src/interfaces/IPriceCapAdapter.sol';
 
 abstract contract BaseTest is Test {
+  struct ForkParams {
+    string network;
+    uint256 blockNumber;
+  }
+
   struct RetrospectionParams {
     uint16 maxYearlyRatioGrowthPercent;
     uint48 minimumSnapshotDelay;
@@ -19,9 +24,11 @@ abstract contract BaseTest is Test {
   ICLSynchronicityPriceAdapter public immutable NOT_CAPPED_ADAPTER;
 
   RetrospectionParams public retrospectionParams;
+  ForkParams public forkParams;
 
   constructor(
     address notCappedAdapter,
+    ForkParams memory _forkParams,
     // needed for retrospection testing
     RetrospectionParams memory _retrospectionParams
   ) {
@@ -31,6 +38,11 @@ abstract contract BaseTest is Test {
     );
     NOT_CAPPED_ADAPTER = ICLSynchronicityPriceAdapter(notCappedAdapter);
     retrospectionParams = _retrospectionParams;
+    forkParams = _forkParams;
+  }
+
+  function setUp() public {
+    vm.createSelectFork(vm.rpcUrl(forkParams.network), forkParams.blockNumber);
   }
 
   function createAdapter(

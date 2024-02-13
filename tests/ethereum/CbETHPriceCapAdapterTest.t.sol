@@ -13,6 +13,7 @@ contract CbETHPriceCapAdapterTest is BaseTest {
   constructor()
     BaseTest(
       AaveV3EthereumAssets.cbETH_ORACLE,
+      ForkParams({network: 'mainnet', blockNumber: 18961286}),
       RetrospectionParams({
         maxYearlyRatioGrowthPercent: 6_75,
         minimumSnapshotDelay: 7 days,
@@ -64,10 +65,6 @@ contract CbETHPriceCapAdapterTest is BaseTest {
 
   function getCurrentRatio() public view override returns (uint104) {
     return uint104(ICbEthRateProvider(AaveV3EthereumAssets.cbETH_UNDERLYING).exchangeRate());
-  }
-
-  function setUp() public {
-    vm.createSelectFork(vm.rpcUrl('mainnet'), 18961286);
   }
 
   function test_latestAnswer(uint16 maxYearlyRatioGrowthPercent) public override {

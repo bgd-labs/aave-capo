@@ -1,19 +1,16 @@
 // SPDX-License-Identifier: BUSL-1.1
 pragma solidity ^0.8.0;
 
-import '../BaseTest.sol';
-
 import {AaveV3Arbitrum, AaveV3ArbitrumAssets} from 'aave-address-book/AaveV3Arbitrum.sol';
 import {BaseAggregatorsArbitrum} from 'cl-synchronicity-price-adapter/lib/BaseAggregators.sol';
-import {IChainlinkAggregator} from 'cl-synchronicity-price-adapter/interfaces/IChainlinkAggregator.sol';
 
-import {CLRatePriceCapAdapter} from '../../src/contracts/CLRatePriceCapAdapter.sol';
-import {IPriceCapAdapter, ICLSynchronicityPriceAdapter} from '../../src/interfaces/IPriceCapAdapter.sol';
+import {CLAdapterBaseTest} from '../CLAdapterBaseTest.sol';
 
-contract WstETHArbitrumPriceCapAdapterTest is BaseTest {
+contract WstETHArbitrumPriceCapAdapterTest is CLAdapterBaseTest {
   constructor()
-    BaseTest(
+    CLAdapterBaseTest(
       AaveV3ArbitrumAssets.wstETH_ORACLE,
+      ForkParams({network: 'arbitrum', blockNumber: 178994964}),
       RetrospectionParams({
         maxYearlyRatioGrowthPercent: 8_72,
         minimumSnapshotDelay: 7 days,
@@ -21,58 +18,13 @@ contract WstETHArbitrumPriceCapAdapterTest is BaseTest {
         finishBlock: 178994966,
         delayInBlocks: 2550000, // > 7 days
         step: 2550000
+      }),
+      AdapterCreationDefaultParams({
+        aclManager: AaveV3Arbitrum.ACL_MANAGER,
+        baseAggregatorAddress: AaveV3ArbitrumAssets.WETH_ORACLE,
+        ratioProviderAddress: BaseAggregatorsArbitrum.WSTETH_STETH_AGGREGATOR,
+        pairDescription: 'Capped wstETH / stETH(ETH) / USD'
       })
     )
   {}
-
-  function createAdapter(
-    IACLManager aclManager,
-    address baseAggregatorAddress,
-    address ratioProviderAddress,
-    string memory pairDescription,
-    uint48 minimumSnapshotDelay,
-    IPriceCapAdapter.PriceCapUpdateParams memory priceCapParams
-  ) public override returns (IPriceCapAdapter) {
-    return
-      new CLRatePriceCapAdapter(
-        aclManager,
-        baseAggregatorAddress,
-        ratioProviderAddress,
-        pairDescription,
-        minimumSnapshotDelay,
-        priceCapParams
-      );
-  }
-
-  function createAdapterSimple(
-    uint48 minimumSnapshotDelay,
-    uint104 currentRatio,
-    uint48 snapshotTimestamp,
-    uint16 maxYearlyRatioGrowthPercent
-  ) public override returns (IPriceCapAdapter) {
-    return
-      createAdapter(
-        AaveV3Arbitrum.ACL_MANAGER,
-        AaveV3ArbitrumAssets.WETH_ORACLE,
-        BaseAggregatorsArbitrum.WSTETH_STETH_AGGREGATOR,
-        'Capped wstETH / stETH(ETH) / USD', // TODO: is it actually going to STETH, but then using ETH feed
-        minimumSnapshotDelay,
-        currentRatio,
-        snapshotTimestamp,
-        maxYearlyRatioGrowthPercent
-      );
-  }
-
-  function getCurrentRatio() public view override returns (uint104) {
-    return
-      uint104(
-        uint256(
-          IChainlinkAggregator(BaseAggregatorsArbitrum.WSTETH_STETH_AGGREGATOR).latestAnswer()
-        )
-      );
-  }
-
-  function setUp() public {
-    vm.createSelectFork(vm.rpcUrl('arbitrum'), 178994966);
-  }
 }

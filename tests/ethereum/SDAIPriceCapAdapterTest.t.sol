@@ -12,6 +12,7 @@ contract SDAIPriceCapAdapterTest is BaseTest {
   constructor()
     BaseTest(
       AaveV3EthereumAssets.sDAI_ORACLE,
+      ForkParams({network: 'mainnet', blockNumber: 18961286}),
       RetrospectionParams({
         maxYearlyRatioGrowthPercent: 10_15,
         minimumSnapshotDelay: 7 days,
@@ -63,10 +64,6 @@ contract SDAIPriceCapAdapterTest is BaseTest {
 
   function getCurrentRatio() public view override returns (uint104) {
     return uint104(IPot(BaseAggregatorsMainnet.SDAI_POT).chi());
-  }
-
-  function setUp() public {
-    vm.createSelectFork(vm.rpcUrl('mainnet'), 18961286);
   }
 
   function test_cappedLatestAnswer() public {
