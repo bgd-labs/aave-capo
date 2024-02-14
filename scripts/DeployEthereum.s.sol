@@ -87,6 +87,17 @@ library CapAdaptersStablesCodeEthereum {
         int256(1.1 * 1e8) // TODO: SET
       )
     );
+
+  bytes public constant pyUSD_ADAPTER_CODE =
+    abi.encodePacked(
+      type(PriceCapAdapterStable).creationCode,
+      abi.encode(
+        AaveV3Ethereum.ACL_MANAGER,
+        AaveV3EthereumAssets.PYUSD_ORACLE,
+        'Capped pyUSD/USD',
+        int256(1.1 * 1e8) // TODO: SET
+      )
+    );
 }
 
 library CapAdaptersCodeEthereum {

@@ -41,6 +41,10 @@ contract AaveV3EthereumPayloadTest is Test, DeployEthereumAdaptersAndPayload {
       CapAdaptersStablesCodeEthereum.crvUSD_ADAPTER_CODE
     );
 
+    address pyUsdPredicted = GovV3Helpers.predictDeterministicAddress(
+      CapAdaptersStablesCodeEthereum.pyUSD_ADAPTER_CODE
+    );
+
     address cbEthPredicted = GovV3Helpers.predictDeterministicAddress(
       CapAdaptersCodeEthereum.cbETH_ADAPTER_CODE
     );
@@ -79,6 +83,11 @@ contract AaveV3EthereumPayloadTest is Test, DeployEthereumAdaptersAndPayload {
       AaveV3EthereumAssets.crvUSD_UNDERLYING
     );
     assertEq(crvUsdNew, crvUsdPredicted);
+
+    address pyUsdNew = AaveV3Ethereum.ORACLE.getSourceOfAsset(
+      AaveV3EthereumAssets.PYUSD_UNDERLYING
+    );
+    assertEq(pyUsdNew, pyUsdPredicted);
 
     address cbEthNew = AaveV3Ethereum.ORACLE.getSourceOfAsset(
       AaveV3EthereumAssets.cbETH_UNDERLYING

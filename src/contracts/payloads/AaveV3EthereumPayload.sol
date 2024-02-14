@@ -13,6 +13,7 @@ contract AaveV3EthereumPayload is AaveV3PayloadEthereum {
     address lusdAdapter;
     address fraxAdapter;
     address crvUsdAdapter;
+    address pyUsdAdapter;
     address cbEthAdapter;
     address rEthAdapter;
     address wstEthAdapter;
@@ -25,6 +26,7 @@ contract AaveV3EthereumPayload is AaveV3PayloadEthereum {
   address public immutable LUSD_ADAPTER;
   address public immutable FRAX_ADAPTER;
   address public immutable crvUSD_ADAPTER;
+  address public immutable pyUSD_ADAPTER;
   address public immutable cbETH_ADAPTER;
   address public immutable rETH_ADAPTER;
   address public immutable wstETH_ADAPTER;
@@ -40,10 +42,11 @@ contract AaveV3EthereumPayload is AaveV3PayloadEthereum {
     cbETH_ADAPTER = adapters.cbEthAdapter;
     rETH_ADAPTER = adapters.rEthAdapter;
     wstETH_ADAPTER = adapters.wstEthAdapter;
+    pyUSD_ADAPTER = adapters.pyUsdAdapter;
   }
 
   function priceFeedsUpdates() public view override returns (IEngine.PriceFeedUpdate[] memory) {
-    IEngine.PriceFeedUpdate[] memory updates = new IEngine.PriceFeedUpdate[](10);
+    IEngine.PriceFeedUpdate[] memory updates = new IEngine.PriceFeedUpdate[](11);
     updates[0].asset = AaveV3EthereumAssets.USDT_UNDERLYING;
     updates[0].priceFeed = USDT_ADAPTER;
 
@@ -65,14 +68,17 @@ contract AaveV3EthereumPayload is AaveV3PayloadEthereum {
     updates[6].asset = AaveV3EthereumAssets.crvUSD_UNDERLYING;
     updates[6].priceFeed = crvUSD_ADAPTER;
 
-    updates[7].asset = AaveV3EthereumAssets.cbETH_UNDERLYING;
-    updates[7].priceFeed = cbETH_ADAPTER;
+    updates[7].asset = AaveV3EthereumAssets.PYUSD_UNDERLYING;
+    updates[7].priceFeed = pyUSD_ADAPTER;
 
-    updates[8].asset = AaveV3EthereumAssets.rETH_UNDERLYING;
-    updates[8].priceFeed = rETH_ADAPTER;
+    updates[8].asset = AaveV3EthereumAssets.cbETH_UNDERLYING;
+    updates[8].priceFeed = cbETH_ADAPTER;
 
-    updates[9].asset = AaveV3EthereumAssets.wstETH_UNDERLYING;
-    updates[9].priceFeed = wstETH_ADAPTER;
+    updates[9].asset = AaveV3EthereumAssets.rETH_UNDERLYING;
+    updates[9].priceFeed = rETH_ADAPTER;
+
+    updates[10].asset = AaveV3EthereumAssets.wstETH_UNDERLYING;
+    updates[10].priceFeed = wstETH_ADAPTER;
 
     return updates;
   }

@@ -4,7 +4,6 @@ pragma solidity ^0.8.0;
 import '../BaseTest.sol';
 
 import {AaveV3Ethereum, AaveV3EthereumAssets} from 'aave-address-book/AaveV3Ethereum.sol';
-import {BaseAggregatorsMainnet} from 'cl-synchronicity-price-adapter/lib/BaseAggregators.sol';
 
 import {RETHPriceCapAdapter, IrETH} from '../../src/contracts/RETHPriceCapAdapter.sol';
 
