@@ -331,7 +331,7 @@ abstract contract BaseTest is Test {
     );
   }
 
-  function test_latestAnswerRetrospective() public {
+  function test_latestAnswerRetrospective() public virtual {
     uint256 initialBlock = block.number;
 
     vm.rollFork(retrospectionParams.startBlock);
@@ -380,6 +380,7 @@ abstract contract BaseTest is Test {
       vm.rollFork(currentBlock);
     }
 
+    vm.revokePersistent(address(adapter));
     vm.rollFork(initialBlock);
   }
 

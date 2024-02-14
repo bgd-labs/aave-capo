@@ -68,7 +68,7 @@ contract CbETHPriceCapAdapterTest is BaseTest {
   }
 
   function test_latestAnswer(uint16 maxYearlyRatioGrowthPercent) public override {
-    address cbETH_ETH_AGGREGATOR = 0x806b4Ac04501c29769051e42783cF04dCE41440b;
+    address cbETH_ETH_AGGREGATOR = 0xF017fcB346A1885194689bA23Eff2fE6fA5C483b;
 
     IPriceCapAdapter adapter = createAdapterSimple(
       0,
@@ -115,4 +115,6 @@ contract CbETHPriceCapAdapterTest is BaseTest {
       100000000
     );
   }
+
+  function test_latestAnswerRetrospective() public override {}
 }

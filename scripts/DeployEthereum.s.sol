@@ -182,7 +182,7 @@ library stEURCapAdapters {
           'Capped stUER / agEUR / EUR',
           7 days, // TODO: SET
           IPriceCapAdapter.PriceCapUpdateParams({
-            snapshotRatio: 0,
+            snapshotRatio: 1151642949000000000,
             snapshotTimestamp: 1703743921,
             maxYearlyRatioGrowthPercent: 10_00
           })
@@ -228,6 +228,9 @@ contract DeployEthereumAdaptersAndPayload {
     );
     adapters.crvUsdAdapter = GovV3Helpers.deployDeterministic(
       CapAdaptersStablesCodeEthereum.crvUSD_ADAPTER_CODE
+    );
+    adapters.pyUsdAdapter = GovV3Helpers.deployDeterministic(
+      CapAdaptersStablesCodeEthereum.pyUSD_ADAPTER_CODE
     );
     adapters.cbEthAdapter = GovV3Helpers.deployDeterministic(
       CapAdaptersCodeEthereum.cbETH_ADAPTER_CODE
