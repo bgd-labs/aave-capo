@@ -19,6 +19,7 @@ contract WstETHPolPriceCapAdapterTest is CLAdapterBaseTest {
         delayInBlocks: 280500, // 14 days
         step: 280500 // ~ 7 days
       }),
+      CapParams({maxYearlyRatioGrowthPercent: 2_00, startBlock: 50808790, finishBlock: 53308720}),
       AdapterCreationDefaultParams({
         aclManager: AaveV3Polygon.ACL_MANAGER,
         baseAggregatorAddress: AaveV3PolygonAssets.WETH_ORACLE,

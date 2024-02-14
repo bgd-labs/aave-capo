@@ -21,7 +21,8 @@ contract WstETHPriceCapAdapterTest is BaseTest {
         finishBlock: 19183379,
         delayInBlocks: 50200,
         step: 200000
-      })
+      }),
+      CapParams({maxYearlyRatioGrowthPercent: 2_00, startBlock: 18061286, finishBlock: 19183379})
     )
   {}
 
@@ -68,29 +69,6 @@ contract WstETHPriceCapAdapterTest is BaseTest {
       uint104(
         uint256(IStETH(AaveV2EthereumAssets.stETH_UNDERLYING).getPooledEthByShares(10 ** 18))
       );
-  }
-
-  // TODO: test that setParams func sets params as expected
-
-  function test_cappedLatestAnswer() public {
-    IPriceCapAdapter adapter = createAdapter(
-      AaveV3Ethereum.ACL_MANAGER,
-      AaveV3EthereumAssets.WETH_ORACLE,
-      AaveV2EthereumAssets.stETH_UNDERLYING,
-      'wstETH/stETH/USD',
-      7 days,
-      1151642949000000000,
-      1703743921,
-      2_00
-    );
-
-    int256 price = adapter.latestAnswer();
-
-    assertApproxEqAbs(
-      uint256(price),
-      256499500000, // max growth 2%
-      100000000
-    );
   }
 
   function test_updateParameters_cappedLatestAnswer() public {

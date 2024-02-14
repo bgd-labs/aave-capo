@@ -20,7 +20,8 @@ contract SDAIGnosisPriceCapAdapterTest is BaseTest {
         finishBlock: 32364499,
         delayInBlocks: 120000, // 7 days
         step: 120000
-      })
+      }),
+      CapParams({maxYearlyRatioGrowthPercent: 2_00, startBlock: 31114532, finishBlock: 32364499})
     )
   {}
 

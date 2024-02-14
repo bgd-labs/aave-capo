@@ -19,6 +19,7 @@ contract rETHArbitrumPriceCapAdapterTest is CLAdapterBaseTest {
         delayInBlocks: 2550000, // > 7 days
         step: 2550000
       }),
+      CapParams({maxYearlyRatioGrowthPercent: 2_00, startBlock: 158995618, finishBlock: 178994966}),
       AdapterCreationDefaultParams({
         aclManager: AaveV3Arbitrum.ACL_MANAGER,
         baseAggregatorAddress: AaveV3ArbitrumAssets.WETH_ORACLE,

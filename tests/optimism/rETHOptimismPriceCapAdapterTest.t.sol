@@ -18,6 +18,7 @@ contract rETHOptimismPriceCapAdapterTest is CLAdapterBaseTest {
         delayInBlocks: 310000, // 7 days
         step: 310000
       }),
+      CapParams({maxYearlyRatioGrowthPercent: 2_00, startBlock: 113441931, finishBlock: 115941709}),
       AdapterCreationDefaultParams({
         aclManager: AaveV3Optimism.ACL_MANAGER,
         baseAggregatorAddress: AaveV3OptimismAssets.WETH_ORACLE,

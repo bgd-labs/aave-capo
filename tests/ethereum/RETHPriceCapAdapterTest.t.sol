@@ -19,7 +19,8 @@ contract RETHPriceCapAdapterTest is BaseTest {
         finishBlock: 19183379,
         delayInBlocks: 50200,
         step: 20000
-      })
+      }),
+      CapParams({maxYearlyRatioGrowthPercent: 2_00, startBlock: 18061286, finishBlock: 19183379})
     )
   {}
 
@@ -63,26 +64,5 @@ contract RETHPriceCapAdapterTest is BaseTest {
 
   function getCurrentRatio() public view override returns (uint104) {
     return uint104(IrETH(AaveV3EthereumAssets.rETH_UNDERLYING).getExchangeRate());
-  }
-
-  function test_cappedLatestAnswer() public {
-    IPriceCapAdapter adapter = createAdapter(
-      AaveV3Ethereum.ACL_MANAGER,
-      AaveV3EthereumAssets.WETH_ORACLE,
-      AaveV3EthereumAssets.rETH_UNDERLYING,
-      'rETH / ETH / USD',
-      7 days,
-      1093801647000000000,
-      1703743921,
-      2_00
-    );
-
-    int256 price = adapter.latestAnswer();
-
-    assertApproxEqAbs(
-      uint256(price),
-      243616800000, // max growth 2%
-      100000000
-    );
   }
 }

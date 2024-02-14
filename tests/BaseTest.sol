@@ -21,24 +21,39 @@ abstract contract BaseTest is Test {
     uint256 step;
   }
 
+  struct CapParams {
+    uint16 maxYearlyRatioGrowthPercent;
+    uint256 startBlock;
+    uint256 finishBlock;
+  }
+
   ICLSynchronicityPriceAdapter public immutable NOT_CAPPED_ADAPTER;
 
   RetrospectionParams public retrospectionParams;
   ForkParams public forkParams;
+  CapParams public capParams;
 
   constructor(
     address notCappedAdapter,
     ForkParams memory _forkParams,
     // needed for retrospection testing
-    RetrospectionParams memory _retrospectionParams
+    RetrospectionParams memory _retrospectionParams,
+    // needed for cap testing
+    CapParams memory _capParams
   ) {
     require(
       _retrospectionParams.startBlock < _retrospectionParams.finishBlock,
-      'start block is after finish block'
+      ' retrospectivestart block is after finish block'
     );
+    require(
+      _capParams.startBlock < _capParams.finishBlock,
+      'cap start block is after finish block'
+    );
+
     NOT_CAPPED_ADAPTER = ICLSynchronicityPriceAdapter(notCappedAdapter);
     retrospectionParams = _retrospectionParams;
     forkParams = _forkParams;
+    capParams = _capParams;
   }
 
   function setUp() public {
@@ -339,7 +354,7 @@ abstract contract BaseTest is Test {
   function test_latestAnswerRetrospective() public virtual {
     uint256 initialBlock = block.number;
 
-    vm.rollFork(retrospectionParams.startBlock);
+    vm.createSelectFork(vm.rpcUrl(forkParams.network), retrospectionParams.startBlock);
 
     // create adapter with initial parameters
     IPriceCapAdapter adapter = createAdapterSimple(
@@ -357,13 +372,15 @@ abstract contract BaseTest is Test {
     uint256 currentBlock = retrospectionParams.startBlock;
 
     while (currentBlock <= retrospectionParams.finishBlock - retrospectionParams.step) {
-      vm.rollFork(currentBlock - retrospectionParams.delayInBlocks);
+      vm.createSelectFork(
+        vm.rpcUrl(forkParams.network),
+        currentBlock - retrospectionParams.delayInBlocks
+      );
 
       uint48 snapshotTimestamp = uint48(block.timestamp);
       uint104 currentRatio = getCurrentRatio();
 
-      vm.rollFork(currentBlock);
-
+      vm.createSelectFork(vm.rpcUrl(forkParams.network), currentBlock);
       _setCapParametersByAdmin(
         adapter,
         currentRatio,
@@ -382,11 +399,39 @@ abstract contract BaseTest is Test {
 
       currentBlock += retrospectionParams.step;
 
-      vm.rollFork(currentBlock);
+      vm.createSelectFork(vm.rpcUrl(forkParams.network), currentBlock);
     }
 
     vm.revokePersistent(address(adapter));
-    vm.rollFork(initialBlock);
+    vm.createSelectFork(vm.rpcUrl(forkParams.network), initialBlock);
+  }
+
+  function test_cappedLatestAnswer() public virtual {
+    vm.createSelectFork(vm.rpcUrl(forkParams.network), capParams.startBlock);
+
+    // create adapter with initial parameters
+    IPriceCapAdapter adapter = createAdapterSimple(
+      7 days,
+      uint40(block.timestamp - 8 days),
+      capParams.maxYearlyRatioGrowthPercent
+    );
+
+    skip(1);
+
+    // persist adapter
+    vm.makePersistent(address(adapter));
+
+    // roll fork to the finish block
+    vm.createSelectFork(vm.rpcUrl(forkParams.network), capParams.finishBlock);
+
+    int256 priceCapped = adapter.latestAnswer();
+    int256 priceOfNotCappedAdapter = NOT_CAPPED_ADAPTER.latestAnswer();
+
+    // compare prices
+    assertGt(priceOfNotCappedAdapter, priceCapped, 'price is not capped');
+
+    vm.revokePersistent(address(adapter));
+    vm.createSelectFork(vm.rpcUrl(forkParams.network), capParams.finishBlock);
   }
 
   function _setCapParametersByAdmin(

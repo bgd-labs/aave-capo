@@ -21,7 +21,8 @@ abstract contract BaseMaticPriceCapAdapterTest is BaseTest {
     BaseTest(
       notCappedAdapter,
       ForkParams({network: 'polygon', blockNumber: 52496345}),
-      retrospectionParams
+      retrospectionParams,
+      CapParams({maxYearlyRatioGrowthPercent: 2_00, startBlock: 50808790, finishBlock: 53308720})
     )
   {
     RATE_PROVIDER = rateProvider;

@@ -21,7 +21,8 @@ contract CbETHPriceCapAdapterTest is BaseTest {
         finishBlock: 19183379,
         delayInBlocks: 50200,
         step: 200000
-      })
+      }),
+      CapParams({maxYearlyRatioGrowthPercent: 2_00, startBlock: 18061286, finishBlock: 19183379})
     )
   {}
 
@@ -92,27 +93,6 @@ contract CbETHPriceCapAdapterTest is BaseTest {
       price,
       priceOfNotCappedAdapter,
       'uncapped price is not equal to the existing adapter price'
-    );
-  }
-
-  function test_cappedLatestAnswer() public {
-    IPriceCapAdapter adapter = createAdapter(
-      AaveV3Ethereum.ACL_MANAGER,
-      AaveV3EthereumAssets.WETH_ORACLE,
-      AaveV3EthereumAssets.cbETH_UNDERLYING,
-      'cbETH / ETH / USD',
-      7 days,
-      1059523963000000000,
-      1703743921,
-      2_00
-    );
-
-    int256 price = adapter.latestAnswer();
-
-    assertApproxEqAbs(
-      uint256(price),
-      235982310000, // max growth 2%
-      100000000
     );
   }
 

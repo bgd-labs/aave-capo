@@ -19,6 +19,7 @@ contract WstETHBasePriceCapAdapterTest is CLAdapterBaseTest {
         delayInBlocks: 308000, // 7 days
         step: 308000
       }),
+      CapParams({maxYearlyRatioGrowthPercent: 2_00, startBlock: 7846275, finishBlock: 10346241}),
       AdapterCreationDefaultParams({
         aclManager: AaveV3Base.ACL_MANAGER,
         baseAggregatorAddress: AaveV3BaseAssets.WETH_ORACLE,

@@ -19,6 +19,7 @@ contract WstETHGnosisPriceCapAdapterTest is CLAdapterBaseTest {
         delayInBlocks: 120000, // 7 days
         step: 120000
       }),
+      CapParams({maxYearlyRatioGrowthPercent: 2_00, startBlock: 31114532, finishBlock: 32364499}),
       AdapterCreationDefaultParams({
         aclManager: AaveV3Gnosis.ACL_MANAGER,
         baseAggregatorAddress: AaveV3GnosisAssets.WETH_ORACLE,
