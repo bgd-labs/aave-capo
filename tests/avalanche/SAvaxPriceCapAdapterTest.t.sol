@@ -4,7 +4,6 @@ pragma solidity ^0.8.0;
 import '../BaseTest.sol';
 
 import {AaveV3Avalanche, AaveV3AvalancheAssets} from 'aave-address-book/AaveV3Avalanche.sol';
-import {BaseAggregatorsMainnet} from 'cl-synchronicity-price-adapter/lib/BaseAggregators.sol';
 
 import {SAvaxPriceCapAdapter, ISAvax} from '../../src/contracts/SAvaxPriceCapAdapter.sol';
 

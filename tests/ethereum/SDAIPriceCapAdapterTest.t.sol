@@ -4,7 +4,7 @@ pragma solidity ^0.8.0;
 import '../BaseTest.sol';
 
 import {AaveV3Ethereum, AaveV3EthereumAssets} from 'aave-address-book/AaveV3Ethereum.sol';
-import {BaseAggregatorsMainnet} from 'cl-synchronicity-price-adapter/lib/BaseAggregators.sol';
+import {MiscEthereum} from 'aave-address-book/MiscEthereum.sol';
 
 import {SDAIPriceCapAdapter, IPot} from '../../src/contracts/SDAIPriceCapAdapter.sol';
 
@@ -52,8 +52,8 @@ contract SDAIPriceCapAdapterTest is BaseTest {
     return
       createAdapter(
         AaveV3Ethereum.ACL_MANAGER,
-        BaseAggregatorsMainnet.DAI_USD_AGGREGATOR,
-        BaseAggregatorsMainnet.SDAI_POT,
+        AaveV3EthereumAssets.DAI_ORACLE,
+        MiscEthereum.sDAI_POT,
         'sDAI / DAI / USD',
         minimumSnapshotDelay,
         currentRatio,
@@ -63,14 +63,14 @@ contract SDAIPriceCapAdapterTest is BaseTest {
   }
 
   function getCurrentRatio() public view override returns (uint104) {
-    return uint104(IPot(BaseAggregatorsMainnet.SDAI_POT).chi());
+    return uint104(IPot(MiscEthereum.sDAI_POT).chi());
   }
 
   function test_cappedLatestAnswer() public {
     IPriceCapAdapter adapter = createAdapter(
       AaveV3Ethereum.ACL_MANAGER,
-      BaseAggregatorsMainnet.DAI_USD_AGGREGATOR,
-      BaseAggregatorsMainnet.SDAI_POT,
+      AaveV3EthereumAssets.DAI_ORACLE,
+      MiscEthereum.sDAI_POT,
       'sDAI / DAI / USD',
       7 days,
       1048947230000000000000000000,

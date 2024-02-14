@@ -2,7 +2,7 @@
 pragma solidity ^0.8.0;
 
 import {AaveV3Arbitrum, AaveV3ArbitrumAssets} from 'aave-address-book/AaveV3Arbitrum.sol';
-import {BaseAggregatorsArbitrum} from 'cl-synchronicity-price-adapter/lib/BaseAggregators.sol';
+import {MiscArbitrum} from 'aave-address-book/MiscArbitrum.sol';
 
 import {CLAdapterBaseTest} from '../CLAdapterBaseTest.sol';
 
@@ -22,7 +22,7 @@ contract WstETHArbitrumPriceCapAdapterTest is CLAdapterBaseTest {
       AdapterCreationDefaultParams({
         aclManager: AaveV3Arbitrum.ACL_MANAGER,
         baseAggregatorAddress: AaveV3ArbitrumAssets.WETH_ORACLE,
-        ratioProviderAddress: BaseAggregatorsArbitrum.WSTETH_STETH_AGGREGATOR,
+        ratioProviderAddress: MiscArbitrum.wstETH_stETH_AGGREGATOR,
         pairDescription: 'Capped wstETH / stETH(ETH) / USD'
       })
     )

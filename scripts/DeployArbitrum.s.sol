@@ -4,7 +4,7 @@ pragma solidity ^0.8.0;
 import {GovV3Helpers} from 'aave-helpers/GovV3Helpers.sol';
 import {ArbitrumScript} from 'aave-helpers/ScriptUtils.sol';
 import {AaveV3Arbitrum, AaveV3ArbitrumAssets} from 'aave-address-book/AaveV3Arbitrum.sol';
-import {BaseAggregatorsArbitrum} from 'cl-synchronicity-price-adapter/lib/BaseAggregatorsArbitrum.sol';
+import {MiscArbitrum} from 'aave-address-book/MiscArbitrum.sol';
 
 import {PriceCapAdapterStable} from '../src/contracts/PriceCapAdapterStable.sol';
 import {CLRatePriceCapAdapter, IPriceCapAdapter} from '../src/contracts/CLRatePriceCapAdapter.sol';
@@ -67,7 +67,7 @@ library CapAdaptersCodeArbitrum {
       abi.encode(
         AaveV3Arbitrum.ACL_MANAGER,
         AaveV3ArbitrumAssets.WETH_ORACLE,
-        BaseAggregatorsArbitrum.RETH_ETH_AGGREGATOR,
+        MiscArbitrum.rETH_ETH_AGGREGATOR,
         'Capped rETH / ETH / USD',
         7 days, // TODO: SET
         IPriceCapAdapter.PriceCapUpdateParams({
@@ -83,7 +83,7 @@ library CapAdaptersCodeArbitrum {
       abi.encode(
         AaveV3Arbitrum.ACL_MANAGER,
         AaveV3ArbitrumAssets.WETH_ORACLE,
-        BaseAggregatorsArbitrum.WSTETH_STETH_AGGREGATOR,
+        MiscArbitrum.wstETH_stETH_AGGREGATOR,
         'Capped wstETH / stETH(ETH) / USD', // TODO: is it actually going to STETH, but then using ETH feed
         7 days, // TODO: SET
         IPriceCapAdapter.PriceCapUpdateParams({

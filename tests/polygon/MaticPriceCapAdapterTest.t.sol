@@ -4,7 +4,7 @@ pragma solidity ^0.8.0;
 import '../BaseTest.sol';
 
 import {AaveV3Polygon, AaveV3PolygonAssets} from 'aave-address-book/AaveV3Polygon.sol';
-import {BaseAggregatorsPolygon} from 'cl-synchronicity-price-adapter/lib/BaseAggregators.sol';
+import {MiscPolygon} from 'aave-address-book/MiscPolygon.sol';
 
 import {MaticPriceCapAdapter, IMaticRateProvider} from '../../src/contracts/MaticPriceCapAdapter.sol';
 
@@ -56,7 +56,7 @@ abstract contract BaseMaticPriceCapAdapterTest is BaseTest {
     return
       createAdapter(
         AaveV3Polygon.ACL_MANAGER,
-        BaseAggregatorsPolygon.MATIC_USD_AGGREGATOR,
+        AaveV3PolygonAssets.WMATIC_ORACLE,
         RATE_PROVIDER,
         _pairName,
         minimumSnapshotDelay,
@@ -75,7 +75,7 @@ contract MaticXPriceCapAdapterTest is BaseMaticPriceCapAdapterTest {
   constructor()
     BaseMaticPriceCapAdapterTest(
       AaveV3PolygonAssets.MaticX_ORACLE,
-      BaseAggregatorsPolygon.MATICX_RATE_PROVIDER,
+      MiscPolygon.MaticX_RATE_PROVIDER,
       'MaticX / Matic / USD',
       RetrospectionParams({
         maxYearlyRatioGrowthPercent: 7_98,
@@ -93,7 +93,7 @@ contract StMaticPriceCapAdapterTest is BaseMaticPriceCapAdapterTest {
   constructor()
     BaseMaticPriceCapAdapterTest(
       AaveV3PolygonAssets.stMATIC_ORACLE,
-      BaseAggregatorsPolygon.STMATIC_RATE_PROVIDER,
+      MiscPolygon.stMATIC_RATE_PROVIDER,
       'stMATIC / Matic / USD',
       RetrospectionParams({
         maxYearlyRatioGrowthPercent: 8_85,

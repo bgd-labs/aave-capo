@@ -4,7 +4,7 @@ import {GovV3Helpers} from 'aave-helpers/GovV3Helpers.sol';
 import {EthereumScript} from 'aave-helpers/ScriptUtils.sol';
 import {AaveV3Ethereum, AaveV3EthereumAssets} from 'aave-address-book/AaveV3Ethereum.sol';
 import {AaveV2EthereumAssets} from 'aave-address-book/AaveV2Ethereum.sol';
-import {BaseAggregatorsMainnet} from 'cl-synchronicity-price-adapter/lib/BaseAggregatorsMainnet.sol';
+import {MiscEthereum} from 'aave-address-book/MiscEthereum.sol';
 import {CLSynchronicityPriceAdapterPegToBase} from 'cl-synchronicity-price-adapter/contracts/CLSynchronicityPriceAdapterPegToBase.sol';
 
 import {PriceCapAdapterStable} from '../src/contracts/PriceCapAdapterStable.sol';
@@ -14,8 +14,6 @@ import {WstETHPriceCapAdapter} from '../src/contracts/WstETHPriceCapAdapter.sol'
 import {SDAIPriceCapAdapter} from '../src/contracts/SDAIPriceCapAdapter.sol';
 import {stEURPriceCapAdapter} from '../src/contracts/stEURPriceCapAdapter.sol';
 import {AaveV3EthereumPayload} from '../src/contracts/payloads/AaveV3EthereumPayload.sol';
-
-import {AggregatorsEth} from '../src/lib/AggregatorsEth.sol';
 
 library CapAdaptersStablesCodeEthereum {
   bytes public constant USDT_ADAPTER_CODE =
@@ -84,7 +82,7 @@ library CapAdaptersStablesCodeEthereum {
       type(PriceCapAdapterStable).creationCode,
       abi.encode(
         AaveV3Ethereum.ACL_MANAGER,
-        AggregatorsEth.AGEUR_EUR_AGGREGATOR,
+        MiscEthereum.agEUR_EUR_AGGREGATOR,
         'Capped agEUR/EUR',
         int256(1.1 * 1e8) // TODO: SET
       )
@@ -98,7 +96,7 @@ library CapAdaptersCodeEthereum {
       abi.encode(
         AaveV3Ethereum.ACL_MANAGER,
         AaveV3EthereumAssets.DAI_ORACLE,
-        BaseAggregatorsMainnet.SDAI_POT,
+        MiscEthereum.sDAI_POT,
         'Capped sDAI / DAI / USD',
         7 days, // TODO: SET
         IPriceCapAdapter.PriceCapUpdateParams({
@@ -169,7 +167,7 @@ library stEURCapAdapters {
           GovV3Helpers.predictDeterministicAddress(
             CapAdaptersStablesCodeEthereum.agEUR_ADAPTER_CODE
           ), // agEUR / EUR
-          AggregatorsEth.STEUR, // stEUR / agEUR
+          MiscEthereum.stEUR, // stEUR / agEUR
           'Capped stUER / agEUR / EUR',
           7 days, // TODO: SET
           IPriceCapAdapter.PriceCapUpdateParams({
@@ -186,7 +184,7 @@ library stEURCapAdapters {
       abi.encodePacked(
         type(CLSynchronicityPriceAdapterPegToBase).creationCode,
         abi.encode(
-          AggregatorsEth.EUR_USD_AGGREGATOR, // EUR to USD
+          MiscEthereum.EUR_USD_AGGREGATOR, // EUR to USD
           GovV3Helpers.predictDeterministicAddress(stEURAdapterCode()), // agEUR / EUR
           18, // stEUR / agEUR
           'Capped stUER / agEUR / EUR / USD'

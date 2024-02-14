@@ -3,7 +3,7 @@ pragma solidity ^0.8.0;
 import {GovV3Helpers} from 'aave-helpers/GovV3Helpers.sol';
 import {PolygonScript} from 'aave-helpers/ScriptUtils.sol';
 import {AaveV3Polygon, AaveV3PolygonAssets} from 'aave-address-book/AaveV3Polygon.sol';
-import {BaseAggregatorsPolygon} from 'cl-synchronicity-price-adapter/lib/BaseAggregatorsPolygon.sol';
+import {MiscPolygon} from 'aave-address-book/MiscPolygon.sol';
 
 import {PriceCapAdapterStable} from '../src/contracts/PriceCapAdapterStable.sol';
 import {CLRatePriceCapAdapter, IPriceCapAdapter} from '../src/contracts/CLRatePriceCapAdapter.sol';
@@ -50,7 +50,7 @@ library CapAdaptersCodePolygon {
       abi.encode(
         AaveV3Polygon.ACL_MANAGER,
         AaveV3PolygonAssets.WETH_ORACLE,
-        BaseAggregatorsPolygon.WSTETH_STETH_AGGREGATOR,
+        MiscPolygon.wstETH_stETH_AGGREGATOR,
         'Capped wstETH / stETH(ETH) / USD', // TODO: is it actually going to STETH, but then using ETH feed
         7 days, // TODO: SET
         IPriceCapAdapter.PriceCapUpdateParams({
@@ -66,7 +66,7 @@ library CapAdaptersCodePolygon {
       abi.encode(
         AaveV3Polygon.ACL_MANAGER,
         AaveV3PolygonAssets.WMATIC_ORACLE,
-        BaseAggregatorsPolygon.STMATIC_RATE_PROVIDER,
+        MiscPolygon.stMATIC_RATE_PROVIDER,
         'Capped stMATIC / MATIC / USD',
         7 days, // TODO: SET
         IPriceCapAdapter.PriceCapUpdateParams({
@@ -82,7 +82,7 @@ library CapAdaptersCodePolygon {
       abi.encode(
         AaveV3Polygon.ACL_MANAGER,
         AaveV3PolygonAssets.WMATIC_ORACLE,
-        BaseAggregatorsPolygon.MATICX_RATE_PROVIDER,
+        MiscPolygon.MaticX_RATE_PROVIDER,
         'Capped MaticX / MATIC / USD',
         7 days, // TODO: SET
         IPriceCapAdapter.PriceCapUpdateParams({

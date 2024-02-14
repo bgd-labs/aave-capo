@@ -4,7 +4,7 @@ pragma solidity ^0.8.0;
 import '../BaseTest.sol';
 
 import {AaveV3Ethereum, AaveV3EthereumAssets} from 'aave-address-book/AaveV3Ethereum.sol';
-import {BaseAggregatorsMainnet} from 'cl-synchronicity-price-adapter/lib/BaseAggregators.sol';
+import {MiscEthereum} from 'aave-address-book/MiscEthereum.sol';
 
 import {CbETHPriceCapAdapter, ICbEthRateProvider} from '../../src/contracts/CbETHPriceCapAdapter.sol';
 import {ICLSynchronicityPriceAdapter} from '../../src/interfaces/IPriceCapAdapter.sol';
@@ -68,6 +68,8 @@ contract CbETHPriceCapAdapterTest is BaseTest {
   }
 
   function test_latestAnswer(uint16 maxYearlyRatioGrowthPercent) public override {
+    address cbETH_ETH_AGGREGATOR = 0x806b4Ac04501c29769051e42783cF04dCE41440b;
+
     IPriceCapAdapter adapter = createAdapterSimple(
       0,
       uint40(block.timestamp),
@@ -80,7 +82,7 @@ contract CbETHPriceCapAdapterTest is BaseTest {
     // with the primary cbETH based feed
     uint256 cbEthRate = getCurrentRatio();
     vm.mockCall(
-      BaseAggregatorsMainnet.CBETH_ETH_AGGREGATOR,
+      cbETH_ETH_AGGREGATOR,
       abi.encodeWithSelector(ICLSynchronicityPriceAdapter.latestAnswer.selector),
       abi.encode(int256(cbEthRate))
     );

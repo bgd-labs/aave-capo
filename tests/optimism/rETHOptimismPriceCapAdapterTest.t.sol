@@ -2,7 +2,7 @@
 pragma solidity ^0.8.0;
 
 import {AaveV3Optimism, AaveV3OptimismAssets} from 'aave-address-book/AaveV3Optimism.sol';
-import {BaseAggregatorsOptimism} from 'cl-synchronicity-price-adapter/lib/BaseAggregators.sol';
+import {MiscOptimism} from 'aave-address-book/MiscOptimism.sol';
 import {CLAdapterBaseTest} from '../CLAdapterBaseTest.sol';
 
 contract rETHOptimismPriceCapAdapterTest is CLAdapterBaseTest {
@@ -21,7 +21,7 @@ contract rETHOptimismPriceCapAdapterTest is CLAdapterBaseTest {
       AdapterCreationDefaultParams({
         aclManager: AaveV3Optimism.ACL_MANAGER,
         baseAggregatorAddress: AaveV3OptimismAssets.WETH_ORACLE,
-        ratioProviderAddress: BaseAggregatorsOptimism.RETH_ETH_AGGREGATOR,
+        ratioProviderAddress: MiscOptimism.rETH_ETH_AGGREGATOR,
         pairDescription: 'Capped rETH / ETH / USD'
       })
     )
