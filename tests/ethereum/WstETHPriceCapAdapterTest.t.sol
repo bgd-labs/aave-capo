@@ -106,8 +106,14 @@ contract WstETHPriceCapAdapterTest is BaseTest {
   function test_revert_updateParameters_notRiskAdmin(
     uint104 snapshotRatio,
     uint48 snapshotTimestamp,
-    uint16 maxYearlyRatioGrowthPercent
+    uint16 maxYearlyRatioGrowthPercent,
+    address admin
   ) public {
+    vm.assume(admin != 0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f);
+    vm.assume(admin != 0x7109709ECfa91a80626fF3989D68f67F5b1DD12D);
+    vm.assume(admin != AaveV3Ethereum.CAPS_PLUS_RISK_STEWARD);
+    vm.assume(admin != address(AaveV3Ethereum.POOL_CONFIGURATOR));
+
     IPriceCapAdapter adapter = createAdapter(
       AaveV3Ethereum.ACL_MANAGER,
       AaveV3EthereumAssets.WETH_ORACLE,
@@ -119,8 +125,11 @@ contract WstETHPriceCapAdapterTest is BaseTest {
       2_00
     );
 
-    // TODO: fuzzing?
+    vm.startPrank(admin);
+
     vm.expectRevert(IPriceCapAdapter.CallerIsNotRiskOrPoolAdmin.selector);
     setCapParameters(adapter, snapshotRatio, snapshotTimestamp, maxYearlyRatioGrowthPercent);
+
+    vm.stopPrank();
   }
 }

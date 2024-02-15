@@ -10,6 +10,8 @@ import {CbETHPriceCapAdapter, ICbEthRateProvider} from '../../src/contracts/CbET
 import {ICLSynchronicityPriceAdapter} from '../../src/interfaces/IPriceCapAdapter.sol';
 
 contract CbETHPriceCapAdapterTest is BaseTest {
+  address cbETH_ETH_AGGREGATOR = 0xF017fcB346A1885194689bA23Eff2fE6fA5C483b;
+
   constructor()
     BaseTest(
       AaveV3EthereumAssets.cbETH_ORACLE,
@@ -68,33 +70,12 @@ contract CbETHPriceCapAdapterTest is BaseTest {
     return uint104(ICbEthRateProvider(AaveV3EthereumAssets.cbETH_UNDERLYING).exchangeRate());
   }
 
-  function test_latestAnswer(uint16 maxYearlyRatioGrowthPercent) public override {
-    address cbETH_ETH_AGGREGATOR = 0xF017fcB346A1885194689bA23Eff2fE6fA5C483b;
-
-    IPriceCapAdapter adapter = createAdapterSimple(
-      0,
-      uint40(block.timestamp),
-      maxYearlyRatioGrowthPercent
-    );
-
-    int256 price = adapter.latestAnswer();
-
-    // here we have a very specific case, because we replace secondary-market based CL feed of exchange rate
-    // with the primary cbETH based feed
+  function _mockExistingOracleExchangeRate() internal override {
     uint256 cbEthRate = getCurrentRatio();
     vm.mockCall(
       cbETH_ETH_AGGREGATOR,
       abi.encodeWithSelector(ICLSynchronicityPriceAdapter.latestAnswer.selector),
       abi.encode(int256(cbEthRate))
     );
-    int256 priceOfNotCappedAdapter = NOT_CAPPED_ADAPTER.latestAnswer();
-
-    assertEq(
-      price,
-      priceOfNotCappedAdapter,
-      'uncapped price is not equal to the existing adapter price'
-    );
   }
-
-  function test_latestAnswerRetrospective() public override {}
 }

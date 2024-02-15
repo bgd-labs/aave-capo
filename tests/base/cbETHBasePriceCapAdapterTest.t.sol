@@ -5,14 +5,18 @@ import {AaveV3Base, AaveV3BaseAssets} from 'aave-address-book/AaveV3Base.sol';
 import {MiscBase} from 'aave-address-book/MiscBase.sol';
 
 import {CLAdapterBaseTest} from '../CLAdapterBaseTest.sol';
+import {IPriceCapAdapter} from '../../src/interfaces/IPriceCapAdapter.sol';
+import {ICLSynchronicityPriceAdapter} from '../../src/interfaces/IPriceCapAdapter.sol';
 
 contract cbETHBasePriceCapAdapterTest is CLAdapterBaseTest {
+  address cbETH_ETH_AGGREGATOR = 0x806b4Ac04501c29769051e42783cF04dCE41440b;
+
   constructor()
     CLAdapterBaseTest(
       AaveV3BaseAssets.cbETH_ORACLE,
       ForkParams({network: 'base', blockNumber: 10346239}),
       RetrospectionParams({
-        maxYearlyRatioGrowthPercent: 10_75, // TODO: it doesn't work with 6_75 provided by chaos
+        maxYearlyRatioGrowthPercent: 6_75,
         minimumSnapshotDelay: 7 days,
         startBlock: 7846275,
         finishBlock: 10346241,
@@ -28,4 +32,13 @@ contract cbETHBasePriceCapAdapterTest is CLAdapterBaseTest {
       })
     )
   {}
+
+  function _mockExistingOracleExchangeRate() internal override {
+    uint256 cbEthRate = getCurrentRatio();
+    vm.mockCall(
+      cbETH_ETH_AGGREGATOR,
+      abi.encodeWithSelector(ICLSynchronicityPriceAdapter.latestAnswer.selector),
+      abi.encode(int256(cbEthRate))
+    );
+  }
 }

@@ -12,7 +12,6 @@ contract SAvaxPriceCapAdapterTest is BaseTest {
     BaseTest(
       AaveV3AvalancheAssets.sAVAX_ORACLE,
       ForkParams({network: 'avalanche', blockNumber: 40555293}),
-      // TODO: SET, currently just mock
       RetrospectionParams({
         maxYearlyRatioGrowthPercent: 8_25,
         minimumSnapshotDelay: 14 days,

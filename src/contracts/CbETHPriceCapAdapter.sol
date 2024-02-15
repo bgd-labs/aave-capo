@@ -12,8 +12,6 @@ import {PriceCapAdapterBase, IPriceCapAdapter} from './PriceCapAdapterBase.sol';
  * @notice Price capped adapter to calculate price of (cbETH / USD) pair by using
  * @notice Chainlink data feed for (ETH / USD) and (cbETH / ETH) ratio.
  */
-// TODO: current implementation uses ratio from the cbETH contract, but existing production oracle uses CL feed instead
-// TODO: should be clarified before moving forward
 contract CbETHPriceCapAdapter is PriceCapAdapterBase {
   /**
    * @param aclManager ACL manager contract

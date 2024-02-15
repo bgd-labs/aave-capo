@@ -341,6 +341,7 @@ abstract contract BaseTest is Test {
       maxYearlyRatioGrowthPercent
     );
 
+    _mockExistingOracleExchangeRate();
     int256 price = adapter.latestAnswer();
     int256 priceOfNotCappedAdapter = NOT_CAPPED_ADAPTER.latestAnswer();
 
@@ -388,6 +389,7 @@ abstract contract BaseTest is Test {
         retrospectionParams.maxYearlyRatioGrowthPercent
       );
 
+      _mockExistingOracleExchangeRate();
       int256 price = adapter.latestAnswer();
       int256 priceOfNotCappedAdapter = NOT_CAPPED_ADAPTER.latestAnswer();
 
@@ -424,6 +426,7 @@ abstract contract BaseTest is Test {
     // roll fork to the finish block
     vm.createSelectFork(vm.rpcUrl(forkParams.network), capParams.finishBlock);
 
+    _mockExistingOracleExchangeRate();
     int256 priceCapped = adapter.latestAnswer();
     int256 priceOfNotCappedAdapter = NOT_CAPPED_ADAPTER.latestAnswer();
 
@@ -448,4 +451,6 @@ abstract contract BaseTest is Test {
 
     setCapParameters(adapter, currentRatio, snapshotTimestamp, maxYearlyRatioGrowthPercent);
   }
+
+  function _mockExistingOracleExchangeRate() internal virtual {}
 }
