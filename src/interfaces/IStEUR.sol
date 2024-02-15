@@ -4,7 +4,7 @@ pragma solidity ^0.8.0;
 /// @notice A simple version of the IStEUR interface allowing to get exchange ratio with agEUR
 interface IStEUR {
   /**
-   * @return The exchange rate with agEUR.
+   * @return The amount of agEUR that corresponds to token shares.
    */
-  function rate() external view returns (uint208);
+  function convertToAssets(uint256) external view returns (uint256);
 }

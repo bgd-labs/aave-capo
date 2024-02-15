@@ -42,6 +42,6 @@ contract stEURPriceCapAdapter is PriceCapAdapterBase {
 
   /// @inheritdoc IPriceCapAdapter
   function getRatio() public view override returns (int256) {
-    return int256(uint256(IStEUR(RATIO_PROVIDER).rate()));
+    return int256(IStEUR(RATIO_PROVIDER).convertToAssets(10 ** RATIO_DECIMALS));
   }
 }
