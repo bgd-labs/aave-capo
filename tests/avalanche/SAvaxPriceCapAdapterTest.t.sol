@@ -1,15 +1,28 @@
 // SPDX-License-Identifier: BUSL-1.1
 pragma solidity ^0.8.0;
 
-import './BaseTest.sol';
+import '../BaseTest.sol';
 
 import {AaveV3Avalanche, AaveV3AvalancheAssets} from 'aave-address-book/AaveV3Avalanche.sol';
-import {BaseAggregatorsMainnet} from 'cl-synchronicity-price-adapter/lib/BaseAggregators.sol';
 
-import {SAvaxPriceCapAdapter, ISAvax} from '../src/contracts/SAvaxPriceCapAdapter.sol';
+import {SAvaxPriceCapAdapter, ISAvax} from '../../src/contracts/SAvaxPriceCapAdapter.sol';
 
 contract SAvaxPriceCapAdapterTest is BaseTest {
-  constructor() BaseTest(AaveV3AvalancheAssets.sAVAX_ORACLE) {}
+  constructor()
+    BaseTest(
+      AaveV3AvalancheAssets.sAVAX_ORACLE,
+      ForkParams({network: 'avalanche', blockNumber: 40555293}),
+      RetrospectionParams({
+        maxYearlyRatioGrowthPercent: 8_25,
+        minimumSnapshotDelay: 14 days,
+        startBlock: 39152370,
+        finishBlock: 41448370,
+        delayInBlocks: 605000, // 14 days
+        step: 302500 // 7 days
+      }),
+      CapParams({maxYearlyRatioGrowthPercent: 2_00, startBlock: 39152370, finishBlock: 41448370})
+    )
+  {}
 
   function createAdapter(
     IACLManager aclManager,
@@ -51,9 +64,5 @@ contract SAvaxPriceCapAdapterTest is BaseTest {
 
   function getCurrentRatio() public view override returns (uint104) {
     return uint104(ISAvax(AaveV3AvalancheAssets.sAVAX_UNDERLYING).getPooledAvaxByShares(10 ** 18));
-  }
-
-  function setUp() public {
-    vm.createSelectFork(vm.rpcUrl('avalanche'), 40555293);
   }
 }

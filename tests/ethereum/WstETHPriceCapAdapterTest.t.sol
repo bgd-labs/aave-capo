@@ -1,17 +1,30 @@
 // SPDX-License-Identifier: BUSL-1.1
 pragma solidity ^0.8.0;
 
-import './BaseTest.sol';
+import '../BaseTest.sol';
 
 import {AaveV3Ethereum, AaveV3EthereumAssets, IACLManager} from 'aave-address-book/AaveV3Ethereum.sol';
 import {AaveV2EthereumAssets} from 'aave-address-book/AaveV2Ethereum.sol';
-import {BaseAggregatorsMainnet} from 'cl-synchronicity-price-adapter/lib/BaseAggregators.sol';
 
-import {WstETHPriceCapAdapter, IStETH} from '../src/contracts/WstETHPriceCapAdapter.sol';
-import {IPriceCapAdapter, ICLSynchronicityPriceAdapter} from '../src/interfaces/IPriceCapAdapter.sol';
+import {WstETHPriceCapAdapter, IStETH} from '../../src/contracts/WstETHPriceCapAdapter.sol';
+import {IPriceCapAdapter, ICLSynchronicityPriceAdapter} from '../../src/interfaces/IPriceCapAdapter.sol';
 
 contract WstETHPriceCapAdapterTest is BaseTest {
-  constructor() BaseTest(AaveV3EthereumAssets.wstETH_ORACLE) {}
+  constructor()
+    BaseTest(
+      AaveV3EthereumAssets.wstETH_ORACLE,
+      ForkParams({network: 'mainnet', blockNumber: 18961286}),
+      RetrospectionParams({
+        maxYearlyRatioGrowthPercent: 8_72,
+        minimumSnapshotDelay: 7 days,
+        startBlock: 18061286,
+        finishBlock: 19183379,
+        delayInBlocks: 50200,
+        step: 200000
+      }),
+      CapParams({maxYearlyRatioGrowthPercent: 2_00, startBlock: 18061286, finishBlock: 19183379})
+    )
+  {}
 
   function createAdapter(
     IACLManager aclManager,
@@ -58,33 +71,6 @@ contract WstETHPriceCapAdapterTest is BaseTest {
       );
   }
 
-  function setUp() public {
-    vm.createSelectFork(vm.rpcUrl('mainnet'), 18961286);
-  }
-
-  // TODO: test that setParams func sets params as expected
-
-  function test_cappedLatestAnswer() public {
-    IPriceCapAdapter adapter = createAdapter(
-      AaveV3Ethereum.ACL_MANAGER,
-      AaveV3EthereumAssets.WETH_ORACLE,
-      AaveV2EthereumAssets.stETH_UNDERLYING,
-      'wstETH/stETH/USD',
-      7 days,
-      1151642949000000000,
-      1703743921,
-      2_00
-    );
-
-    int256 price = adapter.latestAnswer();
-
-    assertApproxEqAbs(
-      uint256(price),
-      256499500000, // max growth 2%
-      100000000
-    );
-  }
-
   function test_updateParameters_cappedLatestAnswer() public {
     IPriceCapAdapter adapter = createAdapter(
       AaveV3Ethereum.ACL_MANAGER,
@@ -120,8 +106,14 @@ contract WstETHPriceCapAdapterTest is BaseTest {
   function test_revert_updateParameters_notRiskAdmin(
     uint104 snapshotRatio,
     uint48 snapshotTimestamp,
-    uint16 maxYearlyRatioGrowthPercent
+    uint16 maxYearlyRatioGrowthPercent,
+    address admin
   ) public {
+    vm.assume(admin != 0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f);
+    vm.assume(admin != 0x7109709ECfa91a80626fF3989D68f67F5b1DD12D);
+    vm.assume(admin != AaveV3Ethereum.CAPS_PLUS_RISK_STEWARD);
+    vm.assume(admin != address(AaveV3Ethereum.POOL_CONFIGURATOR));
+
     IPriceCapAdapter adapter = createAdapter(
       AaveV3Ethereum.ACL_MANAGER,
       AaveV3EthereumAssets.WETH_ORACLE,
@@ -133,8 +125,11 @@ contract WstETHPriceCapAdapterTest is BaseTest {
       2_00
     );
 
-    // TODO: fuzzing?
+    vm.startPrank(admin);
+
     vm.expectRevert(IPriceCapAdapter.CallerIsNotRiskOrPoolAdmin.selector);
     setCapParameters(adapter, snapshotRatio, snapshotTimestamp, maxYearlyRatioGrowthPercent);
+
+    vm.stopPrank();
   }
 }

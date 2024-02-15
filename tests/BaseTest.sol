@@ -7,10 +7,57 @@ import {IACLManager, BasicIACLManager} from 'aave-address-book/AaveV3.sol';
 import {IPriceCapAdapter, ICLSynchronicityPriceAdapter} from '../src/interfaces/IPriceCapAdapter.sol';
 
 abstract contract BaseTest is Test {
+  struct ForkParams {
+    string network;
+    uint256 blockNumber;
+  }
+
+  struct RetrospectionParams {
+    uint16 maxYearlyRatioGrowthPercent;
+    uint48 minimumSnapshotDelay;
+    uint256 startBlock;
+    uint256 finishBlock;
+    uint256 delayInBlocks;
+    uint256 step;
+  }
+
+  struct CapParams {
+    uint16 maxYearlyRatioGrowthPercent;
+    uint256 startBlock;
+    uint256 finishBlock;
+  }
+
   ICLSynchronicityPriceAdapter public immutable NOT_CAPPED_ADAPTER;
 
-  constructor(address notCappedAdapter) {
+  RetrospectionParams public retrospectionParams;
+  ForkParams public forkParams;
+  CapParams public capParams;
+
+  constructor(
+    address notCappedAdapter,
+    ForkParams memory _forkParams,
+    // needed for retrospection testing
+    RetrospectionParams memory _retrospectionParams,
+    // needed for cap testing
+    CapParams memory _capParams
+  ) {
+    require(
+      _retrospectionParams.startBlock < _retrospectionParams.finishBlock,
+      ' retrospectivestart block is after finish block'
+    );
+    require(
+      _capParams.startBlock < _capParams.finishBlock,
+      'cap start block is after finish block'
+    );
+
     NOT_CAPPED_ADAPTER = ICLSynchronicityPriceAdapter(notCappedAdapter);
+    retrospectionParams = _retrospectionParams;
+    forkParams = _forkParams;
+    capParams = _capParams;
+  }
+
+  function setUp() public {
+    vm.createSelectFork(vm.rpcUrl(forkParams.network), forkParams.blockNumber);
   }
 
   function createAdapter(
@@ -97,12 +144,7 @@ abstract contract BaseTest is Test {
 
     skip(1);
 
-    vm.mockCall(
-      address(adapter.ACL_MANAGER()),
-      abi.encodeWithSelector(BasicIACLManager.isRiskAdmin.selector),
-      abi.encode(true)
-    );
-    setCapParameters(
+    _setCapParametersByAdmin(
       adapter,
       uint104(adapter.getSnapshotRatio()) + 1,
       uint48(block.timestamp) - minimumSnapshotDelay,
@@ -122,6 +164,11 @@ abstract contract BaseTest is Test {
     uint16 maxYearlyRatioGrowthPercent
   ) public {
     vm.assume(baseAggregatorAddress != 0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f);
+    vm.assume(baseAggregatorAddress != 0x7109709ECfa91a80626fF3989D68f67F5b1DD12D);
+
+    vm.assume(ratioProviderAddress != 0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f);
+    vm.assume(ratioProviderAddress != 0x7109709ECfa91a80626fF3989D68f67F5b1DD12D);
+
     vm.assume(address(aclManager) != address(0) && baseAggregatorAddress != address(0));
     vm.assume(snapshotRatio > 0);
     vm.assume(snapshotTimestamp > 0 && snapshotTimestamp <= block.timestamp - minimumSnapshotDelay);
@@ -144,6 +191,13 @@ abstract contract BaseTest is Test {
       abi.encodeWithSelector(ICLSynchronicityPriceAdapter.decimals.selector),
       abi.encode(decimals)
     );
+
+    vm.mockCall(
+      ratioProviderAddress,
+      abi.encodeWithSelector(ICLSynchronicityPriceAdapter.decimals.selector),
+      abi.encode(decimals)
+    );
+
     IPriceCapAdapter adapter = createAdapter(
       aclManager,
       baseAggregatorAddress,
@@ -287,6 +341,7 @@ abstract contract BaseTest is Test {
       maxYearlyRatioGrowthPercent
     );
 
+    _mockExistingOracleExchangeRate();
     int256 price = adapter.latestAnswer();
     int256 priceOfNotCappedAdapter = NOT_CAPPED_ADAPTER.latestAnswer();
 
@@ -296,4 +351,106 @@ abstract contract BaseTest is Test {
       'uncapped price is not equal to the existing adapter price'
     );
   }
+
+  function test_latestAnswerRetrospective() public virtual {
+    uint256 initialBlock = block.number;
+
+    vm.createSelectFork(vm.rpcUrl(forkParams.network), retrospectionParams.startBlock);
+
+    // create adapter with initial parameters
+    IPriceCapAdapter adapter = createAdapterSimple(
+      retrospectionParams.minimumSnapshotDelay,
+      uint40(block.timestamp - 2 * retrospectionParams.minimumSnapshotDelay),
+      retrospectionParams.maxYearlyRatioGrowthPercent
+    );
+
+    skip(1);
+
+    // persist adapter
+    vm.makePersistent(address(adapter));
+
+    // start rolling fork and check that the price is the same
+    uint256 currentBlock = retrospectionParams.startBlock;
+
+    while (currentBlock <= retrospectionParams.finishBlock - retrospectionParams.step) {
+      vm.createSelectFork(
+        vm.rpcUrl(forkParams.network),
+        currentBlock - retrospectionParams.delayInBlocks
+      );
+
+      uint48 snapshotTimestamp = uint48(block.timestamp);
+      uint104 currentRatio = getCurrentRatio();
+
+      vm.createSelectFork(vm.rpcUrl(forkParams.network), currentBlock);
+      _setCapParametersByAdmin(
+        adapter,
+        currentRatio,
+        snapshotTimestamp,
+        retrospectionParams.maxYearlyRatioGrowthPercent
+      );
+
+      _mockExistingOracleExchangeRate();
+      int256 price = adapter.latestAnswer();
+      int256 priceOfNotCappedAdapter = NOT_CAPPED_ADAPTER.latestAnswer();
+
+      assertEq(
+        price,
+        priceOfNotCappedAdapter,
+        'uncapped price is not equal to the existing adapter price'
+      );
+
+      currentBlock += retrospectionParams.step;
+
+      vm.createSelectFork(vm.rpcUrl(forkParams.network), currentBlock);
+    }
+
+    vm.revokePersistent(address(adapter));
+    vm.createSelectFork(vm.rpcUrl(forkParams.network), initialBlock);
+  }
+
+  function test_cappedLatestAnswer() public virtual {
+    vm.createSelectFork(vm.rpcUrl(forkParams.network), capParams.startBlock);
+
+    // create adapter with initial parameters
+    IPriceCapAdapter adapter = createAdapterSimple(
+      7 days,
+      uint40(block.timestamp - 8 days),
+      capParams.maxYearlyRatioGrowthPercent
+    );
+
+    skip(1);
+
+    // persist adapter
+    vm.makePersistent(address(adapter));
+
+    // roll fork to the finish block
+    vm.createSelectFork(vm.rpcUrl(forkParams.network), capParams.finishBlock);
+
+    _mockExistingOracleExchangeRate();
+    int256 priceCapped = adapter.latestAnswer();
+    int256 priceOfNotCappedAdapter = NOT_CAPPED_ADAPTER.latestAnswer();
+
+    // compare prices
+    assertGt(priceOfNotCappedAdapter, priceCapped, 'price is not capped');
+
+    vm.revokePersistent(address(adapter));
+    vm.createSelectFork(vm.rpcUrl(forkParams.network), capParams.finishBlock);
+  }
+
+  function _setCapParametersByAdmin(
+    IPriceCapAdapter adapter,
+    uint104 currentRatio,
+    uint48 snapshotTimestamp,
+    uint16 maxYearlyRatioGrowthPercent
+  ) internal {
+    vm.mockCall(
+      address(adapter.ACL_MANAGER()),
+      abi.encodeWithSelector(BasicIACLManager.isRiskAdmin.selector),
+      abi.encode(true)
+    );
+
+    setCapParameters(adapter, currentRatio, snapshotTimestamp, maxYearlyRatioGrowthPercent);
+  }
+
+  function _mockExistingOracleExchangeRate() internal virtual {}
 }

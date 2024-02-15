@@ -4,13 +4,15 @@ import {GovV3Helpers} from 'aave-helpers/GovV3Helpers.sol';
 import {EthereumScript} from 'aave-helpers/ScriptUtils.sol';
 import {AaveV3Ethereum, AaveV3EthereumAssets} from 'aave-address-book/AaveV3Ethereum.sol';
 import {AaveV2EthereumAssets} from 'aave-address-book/AaveV2Ethereum.sol';
-import {BaseAggregatorsMainnet} from 'cl-synchronicity-price-adapter/lib/BaseAggregatorsMainnet.sol';
+import {MiscEthereum} from 'aave-address-book/MiscEthereum.sol';
+import {CLSynchronicityPriceAdapterPegToBase} from 'cl-synchronicity-price-adapter/contracts/CLSynchronicityPriceAdapterPegToBase.sol';
 
 import {PriceCapAdapterStable} from '../src/contracts/PriceCapAdapterStable.sol';
 import {CbETHPriceCapAdapter, IPriceCapAdapter} from '../src/contracts/CbETHPriceCapAdapter.sol';
 import {RETHPriceCapAdapter} from '../src/contracts/RETHPriceCapAdapter.sol';
 import {WstETHPriceCapAdapter} from '../src/contracts/WstETHPriceCapAdapter.sol';
 import {SDAIPriceCapAdapter} from '../src/contracts/SDAIPriceCapAdapter.sol';
+import {stEURPriceCapAdapter} from '../src/contracts/stEURPriceCapAdapter.sol';
 import {AaveV3EthereumPayload} from '../src/contracts/payloads/AaveV3EthereumPayload.sol';
 
 library CapAdaptersStablesCodeEthereum {
@@ -74,6 +76,28 @@ library CapAdaptersStablesCodeEthereum {
         int256(1.1 * 1e8) // TODO: SET
       )
     );
+
+  bytes public constant agEUR_ADAPTER_CODE =
+    abi.encodePacked(
+      type(PriceCapAdapterStable).creationCode,
+      abi.encode(
+        AaveV3Ethereum.ACL_MANAGER,
+        MiscEthereum.agEUR_EUR_AGGREGATOR,
+        'Capped agEUR/EUR',
+        int256(1.1 * 1e8) // TODO: SET
+      )
+    );
+
+  bytes public constant pyUSD_ADAPTER_CODE =
+    abi.encodePacked(
+      type(PriceCapAdapterStable).creationCode,
+      abi.encode(
+        AaveV3Ethereum.ACL_MANAGER,
+        AaveV3EthereumAssets.PYUSD_ORACLE,
+        'Capped pyUSD/USD',
+        int256(1.1 * 1e8) // TODO: SET
+      )
+    );
 }
 
 library CapAdaptersCodeEthereum {
@@ -83,7 +107,7 @@ library CapAdaptersCodeEthereum {
       abi.encode(
         AaveV3Ethereum.ACL_MANAGER,
         AaveV3EthereumAssets.DAI_ORACLE,
-        BaseAggregatorsMainnet.SDAI_POT,
+        MiscEthereum.sDAI_POT,
         'Capped sDAI / DAI / USD',
         7 days, // TODO: SET
         IPriceCapAdapter.PriceCapUpdateParams({
@@ -125,6 +149,7 @@ library CapAdaptersCodeEthereum {
         })
       )
     );
+
   bytes public constant wstETH_ADAPTER_CODE =
     abi.encodePacked(
       type(WstETHPriceCapAdapter).creationCode,
@@ -141,6 +166,42 @@ library CapAdaptersCodeEthereum {
         })
       )
     );
+}
+
+library stEURCapAdapters {
+  function stEURAdapterCode() internal pure returns (bytes memory) {
+    return
+      abi.encodePacked(
+        type(stEURPriceCapAdapter).creationCode,
+        abi.encode(
+          AaveV3Ethereum.ACL_MANAGER,
+          GovV3Helpers.predictDeterministicAddress(
+            CapAdaptersStablesCodeEthereum.agEUR_ADAPTER_CODE
+          ), // agEUR / EUR
+          MiscEthereum.stEUR, // stEUR / agEUR
+          'Capped stUER / agEUR / EUR',
+          7 days, // TODO: SET
+          IPriceCapAdapter.PriceCapUpdateParams({
+            snapshotRatio: 1151642949000000000,
+            snapshotTimestamp: 1703743921,
+            maxYearlyRatioGrowthPercent: 10_00
+          })
+        )
+      );
+  }
+
+  function stEURtoUSDAdapterCode() internal pure returns (bytes memory) {
+    return
+      abi.encodePacked(
+        type(CLSynchronicityPriceAdapterPegToBase).creationCode,
+        abi.encode(
+          MiscEthereum.EUR_USD_AGGREGATOR, // EUR to USD
+          GovV3Helpers.predictDeterministicAddress(stEURAdapterCode()), // agEUR / EUR
+          18, // stEUR / agEUR
+          'Capped stUER / agEUR / EUR / USD'
+        )
+      );
+  }
 }
 
 contract DeployEthereumAdaptersAndPayload {
@@ -168,6 +229,9 @@ contract DeployEthereumAdaptersAndPayload {
     adapters.crvUsdAdapter = GovV3Helpers.deployDeterministic(
       CapAdaptersStablesCodeEthereum.crvUSD_ADAPTER_CODE
     );
+    adapters.pyUsdAdapter = GovV3Helpers.deployDeterministic(
+      CapAdaptersStablesCodeEthereum.pyUSD_ADAPTER_CODE
+    );
     adapters.cbEthAdapter = GovV3Helpers.deployDeterministic(
       CapAdaptersCodeEthereum.cbETH_ADAPTER_CODE
     );
@@ -177,6 +241,12 @@ contract DeployEthereumAdaptersAndPayload {
     adapters.wstEthAdapter = GovV3Helpers.deployDeterministic(
       CapAdaptersCodeEthereum.wstETH_ADAPTER_CODE
     );
+
+    GovV3Helpers.deployDeterministic(CapAdaptersStablesCodeEthereum.agEUR_ADAPTER_CODE);
+
+    GovV3Helpers.deployDeterministic(stEURCapAdapters.stEURAdapterCode());
+
+    GovV3Helpers.deployDeterministic(stEURCapAdapters.stEURtoUSDAdapterCode());
 
     return
       GovV3Helpers.deployDeterministic(

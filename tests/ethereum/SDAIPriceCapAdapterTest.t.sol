@@ -1,15 +1,29 @@
 // SPDX-License-Identifier: BUSL-1.1
 pragma solidity ^0.8.0;
 
-import './BaseTest.sol';
+import '../BaseTest.sol';
 
 import {AaveV3Ethereum, AaveV3EthereumAssets} from 'aave-address-book/AaveV3Ethereum.sol';
-import {BaseAggregatorsMainnet} from 'cl-synchronicity-price-adapter/lib/BaseAggregators.sol';
+import {MiscEthereum} from 'aave-address-book/MiscEthereum.sol';
 
-import {RETHPriceCapAdapter, IrETH} from '../src/contracts/RETHPriceCapAdapter.sol';
+import {SDAIPriceCapAdapter, IPot} from '../../src/contracts/SDAIPriceCapAdapter.sol';
 
-contract RETHPriceCapAdapterTest is BaseTest {
-  constructor() BaseTest(AaveV3EthereumAssets.rETH_ORACLE) {}
+contract SDAIPriceCapAdapterTest is BaseTest {
+  constructor()
+    BaseTest(
+      AaveV3EthereumAssets.sDAI_ORACLE,
+      ForkParams({network: 'mainnet', blockNumber: 18961286}),
+      RetrospectionParams({
+        maxYearlyRatioGrowthPercent: 10_15,
+        minimumSnapshotDelay: 7 days,
+        startBlock: 18061286,
+        finishBlock: 19183379,
+        delayInBlocks: 50200,
+        step: 200000
+      }),
+      CapParams({maxYearlyRatioGrowthPercent: 2_00, startBlock: 18061286, finishBlock: 19183379})
+    )
+  {}
 
   function createAdapter(
     IACLManager aclManager,
@@ -20,7 +34,7 @@ contract RETHPriceCapAdapterTest is BaseTest {
     IPriceCapAdapter.PriceCapUpdateParams memory priceCapParams
   ) public override returns (IPriceCapAdapter) {
     return
-      new RETHPriceCapAdapter(
+      new SDAIPriceCapAdapter(
         aclManager,
         baseAggregatorAddress,
         ratioProviderAddress,
@@ -39,9 +53,9 @@ contract RETHPriceCapAdapterTest is BaseTest {
     return
       createAdapter(
         AaveV3Ethereum.ACL_MANAGER,
-        AaveV3EthereumAssets.WETH_ORACLE,
-        AaveV3EthereumAssets.rETH_UNDERLYING,
-        'rETH / ETH / USD',
+        AaveV3EthereumAssets.DAI_ORACLE,
+        MiscEthereum.sDAI_POT,
+        'sDAI / DAI / USD',
         minimumSnapshotDelay,
         currentRatio,
         snapshotTimestamp,
@@ -50,31 +64,6 @@ contract RETHPriceCapAdapterTest is BaseTest {
   }
 
   function getCurrentRatio() public view override returns (uint104) {
-    return uint104(IrETH(AaveV3EthereumAssets.rETH_UNDERLYING).getExchangeRate());
-  }
-
-  function setUp() public {
-    vm.createSelectFork(vm.rpcUrl('mainnet'), 18961286);
-  }
-
-  function test_cappedLatestAnswer() public {
-    IPriceCapAdapter adapter = createAdapter(
-      AaveV3Ethereum.ACL_MANAGER,
-      AaveV3EthereumAssets.WETH_ORACLE,
-      AaveV3EthereumAssets.rETH_UNDERLYING,
-      'rETH / ETH / USD',
-      7 days,
-      1093801647000000000,
-      1703743921,
-      2_00
-    );
-
-    int256 price = adapter.latestAnswer();
-
-    assertApproxEqAbs(
-      uint256(price),
-      243616800000, // max growth 2%
-      100000000
-    );
+    return uint104(IPot(MiscEthereum.sDAI_POT).chi());
   }
 }

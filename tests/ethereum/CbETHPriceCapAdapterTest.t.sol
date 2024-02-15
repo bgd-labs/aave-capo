@@ -1,16 +1,32 @@
 // SPDX-License-Identifier: BUSL-1.1
 pragma solidity ^0.8.0;
 
-import './BaseTest.sol';
+import '../BaseTest.sol';
 
 import {AaveV3Ethereum, AaveV3EthereumAssets} from 'aave-address-book/AaveV3Ethereum.sol';
-import {BaseAggregatorsMainnet} from 'cl-synchronicity-price-adapter/lib/BaseAggregators.sol';
+import {MiscEthereum} from 'aave-address-book/MiscEthereum.sol';
 
-import {CbETHPriceCapAdapter, ICbEthRateProvider} from '../src/contracts/CbETHPriceCapAdapter.sol';
-import {ICLSynchronicityPriceAdapter} from '../src/interfaces/IPriceCapAdapter.sol';
+import {CbETHPriceCapAdapter, ICbEthRateProvider} from '../../src/contracts/CbETHPriceCapAdapter.sol';
+import {ICLSynchronicityPriceAdapter} from '../../src/interfaces/IPriceCapAdapter.sol';
 
 contract CbETHPriceCapAdapterTest is BaseTest {
-  constructor() BaseTest(AaveV3EthereumAssets.cbETH_ORACLE) {}
+  address cbETH_ETH_AGGREGATOR = 0xF017fcB346A1885194689bA23Eff2fE6fA5C483b;
+
+  constructor()
+    BaseTest(
+      AaveV3EthereumAssets.cbETH_ORACLE,
+      ForkParams({network: 'mainnet', blockNumber: 18961286}),
+      RetrospectionParams({
+        maxYearlyRatioGrowthPercent: 6_75,
+        minimumSnapshotDelay: 7 days,
+        startBlock: 18061286,
+        finishBlock: 19183379,
+        delayInBlocks: 50200,
+        step: 200000
+      }),
+      CapParams({maxYearlyRatioGrowthPercent: 2_00, startBlock: 18061286, finishBlock: 19183379})
+    )
+  {}
 
   function createAdapter(
     IACLManager aclManager,
@@ -54,54 +70,12 @@ contract CbETHPriceCapAdapterTest is BaseTest {
     return uint104(ICbEthRateProvider(AaveV3EthereumAssets.cbETH_UNDERLYING).exchangeRate());
   }
 
-  function setUp() public {
-    vm.createSelectFork(vm.rpcUrl('mainnet'), 18961286);
-  }
-
-  function test_latestAnswer(uint16 maxYearlyRatioGrowthPercent) public override {
-    IPriceCapAdapter adapter = createAdapterSimple(
-      0,
-      uint40(block.timestamp),
-      maxYearlyRatioGrowthPercent
-    );
-
-    int256 price = adapter.latestAnswer();
-
-    // here we have a very specific case, because we replace secondary-market based CL feed of exchange rate
-    // with the primary cbETH based feed
+  function _mockExistingOracleExchangeRate() internal override {
     uint256 cbEthRate = getCurrentRatio();
     vm.mockCall(
-      BaseAggregatorsMainnet.CBETH_ETH_AGGREGATOR,
+      cbETH_ETH_AGGREGATOR,
       abi.encodeWithSelector(ICLSynchronicityPriceAdapter.latestAnswer.selector),
       abi.encode(int256(cbEthRate))
-    );
-    int256 priceOfNotCappedAdapter = NOT_CAPPED_ADAPTER.latestAnswer();
-
-    assertEq(
-      price,
-      priceOfNotCappedAdapter,
-      'uncapped price is not equal to the existing adapter price'
-    );
-  }
-
-  function test_cappedLatestAnswer() public {
-    IPriceCapAdapter adapter = createAdapter(
-      AaveV3Ethereum.ACL_MANAGER,
-      AaveV3EthereumAssets.WETH_ORACLE,
-      AaveV3EthereumAssets.cbETH_UNDERLYING,
-      'cbETH / ETH / USD',
-      7 days,
-      1059523963000000000,
-      1703743921,
-      2_00
-    );
-
-    int256 price = adapter.latestAnswer();
-
-    assertApproxEqAbs(
-      uint256(price),
-      235982310000, // max growth 2%
-      100000000
     );
   }
 }

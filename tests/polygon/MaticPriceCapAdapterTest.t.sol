@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: BUSL-1.1
 pragma solidity ^0.8.0;
 
-import './BaseTest.sol';
+import '../BaseTest.sol';
 
 import {AaveV3Polygon, AaveV3PolygonAssets} from 'aave-address-book/AaveV3Polygon.sol';
-import {BaseAggregatorsPolygon} from 'cl-synchronicity-price-adapter/lib/BaseAggregators.sol';
+import {MiscPolygon} from 'aave-address-book/MiscPolygon.sol';
 
-import {MaticPriceCapAdapter, IMaticRateProvider} from '../src/contracts/MaticPriceCapAdapter.sol';
+import {MaticPriceCapAdapter, IMaticRateProvider} from '../../src/contracts/MaticPriceCapAdapter.sol';
 
 abstract contract BaseMaticPriceCapAdapterTest is BaseTest {
   address public immutable RATE_PROVIDER;
@@ -15,8 +15,16 @@ abstract contract BaseMaticPriceCapAdapterTest is BaseTest {
   constructor(
     address notCappedAdapter,
     address rateProvider,
-    string memory pairName
-  ) BaseTest(notCappedAdapter) {
+    string memory pairName,
+    RetrospectionParams memory retrospectionParams
+  )
+    BaseTest(
+      notCappedAdapter,
+      ForkParams({network: 'polygon', blockNumber: 52496345}),
+      retrospectionParams,
+      CapParams({maxYearlyRatioGrowthPercent: 2_00, startBlock: 50808790, finishBlock: 53308720})
+    )
+  {
     RATE_PROVIDER = rateProvider;
     _pairName = pairName;
   }
@@ -49,7 +57,7 @@ abstract contract BaseMaticPriceCapAdapterTest is BaseTest {
     return
       createAdapter(
         AaveV3Polygon.ACL_MANAGER,
-        BaseAggregatorsPolygon.MATIC_USD_AGGREGATOR,
+        AaveV3PolygonAssets.WMATIC_ORACLE,
         RATE_PROVIDER,
         _pairName,
         minimumSnapshotDelay,
@@ -62,18 +70,22 @@ abstract contract BaseMaticPriceCapAdapterTest is BaseTest {
   function getCurrentRatio() public view override returns (uint104) {
     return uint104(IMaticRateProvider(RATE_PROVIDER).getRate());
   }
-
-  function setUp() public {
-    vm.createSelectFork(vm.rpcUrl('polygon'), 52496345);
-  }
 }
 
 contract MaticXPriceCapAdapterTest is BaseMaticPriceCapAdapterTest {
   constructor()
     BaseMaticPriceCapAdapterTest(
       AaveV3PolygonAssets.MaticX_ORACLE,
-      BaseAggregatorsPolygon.MATICX_RATE_PROVIDER,
-      'MaticX / Matic / USD'
+      MiscPolygon.MaticX_RATE_PROVIDER,
+      'MaticX / Matic / USD',
+      RetrospectionParams({
+        maxYearlyRatioGrowthPercent: 7_98,
+        minimumSnapshotDelay: 14 days,
+        startBlock: 50808790,
+        finishBlock: 53308720,
+        delayInBlocks: 560000, // 14 days
+        step: 280000 // ~ 7 days
+      })
     )
   {}
 }
@@ -82,8 +94,16 @@ contract StMaticPriceCapAdapterTest is BaseMaticPriceCapAdapterTest {
   constructor()
     BaseMaticPriceCapAdapterTest(
       AaveV3PolygonAssets.stMATIC_ORACLE,
-      BaseAggregatorsPolygon.STMATIC_RATE_PROVIDER,
-      'stMATIC / Matic / USD'
+      MiscPolygon.stMATIC_RATE_PROVIDER,
+      'stMATIC / Matic / USD',
+      RetrospectionParams({
+        maxYearlyRatioGrowthPercent: 8_85,
+        minimumSnapshotDelay: 14 days,
+        startBlock: 50808790,
+        finishBlock: 53308720,
+        delayInBlocks: 560000, // 14 days
+        step: 280000 // ~ 7 days
+      })
     )
   {}
 }
