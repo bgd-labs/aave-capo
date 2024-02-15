@@ -9,7 +9,7 @@ import {DeployEthereumAdaptersAndPayload, CapAdaptersCodeEthereum, CapAdaptersSt
 
 contract AaveV3EthereumPayloadTest is Test, DeployEthereumAdaptersAndPayload {
   function setUp() public {
-    vm.createSelectFork(vm.rpcUrl('mainnet'), 19176845);
+    vm.createSelectFork(vm.rpcUrl('mainnet'), 19225864);
   }
 
   function test_AaveV3EthereumPayload() public {
@@ -39,6 +39,10 @@ contract AaveV3EthereumPayloadTest is Test, DeployEthereumAdaptersAndPayload {
 
     address crvUsdPredicted = GovV3Helpers.predictDeterministicAddress(
       CapAdaptersStablesCodeEthereum.crvUSD_ADAPTER_CODE
+    );
+
+    address pyUsdPredicted = GovV3Helpers.predictDeterministicAddress(
+      CapAdaptersStablesCodeEthereum.pyUSD_ADAPTER_CODE
     );
 
     address cbEthPredicted = GovV3Helpers.predictDeterministicAddress(
@@ -79,6 +83,11 @@ contract AaveV3EthereumPayloadTest is Test, DeployEthereumAdaptersAndPayload {
       AaveV3EthereumAssets.crvUSD_UNDERLYING
     );
     assertEq(crvUsdNew, crvUsdPredicted);
+
+    address pyUsdNew = AaveV3Ethereum.ORACLE.getSourceOfAsset(
+      AaveV3EthereumAssets.PYUSD_UNDERLYING
+    );
+    assertEq(pyUsdNew, pyUsdPredicted);
 
     address cbEthNew = AaveV3Ethereum.ORACLE.getSourceOfAsset(
       AaveV3EthereumAssets.cbETH_UNDERLYING

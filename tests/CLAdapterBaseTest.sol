@@ -21,8 +21,9 @@ abstract contract CLAdapterBaseTest is BaseTest {
     ForkParams memory forkParams,
     // needed for retrospection testing
     RetrospectionParams memory _retrospectionParams,
+    CapParams memory _capParams,
     AdapterCreationDefaultParams memory _adapterDefaults
-  ) BaseTest(notCappedAdapter, forkParams, _retrospectionParams) {
+  ) BaseTest(notCappedAdapter, forkParams, _retrospectionParams, _capParams) {
     adapterDefaults = _adapterDefaults;
   }
 

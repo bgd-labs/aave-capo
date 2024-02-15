@@ -4,7 +4,6 @@ pragma solidity ^0.8.0;
 import '../BaseTest.sol';
 
 import {AaveV3Avalanche, AaveV3AvalancheAssets} from 'aave-address-book/AaveV3Avalanche.sol';
-import {BaseAggregatorsMainnet} from 'cl-synchronicity-price-adapter/lib/BaseAggregators.sol';
 
 import {SAvaxPriceCapAdapter, ISAvax} from '../../src/contracts/SAvaxPriceCapAdapter.sol';
 
@@ -21,7 +20,8 @@ contract SAvaxPriceCapAdapterTest is BaseTest {
         finishBlock: 41448370,
         delayInBlocks: 605000, // 14 days
         step: 302500 // 7 days
-      })
+      }),
+      CapParams({maxYearlyRatioGrowthPercent: 2_00, startBlock: 39152370, finishBlock: 41448370})
     )
   {}
 
