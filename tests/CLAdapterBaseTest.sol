@@ -4,7 +4,7 @@ pragma solidity ^0.8.0;
 import {IChainlinkAggregator} from 'cl-synchronicity-price-adapter/interfaces/IChainlinkAggregator.sol';
 
 import './BaseTest.sol';
-import {CLRatePriceCapAdapter} from '../../src/contracts/CLRatePriceCapAdapter.sol';
+import {CLRatePriceCapAdapter} from '../src/contracts/CLRatePriceCapAdapter.sol';
 
 abstract contract CLAdapterBaseTest is BaseTest {
   struct AdapterCreationDefaultParams {
