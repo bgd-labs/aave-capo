@@ -23,7 +23,7 @@ library CapAdaptersStablesCodeEthereum {
         AaveV3Ethereum.ACL_MANAGER,
         AaveV3EthereumAssets.USDT_ORACLE,
         'Capped USDT/USD',
-        int256(1.1 * 1e8) // TODO: SET
+        int256(1.02 * 1e8) // TODO: SET
       )
     );
   bytes public constant USDC_ADAPTER_CODE =
@@ -33,7 +33,7 @@ library CapAdaptersStablesCodeEthereum {
         AaveV3Ethereum.ACL_MANAGER,
         AaveV3EthereumAssets.USDC_ORACLE,
         'Capped USDC/USD',
-        int256(1.1 * 1e8) // TODO: SET
+        int256(1.02 * 1e8) // TODO: SET
       )
     );
   bytes public constant DAI_ADAPTER_CODE =
@@ -43,7 +43,7 @@ library CapAdaptersStablesCodeEthereum {
         AaveV3Ethereum.ACL_MANAGER,
         AaveV3EthereumAssets.DAI_ORACLE,
         'Capped DAI/USD',
-        int256(1.1 * 1e8) // TODO: SET
+        int256(1.03 * 1e8) // TODO: SET
       )
     );
   bytes public constant LUSD_ADAPTER_CODE =
@@ -53,7 +53,7 @@ library CapAdaptersStablesCodeEthereum {
         AaveV3Ethereum.ACL_MANAGER,
         AaveV3EthereumAssets.LUSD_ORACLE,
         'Capped LUSD/USD',
-        int256(1.1 * 1e8) // TODO: SET
+        int256(1.04 * 1e8) // TODO: SET
       )
     );
   bytes public constant FRAX_ADAPTER_CODE =
@@ -63,7 +63,7 @@ library CapAdaptersStablesCodeEthereum {
         AaveV3Ethereum.ACL_MANAGER,
         AaveV3EthereumAssets.FRAX_ORACLE,
         'Capped FRAX/USD',
-        int256(1.1 * 1e8) // TODO: SET
+        int256(1.04 * 1e8) // TODO: SET
       )
     );
   bytes public constant crvUSD_ADAPTER_CODE =
@@ -73,7 +73,7 @@ library CapAdaptersStablesCodeEthereum {
         AaveV3Ethereum.ACL_MANAGER,
         AaveV3EthereumAssets.crvUSD_ORACLE,
         'Capped crvUSD/USD',
-        int256(1.1 * 1e8) // TODO: SET
+        int256(1.04 * 1e8) // TODO: SET
       )
     );
 
@@ -84,10 +84,11 @@ library CapAdaptersStablesCodeEthereum {
         AaveV3Ethereum.ACL_MANAGER,
         MiscEthereum.agEUR_EUR_AGGREGATOR,
         'Capped agEUR/EUR',
-        int256(1.1 * 1e8) // TODO: SET
+        int256(1.02 * 1e8) // TODO: SET
       )
     );
 
+  // TODO: ask for the correct value
   bytes public constant pyUSD_ADAPTER_CODE =
     abi.encodePacked(
       type(PriceCapAdapterStable).creationCode,

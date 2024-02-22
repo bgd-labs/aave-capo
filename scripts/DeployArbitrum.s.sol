@@ -18,7 +18,7 @@ library CapAdaptersCodeArbitrum {
         AaveV3Arbitrum.ACL_MANAGER,
         AaveV3ArbitrumAssets.USDT_ORACLE,
         'Capped USDT/USD',
-        int256(1.1 * 1e8) // TODO: SET
+        int256(1.02 * 1e8) // TODO: SET
       )
     );
   bytes public constant USDC_ADAPTER_CODE =
@@ -28,9 +28,12 @@ library CapAdaptersCodeArbitrum {
         AaveV3Arbitrum.ACL_MANAGER,
         AaveV3ArbitrumAssets.USDC_ORACLE,
         'Capped USDC/USD',
-        int256(1.1 * 1e8) // TODO: SET
+        int256(1.02 * 1e8) // TODO: SET
       )
     );
+
+  // TODO: add USDC.e
+
   bytes public constant DAI_ADAPTER_CODE =
     abi.encodePacked(
       type(PriceCapAdapterStable).creationCode,
@@ -38,7 +41,7 @@ library CapAdaptersCodeArbitrum {
         AaveV3Arbitrum.ACL_MANAGER,
         AaveV3ArbitrumAssets.DAI_ORACLE,
         'Capped DAI/USD',
-        int256(1.1 * 1e8) // TODO: SET
+        int256(1.03 * 1e8) // TODO: SET
       )
     );
   bytes public constant LUSD_ADAPTER_CODE =
@@ -48,7 +51,7 @@ library CapAdaptersCodeArbitrum {
         AaveV3Arbitrum.ACL_MANAGER,
         AaveV3ArbitrumAssets.LUSD_ORACLE,
         'Capped LUSD/USD',
-        int256(1.1 * 1e8) // TODO: SET
+        int256(1.04 * 1e8) // TODO: SET
       )
     );
   bytes public constant FRAX_ADAPTER_CODE =
@@ -58,7 +61,7 @@ library CapAdaptersCodeArbitrum {
         AaveV3Arbitrum.ACL_MANAGER,
         AaveV3ArbitrumAssets.FRAX_ORACLE,
         'Capped FRAX/USD',
-        int256(1.1 * 1e8) // TODO: SET
+        int256(1.04 * 1e8) // TODO: SET
       )
     );
   bytes public constant rETH_ADAPTER_CODE =

@@ -16,7 +16,7 @@ library CapAdaptersCodeAvalanche {
         AaveV3Avalanche.ACL_MANAGER,
         AaveV3AvalancheAssets.USDt_ORACLE,
         'Capped USDt/USD',
-        int256(1.1 * 1e8) // TODO: SET
+        int256(1.02 * 1e8) // TODO: SET
       )
     );
   bytes public constant USDC_ADAPTER_CODE =
@@ -26,7 +26,7 @@ library CapAdaptersCodeAvalanche {
         AaveV3Avalanche.ACL_MANAGER,
         AaveV3AvalancheAssets.USDC_ORACLE,
         'Capped USDC/USD',
-        int256(1.1 * 1e8) // TODO: SET
+        int256(1.02 * 1e8) // TODO: SET
       )
     );
   bytes public constant DAIe_ADAPTER_CODE =
@@ -36,7 +36,7 @@ library CapAdaptersCodeAvalanche {
         AaveV3Avalanche.ACL_MANAGER,
         AaveV3AvalancheAssets.DAIe_ORACLE,
         'Capped DAI.e/USD',
-        int256(1.1 * 1e8) // TODO: SET
+        int256(1.03 * 1e8) // TODO: SET
       )
     );
   bytes public constant FRAX_ADAPTER_CODE =
@@ -46,7 +46,7 @@ library CapAdaptersCodeAvalanche {
         AaveV3Avalanche.ACL_MANAGER,
         AaveV3AvalancheAssets.FRAX_ORACLE,
         'Capped FRAX/USD',
-        int256(1.1 * 1e8) // TODO: SET
+        int256(1.04 * 1e8) // TODO: SET
       )
     );
 

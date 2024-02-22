@@ -18,7 +18,7 @@ library CapAdaptersCodeGnosis {
         AaveV3Gnosis.ACL_MANAGER,
         AaveV3GnosisAssets.USDC_ORACLE,
         'Capped USDC/USD',
-        int256(1.1 * 1e8) // TODO: SET
+        int256(1.02 * 1e8) // TODO: SET
       )
     );
   bytes public constant WXDAI_ADAPTER_CODE =
@@ -28,7 +28,7 @@ library CapAdaptersCodeGnosis {
         AaveV3Gnosis.ACL_MANAGER,
         AaveV3GnosisAssets.WXDAI_ORACLE,
         'Capped wXDAI/USD',
-        int256(1.1 * 1e8) // TODO: SET
+        int256(1.03 * 1e8) // TODO: SET
       )
     );
   bytes public constant sDAI_ADAPTER_CODE =
