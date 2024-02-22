@@ -17,7 +17,7 @@ library CapAdaptersCodeBase {
         AaveV3Base.ACL_MANAGER,
         AaveV3BaseAssets.USDC_ORACLE,
         'Capped USDC/USD',
-        int256(1.02 * 1e8) // TODO: SET
+        int256(1.02 * 1e6)
       )
     );
 

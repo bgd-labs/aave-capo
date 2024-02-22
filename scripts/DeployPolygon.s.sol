@@ -18,7 +18,7 @@ library CapAdaptersCodePolygon {
         AaveV3Polygon.ACL_MANAGER,
         AaveV3PolygonAssets.USDT_ORACLE,
         'Capped USDT/USD',
-        int256(1.02 * 1e8) // TODO: SET
+        int256(1.02 * 1e6)
       )
     );
   //USDC.e
@@ -29,7 +29,7 @@ library CapAdaptersCodePolygon {
         AaveV3Polygon.ACL_MANAGER,
         AaveV3PolygonAssets.USDC_ORACLE,
         'Capped USDC/USD',
-        int256(1.02 * 1e8) // TODO: SET
+        int256(1.02 * 1e6)
       )
     );
   bytes public constant DAI_ADAPTER_CODE =
@@ -39,7 +39,7 @@ library CapAdaptersCodePolygon {
         AaveV3Polygon.ACL_MANAGER,
         AaveV3PolygonAssets.DAI_ORACLE,
         'Capped DAI/USD',
-        int256(1.03 * 1e8) // TODO: SET
+        int256(1.03 * 1e18)
       )
     );
 

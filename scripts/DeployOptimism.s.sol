@@ -17,7 +17,7 @@ library CapAdaptersCodeOptimism {
         AaveV3Optimism.ACL_MANAGER,
         AaveV3OptimismAssets.USDT_ORACLE,
         'Capped USDT/USD',
-        int256(1.02 * 1e8) // TODO: SET
+        int256(1.02 * 1e6)
       )
     );
   bytes public constant USDC_ADAPTER_CODE =
@@ -27,7 +27,7 @@ library CapAdaptersCodeOptimism {
         AaveV3Optimism.ACL_MANAGER,
         AaveV3OptimismAssets.USDC_ORACLE,
         'Capped USDC/USD',
-        int256(1.02 * 1e8) // TODO: SET
+        int256(1.02 * 1e6)
       )
     );
   bytes public constant DAI_ADAPTER_CODE =
@@ -37,7 +37,7 @@ library CapAdaptersCodeOptimism {
         AaveV3Optimism.ACL_MANAGER,
         AaveV3OptimismAssets.DAI_ORACLE,
         'Capped DAI/USD',
-        int256(1.03 * 1e8) // TODO: SET
+        int256(1.03 * 1e18)
       )
     );
   bytes public constant LUSD_ADAPTER_CODE =
@@ -47,7 +47,7 @@ library CapAdaptersCodeOptimism {
         AaveV3Optimism.ACL_MANAGER,
         AaveV3OptimismAssets.LUSD_ORACLE,
         'Capped LUSD/USD',
-        int256(1.04 * 1e8) // TODO: SET
+        int256(1.04 * 1e18)
       )
     );
   bytes public constant sUSD_ADAPTER_CODE =
@@ -57,7 +57,7 @@ library CapAdaptersCodeOptimism {
         AaveV3Optimism.ACL_MANAGER,
         AaveV3OptimismAssets.sUSD_ORACLE,
         'Capped sUSD/USD',
-        int256(1.04 * 1e8) // TODO: SET
+        int256(1.04 * 1e18)
       )
     );
   bytes public constant rETH_ADAPTER_CODE =
