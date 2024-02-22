@@ -58,11 +58,11 @@ library CapAdaptersCodeAvalanche {
         AaveV3AvalancheAssets.WAVAX_ORACLE,
         AaveV3AvalancheAssets.sAVAX_UNDERLYING,
         'Capped sAVAX / AVAX / USD',
-        7 days, // TODO: SET
+        14 days,
         IPriceCapAdapter.PriceCapUpdateParams({
-          snapshotRatio: 1130451182771024053,
-          snapshotTimestamp: 1703743921,
-          maxYearlyRatioGrowthPercent: 10_00
+          snapshotRatio: 1131476168413478943,
+          snapshotTimestamp: 1708037949, // 08-02-2024
+          maxYearlyRatioGrowthPercent: 7_40
         })
       )
     );

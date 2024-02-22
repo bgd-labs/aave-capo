@@ -109,11 +109,11 @@ library CapAdaptersCodeEthereum {
         AaveV3EthereumAssets.DAI_ORACLE,
         MiscEthereum.sDAI_POT,
         'Capped sDAI / DAI / USD',
-        7 days, // TODO: SET
+        7 days,
         IPriceCapAdapter.PriceCapUpdateParams({
-          snapshotRatio: 1048947230000000000000000000,
-          snapshotTimestamp: 1703743921,
-          maxYearlyRatioGrowthPercent: 10_00
+          snapshotRatio: 1055881418683661830974172162,
+          snapshotTimestamp: 1708004591, // 15-02-2024
+          maxYearlyRatioGrowthPercent: 10_15
         })
       )
     );
@@ -125,11 +125,11 @@ library CapAdaptersCodeEthereum {
         AaveV3EthereumAssets.WETH_ORACLE,
         AaveV3EthereumAssets.cbETH_UNDERLYING,
         'Capped cbETH / ETH / USD',
-        7 days, // TODO: SET
+        7 days,
         IPriceCapAdapter.PriceCapUpdateParams({
-          snapshotRatio: 1059523963000000000,
-          snapshotTimestamp: 1703743921,
-          maxYearlyRatioGrowthPercent: 10_00
+          snapshotRatio: 1063814269953974334,
+          snapshotTimestamp: 1708004591, // 15-02-2024
+          maxYearlyRatioGrowthPercent: 7_04
         })
       )
     );
@@ -143,9 +143,9 @@ library CapAdaptersCodeEthereum {
         'Capped rETH / ETH / USD',
         7 days, // TODO: SET
         IPriceCapAdapter.PriceCapUpdateParams({
-          snapshotRatio: 1093801647000000000,
-          snapshotTimestamp: 1703743921,
-          maxYearlyRatioGrowthPercent: 10_00
+          snapshotRatio: 1098284517740008249,
+          snapshotTimestamp: 1708004591, // 15-02-2024
+          maxYearlyRatioGrowthPercent: 7_46
         })
       )
     );
@@ -157,12 +157,12 @@ library CapAdaptersCodeEthereum {
         AaveV3Ethereum.ACL_MANAGER,
         AaveV3EthereumAssets.WETH_ORACLE,
         AaveV2EthereumAssets.stETH_UNDERLYING,
-        'Capped wstETH / stETH(ETH) / USD', // TODO: is it actually going to STETH, but then using ETH feed
-        7 days, // TODO: SET
+        'Capped wstETH / stETH(ETH) / USD',
+        7 days,
         IPriceCapAdapter.PriceCapUpdateParams({
-          snapshotRatio: 1151642949000000000,
-          snapshotTimestamp: 1703743921,
-          maxYearlyRatioGrowthPercent: 10_00
+          snapshotRatio: 1157209899495068171,
+          snapshotTimestamp: 1708004591, // 15-02-2024
+          maxYearlyRatioGrowthPercent: 8_72
         })
       )
     );

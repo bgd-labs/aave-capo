@@ -70,9 +70,9 @@ library CapAdaptersCodeOptimism {
         'Capped rETH / ETH / USD',
         7 days, // TODO: SET
         IPriceCapAdapter.PriceCapUpdateParams({
-          snapshotRatio: 1093801647000000000,
+          snapshotRatio: 1098211995352594225,
           snapshotTimestamp: 1703743921,
-          maxYearlyRatioGrowthPercent: 10_00
+          maxYearlyRatioGrowthPercent: 7_46
         })
       )
     );
@@ -83,12 +83,12 @@ library CapAdaptersCodeOptimism {
         AaveV3Optimism.ACL_MANAGER,
         AaveV3OptimismAssets.WETH_ORACLE,
         MiscOptimism.wstETH_stETH_AGGREGATOR,
-        'Capped wstETH / stETH(ETH) / USD', // TODO: is it actually going to STETH, but then using ETH feed
-        7 days, // TODO: SET
+        'Capped wstETH / stETH(ETH) / USD',
+        7 days,
         IPriceCapAdapter.PriceCapUpdateParams({
-          snapshotRatio: 1151642949000000000,
-          snapshotTimestamp: 1703743921,
-          maxYearlyRatioGrowthPercent: 10_00
+          snapshotRatio: 1157105995453941980,
+          snapshotTimestamp: 1707992685,
+          maxYearlyRatioGrowthPercent: 8_72
         })
       )
     );

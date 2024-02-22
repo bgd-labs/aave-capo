@@ -39,11 +39,11 @@ library CapAdaptersCodeGnosis {
         AaveV3GnosisAssets.WXDAI_ORACLE,
         AaveV3GnosisAssets.sDAI_UNDERLYING,
         'Capped sDAI / DAI / USD',
-        7 days, // TODO: SET
+        7 days,
         IPriceCapAdapter.PriceCapUpdateParams({
-          snapshotRatio: 1048947230000000000000000000,
-          snapshotTimestamp: 1703743921,
-          maxYearlyRatioGrowthPercent: 10_00
+          snapshotRatio: 1041259405371548076, // TODO: please recheck
+          snapshotTimestamp: 1707988835,
+          maxYearlyRatioGrowthPercent: 10_15
         })
       )
     );
@@ -55,12 +55,12 @@ library CapAdaptersCodeGnosis {
         AaveV3Gnosis.ACL_MANAGER,
         AaveV3GnosisAssets.WETH_ORACLE,
         MiscGnosis.wstETH_stETH_AGGREGATOR,
-        'Capped wstETH / stETH(ETH) / USD', // TODO: is it actually going to STETH, but then using ETH feed
-        7 days, // TODO: SET
+        'Capped wstETH / stETH(ETH) / USD',
+        7 days,
         IPriceCapAdapter.PriceCapUpdateParams({
-          snapshotRatio: 1151642949000000000,
-          snapshotTimestamp: 1703743921,
-          maxYearlyRatioGrowthPercent: 10_00
+          snapshotRatio: 1157105995453941980,
+          snapshotTimestamp: 1707988835,
+          maxYearlyRatioGrowthPercent: 8_72
         })
       )
     );
