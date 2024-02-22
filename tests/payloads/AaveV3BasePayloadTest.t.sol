@@ -9,7 +9,7 @@ import {DeployBaseAdaptersAndPayload, CapAdaptersCodeBase} from '../../scripts/D
 
 contract AaveV3BasePayloadTest is Test, DeployBaseAdaptersAndPayload {
   function setUp() public {
-    vm.createSelectFork(vm.rpcUrl('base'), 10262778);
+    vm.createSelectFork(vm.rpcUrl('base'), 10915170);
   }
 
   function test_AaveV3BasePayload() public {

@@ -9,7 +9,7 @@ import {DeployOptimismAdaptersAndPayload, CapAdaptersCodeOptimism} from '../../s
 
 contract AaveV3OptimismPayloadTest is Test, DeployOptimismAdaptersAndPayload {
   function setUp() public {
-    vm.createSelectFork(vm.rpcUrl('optimism'), 115858829);
+    vm.createSelectFork(vm.rpcUrl('optimism'), 116510489);
   }
 
   function test_AaveV3OptimismPayload() public {

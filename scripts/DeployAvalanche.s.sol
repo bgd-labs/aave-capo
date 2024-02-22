@@ -60,8 +60,8 @@ library CapAdaptersCodeAvalanche {
         'Capped sAVAX / AVAX / USD',
         14 days,
         IPriceCapAdapter.PriceCapUpdateParams({
-          snapshotRatio: 1131476168413478943,
-          snapshotTimestamp: 1708037949, // 08-02-2024
+          snapshotRatio: 1130535654847205789,
+          snapshotTimestamp: 1707346799, // 07-02-2024
           maxYearlyRatioGrowthPercent: 7_40
         })
       )

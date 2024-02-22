@@ -9,7 +9,7 @@ import {DeployArbitrumAdaptersAndPayload, CapAdaptersCodeArbitrum} from '../../s
 
 contract AaveV3ArbitrumPayloadTest is Test, DeployArbitrumAdaptersAndPayload {
   function setUp() public {
-    vm.createSelectFork(vm.rpcUrl('arbitrum'), 178315580);
+    vm.createSelectFork(vm.rpcUrl('arbitrum'), 183394362);
   }
 
   function test_AaveV3ArbitrumPayload() public {

@@ -67,7 +67,7 @@ contract ExchangeRatesArbitrum is Test {
 
 contract ExchangeRatesAvax is Test {
   function setUp() public {
-    vm.createSelectFork(vm.rpcUrl('avalanche'), 41726555); // 8th of February
+    vm.createSelectFork(vm.rpcUrl('avalanche'), 41384761); // 7th of February
   }
 
   function test_getExchangeRate() public {
