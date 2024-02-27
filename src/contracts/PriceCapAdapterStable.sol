@@ -77,6 +77,12 @@ contract PriceCapAdapterStable is IPriceCapAdapterStable {
       revert NegativePrice(priceCap);
     }
 
+    int256 basePrice = ASSET_TO_USD_AGGREGATOR.latestAnswer();
+
+    if (priceCap < basePrice) {
+      revert CapLowerThanActualPrice();
+    }
+
     _priceCap = priceCap;
 
     emit PriceCapUpdated(priceCap);
