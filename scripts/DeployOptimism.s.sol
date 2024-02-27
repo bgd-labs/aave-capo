@@ -17,7 +17,7 @@ library CapAdaptersCodeOptimism {
         AaveV3Optimism.ACL_MANAGER,
         AaveV3OptimismAssets.USDT_ORACLE,
         'Capped USDT/USD',
-        int256(1.04 * 1e6)
+        int256(1.04 * 1e8)
       )
     );
   bytes public constant USDC_ADAPTER_CODE =
@@ -27,7 +27,7 @@ library CapAdaptersCodeOptimism {
         AaveV3Optimism.ACL_MANAGER,
         AaveV3OptimismAssets.USDC_ORACLE,
         'Capped USDC/USD',
-        int256(1.04 * 1e6)
+        int256(1.04 * 1e8)
       )
     );
   bytes public constant DAI_ADAPTER_CODE =
@@ -37,7 +37,7 @@ library CapAdaptersCodeOptimism {
         AaveV3Optimism.ACL_MANAGER,
         AaveV3OptimismAssets.DAI_ORACLE,
         'Capped DAI/USD',
-        int256(1.04 * 1e18)
+        int256(1.04 * 1e8)
       )
     );
   bytes public constant LUSD_ADAPTER_CODE =
@@ -47,7 +47,7 @@ library CapAdaptersCodeOptimism {
         AaveV3Optimism.ACL_MANAGER,
         AaveV3OptimismAssets.LUSD_ORACLE,
         'Capped LUSD/USD',
-        int256(1.04 * 1e18)
+        int256(1.04 * 1e8)
       )
     );
   bytes public constant sUSD_ADAPTER_CODE =
@@ -57,7 +57,7 @@ library CapAdaptersCodeOptimism {
         AaveV3Optimism.ACL_MANAGER,
         AaveV3OptimismAssets.sUSD_ORACLE,
         'Capped sUSD/USD',
-        int256(1.04 * 1e18)
+        int256(1.04 * 1e8)
       )
     );
   bytes public constant rETH_ADAPTER_CODE =
@@ -68,7 +68,7 @@ library CapAdaptersCodeOptimism {
         AaveV3OptimismAssets.WETH_ORACLE,
         MiscOptimism.rETH_ETH_AGGREGATOR,
         'Capped rETH / ETH / USD',
-        7 days, // TODO: SET
+        7 days,
         IPriceCapAdapter.PriceCapUpdateParams({
           snapshotRatio: 1098211995352594225,
           snapshotTimestamp: 1703743921,

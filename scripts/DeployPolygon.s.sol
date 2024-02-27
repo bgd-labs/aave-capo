@@ -18,7 +18,7 @@ library CapAdaptersCodePolygon {
         AaveV3Polygon.ACL_MANAGER,
         AaveV3PolygonAssets.USDT_ORACLE,
         'Capped USDT/USD',
-        int256(1.04 * 1e6)
+        int256(1.04 * 1e8)
       )
     );
   //USDC.e
@@ -29,7 +29,7 @@ library CapAdaptersCodePolygon {
         AaveV3Polygon.ACL_MANAGER,
         AaveV3PolygonAssets.USDC_ORACLE,
         'Capped USDC/USD',
-        int256(1.04 * 1e6)
+        int256(1.04 * 1e8)
       )
     );
   bytes public constant DAI_ADAPTER_CODE =
@@ -39,7 +39,7 @@ library CapAdaptersCodePolygon {
         AaveV3Polygon.ACL_MANAGER,
         AaveV3PolygonAssets.DAI_ORACLE,
         'Capped DAI/USD',
-        int256(1.04 * 1e18)
+        int256(1.04 * 1e8)
       )
     );
 
@@ -67,7 +67,7 @@ library CapAdaptersCodePolygon {
         AaveV3PolygonAssets.WMATIC_ORACLE,
         MiscPolygon.stMATIC_RATE_PROVIDER,
         'Capped stMATIC / MATIC / USD',
-        14 days, // TODO: SET
+        14 days,
         IPriceCapAdapter.PriceCapUpdateParams({
           snapshotRatio: 1105335334964160762,
           snapshotTimestamp: 1707352792,

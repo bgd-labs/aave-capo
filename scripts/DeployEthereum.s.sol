@@ -23,7 +23,7 @@ library CapAdaptersStablesCodeEthereum {
         AaveV3Ethereum.ACL_MANAGER,
         AaveV3EthereumAssets.USDT_ORACLE,
         'Capped USDT/USD',
-        int256(1.04 * 1e6)
+        int256(1.04 * 1e8)
       )
     );
   bytes public constant USDC_ADAPTER_CODE =
@@ -33,7 +33,7 @@ library CapAdaptersStablesCodeEthereum {
         AaveV3Ethereum.ACL_MANAGER,
         AaveV3EthereumAssets.USDC_ORACLE,
         'Capped USDC/USD',
-        int256(1.04 * 1e6)
+        int256(1.04 * 1e8)
       )
     );
   bytes public constant DAI_ADAPTER_CODE =
@@ -43,7 +43,7 @@ library CapAdaptersStablesCodeEthereum {
         AaveV3Ethereum.ACL_MANAGER,
         AaveV3EthereumAssets.DAI_ORACLE,
         'Capped DAI/USD',
-        int256(1.04 * 1e18)
+        int256(1.04 * 1e8)
       )
     );
   bytes public constant LUSD_ADAPTER_CODE =
@@ -53,7 +53,7 @@ library CapAdaptersStablesCodeEthereum {
         AaveV3Ethereum.ACL_MANAGER,
         AaveV3EthereumAssets.LUSD_ORACLE,
         'Capped LUSD/USD',
-        int256(1.04 * 1e18)
+        int256(1.04 * 1e8)
       )
     );
   bytes public constant FRAX_ADAPTER_CODE =
@@ -63,7 +63,7 @@ library CapAdaptersStablesCodeEthereum {
         AaveV3Ethereum.ACL_MANAGER,
         AaveV3EthereumAssets.FRAX_ORACLE,
         'Capped FRAX/USD',
-        int256(1.04 * 1e18)
+        int256(1.04 * 1e8)
       )
     );
   bytes public constant crvUSD_ADAPTER_CODE =
@@ -73,7 +73,7 @@ library CapAdaptersStablesCodeEthereum {
         AaveV3Ethereum.ACL_MANAGER,
         AaveV3EthereumAssets.crvUSD_ORACLE,
         'Capped crvUSD/USD',
-        int256(1.04 * 1e18) // TODO: SET
+        int256(1.04 * 1e8)
       )
     );
 
@@ -84,11 +84,10 @@ library CapAdaptersStablesCodeEthereum {
         AaveV3Ethereum.ACL_MANAGER,
         MiscEthereum.agEUR_EUR_AGGREGATOR,
         'Capped agEUR/EUR',
-        int256(1.04 * 1e18)
+        int256(1.04 * 1e8)
       )
     );
 
-  // TODO: ask for the correct value
   bytes public constant pyUSD_ADAPTER_CODE =
     abi.encodePacked(
       type(PriceCapAdapterStable).creationCode,
@@ -96,7 +95,7 @@ library CapAdaptersStablesCodeEthereum {
         AaveV3Ethereum.ACL_MANAGER,
         AaveV3EthereumAssets.PYUSD_ORACLE,
         'Capped pyUSD/USD',
-        int256(1.04 * 1e6)
+        int256(1.04 * 1e8)
       )
     );
 }
@@ -142,7 +141,7 @@ library CapAdaptersCodeEthereum {
         AaveV3EthereumAssets.WETH_ORACLE,
         AaveV3EthereumAssets.rETH_UNDERLYING,
         'Capped rETH / ETH / USD',
-        7 days, // TODO: SET
+        7 days,
         IPriceCapAdapter.PriceCapUpdateParams({
           snapshotRatio: 1098284517740008249,
           snapshotTimestamp: 1708004591, // 15-02-2024
@@ -181,7 +180,7 @@ library stEURCapAdapters {
           ), // agEUR / EUR
           MiscEthereum.stEUR, // stEUR / agEUR
           'Capped stUER / agEUR / EUR',
-          7 days, // TODO: SET
+          7 days,
           IPriceCapAdapter.PriceCapUpdateParams({
             snapshotRatio: 1016937727474779118,
             snapshotTimestamp: 1708004591,
