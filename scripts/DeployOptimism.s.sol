@@ -17,7 +17,7 @@ library CapAdaptersCodeOptimism {
         AaveV3Optimism.ACL_MANAGER,
         AaveV3OptimismAssets.USDT_ORACLE,
         'Capped USDT/USD',
-        int256(1.02 * 1e6)
+        int256(1.04 * 1e6)
       )
     );
   bytes public constant USDC_ADAPTER_CODE =
@@ -27,7 +27,7 @@ library CapAdaptersCodeOptimism {
         AaveV3Optimism.ACL_MANAGER,
         AaveV3OptimismAssets.USDC_ORACLE,
         'Capped USDC/USD',
-        int256(1.02 * 1e6)
+        int256(1.04 * 1e6)
       )
     );
   bytes public constant DAI_ADAPTER_CODE =
@@ -37,7 +37,7 @@ library CapAdaptersCodeOptimism {
         AaveV3Optimism.ACL_MANAGER,
         AaveV3OptimismAssets.DAI_ORACLE,
         'Capped DAI/USD',
-        int256(1.03 * 1e18)
+        int256(1.04 * 1e18)
       )
     );
   bytes public constant LUSD_ADAPTER_CODE =
@@ -72,7 +72,7 @@ library CapAdaptersCodeOptimism {
         IPriceCapAdapter.PriceCapUpdateParams({
           snapshotRatio: 1098211995352594225,
           snapshotTimestamp: 1703743921,
-          maxYearlyRatioGrowthPercent: 7_46
+          maxYearlyRatioGrowthPercent: 9_30
         })
       )
     );
@@ -88,7 +88,7 @@ library CapAdaptersCodeOptimism {
         IPriceCapAdapter.PriceCapUpdateParams({
           snapshotRatio: 1157105995453941980,
           snapshotTimestamp: 1707992685,
-          maxYearlyRatioGrowthPercent: 8_72
+          maxYearlyRatioGrowthPercent: 9_68
         })
       )
     );

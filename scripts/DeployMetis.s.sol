@@ -15,7 +15,7 @@ library CapAdaptersCodeMetis {
         AaveV3Metis.ACL_MANAGER,
         AaveV3MetisAssets.mUSDT_ORACLE,
         'Capped mUSDT/USD',
-        int256(1.02 * 1e6) // TODO: SET
+        int256(1.04 * 1e6)
       )
     );
   bytes public constant mUSDC_ADAPTER_CODE =
@@ -25,7 +25,7 @@ library CapAdaptersCodeMetis {
         AaveV3Metis.ACL_MANAGER,
         AaveV3MetisAssets.mUSDC_ORACLE,
         'Capped mUSDC/USD',
-        int256(1.02 * 1e6) // TODO: SET
+        int256(1.04 * 1e6)
       )
     );
   bytes public constant mDAI_ADAPTER_CODE =
@@ -35,7 +35,7 @@ library CapAdaptersCodeMetis {
         AaveV3Metis.ACL_MANAGER,
         AaveV3MetisAssets.mDAI_ORACLE,
         'Capped mDAI/USD',
-        int256(1.03 * 1e18) // TODO: SET
+        int256(1.04 * 1e18)
       )
     );
 }

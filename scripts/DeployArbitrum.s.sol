@@ -18,7 +18,7 @@ library CapAdaptersCodeArbitrum {
         AaveV3Arbitrum.ACL_MANAGER,
         AaveV3ArbitrumAssets.USDT_ORACLE,
         'Capped USDT/USD',
-        int256(1.02 * 1e6) // TODO: SET
+        int256(1.04 * 1e6) // TODO: SET
       )
     );
   bytes public constant USDC_ADAPTER_CODE =
@@ -28,11 +28,9 @@ library CapAdaptersCodeArbitrum {
         AaveV3Arbitrum.ACL_MANAGER,
         AaveV3ArbitrumAssets.USDC_ORACLE,
         'Capped USDC/USD',
-        int256(1.02 * 1e6) // TODO: SET
+        int256(1.04 * 1e6) // TODO: SET
       )
     );
-
-  // TODO: add USDC.e
 
   bytes public constant DAI_ADAPTER_CODE =
     abi.encodePacked(
@@ -41,7 +39,7 @@ library CapAdaptersCodeArbitrum {
         AaveV3Arbitrum.ACL_MANAGER,
         AaveV3ArbitrumAssets.DAI_ORACLE,
         'Capped DAI/USD',
-        int256(1.03 * 1e18)
+        int256(1.04 * 1e18)
       )
     );
   bytes public constant LUSD_ADAPTER_CODE =
@@ -76,7 +74,7 @@ library CapAdaptersCodeArbitrum {
         IPriceCapAdapter.PriceCapUpdateParams({
           snapshotRatio: 1098211995352594225,
           snapshotTimestamp: 1707965975, // 15-02-2024
-          maxYearlyRatioGrowthPercent: 7_46
+          maxYearlyRatioGrowthPercent: 9_30
         })
       )
     );
@@ -92,7 +90,7 @@ library CapAdaptersCodeArbitrum {
         IPriceCapAdapter.PriceCapUpdateParams({
           snapshotRatio: 1157105995453941980,
           snapshotTimestamp: 1707965975, // 15-02-2024
-          maxYearlyRatioGrowthPercent: 8_72
+          maxYearlyRatioGrowthPercent: 9_68
         })
       )
     );

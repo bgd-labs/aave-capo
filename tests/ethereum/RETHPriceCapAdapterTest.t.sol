@@ -13,7 +13,7 @@ contract RETHPriceCapAdapterTest is BaseTest {
       AaveV3EthereumAssets.rETH_ORACLE,
       ForkParams({network: 'mainnet', blockNumber: 18961286}),
       RetrospectionParams({
-        maxYearlyRatioGrowthPercent: 7_46,
+        maxYearlyRatioGrowthPercent: 9_30,
         minimumSnapshotDelay: 7 days,
         startBlock: 18061286,
         finishBlock: 19183379,

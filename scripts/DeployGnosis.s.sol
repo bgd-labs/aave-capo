@@ -18,7 +18,7 @@ library CapAdaptersCodeGnosis {
         AaveV3Gnosis.ACL_MANAGER,
         AaveV3GnosisAssets.USDC_ORACLE,
         'Capped USDC/USD',
-        int256(1.02 * 1e6) // TODO: SET
+        int256(1.04 * 1e6) // TODO: SET
       )
     );
   bytes public constant WXDAI_ADAPTER_CODE =
@@ -28,7 +28,7 @@ library CapAdaptersCodeGnosis {
         AaveV3Gnosis.ACL_MANAGER,
         AaveV3GnosisAssets.WXDAI_ORACLE,
         'Capped wXDAI/USD',
-        int256(1.03 * 1e18) // TODO: SET
+        int256(1.04 * 1e18) // TODO: SET
       )
     );
   bytes public constant sDAI_ADAPTER_CODE =
@@ -60,7 +60,7 @@ library CapAdaptersCodeGnosis {
         IPriceCapAdapter.PriceCapUpdateParams({
           snapshotRatio: 1157105995453941980,
           snapshotTimestamp: 1707988835,
-          maxYearlyRatioGrowthPercent: 8_72
+          maxYearlyRatioGrowthPercent: 9_68
         })
       )
     );

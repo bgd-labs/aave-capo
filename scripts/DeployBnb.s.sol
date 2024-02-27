@@ -15,7 +15,7 @@ library CapAdaptersCodeBnb {
         AaveV3BNB.ACL_MANAGER,
         AaveV3BNBAssets.USDT_ORACLE,
         'Capped USDT/USD',
-        int256(1.02 * 1e6)
+        int256(1.04 * 1e6)
       )
     );
   bytes public constant USDC_ADAPTER_CODE =
@@ -25,7 +25,7 @@ library CapAdaptersCodeBnb {
         AaveV3BNB.ACL_MANAGER,
         AaveV3BNBAssets.USDC_ORACLE,
         'Capped USDC/USD',
-        int256(1.02 * 1e6)
+        int256(1.04 * 1e6)
       )
     );
 }

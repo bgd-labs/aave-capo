@@ -17,7 +17,7 @@ library CapAdaptersCodeBase {
         AaveV3Base.ACL_MANAGER,
         AaveV3BaseAssets.USDC_ORACLE,
         'Capped USDC/USD',
-        int256(1.02 * 1e6)
+        int256(1.04 * 1e6)
       )
     );
 
@@ -33,7 +33,7 @@ library CapAdaptersCodeBase {
         IPriceCapAdapter.PriceCapUpdateParams({
           snapshotRatio: 1156993146835803417,
           snapshotTimestamp: 1707962603, //15-02-2024
-          maxYearlyRatioGrowthPercent: 8_72
+          maxYearlyRatioGrowthPercent: 9_68
         })
       )
     );
@@ -49,7 +49,7 @@ library CapAdaptersCodeBase {
         IPriceCapAdapter.PriceCapUpdateParams({
           snapshotRatio: 1063814269953974334,
           snapshotTimestamp: 1707962603, // 15-02-2024
-          maxYearlyRatioGrowthPercent: 7_04
+          maxYearlyRatioGrowthPercent: 8_12
         })
       )
     );

@@ -12,7 +12,7 @@ contract WstETHArbitrumPriceCapAdapterTest is CLAdapterBaseTest {
       AaveV3ArbitrumAssets.wstETH_ORACLE,
       ForkParams({network: 'arbitrum', blockNumber: 178994964}),
       RetrospectionParams({
-        maxYearlyRatioGrowthPercent: 8_72,
+        maxYearlyRatioGrowthPercent: 9_68,
         minimumSnapshotDelay: 7 days,
         startBlock: 158995618,
         finishBlock: 178994966,

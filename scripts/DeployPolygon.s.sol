@@ -18,7 +18,7 @@ library CapAdaptersCodePolygon {
         AaveV3Polygon.ACL_MANAGER,
         AaveV3PolygonAssets.USDT_ORACLE,
         'Capped USDT/USD',
-        int256(1.02 * 1e6)
+        int256(1.04 * 1e6)
       )
     );
   //USDC.e
@@ -29,7 +29,7 @@ library CapAdaptersCodePolygon {
         AaveV3Polygon.ACL_MANAGER,
         AaveV3PolygonAssets.USDC_ORACLE,
         'Capped USDC/USD',
-        int256(1.02 * 1e6)
+        int256(1.04 * 1e6)
       )
     );
   bytes public constant DAI_ADAPTER_CODE =
@@ -39,7 +39,7 @@ library CapAdaptersCodePolygon {
         AaveV3Polygon.ACL_MANAGER,
         AaveV3PolygonAssets.DAI_ORACLE,
         'Capped DAI/USD',
-        int256(1.03 * 1e18)
+        int256(1.04 * 1e18)
       )
     );
 
@@ -55,7 +55,7 @@ library CapAdaptersCodePolygon {
         IPriceCapAdapter.PriceCapUpdateParams({
           snapshotRatio: 1157105995453941980,
           snapshotTimestamp: 1707948441,
-          maxYearlyRatioGrowthPercent: 8_72
+          maxYearlyRatioGrowthPercent: 9_68
         })
       )
     );
@@ -71,7 +71,7 @@ library CapAdaptersCodePolygon {
         IPriceCapAdapter.PriceCapUpdateParams({
           snapshotRatio: 1105335334964160762,
           snapshotTimestamp: 1707352792,
-          maxYearlyRatioGrowthPercent: 8_85
+          maxYearlyRatioGrowthPercent: 10_45
         })
       )
     );
@@ -87,7 +87,7 @@ library CapAdaptersCodePolygon {
         IPriceCapAdapter.PriceCapUpdateParams({
           snapshotRatio: 1098625039344900513,
           snapshotTimestamp: 1707352792,
-          maxYearlyRatioGrowthPercent: 7_98
+          maxYearlyRatioGrowthPercent: 10_20
         })
       )
     );

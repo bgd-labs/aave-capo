@@ -12,7 +12,7 @@ contract WstETHOptimismPriceCapAdapterTest is CLAdapterBaseTest {
       AaveV3OptimismAssets.wstETH_ORACLE,
       ForkParams({network: 'optimism', blockNumber: 115941709}),
       RetrospectionParams({
-        maxYearlyRatioGrowthPercent: 8_72,
+        maxYearlyRatioGrowthPercent: 9_68,
         minimumSnapshotDelay: 7 days,
         startBlock: 113441931,
         finishBlock: 115941709,

@@ -23,7 +23,7 @@ library CapAdaptersStablesCodeEthereum {
         AaveV3Ethereum.ACL_MANAGER,
         AaveV3EthereumAssets.USDT_ORACLE,
         'Capped USDT/USD',
-        int256(1.02 * 1e6)
+        int256(1.04 * 1e6)
       )
     );
   bytes public constant USDC_ADAPTER_CODE =
@@ -33,7 +33,7 @@ library CapAdaptersStablesCodeEthereum {
         AaveV3Ethereum.ACL_MANAGER,
         AaveV3EthereumAssets.USDC_ORACLE,
         'Capped USDC/USD',
-        int256(1.02 * 1e6)
+        int256(1.04 * 1e6)
       )
     );
   bytes public constant DAI_ADAPTER_CODE =
@@ -43,7 +43,7 @@ library CapAdaptersStablesCodeEthereum {
         AaveV3Ethereum.ACL_MANAGER,
         AaveV3EthereumAssets.DAI_ORACLE,
         'Capped DAI/USD',
-        int256(1.03 * 1e18)
+        int256(1.04 * 1e18)
       )
     );
   bytes public constant LUSD_ADAPTER_CODE =
@@ -84,7 +84,7 @@ library CapAdaptersStablesCodeEthereum {
         AaveV3Ethereum.ACL_MANAGER,
         MiscEthereum.agEUR_EUR_AGGREGATOR,
         'Capped agEUR/EUR',
-        int256(1.02 * 1e18)
+        int256(1.04 * 1e18)
       )
     );
 
@@ -96,7 +96,7 @@ library CapAdaptersStablesCodeEthereum {
         AaveV3Ethereum.ACL_MANAGER,
         AaveV3EthereumAssets.PYUSD_ORACLE,
         'Capped pyUSD/USD',
-        int256(1.02 * 1e6)
+        int256(1.04 * 1e6)
       )
     );
 }
@@ -130,7 +130,7 @@ library CapAdaptersCodeEthereum {
         IPriceCapAdapter.PriceCapUpdateParams({
           snapshotRatio: 1063814269953974334,
           snapshotTimestamp: 1708004591, // 15-02-2024
-          maxYearlyRatioGrowthPercent: 7_04
+          maxYearlyRatioGrowthPercent: 8_12
         })
       )
     );
@@ -146,7 +146,7 @@ library CapAdaptersCodeEthereum {
         IPriceCapAdapter.PriceCapUpdateParams({
           snapshotRatio: 1098284517740008249,
           snapshotTimestamp: 1708004591, // 15-02-2024
-          maxYearlyRatioGrowthPercent: 7_46
+          maxYearlyRatioGrowthPercent: 9_3
         })
       )
     );
@@ -163,7 +163,7 @@ library CapAdaptersCodeEthereum {
         IPriceCapAdapter.PriceCapUpdateParams({
           snapshotRatio: 1157209899495068171,
           snapshotTimestamp: 1708004591, // 15-02-2024
-          maxYearlyRatioGrowthPercent: 8_72
+          maxYearlyRatioGrowthPercent: 9_68
         })
       )
     );
@@ -185,7 +185,7 @@ library stEURCapAdapters {
           IPriceCapAdapter.PriceCapUpdateParams({
             snapshotRatio: 1151642949000000000,
             snapshotTimestamp: 1703743921,
-            maxYearlyRatioGrowthPercent: 10_00
+            maxYearlyRatioGrowthPercent: 9_26
           })
         )
       );
@@ -197,7 +197,7 @@ library stEURCapAdapters {
         type(CLSynchronicityPriceAdapterPegToBase).creationCode,
         abi.encode(
           MiscEthereum.EUR_USD_AGGREGATOR, // EUR to USD
-          GovV3Helpers.predictDeterministicAddress(stEURAdapterCode()), // agEUR / EUR
+          GovV3Helpers.predictDeterministicAddress(stEURAdapterCode()), // stEUR / agEUR / EUR
           18, // stEUR / agEUR
           'Capped stUER / agEUR / EUR / USD'
         )
