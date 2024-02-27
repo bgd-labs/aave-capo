@@ -22,6 +22,7 @@ import {IMaticRateProvider} from 'cl-synchronicity-price-adapter/interfaces/IMat
 import {IERC4626} from 'forge-std/interfaces/IERC4626.sol';
 import {IChainlinkAggregator} from 'cl-synchronicity-price-adapter/interfaces/IChainlinkAggregator.sol';
 import {ISAvax} from '../../src/interfaces/ISAvax.sol';
+import {IStEUR} from '../../src/interfaces/IStEUR.sol';
 
 contract ExchangeRatesEth is Test {
   function setUp() public {
@@ -35,11 +36,13 @@ contract ExchangeRatesEth is Test {
     uint256 wstEthRate = IStETH(AaveV2EthereumAssets.stETH_UNDERLYING).getPooledEthByShares(
       10 ** 18
     );
+    uint256 stEurRate = IStEUR(MiscEthereum.stEUR).convertToAssets(10 ** 18);
 
     console.log('cbEthRate', cbEthRate);
     console.log('rEthRate', rEthRate);
     console.log('sDaiRate', sDaiRate);
     console.log('wstEthRate', wstEthRate);
+    console.log('stEurRate', stEurRate);
 
     console.log(block.timestamp);
   }

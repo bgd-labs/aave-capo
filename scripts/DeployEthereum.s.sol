@@ -183,8 +183,8 @@ library stEURCapAdapters {
           'Capped stUER / agEUR / EUR',
           7 days, // TODO: SET
           IPriceCapAdapter.PriceCapUpdateParams({
-            snapshotRatio: 1151642949000000000,
-            snapshotTimestamp: 1703743921,
+            snapshotRatio: 1016937727474779118,
+            snapshotTimestamp: 1708004591,
             maxYearlyRatioGrowthPercent: 9_26
           })
         )
