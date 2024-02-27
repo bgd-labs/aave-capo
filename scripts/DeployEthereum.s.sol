@@ -84,7 +84,7 @@ library CapAdaptersStablesCodeEthereum {
         AaveV3Ethereum.ACL_MANAGER,
         MiscEthereum.agEUR_EUR_AGGREGATOR,
         'Capped agEUR/EUR',
-        int256(1.04 * 1e8)
+        int256(1.04 * 1e18)
       )
     );
 
