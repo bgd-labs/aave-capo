@@ -47,7 +47,7 @@ library CapAdaptersCodeOptimism {
         AaveV3Optimism.ACL_MANAGER,
         AaveV3OptimismAssets.LUSD_ORACLE,
         'Capped LUSD/USD',
-        int256(1.04 * 1e8)
+        int256(1.10 * 1e8)
       )
     );
   bytes public constant sUSD_ADAPTER_CODE =

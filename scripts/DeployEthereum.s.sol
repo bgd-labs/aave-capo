@@ -53,7 +53,7 @@ library CapAdaptersStablesCodeEthereum {
         AaveV3Ethereum.ACL_MANAGER,
         AaveV3EthereumAssets.LUSD_ORACLE,
         'Capped LUSD/USD',
-        int256(1.04 * 1e8)
+        int256(1.10 * 1e8)
       )
     );
   bytes public constant FRAX_ADAPTER_CODE =
