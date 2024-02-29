@@ -18,7 +18,7 @@ library CapAdaptersCodePolygon {
         AaveV3Polygon.ACL_MANAGER,
         AaveV3PolygonAssets.USDT_ORACLE,
         'Capped USDT/USD',
-        int256(1.1 * 1e8) // TODO: SET
+        int256(1.04 * 1e8)
       )
     );
   //USDC.e
@@ -29,7 +29,7 @@ library CapAdaptersCodePolygon {
         AaveV3Polygon.ACL_MANAGER,
         AaveV3PolygonAssets.USDC_ORACLE,
         'Capped USDC/USD',
-        int256(1.1 * 1e8) // TODO: SET
+        int256(1.04 * 1e8)
       )
     );
   bytes public constant DAI_ADAPTER_CODE =
@@ -39,11 +39,10 @@ library CapAdaptersCodePolygon {
         AaveV3Polygon.ACL_MANAGER,
         AaveV3PolygonAssets.DAI_ORACLE,
         'Capped DAI/USD',
-        int256(1.1 * 1e8) // TODO: SET
+        int256(1.04 * 1e8)
       )
     );
 
-  // TODO: CL feed used
   bytes public constant wstETH_ADAPTER_CODE =
     abi.encodePacked(
       type(CLRatePriceCapAdapter).creationCode,
@@ -51,12 +50,12 @@ library CapAdaptersCodePolygon {
         AaveV3Polygon.ACL_MANAGER,
         AaveV3PolygonAssets.WETH_ORACLE,
         MiscPolygon.wstETH_stETH_AGGREGATOR,
-        'Capped wstETH / stETH(ETH) / USD', // TODO: is it actually going to STETH, but then using ETH feed
-        7 days, // TODO: SET
+        'Capped wstETH / stETH(ETH) / USD',
+        7 days,
         IPriceCapAdapter.PriceCapUpdateParams({
-          snapshotRatio: 1151642949000000000,
-          snapshotTimestamp: 1703743921,
-          maxYearlyRatioGrowthPercent: 10_00
+          snapshotRatio: 1157105995453941980,
+          snapshotTimestamp: 1707948441,
+          maxYearlyRatioGrowthPercent: 9_68
         })
       )
     );
@@ -68,11 +67,11 @@ library CapAdaptersCodePolygon {
         AaveV3PolygonAssets.WMATIC_ORACLE,
         MiscPolygon.stMATIC_RATE_PROVIDER,
         'Capped stMATIC / MATIC / USD',
-        7 days, // TODO: SET
+        14 days,
         IPriceCapAdapter.PriceCapUpdateParams({
           snapshotRatio: 1105335334964160762,
-          snapshotTimestamp: 1703743921,
-          maxYearlyRatioGrowthPercent: 10_00
+          snapshotTimestamp: 1707352792,
+          maxYearlyRatioGrowthPercent: 10_45
         })
       )
     );
@@ -84,11 +83,11 @@ library CapAdaptersCodePolygon {
         AaveV3PolygonAssets.WMATIC_ORACLE,
         MiscPolygon.MaticX_RATE_PROVIDER,
         'Capped MaticX / MATIC / USD',
-        7 days, // TODO: SET
+        14 days,
         IPriceCapAdapter.PriceCapUpdateParams({
           snapshotRatio: 1098625039344900513,
-          snapshotTimestamp: 1703743921,
-          maxYearlyRatioGrowthPercent: 10_00
+          snapshotTimestamp: 1707352792,
+          maxYearlyRatioGrowthPercent: 10_20
         })
       )
     );

@@ -16,7 +16,7 @@ library CapAdaptersCodeAvalanche {
         AaveV3Avalanche.ACL_MANAGER,
         AaveV3AvalancheAssets.USDt_ORACLE,
         'Capped USDt/USD',
-        int256(1.1 * 1e8) // TODO: SET
+        int256(1.04 * 1e8)
       )
     );
   bytes public constant USDC_ADAPTER_CODE =
@@ -26,7 +26,7 @@ library CapAdaptersCodeAvalanche {
         AaveV3Avalanche.ACL_MANAGER,
         AaveV3AvalancheAssets.USDC_ORACLE,
         'Capped USDC/USD',
-        int256(1.1 * 1e8) // TODO: SET
+        int256(1.04 * 1e8)
       )
     );
   bytes public constant DAIe_ADAPTER_CODE =
@@ -36,7 +36,7 @@ library CapAdaptersCodeAvalanche {
         AaveV3Avalanche.ACL_MANAGER,
         AaveV3AvalancheAssets.DAIe_ORACLE,
         'Capped DAI.e/USD',
-        int256(1.1 * 1e8) // TODO: SET
+        int256(1.04 * 1e8)
       )
     );
   bytes public constant FRAX_ADAPTER_CODE =
@@ -46,7 +46,7 @@ library CapAdaptersCodeAvalanche {
         AaveV3Avalanche.ACL_MANAGER,
         AaveV3AvalancheAssets.FRAX_ORACLE,
         'Capped FRAX/USD',
-        int256(1.1 * 1e8) // TODO: SET
+        int256(1.04 * 1e8)
       )
     );
 
@@ -58,11 +58,11 @@ library CapAdaptersCodeAvalanche {
         AaveV3AvalancheAssets.WAVAX_ORACLE,
         AaveV3AvalancheAssets.sAVAX_UNDERLYING,
         'Capped sAVAX / AVAX / USD',
-        7 days, // TODO: SET
+        14 days,
         IPriceCapAdapter.PriceCapUpdateParams({
-          snapshotRatio: 1130451182771024053,
-          snapshotTimestamp: 1703743921,
-          maxYearlyRatioGrowthPercent: 10_00
+          snapshotRatio: 1130535654847205789,
+          snapshotTimestamp: 1707346799, // 07-02-2024
+          maxYearlyRatioGrowthPercent: 10_10
         })
       )
     );

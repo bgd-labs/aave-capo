@@ -9,7 +9,7 @@ import {DeployBnbAdaptersAndPayload, CapAdaptersCodeBnb} from '../../scripts/Dep
 
 contract AaveV3BnbPayloadTest is Test, DeployBnbAdaptersAndPayload {
   function setUp() public {
-    vm.createSelectFork(vm.rpcUrl('bnb'), 35929083);
+    vm.createSelectFork(vm.rpcUrl('bnb'), 36363097);
   }
 
   function test_AaveV3BnbPayload() public {

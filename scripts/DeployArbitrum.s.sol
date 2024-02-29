@@ -18,7 +18,7 @@ library CapAdaptersCodeArbitrum {
         AaveV3Arbitrum.ACL_MANAGER,
         AaveV3ArbitrumAssets.USDT_ORACLE,
         'Capped USDT/USD',
-        int256(1.1 * 1e8) // TODO: SET
+        int256(1.04 * 1e8)
       )
     );
   bytes public constant USDC_ADAPTER_CODE =
@@ -28,9 +28,10 @@ library CapAdaptersCodeArbitrum {
         AaveV3Arbitrum.ACL_MANAGER,
         AaveV3ArbitrumAssets.USDC_ORACLE,
         'Capped USDC/USD',
-        int256(1.1 * 1e8) // TODO: SET
+        int256(1.04 * 1e8)
       )
     );
+
   bytes public constant DAI_ADAPTER_CODE =
     abi.encodePacked(
       type(PriceCapAdapterStable).creationCode,
@@ -38,7 +39,7 @@ library CapAdaptersCodeArbitrum {
         AaveV3Arbitrum.ACL_MANAGER,
         AaveV3ArbitrumAssets.DAI_ORACLE,
         'Capped DAI/USD',
-        int256(1.1 * 1e8) // TODO: SET
+        int256(1.04 * 1e8)
       )
     );
   bytes public constant LUSD_ADAPTER_CODE =
@@ -48,7 +49,7 @@ library CapAdaptersCodeArbitrum {
         AaveV3Arbitrum.ACL_MANAGER,
         AaveV3ArbitrumAssets.LUSD_ORACLE,
         'Capped LUSD/USD',
-        int256(1.1 * 1e8) // TODO: SET
+        int256(1.10 * 1e8)
       )
     );
   bytes public constant FRAX_ADAPTER_CODE =
@@ -58,7 +59,7 @@ library CapAdaptersCodeArbitrum {
         AaveV3Arbitrum.ACL_MANAGER,
         AaveV3ArbitrumAssets.FRAX_ORACLE,
         'Capped FRAX/USD',
-        int256(1.1 * 1e8) // TODO: SET
+        int256(1.04 * 1e8)
       )
     );
   bytes public constant rETH_ADAPTER_CODE =
@@ -69,11 +70,11 @@ library CapAdaptersCodeArbitrum {
         AaveV3ArbitrumAssets.WETH_ORACLE,
         MiscArbitrum.rETH_ETH_AGGREGATOR,
         'Capped rETH / ETH / USD',
-        7 days, // TODO: SET
+        7 days,
         IPriceCapAdapter.PriceCapUpdateParams({
-          snapshotRatio: 1093801647000000000,
-          snapshotTimestamp: 1703743921,
-          maxYearlyRatioGrowthPercent: 10_00
+          snapshotRatio: 1098211995352594225,
+          snapshotTimestamp: 1707965975, // 15-02-2024
+          maxYearlyRatioGrowthPercent: 9_30
         })
       )
     );
@@ -84,12 +85,12 @@ library CapAdaptersCodeArbitrum {
         AaveV3Arbitrum.ACL_MANAGER,
         AaveV3ArbitrumAssets.WETH_ORACLE,
         MiscArbitrum.wstETH_stETH_AGGREGATOR,
-        'Capped wstETH / stETH(ETH) / USD', // TODO: is it actually going to STETH, but then using ETH feed
-        7 days, // TODO: SET
+        'Capped wstETH / stETH(ETH) / USD',
+        7 days,
         IPriceCapAdapter.PriceCapUpdateParams({
-          snapshotRatio: 1151642949000000000,
-          snapshotTimestamp: 1703743921,
-          maxYearlyRatioGrowthPercent: 10_00
+          snapshotRatio: 1157105995453941980,
+          snapshotTimestamp: 1707965975, // 15-02-2024
+          maxYearlyRatioGrowthPercent: 9_68
         })
       )
     );

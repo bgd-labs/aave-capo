@@ -16,7 +16,7 @@ contract cbETHBasePriceCapAdapterTest is CLAdapterBaseTest {
       AaveV3BaseAssets.cbETH_ORACLE,
       ForkParams({network: 'base', blockNumber: 10346239}),
       RetrospectionParams({
-        maxYearlyRatioGrowthPercent: 6_75,
+        maxYearlyRatioGrowthPercent: 8_12,
         minimumSnapshotDelay: 7 days,
         startBlock: 7846275,
         finishBlock: 10346241,

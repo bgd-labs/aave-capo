@@ -9,7 +9,7 @@ import {DeployAvalancheAdaptersAndPayload, CapAdaptersCodeAvalanche} from '../..
 
 contract AaveV3AvalanchePayloadTest is Test, DeployAvalancheAdaptersAndPayload {
   function setUp() public {
-    vm.createSelectFork(vm.rpcUrl('avalanche'), 41368784);
+    vm.createSelectFork(vm.rpcUrl('avalanche'), 42013694);
   }
 
   function test_AaveV3AvalanchePayload() public {

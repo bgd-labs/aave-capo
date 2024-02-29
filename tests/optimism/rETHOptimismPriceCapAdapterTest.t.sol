@@ -11,7 +11,7 @@ contract rETHOptimismPriceCapAdapterTest is CLAdapterBaseTest {
       AaveV3OptimismAssets.rETH_ORACLE,
       ForkParams({network: 'optimism', blockNumber: 115941709}),
       RetrospectionParams({
-        maxYearlyRatioGrowthPercent: 7_50,
+        maxYearlyRatioGrowthPercent: 9_30,
         minimumSnapshotDelay: 7 days,
         startBlock: 113441931,
         finishBlock: 115941709,

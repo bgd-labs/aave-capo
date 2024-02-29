@@ -79,7 +79,7 @@ contract MaticXPriceCapAdapterTest is BaseMaticPriceCapAdapterTest {
       MiscPolygon.MaticX_RATE_PROVIDER,
       'MaticX / Matic / USD',
       RetrospectionParams({
-        maxYearlyRatioGrowthPercent: 7_98,
+        maxYearlyRatioGrowthPercent: 10_20,
         minimumSnapshotDelay: 14 days,
         startBlock: 50808790,
         finishBlock: 53308720,
@@ -97,7 +97,7 @@ contract StMaticPriceCapAdapterTest is BaseMaticPriceCapAdapterTest {
       MiscPolygon.stMATIC_RATE_PROVIDER,
       'stMATIC / Matic / USD',
       RetrospectionParams({
-        maxYearlyRatioGrowthPercent: 8_85,
+        maxYearlyRatioGrowthPercent: 10_45,
         minimumSnapshotDelay: 14 days,
         startBlock: 50808790,
         finishBlock: 53308720,

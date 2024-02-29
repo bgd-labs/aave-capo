@@ -17,7 +17,7 @@ library CapAdaptersCodeBase {
         AaveV3Base.ACL_MANAGER,
         AaveV3BaseAssets.USDC_ORACLE,
         'Capped USDC/USD',
-        int256(1.1 * 1e8) // TODO: SET
+        int256(1.04 * 1e8)
       )
     );
 
@@ -28,12 +28,12 @@ library CapAdaptersCodeBase {
         AaveV3Base.ACL_MANAGER,
         AaveV3BaseAssets.WETH_ORACLE,
         MiscBase.wstETH_stETH_AGGREGATOR,
-        'Capped wstETH / stETH(ETH) / USD', // TODO: is it actually going to STETH, but then using ETH feed
+        'Capped wstETH / stETH(ETH) / USD',
         7 days,
         IPriceCapAdapter.PriceCapUpdateParams({
-          snapshotRatio: 1151642949000000000,
-          snapshotTimestamp: 1703743921,
-          maxYearlyRatioGrowthPercent: 10_00
+          snapshotRatio: 1156993146835803417,
+          snapshotTimestamp: 1707962603, //15-02-2024
+          maxYearlyRatioGrowthPercent: 9_68
         })
       )
     );
@@ -47,9 +47,9 @@ library CapAdaptersCodeBase {
         'Capped cbETH / ETH / USD',
         7 days,
         IPriceCapAdapter.PriceCapUpdateParams({
-          snapshotRatio: 1059523963000000000,
-          snapshotTimestamp: 1703743921,
-          maxYearlyRatioGrowthPercent: 10_00
+          snapshotRatio: 1063814269953974334,
+          snapshotTimestamp: 1707962603, // 15-02-2024
+          maxYearlyRatioGrowthPercent: 8_12
         })
       )
     );

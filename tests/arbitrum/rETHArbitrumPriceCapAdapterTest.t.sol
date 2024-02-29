@@ -12,7 +12,7 @@ contract rETHArbitrumPriceCapAdapterTest is CLAdapterBaseTest {
       AaveV3ArbitrumAssets.rETH_ORACLE,
       ForkParams({network: 'arbitrum', blockNumber: 178994964}),
       RetrospectionParams({
-        maxYearlyRatioGrowthPercent: 7_50,
+        maxYearlyRatioGrowthPercent: 9_30,
         minimumSnapshotDelay: 7 days,
         startBlock: 158995618,
         finishBlock: 178994966,

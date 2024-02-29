@@ -12,7 +12,7 @@ contract WstETHBasePriceCapAdapterTest is CLAdapterBaseTest {
       AaveV3BaseAssets.wstETH_ORACLE,
       ForkParams({network: 'base', blockNumber: 10346240}),
       RetrospectionParams({
-        maxYearlyRatioGrowthPercent: 8_72,
+        maxYearlyRatioGrowthPercent: 9_68,
         minimumSnapshotDelay: 7 days,
         startBlock: 7846275,
         finishBlock: 10346241,

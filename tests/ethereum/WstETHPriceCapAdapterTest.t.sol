@@ -15,7 +15,7 @@ contract WstETHPriceCapAdapterTest is BaseTest {
       AaveV3EthereumAssets.wstETH_ORACLE,
       ForkParams({network: 'mainnet', blockNumber: 18961286}),
       RetrospectionParams({
-        maxYearlyRatioGrowthPercent: 8_72,
+        maxYearlyRatioGrowthPercent: 9_68,
         minimumSnapshotDelay: 7 days,
         startBlock: 18061286,
         finishBlock: 19183379,

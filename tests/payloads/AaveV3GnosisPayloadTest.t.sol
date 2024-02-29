@@ -9,7 +9,7 @@ import {DeployGnosisAdaptersAndPayload, CapAdaptersCodeGnosis} from '../../scrip
 
 contract AaveV3GnosisPayloadTest is Test, DeployGnosisAdaptersAndPayload {
   function setUp() public {
-    vm.createSelectFork(vm.rpcUrl('gnosis'), 32334297);
+    vm.createSelectFork(vm.rpcUrl('gnosis'), 32577034);
   }
 
   function test_AaveV3GnosisPayload() public {

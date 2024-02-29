@@ -23,7 +23,7 @@ library CapAdaptersStablesCodeEthereum {
         AaveV3Ethereum.ACL_MANAGER,
         AaveV3EthereumAssets.USDT_ORACLE,
         'Capped USDT/USD',
-        int256(1.1 * 1e8) // TODO: SET
+        int256(1.04 * 1e8)
       )
     );
   bytes public constant USDC_ADAPTER_CODE =
@@ -33,7 +33,7 @@ library CapAdaptersStablesCodeEthereum {
         AaveV3Ethereum.ACL_MANAGER,
         AaveV3EthereumAssets.USDC_ORACLE,
         'Capped USDC/USD',
-        int256(1.1 * 1e8) // TODO: SET
+        int256(1.04 * 1e8)
       )
     );
   bytes public constant DAI_ADAPTER_CODE =
@@ -43,7 +43,7 @@ library CapAdaptersStablesCodeEthereum {
         AaveV3Ethereum.ACL_MANAGER,
         AaveV3EthereumAssets.DAI_ORACLE,
         'Capped DAI/USD',
-        int256(1.1 * 1e8) // TODO: SET
+        int256(1.04 * 1e8)
       )
     );
   bytes public constant LUSD_ADAPTER_CODE =
@@ -53,7 +53,7 @@ library CapAdaptersStablesCodeEthereum {
         AaveV3Ethereum.ACL_MANAGER,
         AaveV3EthereumAssets.LUSD_ORACLE,
         'Capped LUSD/USD',
-        int256(1.1 * 1e8) // TODO: SET
+        int256(1.10 * 1e8)
       )
     );
   bytes public constant FRAX_ADAPTER_CODE =
@@ -63,7 +63,7 @@ library CapAdaptersStablesCodeEthereum {
         AaveV3Ethereum.ACL_MANAGER,
         AaveV3EthereumAssets.FRAX_ORACLE,
         'Capped FRAX/USD',
-        int256(1.1 * 1e8) // TODO: SET
+        int256(1.04 * 1e8)
       )
     );
   bytes public constant crvUSD_ADAPTER_CODE =
@@ -73,7 +73,7 @@ library CapAdaptersStablesCodeEthereum {
         AaveV3Ethereum.ACL_MANAGER,
         AaveV3EthereumAssets.crvUSD_ORACLE,
         'Capped crvUSD/USD',
-        int256(1.1 * 1e8) // TODO: SET
+        int256(1.04 * 1e8)
       )
     );
 
@@ -84,7 +84,7 @@ library CapAdaptersStablesCodeEthereum {
         AaveV3Ethereum.ACL_MANAGER,
         MiscEthereum.agEUR_EUR_AGGREGATOR,
         'Capped agEUR/EUR',
-        int256(1.1 * 1e8) // TODO: SET
+        int256(1.04 * 1e18)
       )
     );
 
@@ -95,7 +95,7 @@ library CapAdaptersStablesCodeEthereum {
         AaveV3Ethereum.ACL_MANAGER,
         AaveV3EthereumAssets.PYUSD_ORACLE,
         'Capped pyUSD/USD',
-        int256(1.1 * 1e8) // TODO: SET
+        int256(1.04 * 1e8)
       )
     );
 }
@@ -109,11 +109,11 @@ library CapAdaptersCodeEthereum {
         AaveV3EthereumAssets.DAI_ORACLE,
         MiscEthereum.sDAI_POT,
         'Capped sDAI / DAI / USD',
-        7 days, // TODO: SET
+        7 days,
         IPriceCapAdapter.PriceCapUpdateParams({
-          snapshotRatio: 1048947230000000000000000000,
-          snapshotTimestamp: 1703743921,
-          maxYearlyRatioGrowthPercent: 10_00
+          snapshotRatio: 1055881418683661830974172162,
+          snapshotTimestamp: 1708004591, // 15-02-2024
+          maxYearlyRatioGrowthPercent: 10_15
         })
       )
     );
@@ -125,11 +125,11 @@ library CapAdaptersCodeEthereum {
         AaveV3EthereumAssets.WETH_ORACLE,
         AaveV3EthereumAssets.cbETH_UNDERLYING,
         'Capped cbETH / ETH / USD',
-        7 days, // TODO: SET
+        7 days,
         IPriceCapAdapter.PriceCapUpdateParams({
-          snapshotRatio: 1059523963000000000,
-          snapshotTimestamp: 1703743921,
-          maxYearlyRatioGrowthPercent: 10_00
+          snapshotRatio: 1063814269953974334,
+          snapshotTimestamp: 1708004591, // 15-02-2024
+          maxYearlyRatioGrowthPercent: 8_12
         })
       )
     );
@@ -141,11 +141,11 @@ library CapAdaptersCodeEthereum {
         AaveV3EthereumAssets.WETH_ORACLE,
         AaveV3EthereumAssets.rETH_UNDERLYING,
         'Capped rETH / ETH / USD',
-        7 days, // TODO: SET
+        7 days,
         IPriceCapAdapter.PriceCapUpdateParams({
-          snapshotRatio: 1093801647000000000,
-          snapshotTimestamp: 1703743921,
-          maxYearlyRatioGrowthPercent: 10_00
+          snapshotRatio: 1098284517740008249,
+          snapshotTimestamp: 1708004591, // 15-02-2024
+          maxYearlyRatioGrowthPercent: 9_3
         })
       )
     );
@@ -157,12 +157,12 @@ library CapAdaptersCodeEthereum {
         AaveV3Ethereum.ACL_MANAGER,
         AaveV3EthereumAssets.WETH_ORACLE,
         AaveV2EthereumAssets.stETH_UNDERLYING,
-        'Capped wstETH / stETH(ETH) / USD', // TODO: is it actually going to STETH, but then using ETH feed
-        7 days, // TODO: SET
+        'Capped wstETH / stETH(ETH) / USD',
+        7 days,
         IPriceCapAdapter.PriceCapUpdateParams({
-          snapshotRatio: 1151642949000000000,
-          snapshotTimestamp: 1703743921,
-          maxYearlyRatioGrowthPercent: 10_00
+          snapshotRatio: 1157209899495068171,
+          snapshotTimestamp: 1708004591, // 15-02-2024
+          maxYearlyRatioGrowthPercent: 9_68
         })
       )
     );
@@ -180,11 +180,11 @@ library stEURCapAdapters {
           ), // agEUR / EUR
           MiscEthereum.stEUR, // stEUR / agEUR
           'Capped stUER / agEUR / EUR',
-          7 days, // TODO: SET
+          7 days,
           IPriceCapAdapter.PriceCapUpdateParams({
-            snapshotRatio: 1151642949000000000,
-            snapshotTimestamp: 1703743921,
-            maxYearlyRatioGrowthPercent: 10_00
+            snapshotRatio: 1016937727474779118,
+            snapshotTimestamp: 1708004591,
+            maxYearlyRatioGrowthPercent: 9_26
           })
         )
       );
@@ -196,7 +196,7 @@ library stEURCapAdapters {
         type(CLSynchronicityPriceAdapterPegToBase).creationCode,
         abi.encode(
           MiscEthereum.EUR_USD_AGGREGATOR, // EUR to USD
-          GovV3Helpers.predictDeterministicAddress(stEURAdapterCode()), // agEUR / EUR
+          GovV3Helpers.predictDeterministicAddress(stEURAdapterCode()), // stEUR / agEUR / EUR
           18, // stEUR / agEUR
           'Capped stUER / agEUR / EUR / USD'
         )

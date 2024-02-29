@@ -9,7 +9,7 @@ import {DeployMetisAdaptersAndPayload, CapAdaptersCodeMetis} from '../../scripts
 
 contract AaveV3MetisPayloadTest is Test, DeployMetisAdaptersAndPayload {
   function setUp() public {
-    vm.createSelectFork(vm.rpcUrl('metis'), 13160162);
+    vm.createSelectFork(vm.rpcUrl('metis'), 13556980);
   }
 
   function test_AaveV3MetisPayload() public {

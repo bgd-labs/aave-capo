@@ -73,8 +73,10 @@ contract PriceCapAdapterStable is IPriceCapAdapterStable {
    * @param priceCap the new price cap
    */
   function _setPriceCap(int256 priceCap) internal {
-    if (priceCap < 0) {
-      revert NegativePrice(priceCap);
+    int256 basePrice = ASSET_TO_USD_AGGREGATOR.latestAnswer();
+
+    if (priceCap < basePrice) {
+      revert CapLowerThanActualPrice();
     }
 
     _priceCap = priceCap;

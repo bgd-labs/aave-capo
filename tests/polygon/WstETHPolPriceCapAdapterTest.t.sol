@@ -12,7 +12,7 @@ contract WstETHPolPriceCapAdapterTest is CLAdapterBaseTest {
       AaveV3PolygonAssets.wstETH_ORACLE,
       ForkParams({network: 'polygon', blockNumber: 52496344}),
       RetrospectionParams({
-        maxYearlyRatioGrowthPercent: 8_72,
+        maxYearlyRatioGrowthPercent: 9_68,
         minimumSnapshotDelay: 7 days,
         startBlock: 50808790,
         finishBlock: 53308720,

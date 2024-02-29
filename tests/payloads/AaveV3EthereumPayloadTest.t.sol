@@ -9,7 +9,7 @@ import {DeployEthereumAdaptersAndPayload, CapAdaptersCodeEthereum, CapAdaptersSt
 
 contract AaveV3EthereumPayloadTest is Test, DeployEthereumAdaptersAndPayload {
   function setUp() public {
-    vm.createSelectFork(vm.rpcUrl('mainnet'), 19225864);
+    vm.createSelectFork(vm.rpcUrl('mainnet'), 19284368);
   }
 
   function test_AaveV3EthereumPayload() public {

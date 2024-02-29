@@ -12,7 +12,7 @@ contract WstETHGnosisPriceCapAdapterTest is CLAdapterBaseTest {
       AaveV3GnosisAssets.wstETH_ORACLE,
       ForkParams({network: 'gnosis', blockNumber: 32019350}),
       RetrospectionParams({
-        maxYearlyRatioGrowthPercent: 8_72,
+        maxYearlyRatioGrowthPercent: 9_68,
         minimumSnapshotDelay: 7 days,
         startBlock: 31114532,
         finishBlock: 32364499,

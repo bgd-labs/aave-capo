@@ -9,7 +9,7 @@ import {DeployPolygonAdaptersAndPayload, CapAdaptersCodePolygon} from '../../scr
 
 contract AaveV3PolygonPayloadTest is Test, DeployPolygonAdaptersAndPayload {
   function setUp() public {
-    vm.createSelectFork(vm.rpcUrl('polygon'), 53235391);
+    vm.createSelectFork(vm.rpcUrl('polygon'), 53830523);
   }
 
   function test_AaveV3PolygonPayload() public {
