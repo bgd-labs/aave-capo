@@ -210,7 +210,7 @@ abstract contract PriceCapAdapterBase is IPriceCapAdapter {
   function getRatio() public view virtual returns (int256);
 
   /// @inheritdoc IPriceCapAdapter
-  function isCapped() public view virtual returns (bool) {
+  function isCapped() public view returns (bool) {
     // get the current lst to underlying ratio
     int256 currentRatio = getRatio();
 

@@ -70,10 +70,7 @@ contract PriceCapAdapterStable is IPriceCapAdapterStable {
 
   /// @inheritdoc IPriceCapAdapterStable
   function isCapped() public view virtual returns (bool) {
-    int256 basePrice = ASSET_TO_USD_AGGREGATOR.latestAnswer();
-    int256 priceCap = _priceCap;
-
-    return basePrice > priceCap;
+    return (ASSET_TO_USD_AGGREGATOR.latestAnswer() > this.latestAnswer());
   }
 
   /**
