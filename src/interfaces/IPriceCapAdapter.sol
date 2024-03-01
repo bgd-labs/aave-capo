@@ -106,6 +106,11 @@ interface IPriceCapAdapter is ICLSynchronicityPriceAdapter {
    */
   function getMaxYearlyGrowthRatePercent() external view returns (uint256);
 
+  /**
+   * @notice Returns if the price is currently capped
+   */
+  function isCapped() external view returns (bool);
+
   error ACLManagerIsZeroAddress();
   error SnapshotRatioIsZero();
   error SnapshotMayOverflowSoon(uint104 snapshotRatio, uint16 maxYearlyRatioGrowthPercent);

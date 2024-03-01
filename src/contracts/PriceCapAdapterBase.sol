@@ -208,4 +208,17 @@ abstract contract PriceCapAdapterBase is IPriceCapAdapter {
 
   /// @inheritdoc IPriceCapAdapter
   function getRatio() public view virtual returns (int256);
+
+  /// @inheritdoc IPriceCapAdapter
+  function isCapped() public view virtual returns (bool) {
+    // get the current lst to underlying ratio
+    int256 currentRatio = getRatio();
+
+    // calculate the ratio based on snapshot ratio and max growth rate
+    int256 maxRatio = int256(
+      _snapshotRatio + _maxRatioGrowthPerSecond * (block.timestamp - _snapshotTimestamp)
+    );
+
+    return currentRatio > maxRatio;
+  }
 }
