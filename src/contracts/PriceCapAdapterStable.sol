@@ -68,6 +68,11 @@ contract PriceCapAdapterStable is IPriceCapAdapterStable {
     _setPriceCap(priceCap);
   }
 
+  /// @inheritdoc IPriceCapAdapterStable
+  function isCapped() public view virtual returns (bool) {
+    return (ASSET_TO_USD_AGGREGATOR.latestAnswer() > this.latestAnswer());
+  }
+
   /**
    * @notice Updates price cap
    * @param priceCap the new price cap

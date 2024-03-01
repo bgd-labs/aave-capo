@@ -350,6 +350,9 @@ abstract contract BaseTest is Test {
       priceOfNotCappedAdapter,
       'uncapped price is not equal to the existing adapter price'
     );
+
+    bool isCapped = adapter.isCapped();
+    assertFalse(isCapped, 'price is capped');
   }
 
   function test_latestAnswerRetrospective() public virtual {
@@ -432,6 +435,9 @@ abstract contract BaseTest is Test {
 
     // compare prices
     assertGt(priceOfNotCappedAdapter, priceCapped, 'price is not capped');
+
+    bool isCapped = adapter.isCapped();
+    assertTrue(isCapped, 'price is not capped');
 
     vm.revokePersistent(address(adapter));
     vm.createSelectFork(vm.rpcUrl(forkParams.network), capParams.finishBlock);
