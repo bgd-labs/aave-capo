@@ -198,7 +198,7 @@ library stEURCapAdapters {
           MiscEthereum.EUR_USD_AGGREGATOR, // EUR to USD
           GovV3Helpers.predictDeterministicAddress(stEURAdapterCode()), // stEUR / agEUR / EUR
           18, // stEUR / agEUR
-          'Capped stUER / agEUR / EUR / USD'
+          'Capped stEUR / agEUR / EUR / USD'
         )
       );
   }
