@@ -5,17 +5,19 @@ import {AaveV3Base, AaveV3BaseAssets} from 'aave-address-book/AaveV3Base.sol';
 import {MiscBase} from 'aave-address-book/MiscBase.sol';
 
 import {CLAdapterBaseTest} from '../CLAdapterBaseTest.sol';
+import {CapAdaptersCodeBase} from '../../scripts/DeployBase.s.sol';
 
 contract WstETHBasePriceCapAdapterTest is CLAdapterBaseTest {
   constructor()
     CLAdapterBaseTest(
       AaveV3BaseAssets.wstETH_ORACLE,
-      ForkParams({network: 'base', blockNumber: 10346240}),
+      CapAdaptersCodeBase.wstETH_ADAPTER_CODE,
+      ForkParams({network: 'base', blockNumber: 11425107}),
       RetrospectionParams({
         maxYearlyRatioGrowthPercent: 9_68,
         minimumSnapshotDelay: 7 days,
         startBlock: 7846275,
-        finishBlock: 10346241,
+        finishBlock: 11425107,
         delayInBlocks: 308000, // 7 days
         step: 308000
       }),

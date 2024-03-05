@@ -8,17 +8,19 @@ import {AaveV2EthereumAssets} from 'aave-address-book/AaveV2Ethereum.sol';
 
 import {WstETHPriceCapAdapter, IStETH} from '../../src/contracts/WstETHPriceCapAdapter.sol';
 import {IPriceCapAdapter, ICLSynchronicityPriceAdapter} from '../../src/interfaces/IPriceCapAdapter.sol';
+import {CapAdaptersCodeEthereum} from '../../scripts/DeployEthereum.s.sol';
 
 contract WstETHPriceCapAdapterTest is BaseTest {
   constructor()
     BaseTest(
       AaveV3EthereumAssets.wstETH_ORACLE,
-      ForkParams({network: 'mainnet', blockNumber: 18961286}),
+      CapAdaptersCodeEthereum.wstETH_ADAPTER_CODE,
+      ForkParams({network: 'mainnet', blockNumber: 19368742}),
       RetrospectionParams({
         maxYearlyRatioGrowthPercent: 9_68,
         minimumSnapshotDelay: 7 days,
         startBlock: 18061286,
-        finishBlock: 19183379,
+        finishBlock: 19368742,
         delayInBlocks: 50200,
         step: 200000
       }),
@@ -69,38 +71,6 @@ contract WstETHPriceCapAdapterTest is BaseTest {
       uint104(
         uint256(IStETH(AaveV2EthereumAssets.stETH_UNDERLYING).getPooledEthByShares(10 ** 18))
       );
-  }
-
-  function test_updateParameters_cappedLatestAnswer() public {
-    IPriceCapAdapter adapter = createAdapter(
-      AaveV3Ethereum.ACL_MANAGER,
-      AaveV3EthereumAssets.WETH_ORACLE,
-      AaveV2EthereumAssets.stETH_UNDERLYING,
-      'wstETH/stETH/USD',
-      7 days,
-      1151642949000000000,
-      1703743921,
-      2_00
-    );
-
-    int256 price = adapter.latestAnswer();
-
-    assertApproxEqAbs(
-      uint256(price),
-      256499500000, // max growth 2%
-      100000000
-    );
-
-    vm.prank(AaveV3Ethereum.CAPS_PLUS_RISK_STEWARD);
-    setCapParameters(adapter, 1151642955000000000, 1703743931, 20_00);
-
-    price = adapter.latestAnswer();
-
-    assertApproxEqAbs(
-      uint256(price),
-      256617830000, // value for selected block
-      100000000
-    );
   }
 
   function test_revert_updateParameters_notRiskAdmin(

@@ -7,6 +7,7 @@ import {AaveV3Polygon, AaveV3PolygonAssets} from 'aave-address-book/AaveV3Polygo
 import {MiscPolygon} from 'aave-address-book/MiscPolygon.sol';
 
 import {MaticPriceCapAdapter, IMaticRateProvider} from '../../src/contracts/MaticPriceCapAdapter.sol';
+import {CapAdaptersCodePolygon} from '../../scripts/DeployPolygon.s.sol';
 
 abstract contract BaseMaticPriceCapAdapterTest is BaseTest {
   address public immutable RATE_PROVIDER;
@@ -14,13 +15,15 @@ abstract contract BaseMaticPriceCapAdapterTest is BaseTest {
 
   constructor(
     address notCappedAdapter,
+    bytes memory deploymentCode,
     address rateProvider,
     string memory pairName,
     RetrospectionParams memory retrospectionParams
   )
     BaseTest(
       notCappedAdapter,
-      ForkParams({network: 'polygon', blockNumber: 52496345}),
+      deploymentCode,
+      ForkParams({network: 'polygon', blockNumber: 54293469}),
       retrospectionParams,
       CapParams({maxYearlyRatioGrowthPercent: 2_00, startBlock: 50808790, finishBlock: 53308720})
     )
@@ -76,13 +79,14 @@ contract MaticXPriceCapAdapterTest is BaseMaticPriceCapAdapterTest {
   constructor()
     BaseMaticPriceCapAdapterTest(
       AaveV3PolygonAssets.MaticX_ORACLE,
+      CapAdaptersCodePolygon.MaticX_ADAPTER_CODE,
       MiscPolygon.MaticX_RATE_PROVIDER,
       'MaticX / Matic / USD',
       RetrospectionParams({
         maxYearlyRatioGrowthPercent: 10_20,
         minimumSnapshotDelay: 14 days,
         startBlock: 50808790,
-        finishBlock: 53308720,
+        finishBlock: 54293469,
         delayInBlocks: 560000, // 14 days
         step: 280000 // ~ 7 days
       })
@@ -94,13 +98,14 @@ contract StMaticPriceCapAdapterTest is BaseMaticPriceCapAdapterTest {
   constructor()
     BaseMaticPriceCapAdapterTest(
       AaveV3PolygonAssets.stMATIC_ORACLE,
+      CapAdaptersCodePolygon.stMATIC_ADAPTER_CODE,
       MiscPolygon.stMATIC_RATE_PROVIDER,
       'stMATIC / Matic / USD',
       RetrospectionParams({
         maxYearlyRatioGrowthPercent: 10_45,
         minimumSnapshotDelay: 14 days,
         startBlock: 50808790,
-        finishBlock: 53308720,
+        finishBlock: 54293469,
         delayInBlocks: 560000, // 14 days
         step: 280000 // ~ 7 days
       })

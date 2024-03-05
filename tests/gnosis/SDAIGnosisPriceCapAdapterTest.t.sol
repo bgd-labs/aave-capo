@@ -7,17 +7,19 @@ import {AaveV3Gnosis, AaveV3GnosisAssets} from 'aave-address-book/AaveV3Gnosis.s
 import {IERC4626} from 'forge-std/interfaces/IERC4626.sol';
 
 import {SDAIGnosisPriceCapAdapter} from '../../src/contracts/SDAIGnosisPriceCapAdapter.sol';
+import {CapAdaptersCodeGnosis} from '../../scripts/DeployGnosis.s.sol';
 
 contract SDAIGnosisPriceCapAdapterTest is BaseTest {
   constructor()
     BaseTest(
       AaveV3GnosisAssets.sDAI_ORACLE,
-      ForkParams({network: 'gnosis', blockNumber: 32019351}),
+      CapAdaptersCodeGnosis.sDAI_ADAPTER_CODE,
+      ForkParams({network: 'gnosis', blockNumber: 32776379}),
       RetrospectionParams({
         maxYearlyRatioGrowthPercent: 10_15,
         minimumSnapshotDelay: 7 days,
         startBlock: 31114532,
-        finishBlock: 32364499,
+        finishBlock: 32776379,
         delayInBlocks: 120000, // 7 days
         step: 120000
       }),

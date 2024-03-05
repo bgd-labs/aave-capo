@@ -7,17 +7,19 @@ import {AaveV3Ethereum, AaveV3EthereumAssets} from 'aave-address-book/AaveV3Ethe
 import {MiscEthereum} from 'aave-address-book/MiscEthereum.sol';
 
 import {SDAIPriceCapAdapter, IPot} from '../../src/contracts/SDAIPriceCapAdapter.sol';
+import {CapAdaptersCodeEthereum} from '../../scripts/DeployEthereum.s.sol';
 
 contract SDAIPriceCapAdapterTest is BaseTest {
   constructor()
     BaseTest(
       AaveV3EthereumAssets.sDAI_ORACLE,
-      ForkParams({network: 'mainnet', blockNumber: 18961286}),
+      CapAdaptersCodeEthereum.sDAI_ADAPTER_CODE,
+      ForkParams({network: 'mainnet', blockNumber: 19368742}),
       RetrospectionParams({
         maxYearlyRatioGrowthPercent: 10_15,
         minimumSnapshotDelay: 7 days,
         startBlock: 18061286,
-        finishBlock: 19183379,
+        finishBlock: 19368742,
         delayInBlocks: 50200,
         step: 200000
       }),

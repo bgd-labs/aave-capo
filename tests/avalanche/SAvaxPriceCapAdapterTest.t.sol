@@ -6,17 +6,19 @@ import '../BaseTest.sol';
 import {AaveV3Avalanche, AaveV3AvalancheAssets} from 'aave-address-book/AaveV3Avalanche.sol';
 
 import {SAvaxPriceCapAdapter, ISAvax} from '../../src/contracts/SAvaxPriceCapAdapter.sol';
+import {CapAdaptersCodeAvalanche} from '../../scripts/DeployAvalanche.s.sol';
 
 contract SAvaxPriceCapAdapterTest is BaseTest {
   constructor()
     BaseTest(
       AaveV3AvalancheAssets.sAVAX_ORACLE,
-      ForkParams({network: 'avalanche', blockNumber: 40555293}),
+      CapAdaptersCodeAvalanche.sAVAX_ADAPTER_CODE,
+      ForkParams({network: 'avalanche', blockNumber: 42506985}),
       RetrospectionParams({
         maxYearlyRatioGrowthPercent: 10_10,
         minimumSnapshotDelay: 14 days,
         startBlock: 39152370,
-        finishBlock: 41448370,
+        finishBlock: 42506985,
         delayInBlocks: 605000, // 14 days
         step: 302500 // 7 days
       }),

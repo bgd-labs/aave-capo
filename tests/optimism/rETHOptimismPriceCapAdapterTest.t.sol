@@ -4,17 +4,19 @@ pragma solidity ^0.8.0;
 import {AaveV3Optimism, AaveV3OptimismAssets} from 'aave-address-book/AaveV3Optimism.sol';
 import {MiscOptimism} from 'aave-address-book/MiscOptimism.sol';
 import {CLAdapterBaseTest} from '../CLAdapterBaseTest.sol';
+import {CapAdaptersCodeOptimism} from '../../scripts/DeployOptimism.s.sol';
 
 contract rETHOptimismPriceCapAdapterTest is CLAdapterBaseTest {
   constructor()
     CLAdapterBaseTest(
       AaveV3OptimismAssets.rETH_ORACLE,
-      ForkParams({network: 'optimism', blockNumber: 115941709}),
+      CapAdaptersCodeOptimism.rETH_ADAPTER_CODE,
+      ForkParams({network: 'optimism', blockNumber: 117020445}),
       RetrospectionParams({
         maxYearlyRatioGrowthPercent: 9_30,
         minimumSnapshotDelay: 7 days,
         startBlock: 113441931,
-        finishBlock: 115941709,
+        finishBlock: 117020445,
         delayInBlocks: 310000, // 7 days
         step: 310000
       }),

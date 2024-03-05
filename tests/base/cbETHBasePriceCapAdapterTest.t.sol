@@ -7,6 +7,7 @@ import {MiscBase} from 'aave-address-book/MiscBase.sol';
 import {CLAdapterBaseTest} from '../CLAdapterBaseTest.sol';
 import {IPriceCapAdapter} from '../../src/interfaces/IPriceCapAdapter.sol';
 import {ICLSynchronicityPriceAdapter} from '../../src/interfaces/IPriceCapAdapter.sol';
+import {CapAdaptersCodeBase} from '../../scripts/DeployBase.s.sol';
 
 contract cbETHBasePriceCapAdapterTest is CLAdapterBaseTest {
   address cbETH_ETH_AGGREGATOR = 0x806b4Ac04501c29769051e42783cF04dCE41440b;
@@ -14,12 +15,13 @@ contract cbETHBasePriceCapAdapterTest is CLAdapterBaseTest {
   constructor()
     CLAdapterBaseTest(
       AaveV3BaseAssets.cbETH_ORACLE,
-      ForkParams({network: 'base', blockNumber: 10346239}),
+      CapAdaptersCodeBase.cbETH_ADAPTER_CODE,
+      ForkParams({network: 'base', blockNumber: 11425107}),
       RetrospectionParams({
         maxYearlyRatioGrowthPercent: 8_12,
         minimumSnapshotDelay: 7 days,
         startBlock: 7846275,
-        finishBlock: 10346241,
+        finishBlock: 11425107,
         delayInBlocks: 308000, // 7 days
         step: 308000
       }),
