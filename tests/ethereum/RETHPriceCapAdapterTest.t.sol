@@ -6,17 +6,19 @@ import '../BaseTest.sol';
 import {AaveV3Ethereum, AaveV3EthereumAssets} from 'aave-address-book/AaveV3Ethereum.sol';
 
 import {RETHPriceCapAdapter, IrETH} from '../../src/contracts/RETHPriceCapAdapter.sol';
+import {CapAdaptersCodeEthereum} from '../../scripts/DeployEthereum.s.sol';
 
 contract RETHPriceCapAdapterTest is BaseTest {
   constructor()
     BaseTest(
       AaveV3EthereumAssets.rETH_ORACLE,
-      ForkParams({network: 'mainnet', blockNumber: 18961286}),
+      CapAdaptersCodeEthereum.rETH_ADAPTER_CODE,
+      ForkParams({network: 'mainnet', blockNumber: 19368742}),
       RetrospectionParams({
         maxYearlyRatioGrowthPercent: 9_30,
         minimumSnapshotDelay: 7 days,
         startBlock: 18061286,
-        finishBlock: 19183379,
+        finishBlock: 19368742,
         delayInBlocks: 50200,
         step: 20000
       }),

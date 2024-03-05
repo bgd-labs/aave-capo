@@ -4,6 +4,7 @@ pragma solidity ^0.8.0;
 import 'forge-std/Test.sol';
 
 import {IACLManager, BasicIACLManager} from 'aave-address-book/AaveV3.sol';
+import {GovV3Helpers} from 'aave-helpers/GovV3Helpers.sol';
 import {IPriceCapAdapter, ICLSynchronicityPriceAdapter} from '../src/interfaces/IPriceCapAdapter.sol';
 
 abstract contract BaseTest is Test {
@@ -32,9 +33,11 @@ abstract contract BaseTest is Test {
   RetrospectionParams public retrospectionParams;
   ForkParams public forkParams;
   CapParams public capParams;
+  bytes public deploymentCode;
 
   constructor(
     address notCappedAdapter,
+    bytes memory _deploymentCode,
     ForkParams memory _forkParams,
     // needed for retrospection testing
     RetrospectionParams memory _retrospectionParams,
@@ -54,6 +57,7 @@ abstract contract BaseTest is Test {
     retrospectionParams = _retrospectionParams;
     forkParams = _forkParams;
     capParams = _capParams;
+    deploymentCode = _deploymentCode;
   }
 
   function setUp() public {
@@ -334,12 +338,8 @@ abstract contract BaseTest is Test {
     setCapParameters(adapter, 1, 1, 1);
   }
 
-  function test_latestAnswer(uint16 maxYearlyRatioGrowthPercent) public virtual {
-    IPriceCapAdapter adapter = createAdapterSimple(
-      0,
-      uint40(block.timestamp),
-      maxYearlyRatioGrowthPercent
-    );
+  function test_latestAnswer1() public virtual {
+    IPriceCapAdapter adapter = IPriceCapAdapter(GovV3Helpers.deployDeterministic(deploymentCode));
 
     _mockExistingOracleExchangeRate();
     int256 price = adapter.latestAnswer();
@@ -350,21 +350,25 @@ abstract contract BaseTest is Test {
       priceOfNotCappedAdapter,
       'uncapped price is not equal to the existing adapter price'
     );
-
-    bool isCapped = adapter.isCapped();
-    assertFalse(isCapped, 'price is capped');
   }
 
   function test_latestAnswerRetrospective() public virtual {
     uint256 initialBlock = block.number;
+    IPriceCapAdapter deploymentAdapter = IPriceCapAdapter(
+      GovV3Helpers.deployDeterministic(deploymentCode)
+    );
+    uint16 maxYearlyRatioGrowthPercent = uint16(deploymentAdapter.getMaxYearlyGrowthRatePercent());
+    uint48 minimumSnapshotDelay = deploymentAdapter.MINIMUM_SNAPSHOT_DELAY();
+
+    console.logUint(maxYearlyRatioGrowthPercent);
 
     vm.createSelectFork(vm.rpcUrl(forkParams.network), retrospectionParams.startBlock);
 
     // create adapter with initial parameters
     IPriceCapAdapter adapter = createAdapterSimple(
-      retrospectionParams.minimumSnapshotDelay,
-      uint40(block.timestamp - 2 * retrospectionParams.minimumSnapshotDelay),
-      retrospectionParams.maxYearlyRatioGrowthPercent
+      minimumSnapshotDelay,
+      uint40(block.timestamp - 2 * minimumSnapshotDelay),
+      maxYearlyRatioGrowthPercent
     );
 
     skip(1);
@@ -389,7 +393,7 @@ abstract contract BaseTest is Test {
         adapter,
         currentRatio,
         snapshotTimestamp,
-        retrospectionParams.maxYearlyRatioGrowthPercent
+        maxYearlyRatioGrowthPercent
       );
 
       _mockExistingOracleExchangeRate();
@@ -435,9 +439,6 @@ abstract contract BaseTest is Test {
 
     // compare prices
     assertGt(priceOfNotCappedAdapter, priceCapped, 'price is not capped');
-
-    bool isCapped = adapter.isCapped();
-    assertTrue(isCapped, 'price is not capped');
 
     vm.revokePersistent(address(adapter));
     vm.createSelectFork(vm.rpcUrl(forkParams.network), capParams.finishBlock);

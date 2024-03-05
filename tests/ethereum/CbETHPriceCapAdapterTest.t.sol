@@ -8,6 +8,7 @@ import {MiscEthereum} from 'aave-address-book/MiscEthereum.sol';
 
 import {CbETHPriceCapAdapter, ICbEthRateProvider} from '../../src/contracts/CbETHPriceCapAdapter.sol';
 import {ICLSynchronicityPriceAdapter} from '../../src/interfaces/IPriceCapAdapter.sol';
+import {CapAdaptersCodeEthereum} from '../../scripts/DeployEthereum.s.sol';
 
 contract CbETHPriceCapAdapterTest is BaseTest {
   address cbETH_ETH_AGGREGATOR = 0xF017fcB346A1885194689bA23Eff2fE6fA5C483b;
@@ -15,12 +16,13 @@ contract CbETHPriceCapAdapterTest is BaseTest {
   constructor()
     BaseTest(
       AaveV3EthereumAssets.cbETH_ORACLE,
-      ForkParams({network: 'mainnet', blockNumber: 18961286}),
+      CapAdaptersCodeEthereum.cbETH_ADAPTER_CODE,
+      ForkParams({network: 'mainnet', blockNumber: 19368742}),
       RetrospectionParams({
         maxYearlyRatioGrowthPercent: 8_12,
         minimumSnapshotDelay: 7 days,
         startBlock: 18061286,
-        finishBlock: 19183379,
+        finishBlock: 19368742,
         delayInBlocks: 50200,
         step: 200000
       }),

@@ -8,17 +8,19 @@ import {AaveV2EthereumAssets} from 'aave-address-book/AaveV2Ethereum.sol';
 
 import {WstETHPriceCapAdapter, IStETH} from '../../src/contracts/WstETHPriceCapAdapter.sol';
 import {IPriceCapAdapter, ICLSynchronicityPriceAdapter} from '../../src/interfaces/IPriceCapAdapter.sol';
+import {CapAdaptersCodeEthereum} from '../../scripts/DeployEthereum.s.sol';
 
 contract WstETHPriceCapAdapterTest is BaseTest {
   constructor()
     BaseTest(
       AaveV3EthereumAssets.wstETH_ORACLE,
-      ForkParams({network: 'mainnet', blockNumber: 18961286}),
+      CapAdaptersCodeEthereum.wstETH_ADAPTER_CODE,
+      ForkParams({network: 'mainnet', blockNumber: 19368742}),
       RetrospectionParams({
         maxYearlyRatioGrowthPercent: 9_68,
         minimumSnapshotDelay: 7 days,
         startBlock: 18061286,
-        finishBlock: 19183379,
+        finishBlock: 19368742,
         delayInBlocks: 50200,
         step: 200000
       }),
