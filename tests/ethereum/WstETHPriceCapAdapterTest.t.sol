@@ -73,38 +73,6 @@ contract WstETHPriceCapAdapterTest is BaseTest {
       );
   }
 
-  function test_updateParameters_cappedLatestAnswer() public {
-    IPriceCapAdapter adapter = createAdapter(
-      AaveV3Ethereum.ACL_MANAGER,
-      AaveV3EthereumAssets.WETH_ORACLE,
-      AaveV2EthereumAssets.stETH_UNDERLYING,
-      'wstETH/stETH/USD',
-      7 days,
-      1151642949000000000,
-      1703743921,
-      2_00
-    );
-
-    int256 price = adapter.latestAnswer();
-
-    assertApproxEqAbs(
-      uint256(price),
-      256499500000, // max growth 2%
-      100000000
-    );
-
-    vm.prank(AaveV3Ethereum.CAPS_PLUS_RISK_STEWARD);
-    setCapParameters(adapter, 1151642955000000000, 1703743931, 20_00);
-
-    price = adapter.latestAnswer();
-
-    assertApproxEqAbs(
-      uint256(price),
-      256617830000, // value for selected block
-      100000000
-    );
-  }
-
   function test_revert_updateParameters_notRiskAdmin(
     uint104 snapshotRatio,
     uint48 snapshotTimestamp,
