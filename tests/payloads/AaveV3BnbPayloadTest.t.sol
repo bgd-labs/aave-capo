@@ -21,6 +21,10 @@ contract AaveV3BnbPayloadTest is Test, DeployBnbAdaptersAndPayload {
       CapAdaptersCodeBnb.USDC_ADAPTER_CODE
     );
 
+    address fdusdPredicted = GovV3Helpers.predictDeterministicAddress(
+      CapAdaptersCodeBnb.FDUSD_ADAPTER_CODE
+    );
+
     address payload = _deploy();
 
     GovV3Helpers.executePayload(vm, payload);
@@ -30,5 +34,8 @@ contract AaveV3BnbPayloadTest is Test, DeployBnbAdaptersAndPayload {
 
     address usdcNew = AaveV3BNB.ORACLE.getSourceOfAsset(AaveV3BNBAssets.USDC_UNDERLYING);
     assertEq(usdcNew, usdcPredicted);
+
+    address fdusdNew = AaveV3BNB.ORACLE.getSourceOfAsset(AaveV3BNBAssets.FDUSD_UNDERLYING);
+    assertEq(fdusdNew, fdusdPredicted);
   }
 }
