@@ -29,8 +29,8 @@ contract AaveV3BnbPayload is AaveV3PayloadBnb {
     updates[1].asset = AaveV3BNBAssets.USDC_UNDERLYING;
     updates[1].priceFeed = USDC_ADAPTER;
 
-    updates[1].asset = AaveV3BNBAssets.FDUSD_UNDERLYING;
-    updates[1].priceFeed = FDUSD_ADAPTER;
+    updates[2].asset = AaveV3BNBAssets.FDUSD_UNDERLYING;
+    updates[2].priceFeed = FDUSD_ADAPTER;
 
     return updates;
   }
