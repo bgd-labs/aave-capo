@@ -28,14 +28,29 @@ library CapAdaptersCodeBnb {
         int256(1.04 * 1e8)
       )
     );
+  bytes public constant FDUSD_ADAPTER_CODE =
+    abi.encodePacked(
+      type(PriceCapAdapterStable).creationCode,
+      abi.encode(
+        AaveV3BNB.ACL_MANAGER,
+        AaveV3BNBAssets.FDUSD_ORACLE,
+        'Capped fdUSD/USD',
+        int256(1.04 * 1e8)
+      )
+    );
 }
 
 contract DeployBnbAdaptersAndPayload {
   function _deploy() internal returns (address) {
     AaveV3BnbPayload.Adapters memory adapters;
 
-    adapters.usdtAdapter = GovV3Helpers.deployDeterministic(CapAdaptersCodeBnb.USDT_ADAPTER_CODE);
-    adapters.usdcAdapter = GovV3Helpers.deployDeterministic(CapAdaptersCodeBnb.USDC_ADAPTER_CODE);
+    adapters.usdtAdapter = GovV3Helpers.predictDeterministicAddress(
+      CapAdaptersCodeBnb.USDT_ADAPTER_CODE
+    );
+    adapters.usdcAdapter = GovV3Helpers.predictDeterministicAddress(
+      CapAdaptersCodeBnb.USDC_ADAPTER_CODE
+    );
+    adapters.fdusdAdapter = GovV3Helpers.deployDeterministic(CapAdaptersCodeBnb.FDUSD_ADAPTER_CODE);
 
     return
       GovV3Helpers.deployDeterministic(
