@@ -44,12 +44,8 @@ contract DeployBnbAdaptersAndPayload {
   function _deploy() internal returns (address) {
     AaveV3BnbPayload.Adapters memory adapters;
 
-    adapters.usdtAdapter = GovV3Helpers.predictDeterministicAddress(
-      CapAdaptersCodeBnb.USDT_ADAPTER_CODE
-    );
-    adapters.usdcAdapter = GovV3Helpers.predictDeterministicAddress(
-      CapAdaptersCodeBnb.USDC_ADAPTER_CODE
-    );
+    adapters.usdtAdapter = GovV3Helpers.deployDeterministic(CapAdaptersCodeBnb.USDT_ADAPTER_CODE);
+    adapters.usdcAdapter = GovV3Helpers.deployDeterministic(CapAdaptersCodeBnb.USDC_ADAPTER_CODE);
     adapters.fdusdAdapter = GovV3Helpers.deployDeterministic(CapAdaptersCodeBnb.FDUSD_ADAPTER_CODE);
 
     return
