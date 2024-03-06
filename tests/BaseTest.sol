@@ -169,9 +169,11 @@ abstract contract BaseTest is Test {
   ) public {
     vm.assume(baseAggregatorAddress != 0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f);
     vm.assume(baseAggregatorAddress != 0x7109709ECfa91a80626fF3989D68f67F5b1DD12D);
+    vm.assume(baseAggregatorAddress != 0x000000000000000000636F6e736F6c652e6c6f67);
 
     vm.assume(ratioProviderAddress != 0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f);
     vm.assume(ratioProviderAddress != 0x7109709ECfa91a80626fF3989D68f67F5b1DD12D);
+    vm.assume(ratioProviderAddress != 0x000000000000000000636F6e736F6c652e6c6f67);
 
     vm.assume(address(aclManager) != address(0) && baseAggregatorAddress != address(0));
     vm.assume(snapshotRatio > 0);
