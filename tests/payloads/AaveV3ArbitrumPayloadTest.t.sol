@@ -28,6 +28,9 @@ contract AaveV3ArbitrumPayloadTest is Test, DeployArbitrumAdaptersAndPayload {
     address fraxPredicted = GovV3Helpers.predictDeterministicAddress(
       CapAdaptersCodeArbitrum.FRAX_ADAPTER_CODE
     );
+    address maiPredicted = GovV3Helpers.predictDeterministicAddress(
+      CapAdaptersCodeArbitrum.MAI_ADAPTER_CODE
+    );
     address rethPredicted = GovV3Helpers.predictDeterministicAddress(
       CapAdaptersCodeArbitrum.rETH_ADAPTER_CODE
     );
@@ -53,6 +56,9 @@ contract AaveV3ArbitrumPayloadTest is Test, DeployArbitrumAdaptersAndPayload {
 
     address fraxNew = AaveV3Arbitrum.ORACLE.getSourceOfAsset(AaveV3ArbitrumAssets.FRAX_UNDERLYING);
     assertEq(fraxNew, fraxPredicted);
+
+    address maiNew = AaveV3Arbitrum.ORACLE.getSourceOfAsset(AaveV3ArbitrumAssets.MAI_UNDERLYING);
+    assertEq(maiNew, maiPredicted);
 
     address rethNew = AaveV3Arbitrum.ORACLE.getSourceOfAsset(AaveV3ArbitrumAssets.rETH_UNDERLYING);
     assertEq(rethNew, rethPredicted);

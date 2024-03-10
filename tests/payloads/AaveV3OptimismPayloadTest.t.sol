@@ -33,6 +33,10 @@ contract AaveV3OptimismPayloadTest is Test, DeployOptimismAdaptersAndPayload {
       CapAdaptersCodeOptimism.sUSD_ADAPTER_CODE
     );
 
+    address maiPredicted = GovV3Helpers.predictDeterministicAddress(
+      CapAdaptersCodeOptimism.MAI_ADAPTER_CODE
+    );
+
     address rethPredicted = GovV3Helpers.predictDeterministicAddress(
       CapAdaptersCodeOptimism.rETH_ADAPTER_CODE
     );
@@ -59,6 +63,9 @@ contract AaveV3OptimismPayloadTest is Test, DeployOptimismAdaptersAndPayload {
 
     address susdNew = AaveV3Optimism.ORACLE.getSourceOfAsset(AaveV3OptimismAssets.sUSD_UNDERLYING);
     assertEq(susdNew, susdPredicted);
+
+    address maiNew = AaveV3Optimism.ORACLE.getSourceOfAsset(AaveV3OptimismAssets.MAI_UNDERLYING);
+    assertEq(maiNew, maiPredicted);
 
     address rethNew = AaveV3Optimism.ORACLE.getSourceOfAsset(AaveV3OptimismAssets.rETH_UNDERLYING);
     assertEq(rethNew, rethPredicted);

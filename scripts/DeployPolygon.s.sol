@@ -42,7 +42,16 @@ library CapAdaptersCodePolygon {
         int256(1.04 * 1e8)
       )
     );
-
+  bytes public constant MAI_ADAPTER_CODE =
+    abi.encodePacked(
+      type(PriceCapAdapterStable).creationCode,
+      abi.encode(
+        AaveV3Polygon.ACL_MANAGER,
+        AaveV3PolygonAssets.miMATIC_ORACLE,
+        'Capped MAI/USD',
+        int256(1.04 * 1e8)
+      )
+    );
   bytes public constant wstETH_ADAPTER_CODE =
     abi.encodePacked(
       type(CLRatePriceCapAdapter).creationCode,
@@ -104,6 +113,7 @@ contract DeployPolygonAdaptersAndPayload {
       CapAdaptersCodePolygon.USDC_ADAPTER_CODE
     );
     adapters.daiAdapter = GovV3Helpers.deployDeterministic(CapAdaptersCodePolygon.DAI_ADAPTER_CODE);
+    adapters.maiAdapter = GovV3Helpers.deployDeterministic(CapAdaptersCodePolygon.MAI_ADAPTER_CODE);
     adapters.wstEthAdapter = GovV3Helpers.deployDeterministic(
       CapAdaptersCodePolygon.wstETH_ADAPTER_CODE
     );

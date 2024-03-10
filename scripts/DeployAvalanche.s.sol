@@ -49,6 +49,16 @@ library CapAdaptersCodeAvalanche {
         int256(1.04 * 1e8)
       )
     );
+  bytes public constant MAI_ADAPTER_CODE =
+    abi.encodePacked(
+      type(PriceCapAdapterStable).creationCode,
+      abi.encode(
+        AaveV3Avalanche.ACL_MANAGER,
+        AaveV3AvalancheAssets.MAI_ORACLE,
+        'Capped MAI/USD',
+        int256(1.04 * 1e8)
+      )
+    );
 
   bytes public constant sAVAX_ADAPTER_CODE =
     abi.encodePacked(
@@ -80,6 +90,9 @@ contract DeployAvalancheAdaptersAndPayload {
     );
     adapters.daieAdapter = GovV3Helpers.deployDeterministic(
       CapAdaptersCodeAvalanche.DAIe_ADAPTER_CODE
+    );
+    adapters.maiAdapter = GovV3Helpers.deployDeterministic(
+      CapAdaptersCodeAvalanche.MAI_ADAPTER_CODE
     );
     adapters.fraxAdapter = GovV3Helpers.deployDeterministic(
       CapAdaptersCodeAvalanche.FRAX_ADAPTER_CODE

@@ -29,6 +29,10 @@ contract AaveV3AvalanchePayloadTest is Test, DeployAvalancheAdaptersAndPayload {
       CapAdaptersCodeAvalanche.FRAX_ADAPTER_CODE
     );
 
+    address maiPredicted = GovV3Helpers.predictDeterministicAddress(
+      CapAdaptersCodeAvalanche.MAI_ADAPTER_CODE
+    );
+
     address savaxPredicted = GovV3Helpers.predictDeterministicAddress(
       CapAdaptersCodeAvalanche.sAVAX_ADAPTER_CODE
     );
@@ -56,6 +60,9 @@ contract AaveV3AvalanchePayloadTest is Test, DeployAvalancheAdaptersAndPayload {
       AaveV3AvalancheAssets.FRAX_UNDERLYING
     );
     assertEq(fraxNew, fraxPredicted);
+
+    address maiNew = AaveV3Avalanche.ORACLE.getSourceOfAsset(AaveV3AvalancheAssets.MAI_UNDERLYING);
+    assertEq(maiNew, maiPredicted);
 
     address savaxNew = AaveV3Avalanche.ORACLE.getSourceOfAsset(
       AaveV3AvalancheAssets.sAVAX_UNDERLYING

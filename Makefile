@@ -22,6 +22,7 @@ deploy-gnosis :; forge script scripts/DeployGnosis.s.sol:DeployGnosis --rpc-url 
 deploy-metis :; forge script scripts/DeployMetis.s.sol:DeployMetis --rpc-url metis $(common-flags)
 deploy-optimism :; forge script scripts/DeployOptimism.s.sol:DeployOptimism --rpc-url optimism $(common-flags)
 deploy-polygon :; forge script scripts/DeployPolygon.s.sol:DeployPolygon --rpc-url polygon $(common-flags)
+deploy-scroll :; forge script scripts/DeployScroll.s.sol:DeployScroll --rpc-url scroll $(common-flags)
 
 
 # Utilities

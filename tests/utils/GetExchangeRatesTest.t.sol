@@ -177,3 +177,20 @@ contract ExchangeRates14Polygon is Test {
     console.log(block.timestamp);
   }
 }
+
+contract ExchangeRatesScroll is Test {
+  function setUp() public {
+    vm.createSelectFork(vm.rpcUrl('scroll'), 3504770); // 20th of February
+  }
+
+  function test_getExchangeRate() public {
+    uint256 wstEthRate = uint256(
+      IChainlinkAggregator(0xE61Da4C909F7d86797a0D06Db63c34f76c9bCBDC).latestAnswer()
+    );
+
+    console.log('Scroll');
+    console.log('wstEthRate', wstEthRate);
+
+    console.log(block.timestamp);
+  }
+}
