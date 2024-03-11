@@ -113,7 +113,7 @@ library CapAdaptersCodeEthereum {
         IPriceCapAdapter.PriceCapUpdateParams({
           snapshotRatio: 1055881418683661830974172162,
           snapshotTimestamp: 1708004591, // 15-02-2024
-          maxYearlyRatioGrowthPercent: 10_15
+          maxYearlyRatioGrowthPercent: 20_00
         })
       )
     );

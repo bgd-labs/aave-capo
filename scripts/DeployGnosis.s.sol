@@ -43,7 +43,7 @@ library CapAdaptersCodeGnosis {
         IPriceCapAdapter.PriceCapUpdateParams({
           snapshotRatio: 1041259405371548076, // TODO: please recheck
           snapshotTimestamp: 1707988835,
-          maxYearlyRatioGrowthPercent: 10_15
+          maxYearlyRatioGrowthPercent: 20_00
         })
       )
     );
