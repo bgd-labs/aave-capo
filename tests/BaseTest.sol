@@ -362,8 +362,6 @@ abstract contract BaseTest is Test {
     uint16 maxYearlyRatioGrowthPercent = uint16(deploymentAdapter.getMaxYearlyGrowthRatePercent());
     uint48 minimumSnapshotDelay = deploymentAdapter.MINIMUM_SNAPSHOT_DELAY();
 
-    console.logUint(maxYearlyRatioGrowthPercent);
-
     vm.createSelectFork(vm.rpcUrl(forkParams.network), retrospectionParams.startBlock);
 
     // create adapter with initial parameters

@@ -25,10 +25,6 @@ contract AaveV3EthereumPayloadTest is Test, DeployEthereumAdaptersAndPayload {
       CapAdaptersStablesCodeEthereum.DAI_ADAPTER_CODE
     );
 
-    address sdaiPredicted = GovV3Helpers.predictDeterministicAddress(
-      CapAdaptersCodeEthereum.sDAI_ADAPTER_CODE
-    );
-
     address lusdPredicted = GovV3Helpers.predictDeterministicAddress(
       CapAdaptersStablesCodeEthereum.LUSD_ADAPTER_CODE
     );
@@ -69,9 +65,6 @@ contract AaveV3EthereumPayloadTest is Test, DeployEthereumAdaptersAndPayload {
 
     address daiNew = AaveV3Ethereum.ORACLE.getSourceOfAsset(AaveV3EthereumAssets.DAI_UNDERLYING);
     assertEq(daiNew, daiPredicted);
-
-    address sdaiNew = AaveV3Ethereum.ORACLE.getSourceOfAsset(AaveV3EthereumAssets.sDAI_UNDERLYING);
-    assertEq(sdaiNew, sdaiPredicted);
 
     address lusdNew = AaveV3Ethereum.ORACLE.getSourceOfAsset(AaveV3EthereumAssets.LUSD_UNDERLYING);
     assertEq(lusdNew, lusdPredicted);

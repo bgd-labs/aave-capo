@@ -60,6 +60,16 @@ library CapAdaptersCodeOptimism {
         int256(1.04 * 1e8)
       )
     );
+  bytes public constant MAI_ADAPTER_CODE =
+    abi.encodePacked(
+      type(PriceCapAdapterStable).creationCode,
+      abi.encode(
+        AaveV3Optimism.ACL_MANAGER,
+        AaveV3OptimismAssets.MAI_ORACLE,
+        'Capped MAI/USD',
+        int256(1.04 * 1e8)
+      )
+    );
   bytes public constant rETH_ADAPTER_CODE =
     abi.encodePacked(
       type(CLRatePriceCapAdapter).creationCode,
@@ -112,6 +122,9 @@ contract DeployOptimismAdaptersAndPayload {
     );
     adapters.sUsdAdapter = GovV3Helpers.deployDeterministic(
       CapAdaptersCodeOptimism.sUSD_ADAPTER_CODE
+    );
+    adapters.maiAdapter = GovV3Helpers.deployDeterministic(
+      CapAdaptersCodeOptimism.MAI_ADAPTER_CODE
     );
     adapters.rEthAdapter = GovV3Helpers.deployDeterministic(
       CapAdaptersCodeOptimism.rETH_ADAPTER_CODE

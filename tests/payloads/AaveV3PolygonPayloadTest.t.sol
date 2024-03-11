@@ -25,6 +25,10 @@ contract AaveV3PolygonPayloadTest is Test, DeployPolygonAdaptersAndPayload {
       CapAdaptersCodePolygon.DAI_ADAPTER_CODE
     );
 
+    address maiPredicted = GovV3Helpers.predictDeterministicAddress(
+      CapAdaptersCodePolygon.MAI_ADAPTER_CODE
+    );
+
     address wstEthPredicted = GovV3Helpers.predictDeterministicAddress(
       CapAdaptersCodePolygon.wstETH_ADAPTER_CODE
     );
@@ -49,6 +53,9 @@ contract AaveV3PolygonPayloadTest is Test, DeployPolygonAdaptersAndPayload {
 
     address daiNew = AaveV3Polygon.ORACLE.getSourceOfAsset(AaveV3PolygonAssets.DAI_UNDERLYING);
     assertEq(daiNew, daiPredicted);
+
+    address maiNew = AaveV3Polygon.ORACLE.getSourceOfAsset(AaveV3PolygonAssets.miMATIC_UNDERLYING);
+    assertEq(maiNew, maiPredicted);
 
     address wstEthNew = AaveV3Polygon.ORACLE.getSourceOfAsset(
       AaveV3PolygonAssets.wstETH_UNDERLYING

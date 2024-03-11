@@ -113,7 +113,7 @@ library CapAdaptersCodeEthereum {
         IPriceCapAdapter.PriceCapUpdateParams({
           snapshotRatio: 1055881418683661830974172162,
           snapshotTimestamp: 1708004591, // 15-02-2024
-          maxYearlyRatioGrowthPercent: 10_15
+          maxYearlyRatioGrowthPercent: 20_00
         })
       )
     );
@@ -217,9 +217,6 @@ contract DeployEthereumAdaptersAndPayload {
     adapters.daiAdapter = GovV3Helpers.deployDeterministic(
       CapAdaptersStablesCodeEthereum.DAI_ADAPTER_CODE
     );
-    adapters.sDaiAdapter = GovV3Helpers.deployDeterministic(
-      CapAdaptersCodeEthereum.sDAI_ADAPTER_CODE
-    );
     adapters.lusdAdapter = GovV3Helpers.deployDeterministic(
       CapAdaptersStablesCodeEthereum.LUSD_ADAPTER_CODE
     );
@@ -241,12 +238,6 @@ contract DeployEthereumAdaptersAndPayload {
     adapters.wstEthAdapter = GovV3Helpers.deployDeterministic(
       CapAdaptersCodeEthereum.wstETH_ADAPTER_CODE
     );
-
-    GovV3Helpers.deployDeterministic(CapAdaptersStablesCodeEthereum.agEUR_ADAPTER_CODE);
-
-    GovV3Helpers.deployDeterministic(stEURCapAdapters.stEURAdapterCode());
-
-    GovV3Helpers.deployDeterministic(stEURCapAdapters.stEURtoUSDAdapterCode());
 
     return
       GovV3Helpers.deployDeterministic(

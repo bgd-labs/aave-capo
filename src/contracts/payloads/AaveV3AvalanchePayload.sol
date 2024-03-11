@@ -10,6 +10,7 @@ contract AaveV3AvalanchePayload is AaveV3PayloadAvalanche {
     address usdcAdapter;
     address daieAdapter;
     address fraxAdapter;
+    address maiAdapter;
     address sAvaxAdapter;
   }
 
@@ -17,6 +18,7 @@ contract AaveV3AvalanchePayload is AaveV3PayloadAvalanche {
   address public immutable USDC_ADAPTER;
   address public immutable DAIe_ADAPTER;
   address public immutable FRAX_ADAPTER;
+  address public immutable MAI_ADAPTER;
   address public immutable sAVAX_ADAPTER;
 
   constructor(Adapters memory adapters) {
@@ -24,11 +26,12 @@ contract AaveV3AvalanchePayload is AaveV3PayloadAvalanche {
     USDC_ADAPTER = adapters.usdcAdapter;
     DAIe_ADAPTER = adapters.daieAdapter;
     FRAX_ADAPTER = adapters.fraxAdapter;
+    MAI_ADAPTER = adapters.maiAdapter;
     sAVAX_ADAPTER = adapters.sAvaxAdapter;
   }
 
   function priceFeedsUpdates() public view override returns (IEngine.PriceFeedUpdate[] memory) {
-    IEngine.PriceFeedUpdate[] memory updates = new IEngine.PriceFeedUpdate[](5);
+    IEngine.PriceFeedUpdate[] memory updates = new IEngine.PriceFeedUpdate[](6);
     updates[0].asset = AaveV3AvalancheAssets.USDt_UNDERLYING;
     updates[0].priceFeed = USDt_ADAPTER;
 
@@ -41,8 +44,11 @@ contract AaveV3AvalanchePayload is AaveV3PayloadAvalanche {
     updates[3].asset = AaveV3AvalancheAssets.FRAX_UNDERLYING;
     updates[3].priceFeed = FRAX_ADAPTER;
 
-    updates[4].asset = AaveV3AvalancheAssets.sAVAX_UNDERLYING;
-    updates[4].priceFeed = sAVAX_ADAPTER;
+    updates[4].asset = AaveV3AvalancheAssets.MAI_UNDERLYING;
+    updates[4].priceFeed = MAI_ADAPTER;
+
+    updates[5].asset = AaveV3AvalancheAssets.sAVAX_UNDERLYING;
+    updates[5].priceFeed = sAVAX_ADAPTER;
 
     return updates;
   }

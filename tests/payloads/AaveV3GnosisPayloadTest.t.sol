@@ -21,10 +21,6 @@ contract AaveV3GnosisPayloadTest is Test, DeployGnosisAdaptersAndPayload {
       CapAdaptersCodeGnosis.WXDAI_ADAPTER_CODE
     );
 
-    address sdaiPredicted = GovV3Helpers.predictDeterministicAddress(
-      CapAdaptersCodeGnosis.sDAI_ADAPTER_CODE
-    );
-
     address wstEthPredicted = GovV3Helpers.predictDeterministicAddress(
       CapAdaptersCodeGnosis.wstETH_ADAPTER_CODE
     );
@@ -38,9 +34,6 @@ contract AaveV3GnosisPayloadTest is Test, DeployGnosisAdaptersAndPayload {
 
     address wxdaiNew = AaveV3Gnosis.ORACLE.getSourceOfAsset(AaveV3GnosisAssets.WXDAI_UNDERLYING);
     assertEq(wxdaiNew, wxdaiPredicted);
-
-    address sdaiNew = AaveV3Gnosis.ORACLE.getSourceOfAsset(AaveV3GnosisAssets.sDAI_UNDERLYING);
-    assertEq(sdaiNew, sdaiPredicted);
 
     address wstEthNew = AaveV3Gnosis.ORACLE.getSourceOfAsset(AaveV3GnosisAssets.wstETH_UNDERLYING);
     assertEq(wstEthNew, wstEthPredicted);

@@ -43,7 +43,7 @@ library CapAdaptersCodeGnosis {
         IPriceCapAdapter.PriceCapUpdateParams({
           snapshotRatio: 1041259405371548076, // TODO: please recheck
           snapshotTimestamp: 1707988835,
-          maxYearlyRatioGrowthPercent: 10_15
+          maxYearlyRatioGrowthPercent: 20_00
         })
       )
     );
@@ -75,9 +75,6 @@ contract DeployGnosisAdaptersAndPayload {
     );
     adapters.wxDaiAdapter = GovV3Helpers.deployDeterministic(
       CapAdaptersCodeGnosis.WXDAI_ADAPTER_CODE
-    );
-    adapters.sDaiAdapter = GovV3Helpers.deployDeterministic(
-      CapAdaptersCodeGnosis.sDAI_ADAPTER_CODE
     );
     adapters.wstEthAdapter = GovV3Helpers.deployDeterministic(
       CapAdaptersCodeGnosis.wstETH_ADAPTER_CODE

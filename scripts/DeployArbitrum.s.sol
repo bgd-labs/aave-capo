@@ -62,6 +62,16 @@ library CapAdaptersCodeArbitrum {
         int256(1.04 * 1e8)
       )
     );
+  bytes public constant MAI_ADAPTER_CODE =
+    abi.encodePacked(
+      type(PriceCapAdapterStable).creationCode,
+      abi.encode(
+        AaveV3Arbitrum.ACL_MANAGER,
+        AaveV3ArbitrumAssets.MAI_ORACLE,
+        'Capped MAI/USD',
+        int256(1.04 * 1e8)
+      )
+    );
   bytes public constant rETH_ADAPTER_CODE =
     abi.encodePacked(
       type(CLRatePriceCapAdapter).creationCode,
@@ -114,6 +124,9 @@ contract DeployArbitrumAdaptersAndPayload {
     );
     adapters.fraxAdapter = GovV3Helpers.deployDeterministic(
       CapAdaptersCodeArbitrum.FRAX_ADAPTER_CODE
+    );
+    adapters.maiAdapter = GovV3Helpers.deployDeterministic(
+      CapAdaptersCodeArbitrum.MAI_ADAPTER_CODE
     );
     adapters.rEthAdapter = GovV3Helpers.deployDeterministic(
       CapAdaptersCodeArbitrum.rETH_ADAPTER_CODE
