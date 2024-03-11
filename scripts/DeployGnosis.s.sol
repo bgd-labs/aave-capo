@@ -76,9 +76,6 @@ contract DeployGnosisAdaptersAndPayload {
     adapters.wxDaiAdapter = GovV3Helpers.deployDeterministic(
       CapAdaptersCodeGnosis.WXDAI_ADAPTER_CODE
     );
-    adapters.sDaiAdapter = GovV3Helpers.deployDeterministic(
-      CapAdaptersCodeGnosis.sDAI_ADAPTER_CODE
-    );
     adapters.wstEthAdapter = GovV3Helpers.deployDeterministic(
       CapAdaptersCodeGnosis.wstETH_ADAPTER_CODE
     );
