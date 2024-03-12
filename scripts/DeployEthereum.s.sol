@@ -179,7 +179,7 @@ library stEURCapAdapters {
             CapAdaptersStablesCodeEthereum.agEUR_ADAPTER_CODE
           ), // agEUR / EUR
           MiscEthereum.stEUR, // stEUR / agEUR
-          'Capped stUER / agEUR / EUR',
+          'Capped stEUR / agEUR / EUR',
           7 days,
           IPriceCapAdapter.PriceCapUpdateParams({
             snapshotRatio: 1016937727474779118,
@@ -198,7 +198,7 @@ library stEURCapAdapters {
           MiscEthereum.EUR_USD_AGGREGATOR, // EUR to USD
           GovV3Helpers.predictDeterministicAddress(stEURAdapterCode()), // stEUR / agEUR / EUR
           18, // stEUR / agEUR
-          'Capped stUER / agEUR / EUR / USD'
+          'Capped stEUR / agEUR / EUR / USD'
         )
       );
   }
