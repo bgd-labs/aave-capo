@@ -13,7 +13,7 @@ contract weETHPriceCapAdapterTest is BaseTest {
   constructor()
     BaseTest(
       address(0),
-      CapAdaptersCodeEthereum.weETH_ADAPTER_CODE,
+      CapAdaptersCodeEthereum.weETHAdapterCode(),
       ForkParams({network: 'mainnet', blockNumber: 19575450}),
       RetrospectionParams({
         maxYearlyRatioGrowthPercent: 8_75,

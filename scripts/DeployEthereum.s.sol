@@ -168,22 +168,24 @@ library CapAdaptersCodeEthereum {
       )
     );
 
-  bytes public constant weETH_ADAPTER_CODE =
-    abi.encodePacked(
-      type(WeETHPriceCapAdapter).creationCode,
-      abi.encode(
-        AaveV3Ethereum.ACL_MANAGER,
-        AaveV3EthereumAssets.WETH_ORACLE,
-        MiscEthereum.weETH_RATIO_PROVIDER,
-        'Capped weETH / eETH(ETH) / USD',
-        7 days,
-        IPriceCapAdapter.PriceCapUpdateParams({
-          snapshotRatio: 1034656878645040505,
-          snapshotTimestamp: 1711416299, // 26-03-2024
-          maxYearlyRatioGrowthPercent: 8_75
-        })
-      )
-    );
+  function weETHAdapterCode() internal pure returns (bytes memory) {
+    return
+      abi.encodePacked(
+        type(WeETHPriceCapAdapter).creationCode,
+        abi.encode(
+          AaveV3Ethereum.ACL_MANAGER,
+          AaveV3EthereumAssets.WETH_ORACLE,
+          MiscEthereum.weETH_RATIO_PROVIDER,
+          'Capped weETH / eETH(ETH) / USD',
+          7 days,
+          IPriceCapAdapter.PriceCapUpdateParams({
+            snapshotRatio: 1034656878645040505,
+            snapshotTimestamp: 1711416299, // 26-03-2024
+            maxYearlyRatioGrowthPercent: 8_75
+          })
+        )
+      );
+  }
 }
 
 library stEURCapAdapters {
@@ -272,6 +274,6 @@ contract DeployEthereum is EthereumScript, DeployEthereumAdaptersAndPayload {
 
 contract DeployWeEthEthereum is EthereumScript {
   function run() external broadcast {
-    GovV3Helpers.deployDeterministic(CapAdaptersCodeEthereum.weETH_ADAPTER_CODE);
+    GovV3Helpers.deployDeterministic(CapAdaptersCodeEthereum.weETHAdapterCode());
   }
 }
