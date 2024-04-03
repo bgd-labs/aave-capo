@@ -13,7 +13,6 @@ import {RETHPriceCapAdapter} from '../src/contracts/RETHPriceCapAdapter.sol';
 import {WstETHPriceCapAdapter} from '../src/contracts/WstETHPriceCapAdapter.sol';
 import {SDAIPriceCapAdapter} from '../src/contracts/SDAIPriceCapAdapter.sol';
 import {stEURPriceCapAdapter} from '../src/contracts/stEURPriceCapAdapter.sol';
-import {WeETHPriceCapAdapter} from '../src/contracts/WeETHPriceCapAdapter.sol';
 import {AaveV3EthereumPayload} from '../src/contracts/payloads/AaveV3EthereumPayload.sol';
 
 library CapAdaptersStablesCodeEthereum {
