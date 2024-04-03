@@ -6,10 +6,12 @@ import {GovV3Helpers} from 'aave-helpers/GovV3Helpers.sol';
 import {AaveV3Arbitrum, AaveV3ArbitrumAssets} from 'aave-address-book/AaveV3Arbitrum.sol';
 
 import {DeployArbitrumAdaptersAndPayload, CapAdaptersCodeArbitrum} from '../../scripts/DeployArbitrum.s.sol';
+import {IPriceCapAdapter} from '../../src/interfaces/IPriceCapAdapter.sol';
+import {IPriceCapAdapterStable} from '../../src/interfaces/IPriceCapAdapterStable.sol';
 
 contract AaveV3ArbitrumPayloadTest is Test, DeployArbitrumAdaptersAndPayload {
   function setUp() public {
-    vm.createSelectFork(vm.rpcUrl('arbitrum'), 183394362);
+    vm.createSelectFork(vm.rpcUrl('arbitrum'), 190587971);
   }
 
   function test_AaveV3ArbitrumPayload() public {
@@ -44,28 +46,36 @@ contract AaveV3ArbitrumPayloadTest is Test, DeployArbitrumAdaptersAndPayload {
 
     address usdtNew = AaveV3Arbitrum.ORACLE.getSourceOfAsset(AaveV3ArbitrumAssets.USDT_UNDERLYING);
     assertEq(usdtNew, usdtPredicted);
+    assertFalse(IPriceCapAdapterStable(usdtNew).isCapped());
 
     address usdcNew = AaveV3Arbitrum.ORACLE.getSourceOfAsset(AaveV3ArbitrumAssets.USDC_UNDERLYING);
     assertEq(usdcNew, usdcPredicted);
+    assertFalse(IPriceCapAdapterStable(usdcNew).isCapped());
 
     address daiNew = AaveV3Arbitrum.ORACLE.getSourceOfAsset(AaveV3ArbitrumAssets.DAI_UNDERLYING);
     assertEq(daiNew, daiPredicted);
+    assertFalse(IPriceCapAdapterStable(daiNew).isCapped());
 
     address lusdNew = AaveV3Arbitrum.ORACLE.getSourceOfAsset(AaveV3ArbitrumAssets.LUSD_UNDERLYING);
     assertEq(lusdNew, lusdPredicted);
+    assertFalse(IPriceCapAdapterStable(lusdNew).isCapped());
 
     address fraxNew = AaveV3Arbitrum.ORACLE.getSourceOfAsset(AaveV3ArbitrumAssets.FRAX_UNDERLYING);
     assertEq(fraxNew, fraxPredicted);
+    assertFalse(IPriceCapAdapterStable(fraxNew).isCapped());
 
     address maiNew = AaveV3Arbitrum.ORACLE.getSourceOfAsset(AaveV3ArbitrumAssets.MAI_UNDERLYING);
     assertEq(maiNew, maiPredicted);
+    assertFalse(IPriceCapAdapterStable(maiNew).isCapped());
 
     address rethNew = AaveV3Arbitrum.ORACLE.getSourceOfAsset(AaveV3ArbitrumAssets.rETH_UNDERLYING);
     assertEq(rethNew, rethPredicted);
+    assertFalse(IPriceCapAdapter(rethNew).isCapped());
 
     address wstEthNew = AaveV3Arbitrum.ORACLE.getSourceOfAsset(
       AaveV3ArbitrumAssets.wstETH_UNDERLYING
     );
     assertEq(wstEthNew, wstEthPredicted);
+    assertFalse(IPriceCapAdapter(wstEthNew).isCapped());
   }
 }
