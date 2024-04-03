@@ -1,9 +1,6 @@
 [submodule "lib/forge-std"]
 	path = lib/forge-std
 	url = https://github.com/foundry-rs/forge-std
-[submodule "lib/aave-address-book"]
-	path = lib/aave-address-book
-	url = https://github.com/bgd-labs/aave-address-book
 [submodule "lib/cl-synchronicity-price-adapter"]
 	path = lib/cl-synchronicity-price-adapter
 	url = https://github.com/bgd-labs/cl-synchronicity-price-adapter
