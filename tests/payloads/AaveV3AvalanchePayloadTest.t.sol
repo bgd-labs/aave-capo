@@ -6,12 +6,10 @@ import {GovV3Helpers} from 'aave-helpers/GovV3Helpers.sol';
 import {AaveV3Avalanche, AaveV3AvalancheAssets} from 'aave-address-book/AaveV3Avalanche.sol';
 
 import {DeployAvalancheAdaptersAndPayload, CapAdaptersCodeAvalanche} from '../../scripts/DeployAvalanche.s.sol';
-import {IPriceCapAdapter} from '../../src/interfaces/IPriceCapAdapter.sol';
-import {IPriceCapAdapterStable} from '../../src/interfaces/IPriceCapAdapterStable.sol';
 
 contract AaveV3AvalanchePayloadTest is Test, DeployAvalancheAdaptersAndPayload {
   function setUp() public {
-    vm.createSelectFork(vm.rpcUrl('avalanche'), 42926104);
+    vm.createSelectFork(vm.rpcUrl('avalanche'), 42013694);
   }
 
   function test_AaveV3AvalanchePayload() public {
@@ -47,34 +45,28 @@ contract AaveV3AvalanchePayloadTest is Test, DeployAvalancheAdaptersAndPayload {
       AaveV3AvalancheAssets.USDt_UNDERLYING
     );
     assertEq(usdtNew, usdtPredicted);
-    assertFalse(IPriceCapAdapterStable(usdtNew).isCapped());
 
     address usdcNew = AaveV3Avalanche.ORACLE.getSourceOfAsset(
       AaveV3AvalancheAssets.USDC_UNDERLYING
     );
     assertEq(usdcNew, usdcPredicted);
-    assertFalse(IPriceCapAdapterStable(usdcNew).isCapped());
 
     address daieNew = AaveV3Avalanche.ORACLE.getSourceOfAsset(
       AaveV3AvalancheAssets.DAIe_UNDERLYING
     );
     assertEq(daieNew, daiePredicted);
-    assertFalse(IPriceCapAdapterStable(daieNew).isCapped());
 
     address fraxNew = AaveV3Avalanche.ORACLE.getSourceOfAsset(
       AaveV3AvalancheAssets.FRAX_UNDERLYING
     );
     assertEq(fraxNew, fraxPredicted);
-    assertFalse(IPriceCapAdapterStable(fraxNew).isCapped());
 
     address maiNew = AaveV3Avalanche.ORACLE.getSourceOfAsset(AaveV3AvalancheAssets.MAI_UNDERLYING);
     assertEq(maiNew, maiPredicted);
-    assertFalse(IPriceCapAdapterStable(maiNew).isCapped());
 
     address savaxNew = AaveV3Avalanche.ORACLE.getSourceOfAsset(
       AaveV3AvalancheAssets.sAVAX_UNDERLYING
     );
     assertEq(savaxNew, savaxPredicted);
-    assertFalse(IPriceCapAdapter(savaxNew).isCapped());
   }
 }

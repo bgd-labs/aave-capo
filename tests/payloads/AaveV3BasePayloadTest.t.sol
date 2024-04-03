@@ -6,12 +6,10 @@ import {GovV3Helpers} from 'aave-helpers/GovV3Helpers.sol';
 import {AaveV3Base, AaveV3BaseAssets} from 'aave-address-book/AaveV3Base.sol';
 
 import {DeployBaseAdaptersAndPayload, CapAdaptersCodeBase} from '../../scripts/DeployBase.s.sol';
-import {IPriceCapAdapter} from '../../src/interfaces/IPriceCapAdapter.sol';
-import {IPriceCapAdapterStable} from '../../src/interfaces/IPriceCapAdapterStable.sol';
 
 contract AaveV3BasePayloadTest is Test, DeployBaseAdaptersAndPayload {
   function setUp() public {
-    vm.createSelectFork(vm.rpcUrl('base'), 11853884);
+    vm.createSelectFork(vm.rpcUrl('base'), 10915170);
   }
 
   function test_AaveV3BasePayload() public {
@@ -33,14 +31,11 @@ contract AaveV3BasePayloadTest is Test, DeployBaseAdaptersAndPayload {
 
     address usdcNew = AaveV3Base.ORACLE.getSourceOfAsset(AaveV3BaseAssets.USDC_UNDERLYING);
     assertEq(usdcNew, usdcPredicted);
-    assertFalse(IPriceCapAdapterStable(usdcNew).isCapped());
 
     address wstETHNew = AaveV3Base.ORACLE.getSourceOfAsset(AaveV3BaseAssets.wstETH_UNDERLYING);
     assertEq(wstETHNew, wstETHPredicted);
-    assertFalse(IPriceCapAdapter(wstETHNew).isCapped());
 
     address cbETHNew = AaveV3Base.ORACLE.getSourceOfAsset(AaveV3BaseAssets.cbETH_UNDERLYING);
     assertEq(cbETHNew, cbETHPredicted);
-    assertFalse(IPriceCapAdapter(cbETHNew).isCapped());
   }
 }

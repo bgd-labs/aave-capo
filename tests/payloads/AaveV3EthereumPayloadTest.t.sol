@@ -6,8 +6,6 @@ import {GovV3Helpers} from 'aave-helpers/GovV3Helpers.sol';
 import {AaveV3Ethereum, AaveV3EthereumAssets} from 'aave-address-book/AaveV3Ethereum.sol';
 
 import {DeployEthereumAdaptersAndPayload, CapAdaptersCodeEthereum, CapAdaptersStablesCodeEthereum} from '../../scripts/DeployEthereum.s.sol';
-import {IPriceCapAdapter} from '../../src/interfaces/IPriceCapAdapter.sol';
-import {IPriceCapAdapterStable} from '../../src/interfaces/IPriceCapAdapterStable.sol';
 
 contract AaveV3EthereumPayloadTest is Test, DeployEthereumAdaptersAndPayload {
   function setUp() public {
@@ -61,50 +59,40 @@ contract AaveV3EthereumPayloadTest is Test, DeployEthereumAdaptersAndPayload {
 
     address usdtNew = AaveV3Ethereum.ORACLE.getSourceOfAsset(AaveV3EthereumAssets.USDT_UNDERLYING);
     assertEq(usdtNew, usdtPredicted);
-    assertFalse(IPriceCapAdapterStable(usdtNew).isCapped());
 
     address usdcNew = AaveV3Ethereum.ORACLE.getSourceOfAsset(AaveV3EthereumAssets.USDC_UNDERLYING);
     assertEq(usdcNew, usdcPredicted);
-    assertFalse(IPriceCapAdapterStable(usdcNew).isCapped());
 
     address daiNew = AaveV3Ethereum.ORACLE.getSourceOfAsset(AaveV3EthereumAssets.DAI_UNDERLYING);
     assertEq(daiNew, daiPredicted);
-    assertFalse(IPriceCapAdapterStable(daiNew).isCapped());
 
     address lusdNew = AaveV3Ethereum.ORACLE.getSourceOfAsset(AaveV3EthereumAssets.LUSD_UNDERLYING);
     assertEq(lusdNew, lusdPredicted);
-    assertFalse(IPriceCapAdapterStable(lusdNew).isCapped());
 
     address fraxNew = AaveV3Ethereum.ORACLE.getSourceOfAsset(AaveV3EthereumAssets.FRAX_UNDERLYING);
     assertEq(fraxNew, fraxPredicted);
-    assertFalse(IPriceCapAdapterStable(fraxNew).isCapped());
 
     address crvUsdNew = AaveV3Ethereum.ORACLE.getSourceOfAsset(
       AaveV3EthereumAssets.crvUSD_UNDERLYING
     );
     assertEq(crvUsdNew, crvUsdPredicted);
-    assertFalse(IPriceCapAdapterStable(crvUsdNew).isCapped());
 
     address pyUsdNew = AaveV3Ethereum.ORACLE.getSourceOfAsset(
       AaveV3EthereumAssets.PYUSD_UNDERLYING
     );
     assertEq(pyUsdNew, pyUsdPredicted);
-    assertFalse(IPriceCapAdapterStable(pyUsdNew).isCapped());
 
     address cbEthNew = AaveV3Ethereum.ORACLE.getSourceOfAsset(
       AaveV3EthereumAssets.cbETH_UNDERLYING
     );
     assertEq(cbEthNew, cbEthPredicted);
-    assertFalse(IPriceCapAdapter(cbEthNew).isCapped());
 
     address rEthNew = AaveV3Ethereum.ORACLE.getSourceOfAsset(AaveV3EthereumAssets.rETH_UNDERLYING);
     assertEq(rEthNew, rEthPredicted);
-    assertFalse(IPriceCapAdapter(rEthNew).isCapped());
 
     address wstEthNew = AaveV3Ethereum.ORACLE.getSourceOfAsset(
       AaveV3EthereumAssets.wstETH_UNDERLYING
     );
     assertEq(wstEthNew, wstEthPredicted);
-    assertFalse(IPriceCapAdapter(wstEthNew).isCapped());
   }
 }

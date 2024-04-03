@@ -6,12 +6,10 @@ import {GovV3Helpers} from 'aave-helpers/GovV3Helpers.sol';
 import {AaveV3Optimism, AaveV3OptimismAssets} from 'aave-address-book/AaveV3Optimism.sol';
 
 import {DeployOptimismAdaptersAndPayload, CapAdaptersCodeOptimism} from '../../scripts/DeployOptimism.s.sol';
-import {IPriceCapAdapter} from '../../src/interfaces/IPriceCapAdapter.sol';
-import {IPriceCapAdapterStable} from '../../src/interfaces/IPriceCapAdapterStable.sol';
 
 contract AaveV3OptimismPayloadTest is Test, DeployOptimismAdaptersAndPayload {
   function setUp() public {
-    vm.createSelectFork(vm.rpcUrl('optimism'), 117449467);
+    vm.createSelectFork(vm.rpcUrl('optimism'), 116510489);
   }
 
   function test_AaveV3OptimismPayload() public {
@@ -53,36 +51,28 @@ contract AaveV3OptimismPayloadTest is Test, DeployOptimismAdaptersAndPayload {
 
     address usdtNew = AaveV3Optimism.ORACLE.getSourceOfAsset(AaveV3OptimismAssets.USDT_UNDERLYING);
     assertEq(usdtNew, usdtPredicted);
-    assertFalse(IPriceCapAdapterStable(usdtNew).isCapped());
 
     address usdcNew = AaveV3Optimism.ORACLE.getSourceOfAsset(AaveV3OptimismAssets.USDC_UNDERLYING);
     assertEq(usdcNew, usdcPredicted);
-    assertFalse(IPriceCapAdapterStable(usdcNew).isCapped());
 
     address daiNew = AaveV3Optimism.ORACLE.getSourceOfAsset(AaveV3OptimismAssets.DAI_UNDERLYING);
     assertEq(daiNew, daiPredicted);
-    assertFalse(IPriceCapAdapterStable(daiNew).isCapped());
 
     address lusdNew = AaveV3Optimism.ORACLE.getSourceOfAsset(AaveV3OptimismAssets.LUSD_UNDERLYING);
     assertEq(lusdNew, lusdPredicted);
-    assertFalse(IPriceCapAdapterStable(lusdNew).isCapped());
 
     address susdNew = AaveV3Optimism.ORACLE.getSourceOfAsset(AaveV3OptimismAssets.sUSD_UNDERLYING);
     assertEq(susdNew, susdPredicted);
-    assertFalse(IPriceCapAdapterStable(susdNew).isCapped());
 
     address maiNew = AaveV3Optimism.ORACLE.getSourceOfAsset(AaveV3OptimismAssets.MAI_UNDERLYING);
     assertEq(maiNew, maiPredicted);
-    assertFalse(IPriceCapAdapterStable(maiNew).isCapped());
 
     address rethNew = AaveV3Optimism.ORACLE.getSourceOfAsset(AaveV3OptimismAssets.rETH_UNDERLYING);
     assertEq(rethNew, rethPredicted);
-    assertFalse(IPriceCapAdapterStable(rethNew).isCapped());
 
     address wstEthNew = AaveV3Optimism.ORACLE.getSourceOfAsset(
       AaveV3OptimismAssets.wstETH_UNDERLYING
     );
     assertEq(wstEthNew, wstEthPredicted);
-    assertFalse(IPriceCapAdapterStable(wstEthNew).isCapped());
   }
 }

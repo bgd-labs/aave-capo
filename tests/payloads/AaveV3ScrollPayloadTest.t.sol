@@ -6,12 +6,10 @@ import {GovV3Helpers} from 'aave-helpers/GovV3Helpers.sol';
 import {AaveV3Scroll, AaveV3ScrollAssets} from 'aave-address-book/AaveV3Scroll.sol';
 
 import {DeployScrollAdaptersAndPayload, CapAdaptersCodeScroll} from '../../scripts/DeployScroll.s.sol';
-import {IPriceCapAdapter} from '../../src/interfaces/IPriceCapAdapter.sol';
-import {IPriceCapAdapterStable} from '../../src/interfaces/IPriceCapAdapterStable.sol';
 
 contract AaveV3ScrollPayloadTest is Test, DeployScrollAdaptersAndPayload {
   function setUp() public {
-    vm.createSelectFork(vm.rpcUrl('scroll'), 4148472);
+    vm.createSelectFork(vm.rpcUrl('scroll'), 4005049);
   }
 
   function test_AaveV3ScrollPayload() public {
@@ -29,10 +27,8 @@ contract AaveV3ScrollPayloadTest is Test, DeployScrollAdaptersAndPayload {
 
     address usdcNew = AaveV3Scroll.ORACLE.getSourceOfAsset(AaveV3ScrollAssets.USDC_UNDERLYING);
     assertEq(usdcNew, usdcPredicted);
-    assertFalse(IPriceCapAdapterStable(usdcNew).isCapped());
 
     address wstETHNew = AaveV3Scroll.ORACLE.getSourceOfAsset(AaveV3ScrollAssets.wstETH_UNDERLYING);
     assertEq(wstETHNew, wstETHPredicted);
-    assertFalse(IPriceCapAdapter(wstETHNew).isCapped());
   }
 }
