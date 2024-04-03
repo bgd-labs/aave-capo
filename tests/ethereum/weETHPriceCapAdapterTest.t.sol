@@ -3,8 +3,8 @@ pragma solidity ^0.8.0;
 
 import '../BaseTest.sol';
 
-import {AaveV3Ethereum, AaveV3EthereumAssets} from 'aave-address-book/AaveV3Ethereum.sol';
-import {MiscEthereum} from 'aave-address-book/MiscEthereum.sol';
+import {AaveV3Ethereum, AaveV3EthereumAssets} from 'aave-address-book-latest/AaveV3Ethereum.sol';
+import {MiscEthereum} from 'aave-address-book-latest/MiscEthereum.sol';
 
 import {WeETHPriceCapAdapter, IWeEth} from '../../src/contracts/WeETHPriceCapAdapter.sol';
 import {CapAdaptersCodeEthereum} from '../../scripts/DeployEthereum.s.sol';
