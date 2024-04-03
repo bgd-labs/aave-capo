@@ -3,11 +3,10 @@ pragma solidity ^0.8.0;
 
 import '../BaseTest.sol';
 
-import {AaveV3Ethereum, AaveV3EthereumAssets} from 'aave-address-book-latest/AaveV3Ethereum.sol';
-import {MiscEthereum} from 'aave-address-book-latest/MiscEthereum.sol';
+import {AaveV3Ethereum, AaveV3EthereumAssets} from 'aave-address-book/AaveV3Ethereum.sol';
 
 import {WeETHPriceCapAdapter, IWeEth} from '../../src/contracts/WeETHPriceCapAdapter.sol';
-import {CapAdaptersCodeEthereum} from '../../scripts/DeployEthereum.s.sol';
+import {CapAdaptersCodeEthereum} from '../../scripts/DeployEthereumWeEth.s.sol';
 
 contract weETHPriceCapAdapterTest is BaseTest {
   constructor()
@@ -56,7 +55,7 @@ contract weETHPriceCapAdapterTest is BaseTest {
       createAdapter(
         AaveV3Ethereum.ACL_MANAGER,
         AaveV3EthereumAssets.WETH_ORACLE,
-        MiscEthereum.weETH_RATIO_PROVIDER,
+        CapAdaptersCodeEthereum.weETH,
         'weETH / eETH (ETH) / USD',
         minimumSnapshotDelay,
         currentRatio,
@@ -66,7 +65,7 @@ contract weETHPriceCapAdapterTest is BaseTest {
   }
 
   function getCurrentRatio() public view override returns (uint104) {
-    return uint104(IWeEth(MiscEthereum.weETH_RATIO_PROVIDER).getRate());
+    return uint104(IWeEth(CapAdaptersCodeEthereum.weETH).getRate());
   }
 
   function test_latestAnswer() public override {}

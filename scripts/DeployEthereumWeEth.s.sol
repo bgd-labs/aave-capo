@@ -2,13 +2,14 @@
 pragma solidity ^0.8.0;
 import {GovV3Helpers} from 'aave-helpers/GovV3Helpers.sol';
 import {EthereumScript} from 'aave-helpers/ScriptUtils.sol';
-import {AaveV3Ethereum, AaveV3EthereumAssets} from 'aave-address-book-latest/AaveV3Ethereum.sol';
-import {MiscEthereum} from 'aave-address-book-latest/MiscEthereum.sol';
+import {AaveV3Ethereum, AaveV3EthereumAssets} from 'aave-address-book/AaveV3Ethereum.sol';
 
 import {IPriceCapAdapter} from '../src/interfaces/IPriceCapAdapter.sol';
 import {WeETHPriceCapAdapter} from '../src/contracts/WeETHPriceCapAdapter.sol';
 
 library CapAdaptersCodeEthereum {
+  address public constant weETH = 0xCd5fE23C85820F7B72D0926FC9b05b43E359b7ee;
+
   function weETHAdapterCode() internal pure returns (bytes memory) {
     return
       abi.encodePacked(
@@ -16,7 +17,7 @@ library CapAdaptersCodeEthereum {
         abi.encode(
           AaveV3Ethereum.ACL_MANAGER,
           AaveV3EthereumAssets.WETH_ORACLE,
-          MiscEthereum.weETH_RATIO_PROVIDER,
+          weETH,
           'Capped weETH / eETH(ETH) / USD',
           7 days,
           IPriceCapAdapter.PriceCapUpdateParams({
