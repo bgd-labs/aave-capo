@@ -23,10 +23,11 @@ import {IERC4626} from 'forge-std/interfaces/IERC4626.sol';
 import {IChainlinkAggregator} from 'cl-synchronicity-price-adapter/interfaces/IChainlinkAggregator.sol';
 import {ISAvax} from '../../src/interfaces/ISAvax.sol';
 import {IStEUR} from '../../src/interfaces/IStEUR.sol';
+import {IWeEth} from '../../src/interfaces/IWeEth.sol';
 
 contract ExchangeRatesEth is Test {
   function setUp() public {
-    vm.createSelectFork(vm.rpcUrl('mainnet'), 19233700); // 15th of February days ago
+    vm.createSelectFork(vm.rpcUrl('mainnet'), 19515330); // 26th of March
   }
 
   function test_getExchangeRate() public {
@@ -37,12 +38,14 @@ contract ExchangeRatesEth is Test {
       10 ** 18
     );
     uint256 stEurRate = IStEUR(MiscEthereum.stEUR).convertToAssets(10 ** 18);
+    uint256 weEthRate = IWeEth(MiscEthereum.weETH_RATIO_PROVIDER).getRate();
 
     console.log('cbEthRate', cbEthRate);
     console.log('rEthRate', rEthRate);
     console.log('sDaiRate', sDaiRate);
     console.log('wstEthRate', wstEthRate);
     console.log('stEurRate', stEurRate);
+    console.log('weEthRate', weEthRate);
 
     console.log(block.timestamp);
   }

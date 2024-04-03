@@ -13,6 +13,7 @@ import {RETHPriceCapAdapter} from '../src/contracts/RETHPriceCapAdapter.sol';
 import {WstETHPriceCapAdapter} from '../src/contracts/WstETHPriceCapAdapter.sol';
 import {SDAIPriceCapAdapter} from '../src/contracts/SDAIPriceCapAdapter.sol';
 import {stEURPriceCapAdapter} from '../src/contracts/stEURPriceCapAdapter.sol';
+import {WeETHPriceCapAdapter} from '../src/contracts/WeETHPriceCapAdapter.sol';
 import {AaveV3EthereumPayload} from '../src/contracts/payloads/AaveV3EthereumPayload.sol';
 
 library CapAdaptersStablesCodeEthereum {
@@ -166,6 +167,23 @@ library CapAdaptersCodeEthereum {
         })
       )
     );
+
+  bytes public constant weETH_ADAPTER_CODE =
+    abi.encodePacked(
+      type(WeETHPriceCapAdapter).creationCode,
+      abi.encode(
+        AaveV3Ethereum.ACL_MANAGER,
+        AaveV3EthereumAssets.WETH_ORACLE,
+        MiscEthereum.weETH_RATIO_PROVIDER,
+        'Capped weETH / eETH(ETH) / USD',
+        7 days,
+        IPriceCapAdapter.PriceCapUpdateParams({
+          snapshotRatio: 1034656878645040505,
+          snapshotTimestamp: 1711416299, // 26-03-2024
+          maxYearlyRatioGrowthPercent: 8_75
+        })
+      )
+    );
 }
 
 library stEURCapAdapters {
@@ -249,5 +267,11 @@ contract DeployEthereumAdaptersAndPayload {
 contract DeployEthereum is EthereumScript, DeployEthereumAdaptersAndPayload {
   function run() external broadcast {
     _deploy();
+  }
+}
+
+contract DeployWeEthEthereum is EthereumScript {
+  function run() external broadcast {
+    GovV3Helpers.deployDeterministic(CapAdaptersCodeEthereum.weETH_ADAPTER_CODE);
   }
 }
