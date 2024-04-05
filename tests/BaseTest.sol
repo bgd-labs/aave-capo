@@ -340,7 +340,7 @@ abstract contract BaseTest is Test {
     setCapParameters(adapter, 1, 1, 1);
   }
 
-  function test_latestAnswer1() public virtual {
+  function test_latestAnswer() public virtual {
     IPriceCapAdapter adapter = IPriceCapAdapter(GovV3Helpers.deployDeterministic(deploymentCode));
 
     _mockExistingOracleExchangeRate();

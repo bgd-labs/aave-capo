@@ -24,6 +24,8 @@ deploy-optimism :; forge script scripts/DeployOptimism.s.sol:DeployOptimism --rp
 deploy-polygon :; forge script scripts/DeployPolygon.s.sol:DeployPolygon --rpc-url polygon $(common-flags)
 deploy-scroll :; forge script scripts/DeployScroll.s.sol:DeployScroll --rpc-url scroll $(common-flags)
 
+deploy-weeth-mainnet :; forge script scripts/DeployEthereumWeEth.s.sol:DeployWeEthEthereum --rpc-url mainnet $(common-flags)
+
 
 # Utilities
 download :; cast etherscan-source --chain ${chain} -d src/etherscan/${chain}_${address} ${address}
