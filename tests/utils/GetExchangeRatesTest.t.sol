@@ -26,13 +26,14 @@ import {IStEUR} from '../../src/interfaces/IStEUR.sol';
 import {IWeEth} from '../../src/interfaces/IWeEth.sol';
 
 import {CapAdaptersCodeEthereum} from '../../scripts/DeployEthereumWeEth.s.sol';
+import {CapAdaptersCodeArbitrum} from '../../scripts/DeployArbitrumWeEth.s.sol';
 
 contract ExchangeRatesEth is Test {
   function setUp() public {
     vm.createSelectFork(vm.rpcUrl('mainnet'), 19515330); // 26th of March
   }
 
-  function test_getExchangeRate() public {
+  function test_getExchangeRate() public view {
     uint256 cbEthRate = ICbEthRateProvider(AaveV3EthereumAssets.cbETH_UNDERLYING).exchangeRate();
     uint256 rEthRate = IrETH(AaveV3EthereumAssets.rETH_UNDERLYING).getExchangeRate();
     uint256 sDaiRate = IPot(MiscEthereum.sDAI_POT).chi();
@@ -55,20 +56,24 @@ contract ExchangeRatesEth is Test {
 
 contract ExchangeRatesArbitrum is Test {
   function setUp() public {
-    vm.createSelectFork(vm.rpcUrl('arbitrum'), 180866340); // 15th of February
+    vm.createSelectFork(vm.rpcUrl('arbitrum'), 194797824); // 27th of March
   }
 
-  function test_getExchangeRate() public {
+  function test_getExchangeRate() public view {
     uint256 rEthRate = uint256(
       IChainlinkAggregator(MiscArbitrum.rETH_ETH_AGGREGATOR).latestAnswer()
     );
     uint256 wstEthRate = uint256(
       IChainlinkAggregator(MiscArbitrum.wstETH_stETH_AGGREGATOR).latestAnswer()
     );
+    uint256 weEthRate = uint256(
+      IChainlinkAggregator(CapAdaptersCodeArbitrum.weETH_eETH_AGGREGATOR).latestAnswer()
+    );
 
     console.log('Arbitrum');
     console.log('rEthRate', rEthRate);
     console.log('wstEthRate', wstEthRate);
+    console.log('weEthRate', weEthRate);
     console.log(block.timestamp);
   }
 }
@@ -78,7 +83,7 @@ contract ExchangeRatesAvax is Test {
     vm.createSelectFork(vm.rpcUrl('avalanche'), 41384761); // 7th of February
   }
 
-  function test_getExchangeRate() public {
+  function test_getExchangeRate() public view {
     uint256 sAvaxRate = ISAvax(AaveV3AvalancheAssets.sAVAX_UNDERLYING).getPooledAvaxByShares(
       10 ** 18
     );
@@ -95,7 +100,7 @@ contract ExchangeRatesBase is Test {
     vm.createSelectFork(vm.rpcUrl('base'), 10586628); // 15th of February
   }
 
-  function test_getExchangeRate() public {
+  function test_getExchangeRate() public view {
     uint256 cbEthRate = uint256(IChainlinkAggregator(MiscBase.cbETH_ETH_AGGREGATOR).latestAnswer());
     uint256 wstEthRate = uint256(
       IChainlinkAggregator(MiscBase.wstETH_stETH_AGGREGATOR).latestAnswer()
@@ -114,7 +119,7 @@ contract ExchangeRatesGnosis is Test {
     vm.createSelectFork(vm.rpcUrl('gnosis'), 32462055); // 15th of February
   }
 
-  function test_getExchangeRate() public {
+  function test_getExchangeRate() public view {
     uint256 sDaiRate = IERC4626(AaveV3GnosisAssets.sDAI_UNDERLYING).convertToAssets(10 ** 18);
     uint256 wstEthRate = uint256(
       IChainlinkAggregator(MiscGnosis.wstETH_stETH_AGGREGATOR).latestAnswer()
@@ -133,7 +138,7 @@ contract ExchangeRatesOptimism is Test {
     vm.createSelectFork(vm.rpcUrl('optimism'), 116196954); // 15th of February
   }
 
-  function test_getExchangeRate() public {
+  function test_getExchangeRate() public view {
     uint256 rEthRate = uint256(
       IChainlinkAggregator(MiscOptimism.rETH_ETH_AGGREGATOR).latestAnswer()
     );
@@ -154,7 +159,7 @@ contract ExchangeRates7Polygon is Test {
     vm.createSelectFork(vm.rpcUrl('polygon'), 53527296); // 15th of February days ago
   }
 
-  function test_getExchangeRate() public {
+  function test_getExchangeRate() public view {
     uint256 wstEthRate = uint256(
       IChainlinkAggregator(MiscPolygon.wstETH_stETH_AGGREGATOR).latestAnswer()
     );
@@ -171,7 +176,7 @@ contract ExchangeRates14Polygon is Test {
     vm.createSelectFork(vm.rpcUrl('polygon'), 53252303); // 8th of February days ago
   }
 
-  function test_getExchangeRate() public {
+  function test_getExchangeRate() public view {
     uint256 stMaticRate = IMaticRateProvider(MiscPolygon.stMATIC_RATE_PROVIDER).getRate();
     uint256 maticXRate = IMaticRateProvider(MiscPolygon.MaticX_RATE_PROVIDER).getRate();
 
@@ -188,7 +193,7 @@ contract ExchangeRatesScroll is Test {
     vm.createSelectFork(vm.rpcUrl('scroll'), 3504770); // 20th of February
   }
 
-  function test_getExchangeRate() public {
+  function test_getExchangeRate() public view {
     uint256 wstEthRate = uint256(
       IChainlinkAggregator(0xE61Da4C909F7d86797a0D06Db63c34f76c9bCBDC).latestAnswer()
     );

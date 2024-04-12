@@ -25,6 +25,7 @@ deploy-polygon :; forge script scripts/DeployPolygon.s.sol:DeployPolygon --rpc-u
 deploy-scroll :; forge script scripts/DeployScroll.s.sol:DeployScroll --rpc-url scroll $(common-flags)
 
 deploy-weeth-mainnet :; forge script scripts/DeployEthereumWeEth.s.sol:DeployWeEthEthereum --rpc-url mainnet $(common-flags)
+deploy-weeth-arbitrum :; forge script scripts/DeployArbitrumWeEth.s.sol:DeployWeEthArbitrum --rpc-url arbitrum $(common-flags)
 
 
 # Utilities
