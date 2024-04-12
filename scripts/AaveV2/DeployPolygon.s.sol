@@ -8,58 +8,21 @@ import {CLSynchronicityPriceAdapterBaseToPeg} from 'cl-synchronicity-price-adapt
 import {PriceCapAdapterStable} from '../../src/contracts/PriceCapAdapterStable.sol';
 import {AaveV2PolygonPayload} from '../../src/contracts/payloads/AaveV2/AaveV2PolygonPayload.sol';
 
-library CapAdaptersCodePolygon {
-  function USDTCappedAdapterCode() internal pure returns (bytes memory) {
-    return
-      abi.encodePacked(
-        type(PriceCapAdapterStable).creationCode,
-        abi.encode(
-          AaveV3Polygon.ACL_MANAGER,
-          AaveV3PolygonAssets.USDT_ORACLE,
-          'Capped USDT / USD',
-          int256(1.04 * 1e8)
-        )
-      );
-  }
-
-  function USDCCappedAdapterCode() internal pure returns (bytes memory) {
-    return
-      abi.encodePacked(
-        type(PriceCapAdapterStable).creationCode,
-        abi.encode(
-          AaveV3Polygon.ACL_MANAGER,
-          AaveV3PolygonAssets.USDC_ORACLE,
-          'Capped USDC / USD',
-          int256(1.04 * 1e8)
-        )
-      );
-  }
-
-  function DAICappedAdapterCode() internal pure returns (bytes memory) {
-    return
-      abi.encodePacked(
-        type(PriceCapAdapterStable).creationCode,
-        abi.encode(
-          AaveV3Polygon.ACL_MANAGER,
-          AaveV3PolygonAssets.DAI_ORACLE,
-          'Capped DAI / USD',
-          int256(1.04 * 1e8)
-        )
-      );
-  }
-}
-
 library AdaptersEthBasedPolygon {
+  // https://polygonscan.com/address/0xaA574f4f6E124E77a7a1B5Ed91c8b407000A7730
+  address public constant USDT_ORACLE = 0xaA574f4f6E124E77a7a1B5Ed91c8b407000A7730;
+
+  // https://polygonscan.com/address/0x17E33D122FC34c7ad8FBd4a1995Dff9c8aE675eb
+  address public constant USDC_ORACLE = 0x17E33D122FC34c7ad8FBd4a1995Dff9c8aE675eb;
+
+  // https://polygonscan.com/address/0xF86577E7d27Ed35b85A7645c58bAaA64453fe32B
+  address public constant DAI_ORACLE = 0xF86577E7d27Ed35b85A7645c58bAaA64453fe32B;
+
   function USDTtoETHAdapterCode() internal pure returns (bytes memory) {
     return
       abi.encodePacked(
         type(CLSynchronicityPriceAdapterBaseToPeg).creationCode,
-        abi.encode(
-          AaveV3PolygonAssets.WETH_ORACLE,
-          GovV3Helpers.predictDeterministicAddress(CapAdaptersCodePolygon.USDTCappedAdapterCode()),
-          18,
-          'Capped USDT / USD / ETH'
-        )
+        abi.encode(AaveV3PolygonAssets.WETH_ORACLE, USDT_ORACLE, 18, 'Capped USDT / USD / ETH')
       );
   }
 
@@ -67,12 +30,7 @@ library AdaptersEthBasedPolygon {
     return
       abi.encodePacked(
         type(CLSynchronicityPriceAdapterBaseToPeg).creationCode,
-        abi.encode(
-          AaveV3PolygonAssets.WETH_ORACLE,
-          GovV3Helpers.predictDeterministicAddress(CapAdaptersCodePolygon.USDCCappedAdapterCode()),
-          18,
-          'Capped USDC / USD / ETH'
-        )
+        abi.encode(AaveV3PolygonAssets.WETH_ORACLE, USDC_ORACLE, 18, 'Capped USDC / USD / ETH')
       );
   }
 
@@ -80,12 +38,7 @@ library AdaptersEthBasedPolygon {
     return
       abi.encodePacked(
         type(CLSynchronicityPriceAdapterBaseToPeg).creationCode,
-        abi.encode(
-          AaveV3PolygonAssets.WETH_ORACLE,
-          GovV3Helpers.predictDeterministicAddress(CapAdaptersCodePolygon.DAICappedAdapterCode()),
-          18,
-          'Capped DAI / USD / ETH'
-        )
+        abi.encode(AaveV3PolygonAssets.WETH_ORACLE, DAI_ORACLE, 18, 'Capped DAI / USD / ETH')
       );
   }
 }
@@ -94,17 +47,14 @@ contract DeployPolygonAdaptersAndPayload {
   function _deploy() internal returns (address) {
     AaveV2PolygonPayload.Adapters memory adapters;
 
-    GovV3Helpers.deployDeterministic(CapAdaptersCodePolygon.USDTCappedAdapterCode());
     adapters.usdtAdapter = GovV3Helpers.deployDeterministic(
       AdaptersEthBasedPolygon.USDTtoETHAdapterCode()
     );
 
-    GovV3Helpers.deployDeterministic(CapAdaptersCodePolygon.USDCCappedAdapterCode());
     adapters.usdcAdapter = GovV3Helpers.deployDeterministic(
       AdaptersEthBasedPolygon.USDCtoETHAdapterCode()
     );
 
-    GovV3Helpers.deployDeterministic(CapAdaptersCodePolygon.DAICappedAdapterCode());
     adapters.daiAdapter = GovV3Helpers.deployDeterministic(
       AdaptersEthBasedPolygon.DAItoETHAdapterCode()
     );

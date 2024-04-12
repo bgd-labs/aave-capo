@@ -11,48 +11,14 @@ import {PriceCapAdapterStable} from '../../src/contracts/PriceCapAdapterStable.s
 import {AaveV2EthereumPayload} from '../../src/contracts/payloads/AaveV2/AaveV2EthereumPayload.sol';
 
 library CapAdaptersCodeEthereum {
+  // https://etherscan.io/address/0x09023c0DA49Aaf8fc3fA3ADF34C6A7016D38D5e3
   address public constant USDP_ORACLE = 0x09023c0DA49Aaf8fc3fA3ADF34C6A7016D38D5e3;
+
+  // https://etherscan.io/address/0xec746eCF986E2927Abd291a2A1716c940100f8Ba
   address public constant TUSD_ORACLE = 0xec746eCF986E2927Abd291a2A1716c940100f8Ba;
+
+  // https://etherscan.io/address/0xfAA9147190c2C2cc5B8387B4f49016bDB3380572
   address public constant FDUSD_ORACLE = 0xfAA9147190c2C2cc5B8387B4f49016bDB3380572;
-
-  function USDTCappedAdapterCode() internal pure returns (bytes memory) {
-    return
-      abi.encodePacked(
-        type(PriceCapAdapterStable).creationCode,
-        abi.encode(
-          AaveV3Ethereum.ACL_MANAGER,
-          AaveV3EthereumAssets.USDT_ORACLE,
-          'Capped USDT / USD',
-          int256(1.04 * 1e8)
-        )
-      );
-  }
-
-  function USDCCappedAdapterCode() internal pure returns (bytes memory) {
-    return
-      abi.encodePacked(
-        type(PriceCapAdapterStable).creationCode,
-        abi.encode(
-          AaveV3Ethereum.ACL_MANAGER,
-          AaveV3EthereumAssets.USDC_ORACLE,
-          'Capped USDC / USD',
-          int256(1.04 * 1e8)
-        )
-      );
-  }
-
-  function DAICappedAdapterCode() internal pure returns (bytes memory) {
-    return
-      abi.encodePacked(
-        type(PriceCapAdapterStable).creationCode,
-        abi.encode(
-          AaveV3Ethereum.ACL_MANAGER,
-          AaveV3EthereumAssets.DAI_ORACLE,
-          'Capped DAI / USD',
-          int256(1.04 * 1e8)
-        )
-      );
-  }
 
   function USDPCappedAdapterCode() internal pure returns (bytes memory) {
     return
@@ -62,37 +28,11 @@ library CapAdaptersCodeEthereum {
       );
   }
 
-  function FRAXCappedAdapterCode() internal pure returns (bytes memory) {
-    return
-      abi.encodePacked(
-        type(PriceCapAdapterStable).creationCode,
-        abi.encode(
-          AaveV3Ethereum.ACL_MANAGER,
-          AaveV3EthereumAssets.FRAX_ORACLE,
-          'Capped FRAX / USD',
-          int256(1.04 * 1e8)
-        )
-      );
-  }
-
   function TUSDCappedAdapterCode() internal pure returns (bytes memory) {
     return
       abi.encodePacked(
         type(PriceCapAdapterStable).creationCode,
         abi.encode(AaveV3Ethereum.ACL_MANAGER, TUSD_ORACLE, 'Capped TUSD / USD', int256(1.04 * 1e8))
-      );
-  }
-
-  function LUSDCappedAdapterCode() internal pure returns (bytes memory) {
-    return
-      abi.encodePacked(
-        type(PriceCapAdapterStable).creationCode,
-        abi.encode(
-          AaveV3Ethereum.ACL_MANAGER,
-          AaveV3EthereumAssets.LUSD_ORACLE,
-          'Capped LUSD / USD',
-          int256(1.10 * 1e8)
-        )
       );
   }
 
@@ -114,8 +54,8 @@ library CapAdaptersCodeEthereum {
       abi.encodePacked(
         type(CLSynchronicityPriceAdapterPegToBase).creationCode,
         abi.encode(
-          AaveV3EthereumAssets.WETH_ORACLE,
-          AaveV2EthereumAssets.sUSD_ORACLE,
+          AaveV3EthereumAssets.WETH_ORACLE, // ETH / USD
+          AaveV2EthereumAssets.sUSD_ORACLE, // sUSD / ETH
           8,
           'sUSD / ETH / USD'
         )
@@ -140,8 +80,8 @@ library CapAdaptersCodeEthereum {
       abi.encodePacked(
         type(CLSynchronicityPriceAdapterPegToBase).creationCode,
         abi.encode(
-          AaveV3EthereumAssets.WETH_ORACLE,
-          AaveV2EthereumAssets.UST_ORACLE,
+          AaveV3EthereumAssets.WETH_ORACLE, // ETH / USD
+          AaveV2EthereumAssets.UST_ORACLE, // UST / ETH
           8,
           'UST / ETH / USD'
         )
@@ -163,19 +103,31 @@ library CapAdaptersCodeEthereum {
 }
 
 library AdaptersEthBasedEthereum {
-  address public constant AMPL_ORACLE = 0xe20CA8D7546932360e37E9D72c1a47334af57706;
+  // https://etherscan.io/address/0xC26D4a1c46d884cfF6dE9800B6aE7A8Cf48B4Ff8
+  address public constant USDT_ORACLE = 0xC26D4a1c46d884cfF6dE9800B6aE7A8Cf48B4Ff8;
+
+  // https://etherscan.io/address/0x736bF902680e68989886e9807CD7Db4B3E015d3C
+  address public constant USDC_ORACLE = 0x736bF902680e68989886e9807CD7Db4B3E015d3C;
+
+  //https://etherscan.io/address/0xaEb897E1Dc6BbdceD3B9D551C71a8cf172F27AC4
+  address public constant DAI_ORACLE = 0xaEb897E1Dc6BbdceD3B9D551C71a8cf172F27AC4;
+
+  // https://etherscan.io/address/0x45D270263BBee500CF8adcf2AbC0aC227097b036
+  address public constant FRAX_ORACLE = 0x45D270263BBee500CF8adcf2AbC0aC227097b036;
+
+  // https://etherscan.io/address/0x9eCdfaCca946614cc32aF63F3DBe50959244F3af
+  address public constant LUSD_ORACLE = 0x9eCdfaCca946614cc32aF63F3DBe50959244F3af;
+
+  // https://etherscan.io/address/0xD2A593BF7594aCE1faD597adb697b5645d5edDB2
   address public constant DPI_ORACLE = 0xD2A593BF7594aCE1faD597adb697b5645d5edDB2;
+
+  // address public constant AMPL_ORACLE = 0xe20CA8D7546932360e37E9D72c1a47334af57706;
 
   function USDTtoETHAdapterCode() internal pure returns (bytes memory) {
     return
       abi.encodePacked(
         type(CLSynchronicityPriceAdapterBaseToPeg).creationCode,
-        abi.encode(
-          AaveV3EthereumAssets.WETH_ORACLE,
-          GovV3Helpers.predictDeterministicAddress(CapAdaptersCodeEthereum.USDTCappedAdapterCode()),
-          18,
-          'Capped USDT / USD / ETH'
-        )
+        abi.encode(AaveV3EthereumAssets.WETH_ORACLE, USDT_ORACLE, 18, 'Capped USDT / USD / ETH')
       );
   }
 
@@ -183,12 +135,7 @@ library AdaptersEthBasedEthereum {
     return
       abi.encodePacked(
         type(CLSynchronicityPriceAdapterBaseToPeg).creationCode,
-        abi.encode(
-          AaveV3EthereumAssets.WETH_ORACLE,
-          GovV3Helpers.predictDeterministicAddress(CapAdaptersCodeEthereum.USDCCappedAdapterCode()),
-          18,
-          'Capped USDC / USD / ETH'
-        )
+        abi.encode(AaveV3EthereumAssets.WETH_ORACLE, USDC_ORACLE, 18, 'Capped USDC / USD / ETH')
       );
   }
 
@@ -196,12 +143,7 @@ library AdaptersEthBasedEthereum {
     return
       abi.encodePacked(
         type(CLSynchronicityPriceAdapterBaseToPeg).creationCode,
-        abi.encode(
-          AaveV3EthereumAssets.WETH_ORACLE,
-          GovV3Helpers.predictDeterministicAddress(CapAdaptersCodeEthereum.DAICappedAdapterCode()),
-          18,
-          'Capped DAI / USD / ETH'
-        )
+        abi.encode(AaveV3EthereumAssets.WETH_ORACLE, DAI_ORACLE, 18, 'Capped DAI / USD / ETH')
       );
   }
 
@@ -222,12 +164,7 @@ library AdaptersEthBasedEthereum {
     return
       abi.encodePacked(
         type(CLSynchronicityPriceAdapterBaseToPeg).creationCode,
-        abi.encode(
-          AaveV3EthereumAssets.WETH_ORACLE,
-          GovV3Helpers.predictDeterministicAddress(CapAdaptersCodeEthereum.FRAXCappedAdapterCode()),
-          18,
-          'Capped FRAX / USD / ETH'
-        )
+        abi.encode(AaveV3EthereumAssets.WETH_ORACLE, FRAX_ORACLE, 18, 'Capped FRAX / USD / ETH')
       );
   }
 
@@ -248,12 +185,7 @@ library AdaptersEthBasedEthereum {
     return
       abi.encodePacked(
         type(CLSynchronicityPriceAdapterBaseToPeg).creationCode,
-        abi.encode(
-          AaveV3EthereumAssets.WETH_ORACLE,
-          GovV3Helpers.predictDeterministicAddress(CapAdaptersCodeEthereum.LUSDCappedAdapterCode()),
-          18,
-          'Capped LUSD / USD / ETH'
-        )
+        abi.encode(AaveV3EthereumAssets.WETH_ORACLE, LUSD_ORACLE, 18, 'Capped LUSD / USD / ETH')
       );
   }
 
@@ -296,13 +228,13 @@ library AdaptersEthBasedEthereum {
       );
   }
 
-  function AMPLtoETHAdapterCode() internal pure returns (bytes memory) {
-    return
-      abi.encodePacked(
-        type(CLSynchronicityPriceAdapterBaseToPeg).creationCode,
-        abi.encode(AaveV3EthereumAssets.WETH_ORACLE, AMPL_ORACLE, 18, 'AMPL / USD / ETH')
-      );
-  }
+  // function AMPLtoETHAdapterCode() internal pure returns (bytes memory) {
+  //   return
+  //     abi.encodePacked(
+  //       type(CLSynchronicityPriceAdapterBaseToPeg).creationCode,
+  //       abi.encode(AaveV3EthereumAssets.WETH_ORACLE, AMPL_ORACLE, 18, 'AMPL / USD / ETH')
+  //     );
+  // }
 
   function DPItoETHAdapterCode() internal pure returns (bytes memory) {
     return
@@ -317,17 +249,14 @@ contract DeployEthereumAdaptersAndPayload {
   function _deploy() internal returns (address) {
     AaveV2EthereumPayload.Adapters memory adapters;
 
-    GovV3Helpers.deployDeterministic(CapAdaptersCodeEthereum.USDTCappedAdapterCode());
     adapters.usdtAdapter = GovV3Helpers.deployDeterministic(
       AdaptersEthBasedEthereum.USDTtoETHAdapterCode()
     );
 
-    GovV3Helpers.deployDeterministic(CapAdaptersCodeEthereum.USDCCappedAdapterCode());
     adapters.usdcAdapter = GovV3Helpers.deployDeterministic(
       AdaptersEthBasedEthereum.USDCtoETHAdapterCode()
     );
 
-    GovV3Helpers.deployDeterministic(CapAdaptersCodeEthereum.DAICappedAdapterCode());
     adapters.daiAdapter = GovV3Helpers.deployDeterministic(
       AdaptersEthBasedEthereum.DAItoETHAdapterCode()
     );
@@ -337,7 +266,6 @@ contract DeployEthereumAdaptersAndPayload {
       AdaptersEthBasedEthereum.USDPtoETHAdapterCode()
     );
 
-    GovV3Helpers.deployDeterministic(CapAdaptersCodeEthereum.FRAXCappedAdapterCode());
     adapters.fraxAdapter = GovV3Helpers.deployDeterministic(
       AdaptersEthBasedEthereum.FRAXtoETHAdapterCode()
     );
@@ -347,7 +275,6 @@ contract DeployEthereumAdaptersAndPayload {
       AdaptersEthBasedEthereum.TUSDtoETHAdapterCode()
     );
 
-    GovV3Helpers.deployDeterministic(CapAdaptersCodeEthereum.LUSDCappedAdapterCode());
     adapters.lusdAdapter = GovV3Helpers.deployDeterministic(
       AdaptersEthBasedEthereum.LUSDtoETHAdapterCode()
     );

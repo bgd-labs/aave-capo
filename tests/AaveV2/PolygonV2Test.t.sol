@@ -10,10 +10,10 @@ import {GovV3Helpers} from 'aave-helpers/GovV3Helpers.sol';
 import {BaseTestV2} from './BaseTestV2.sol';
 import {IPriceCapAdapterStable, ICLSynchronicityPriceAdapter} from '../../src/interfaces/IPriceCapAdapterStable.sol';
 
-import {CapAdaptersCodePolygon, AdaptersEthBasedPolygon} from '../../scripts/AaveV2/DeployPolygon.s.sol';
+import {AdaptersEthBasedPolygon} from '../../scripts/AaveV2/DeployPolygon.s.sol';
 
 contract PolygonV2USDTTest is BaseTestV2 {
-  bytes[] public preRequisiteAdapters = [CapAdaptersCodePolygon.USDTCappedAdapterCode()];
+  bytes[] public preRequisiteAdapters;
 
   constructor()
     BaseTestV2(
@@ -28,7 +28,7 @@ contract PolygonV2USDTTest is BaseTestV2 {
 }
 
 contract PolygonV2USDCTest is BaseTestV2 {
-  bytes[] public preRequisiteAdapters = [CapAdaptersCodePolygon.USDCCappedAdapterCode()];
+  bytes[] public preRequisiteAdapters;
 
   constructor()
     BaseTestV2(
@@ -43,7 +43,7 @@ contract PolygonV2USDCTest is BaseTestV2 {
 }
 
 contract PolygonV2DAITest is BaseTestV2 {
-  bytes[] public preRequisiteAdapters = [CapAdaptersCodePolygon.DAICappedAdapterCode()];
+  bytes[] public preRequisiteAdapters;
 
   constructor()
     BaseTestV2(

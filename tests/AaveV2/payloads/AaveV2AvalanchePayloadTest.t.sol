@@ -21,16 +21,16 @@ contract AaveV2AvalanchePayloadTest is Test, DeployAvalancheAdaptersAndPayload {
     address usdtNew = AaveV2Avalanche.ORACLE.getSourceOfAsset(
       AaveV2AvalancheAssets.USDTe_UNDERLYING
     );
-    assertEq(usdtNew, AaveV2AvalanchePayload(payload).USDT_ADAPTER());
+    assertEq(usdtNew, AaveV2AvalanchePayload(payload).USDT_ORACLE());
 
     address usdcNew = AaveV2Avalanche.ORACLE.getSourceOfAsset(
       AaveV2AvalancheAssets.USDCe_UNDERLYING
     );
-    assertEq(usdcNew, AaveV2AvalanchePayload(payload).USDC_ADAPTER());
+    assertEq(usdcNew, AaveV2AvalanchePayload(payload).USDC_ORACLE());
 
     address daieNew = AaveV2Avalanche.ORACLE.getSourceOfAsset(
       AaveV2AvalancheAssets.DAIe_UNDERLYING
     );
-    assertEq(daieNew, AaveV2AvalanchePayload(payload).DAIe_ADAPTER());
+    assertEq(daieNew, AaveV2AvalanchePayload(payload).DAIe_ORACLE());
   }
 }

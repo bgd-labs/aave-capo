@@ -15,7 +15,7 @@ import {CapAdaptersCodeEthereum, AdaptersEthBasedEthereum} from '../../scripts/A
 import {CLSynchronicityPriceAdapterBaseToPeg} from 'cl-synchronicity-price-adapter/contracts/CLSynchronicityPriceAdapterBaseToPeg.sol';
 
 contract EthereumV2USDTTest is BaseTestV2 {
-  bytes[] public preRequisiteAdapters = [CapAdaptersCodeEthereum.USDTCappedAdapterCode()];
+  bytes[] public preRequisiteAdapters;
 
   constructor()
     BaseTestV2(
@@ -30,7 +30,7 @@ contract EthereumV2USDTTest is BaseTestV2 {
 }
 
 contract EthereumV2USDCTest is BaseTestV2 {
-  bytes[] public preRequisiteAdapters = [CapAdaptersCodeEthereum.USDCCappedAdapterCode()];
+  bytes[] public preRequisiteAdapters;
 
   constructor()
     BaseTestV2(
@@ -45,7 +45,7 @@ contract EthereumV2USDCTest is BaseTestV2 {
 }
 
 contract EthereumV2DAITest is BaseTestV2 {
-  bytes[] public preRequisiteAdapters = [CapAdaptersCodeEthereum.DAICappedAdapterCode()];
+  bytes[] public preRequisiteAdapters;
 
   constructor()
     BaseTestV2(
@@ -75,7 +75,7 @@ contract EthereumV2USDPTest is BaseTestV2 {
 }
 
 contract EthereumV2FRAXTest is BaseTestV2 {
-  bytes[] public preRequisiteAdapters = [CapAdaptersCodeEthereum.FRAXCappedAdapterCode()];
+  bytes[] public preRequisiteAdapters;
 
   constructor()
     BaseTestV2(
@@ -105,7 +105,7 @@ contract EthereumV2TUSDTest is BaseTestV2 {
 }
 
 contract EthereumV2LUSDTest is BaseTestV2 {
-  bytes[] public preRequisiteAdapters = [CapAdaptersCodeEthereum.LUSDCappedAdapterCode()];
+  bytes[] public preRequisiteAdapters;
 
   constructor()
     BaseTestV2(
