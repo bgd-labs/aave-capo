@@ -170,21 +170,6 @@ contract EthereumV2USTTest is BaseTestV2 {
   {}
 }
 
-// contract EthereumV2AMPLTest is BaseTestV2 {
-//   bytes[] public preRequisiteAdapters;
-
-//   constructor()
-//     BaseTestV2(
-//       AaveV2EthereumAssets.AMPL_ORACLE,
-//       ForkParams({network: 'mainnet', blockNumber: 19620358}),
-//       AdapterParams({
-//         preRequisiteAdapters: preRequisiteAdapters,
-//         adapterCode: AdaptersEthBasedEthereum.AMPLtoETHAdapterCode()
-//       })
-//     )
-//   {}
-// }
-
 contract EthereumV2DPITest is BaseTestV2 {
   bytes[] public preRequisiteAdapters;
 
