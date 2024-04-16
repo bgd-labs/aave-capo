@@ -14,11 +14,26 @@ import {IPriceCapAdapterStable, ICLSynchronicityPriceAdapter} from '../../src/in
 import {CapAdaptersCodeEthereum, AdaptersEthBasedEthereum} from '../../scripts/AaveV2/DeployEthereum.s.sol';
 import {CLSynchronicityPriceAdapterBaseToPeg} from 'cl-synchronicity-price-adapter/contracts/CLSynchronicityPriceAdapterBaseToPeg.sol';
 
-contract EthereumV2USDTTest is BaseTestV2 {
+abstract contract BaseEthTestV2 is BaseTestV2 {
+  constructor(
+    address referenceFeed,
+    ForkParams memory _forkParams,
+    AdapterParams memory _adapterParams
+  )
+    BaseTestV2(
+      referenceFeed,
+      _forkParams,
+      _adapterParams,
+      RetrospectionParams({startBlock: 19345000, finishBlock: 19620358, step: 100000})
+    )
+  {}
+}
+
+contract EthereumV2USDTTest is BaseEthTestV2 {
   bytes[] public preRequisiteAdapters;
 
   constructor()
-    BaseTestV2(
+    BaseEthTestV2(
       AaveV2EthereumAssets.USDT_ORACLE,
       ForkParams({network: 'mainnet', blockNumber: 19620358}),
       AdapterParams({
@@ -29,11 +44,11 @@ contract EthereumV2USDTTest is BaseTestV2 {
   {}
 }
 
-contract EthereumV2USDCTest is BaseTestV2 {
+contract EthereumV2USDCTest is BaseEthTestV2 {
   bytes[] public preRequisiteAdapters;
 
   constructor()
-    BaseTestV2(
+    BaseEthTestV2(
       AaveV2EthereumAssets.USDC_ORACLE,
       ForkParams({network: 'mainnet', blockNumber: 19620358}),
       AdapterParams({
@@ -44,11 +59,11 @@ contract EthereumV2USDCTest is BaseTestV2 {
   {}
 }
 
-contract EthereumV2DAITest is BaseTestV2 {
+contract EthereumV2DAITest is BaseEthTestV2 {
   bytes[] public preRequisiteAdapters;
 
   constructor()
-    BaseTestV2(
+    BaseEthTestV2(
       AaveV2EthereumAssets.DAI_ORACLE,
       ForkParams({network: 'mainnet', blockNumber: 19620358}),
       AdapterParams({
@@ -59,11 +74,11 @@ contract EthereumV2DAITest is BaseTestV2 {
   {}
 }
 
-contract EthereumV2USDPTest is BaseTestV2 {
+contract EthereumV2USDPTest is BaseEthTestV2 {
   bytes[] public preRequisiteAdapters = [CapAdaptersCodeEthereum.USDPCappedAdapterCode()];
 
   constructor()
-    BaseTestV2(
+    BaseEthTestV2(
       AaveV2EthereumAssets.USDP_ORACLE,
       ForkParams({network: 'mainnet', blockNumber: 19620358}),
       AdapterParams({
@@ -74,11 +89,11 @@ contract EthereumV2USDPTest is BaseTestV2 {
   {}
 }
 
-contract EthereumV2FRAXTest is BaseTestV2 {
+contract EthereumV2FRAXTest is BaseEthTestV2 {
   bytes[] public preRequisiteAdapters;
 
   constructor()
-    BaseTestV2(
+    BaseEthTestV2(
       AaveV2EthereumAssets.FRAX_ORACLE,
       ForkParams({network: 'mainnet', blockNumber: 19620358}),
       AdapterParams({
@@ -89,11 +104,11 @@ contract EthereumV2FRAXTest is BaseTestV2 {
   {}
 }
 
-contract EthereumV2TUSDTest is BaseTestV2 {
+contract EthereumV2TUSDTest is BaseEthTestV2 {
   bytes[] public preRequisiteAdapters = [CapAdaptersCodeEthereum.TUSDCappedAdapterCode()];
 
   constructor()
-    BaseTestV2(
+    BaseEthTestV2(
       AaveV2EthereumAssets.TUSD_ORACLE,
       ForkParams({network: 'mainnet', blockNumber: 19620358}),
       AdapterParams({
@@ -104,11 +119,11 @@ contract EthereumV2TUSDTest is BaseTestV2 {
   {}
 }
 
-contract EthereumV2LUSDTest is BaseTestV2 {
+contract EthereumV2LUSDTest is BaseEthTestV2 {
   bytes[] public preRequisiteAdapters;
 
   constructor()
-    BaseTestV2(
+    BaseEthTestV2(
       AaveV2EthereumAssets.LUSD_ORACLE,
       ForkParams({network: 'mainnet', blockNumber: 19620358}),
       AdapterParams({
@@ -119,11 +134,11 @@ contract EthereumV2LUSDTest is BaseTestV2 {
   {}
 }
 
-contract EthereumV2BUSDTest is BaseTestV2 {
+contract EthereumV2BUSDTest is BaseEthTestV2 {
   bytes[] public preRequisiteAdapters = [CapAdaptersCodeEthereum.BUSDCappedAdapterCode()];
 
   constructor()
-    BaseTestV2(
+    BaseEthTestV2(
       AaveV2EthereumAssets.BUSD_ORACLE,
       ForkParams({network: 'mainnet', blockNumber: 19620358}),
       AdapterParams({
@@ -134,14 +149,14 @@ contract EthereumV2BUSDTest is BaseTestV2 {
   {}
 }
 
-contract EthereumV2sUSDTest is BaseTestV2 {
+contract EthereumV2sUSDTest is BaseEthTestV2 {
   bytes[] public preRequisiteAdapters = [
     CapAdaptersCodeEthereum.sUSDtoUSDAdapterCode(),
     CapAdaptersCodeEthereum.sUSDCappedAdapterCode()
   ];
 
   constructor()
-    BaseTestV2(
+    BaseEthTestV2(
       AaveV2EthereumAssets.sUSD_ORACLE,
       ForkParams({network: 'mainnet', blockNumber: 19620358}),
       AdapterParams({
@@ -152,14 +167,14 @@ contract EthereumV2sUSDTest is BaseTestV2 {
   {}
 }
 
-contract EthereumV2USTTest is BaseTestV2 {
+contract EthereumV2USTTest is BaseEthTestV2 {
   bytes[] public preRequisiteAdapters = [
     CapAdaptersCodeEthereum.USTtoUSDAdapterCode(),
     CapAdaptersCodeEthereum.USTCappedAdapterCode()
   ];
 
   constructor()
-    BaseTestV2(
+    BaseEthTestV2(
       AaveV2EthereumAssets.UST_ORACLE,
       ForkParams({network: 'mainnet', blockNumber: 19620358}),
       AdapterParams({
@@ -170,26 +185,11 @@ contract EthereumV2USTTest is BaseTestV2 {
   {}
 }
 
-// contract EthereumV2AMPLTest is BaseTestV2 {
-//   bytes[] public preRequisiteAdapters;
-
-//   constructor()
-//     BaseTestV2(
-//       AaveV2EthereumAssets.AMPL_ORACLE,
-//       ForkParams({network: 'mainnet', blockNumber: 19620358}),
-//       AdapterParams({
-//         preRequisiteAdapters: preRequisiteAdapters,
-//         adapterCode: AdaptersEthBasedEthereum.AMPLtoETHAdapterCode()
-//       })
-//     )
-//   {}
-// }
-
-contract EthereumV2DPITest is BaseTestV2 {
+contract EthereumV2DPITest is BaseEthTestV2 {
   bytes[] public preRequisiteAdapters;
 
   constructor()
-    BaseTestV2(
+    BaseEthTestV2(
       AaveV2EthereumAssets.DPI_ORACLE,
       ForkParams({network: 'mainnet', blockNumber: 19620358}),
       AdapterParams({

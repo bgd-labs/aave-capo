@@ -12,11 +12,30 @@ import {IPriceCapAdapterStable, ICLSynchronicityPriceAdapter} from '../../src/in
 
 import {AdaptersEthBasedPolygon} from '../../scripts/AaveV2/DeployPolygon.s.sol';
 
-contract PolygonV2USDTTest is BaseTestV2 {
+abstract contract BasePolygonTestV2 is BaseTestV2 {
+  constructor(
+    address referenceFeed,
+    ForkParams memory _forkParams,
+    AdapterParams memory _adapterParams
+  )
+    BaseTestV2(
+      referenceFeed,
+      _forkParams,
+      _adapterParams,
+      RetrospectionParams({
+        startBlock: 54137000,
+        finishBlock: 55697113,
+        step: 140000 // ~ 3-4 days
+      })
+    )
+  {}
+}
+
+contract PolygonV2USDTTest is BasePolygonTestV2 {
   bytes[] public preRequisiteAdapters;
 
   constructor()
-    BaseTestV2(
+    BasePolygonTestV2(
       AaveV2PolygonAssets.USDT_ORACLE,
       ForkParams({network: 'polygon', blockNumber: 55697113}),
       AdapterParams({
@@ -27,11 +46,11 @@ contract PolygonV2USDTTest is BaseTestV2 {
   {}
 }
 
-contract PolygonV2USDCTest is BaseTestV2 {
+contract PolygonV2USDCTest is BasePolygonTestV2 {
   bytes[] public preRequisiteAdapters;
 
   constructor()
-    BaseTestV2(
+    BasePolygonTestV2(
       AaveV2PolygonAssets.USDC_ORACLE,
       ForkParams({network: 'polygon', blockNumber: 55697113}),
       AdapterParams({
@@ -42,11 +61,11 @@ contract PolygonV2USDCTest is BaseTestV2 {
   {}
 }
 
-contract PolygonV2DAITest is BaseTestV2 {
+contract PolygonV2DAITest is BasePolygonTestV2 {
   bytes[] public preRequisiteAdapters;
 
   constructor()
-    BaseTestV2(
+    BasePolygonTestV2(
       AaveV2PolygonAssets.DAI_ORACLE,
       ForkParams({network: 'polygon', blockNumber: 55697113}),
       AdapterParams({

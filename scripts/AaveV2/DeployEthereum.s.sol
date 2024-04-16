@@ -226,6 +226,7 @@ library AdaptersEthBasedEthereum {
       );
   }
 
+  // DPI is not capped, but we are substituting the oracle, as the DPI / ETH is being deprecated
   function DPItoETHAdapterCode() internal pure returns (bytes memory) {
     return
       abi.encodePacked(

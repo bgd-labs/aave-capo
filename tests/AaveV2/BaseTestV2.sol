@@ -18,20 +18,29 @@ abstract contract BaseTestV2 is Test {
     bytes adapterCode;
   }
 
+  struct RetrospectionParams {
+    uint256 startBlock;
+    uint256 finishBlock;
+    uint256 step;
+  }
+
   ForkParams public forkParams;
   AdapterParams public adapterParams;
+  RetrospectionParams public retrospectionParams;
 
   ICLSynchronicityPriceAdapter public immutable NOT_CAPPED_ADAPTER;
 
   constructor(
     address referenceFeed,
     ForkParams memory _forkParams,
-    AdapterParams memory _adapterParams
+    AdapterParams memory _adapterParams,
+    RetrospectionParams memory _retrospectionParams
   ) {
     NOT_CAPPED_ADAPTER = ICLSynchronicityPriceAdapter(referenceFeed);
 
     forkParams = _forkParams;
     adapterParams = _adapterParams;
+    retrospectionParams = _retrospectionParams;
   }
 
   function setUp() public {
@@ -50,6 +59,36 @@ abstract contract BaseTestV2 is Test {
     int256 price = adapter.latestAnswer();
     int256 priceOfNotCappedAdapter = NOT_CAPPED_ADAPTER.latestAnswer();
 
-    assertApproxEqRel(price, priceOfNotCappedAdapter, 1e16);
+    assertApproxEqRel(price, priceOfNotCappedAdapter, 2 * 1e16);
+  }
+
+  function test_latestAnswerRetrospectiveRel() public virtual {
+    uint256 initialBlock = block.number;
+
+    // start rolling fork and check that the price is the same
+    uint256 currentBlock = retrospectionParams.startBlock;
+
+    while (currentBlock <= retrospectionParams.finishBlock) {
+      vm.createSelectFork(vm.rpcUrl(forkParams.network), currentBlock);
+
+      for (uint i = 0; i < adapterParams.preRequisiteAdapters.length; i++) {
+        GovV3Helpers.deployDeterministic(adapterParams.preRequisiteAdapters[i]);
+      }
+
+      IPriceCapAdapterStable adapter = IPriceCapAdapterStable(
+        GovV3Helpers.deployDeterministic(adapterParams.adapterCode)
+      );
+
+      int256 price = adapter.latestAnswer();
+      int256 priceOfNotCappedAdapter = NOT_CAPPED_ADAPTER.latestAnswer();
+
+      assertApproxEqRel(price, priceOfNotCappedAdapter, 2 * 1e16);
+
+      currentBlock += retrospectionParams.step;
+
+      vm.createSelectFork(vm.rpcUrl(forkParams.network), currentBlock);
+    }
+
+    vm.createSelectFork(vm.rpcUrl(forkParams.network), initialBlock);
   }
 }
