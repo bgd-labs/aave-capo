@@ -17,7 +17,6 @@ contract AaveV2EthereumPayload is IProposalGenericExecutor {
     address susdAdapter;
     address ustAdapter;
     address dpiAdapter;
-    // address amplAdapter;
   }
 
   address public immutable USDT_ADAPTER;
@@ -32,8 +31,6 @@ contract AaveV2EthereumPayload is IProposalGenericExecutor {
   address public immutable UST_ADAPTER;
   address public immutable DPI_ADAPTER;
 
-  // address public immutable AMPL_ADAPTER;
-
   constructor(Adapters memory adapters) {
     USDT_ADAPTER = adapters.usdtAdapter;
     USDC_ADAPTER = adapters.usdcAdapter;
@@ -46,7 +43,6 @@ contract AaveV2EthereumPayload is IProposalGenericExecutor {
     SUSD_ADAPTER = adapters.susdAdapter;
     UST_ADAPTER = adapters.ustAdapter;
     DPI_ADAPTER = adapters.dpiAdapter;
-    // AMPL_ADAPTER = adapters.amplAdapter;
   }
 
   function execute() external {

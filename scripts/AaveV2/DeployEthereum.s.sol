@@ -121,8 +121,6 @@ library AdaptersEthBasedEthereum {
   // https://etherscan.io/address/0xD2A593BF7594aCE1faD597adb697b5645d5edDB2
   address public constant DPI_ORACLE = 0xD2A593BF7594aCE1faD597adb697b5645d5edDB2;
 
-  // address public constant AMPL_ORACLE = 0xe20CA8D7546932360e37E9D72c1a47334af57706;
-
   function USDTtoETHAdapterCode() internal pure returns (bytes memory) {
     return
       abi.encodePacked(
@@ -227,14 +225,6 @@ library AdaptersEthBasedEthereum {
         )
       );
   }
-
-  // function AMPLtoETHAdapterCode() internal pure returns (bytes memory) {
-  //   return
-  //     abi.encodePacked(
-  //       type(CLSynchronicityPriceAdapterBaseToPeg).creationCode,
-  //       abi.encode(AaveV3EthereumAssets.WETH_ORACLE, AMPL_ORACLE, 18, 'AMPL / USD / ETH')
-  //     );
-  // }
 
   function DPItoETHAdapterCode() internal pure returns (bytes memory) {
     return
