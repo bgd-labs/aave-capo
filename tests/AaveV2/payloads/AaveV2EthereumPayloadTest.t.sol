@@ -2,14 +2,22 @@
 pragma solidity ^0.8.0;
 
 import 'forge-std/Test.sol';
+
+import {ProtocolV2TestBase} from 'aave-helpers/ProtocolV2TestBase.sol';
 import {GovV3Helpers} from 'aave-helpers/GovV3Helpers.sol';
 import {AaveV2Ethereum, AaveV2EthereumAssets} from 'aave-address-book/AaveV2Ethereum.sol';
 
 import {DeployEthereumAdaptersAndPayload, AdaptersEthBasedEthereum} from '../../../scripts/AaveV2/DeployEthereum.s.sol';
 
-contract AaveV2EthereumPayloadTest is Test, DeployEthereumAdaptersAndPayload {
+contract AaveV2EthereumPayloadTest is ProtocolV2TestBase, DeployEthereumAdaptersAndPayload {
   function setUp() public {
     vm.createSelectFork(vm.rpcUrl('mainnet'), 19633928);
+  }
+
+  function test_defaultProposalExecution() public {
+    address payload = _deploy();
+
+    defaultTest('AaveV2Ethereum_SetPriceCapAdapters', AaveV2Ethereum.POOL, payload);
   }
 
   function test_AaveV2EthereumPayload() public {

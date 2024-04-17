@@ -2,15 +2,23 @@
 pragma solidity ^0.8.0;
 
 import 'forge-std/Test.sol';
+
+import {ProtocolV2TestBase} from 'aave-helpers/ProtocolV2TestBase.sol';
 import {GovV3Helpers} from 'aave-helpers/GovV3Helpers.sol';
 import {AaveV2Avalanche, AaveV2AvalancheAssets} from 'aave-address-book/AaveV2Avalanche.sol';
 
 import {DeployAvalancheAdaptersAndPayload} from '../../../scripts/AaveV2/DeployAvalanche.s.sol';
 import {AaveV2AvalanchePayload} from '../../../src/contracts/payloads/AaveV2/AaveV2AvalanchePayload.sol';
 
-contract AaveV2AvalanchePayloadTest is Test, DeployAvalancheAdaptersAndPayload {
+contract AaveV2AvalanchePayloadTest is ProtocolV2TestBase, DeployAvalancheAdaptersAndPayload {
   function setUp() public {
     vm.createSelectFork(vm.rpcUrl('avalanche'), 44074529);
+  }
+
+  function test_defaultProposalExecution() public {
+    address payload = _deploy();
+
+    defaultTest('AaveV2Avalanche_SetPriceCapAdapters', AaveV2Avalanche.POOL, payload);
   }
 
   function test_AaveV2AvalanchePayload() public {
