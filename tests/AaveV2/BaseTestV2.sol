@@ -59,7 +59,7 @@ abstract contract BaseTestV2 is Test {
     int256 price = adapter.latestAnswer();
     int256 priceOfNotCappedAdapter = NOT_CAPPED_ADAPTER.latestAnswer();
 
-    bool isPriceCapped = adapter.isPriceCapped();
+    bool isPriceCapped = adapter.isCapped();
 
     assertEq(isPriceCapped, false);
     assertApproxEqRel(price, priceOfNotCappedAdapter, 2 * 1e16);
@@ -85,7 +85,7 @@ abstract contract BaseTestV2 is Test {
       int256 price = adapter.latestAnswer();
       int256 priceOfNotCappedAdapter = NOT_CAPPED_ADAPTER.latestAnswer();
 
-      bool isPriceCapped = adapter.isPriceCapped();
+      bool isPriceCapped = adapter.isCapped();
 
       assertEq(isPriceCapped, false);
       assertApproxEqRel(price, priceOfNotCappedAdapter, 2 * 1e16);
