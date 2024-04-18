@@ -27,6 +27,10 @@ deploy-scroll :; forge script scripts/DeployScroll.s.sol:DeployScroll --rpc-url 
 deploy-weeth-mainnet :; forge script scripts/DeployEthereumWeEth.s.sol:DeployWeEthEthereum --rpc-url mainnet $(common-flags)
 deploy-weeth-arbitrum :; forge script scripts/DeployArbitrumWeEth.s.sol:DeployWeEthArbitrum --rpc-url arbitrum $(common-flags)
 
+deploy-mainnet-v2 :; forge script scripts/AaveV2/DeployEthereum.s.sol:DeployEthereum --rpc-url mainnet $(common-flags)
+deploy-avalanche-v2 :; forge script scripts/AaveV2/DeployAvalanche.s.sol:DeployAvalanche --rpc-url avalanche $(common-flags)
+deploy-polygon-v2 :; forge script scripts/AaveV2/DeployPolygon.s.sol:DeployPolygon --rpc-url polygon $(common-flags)
+
 
 # Utilities
 download :; cast etherscan-source --chain ${chain} -d src/etherscan/${chain}_${address} ${address}
