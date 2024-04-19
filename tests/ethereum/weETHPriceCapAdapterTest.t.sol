@@ -5,7 +5,7 @@ import '../BaseTest.sol';
 
 import {AaveV3Ethereum, AaveV3EthereumAssets} from 'aave-address-book/AaveV3Ethereum.sol';
 
-import {WeETHPriceCapAdapter, IWeEth} from '../../src/contracts/WeETHPriceCapAdapter.sol';
+import {WeETHPriceCapAdapter, IWeEth} from '../../src/contracts/lst-adapters/WeETHPriceCapAdapter.sol';
 import {CapAdaptersCodeEthereum} from '../../scripts/DeployEthereumWeEth.s.sol';
 
 contract weETHPriceCapAdapterTest is BaseTest {

@@ -5,7 +5,7 @@ import {EthereumScript} from 'aave-helpers/ScriptUtils.sol';
 import {AaveV3Ethereum, AaveV3EthereumAssets} from 'aave-address-book/AaveV3Ethereum.sol';
 
 import {IPriceCapAdapter} from '../src/interfaces/IPriceCapAdapter.sol';
-import {WeETHPriceCapAdapter} from '../src/contracts/WeETHPriceCapAdapter.sol';
+import {WeETHPriceCapAdapter} from '../src/contracts/lst-adapters/WeETHPriceCapAdapter.sol';
 
 library CapAdaptersCodeEthereum {
   address public constant weETH = 0xCd5fE23C85820F7B72D0926FC9b05b43E359b7ee;

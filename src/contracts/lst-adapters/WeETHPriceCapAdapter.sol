@@ -3,36 +3,36 @@ pragma solidity ^0.8.19;
 
 import {IACLManager} from 'aave-address-book/AaveV3.sol';
 
-import {IStEUR} from '../interfaces/IStEUR.sol';
-import {PriceCapAdapterBase, IPriceCapAdapter} from './PriceCapAdapterBase.sol';
+import {PriceCapAdapterBase, IPriceCapAdapter} from '../PriceCapAdapterBase.sol';
+import {IWeEth} from '../../interfaces/IWeEth.sol';
 
 /**
- * @title stEURPriceCapAdapter
+ * @title WeETHPriceCapAdapter
  * @author BGD Labs
- * @notice Price capped adapter to calculate price of (stEUR / EUR) pair by using
- * @notice Price cap adapter for stablecoins (agEUR / EUR) and (stEUR / agEUR) ratio.
+ * @notice Price capped adapter to calculate price of (weETH / USD) pair by using
+ * @notice Chainlink data feed for (ETH / USD) and (weETH / eETH) ratio.
  */
-contract stEURPriceCapAdapter is PriceCapAdapterBase {
+contract WeETHPriceCapAdapter is PriceCapAdapterBase {
   /**
    * @param aclManager ACL manager contract
-   * @param agEurToEurAggregatorAddress the address of (agUER / EUR) feed
-   * @param stEurAddress the address of the stEUR contract
+   * @param ethToBaseAggregatorAddress the address of (ETH / USD) feed
+   * @param weEthAddress the address of the weETH contract, the (weETH / ETH) ratio
    * @param pairName name identifier
    * @param minimumSnapshotDelay minimum time (in seconds) that should have passed from the snapshot timestamp to the current block.timestamp
    * @param priceCapParams parameters to set price cap
    */
   constructor(
     IACLManager aclManager,
-    address agEurToEurAggregatorAddress,
-    address stEurAddress,
+    address ethToBaseAggregatorAddress,
+    address weEthAddress,
     string memory pairName,
     uint48 minimumSnapshotDelay,
     PriceCapUpdateParams memory priceCapParams
   )
     PriceCapAdapterBase(
       aclManager,
-      agEurToEurAggregatorAddress,
-      stEurAddress,
+      ethToBaseAggregatorAddress,
+      weEthAddress,
       pairName,
       18,
       minimumSnapshotDelay,
@@ -42,6 +42,6 @@ contract stEURPriceCapAdapter is PriceCapAdapterBase {
 
   /// @inheritdoc IPriceCapAdapter
   function getRatio() public view override returns (int256) {
-    return int256(IStEUR(RATIO_PROVIDER).convertToAssets(10 ** RATIO_DECIMALS));
+    return int256(IWeEth(RATIO_PROVIDER).getRate());
   }
 }
