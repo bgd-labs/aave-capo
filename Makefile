@@ -13,23 +13,8 @@ test   :; forge test -vvv
 common-flags := --legacy --ledger --mnemonic-indexes $(MNEMONIC_INDEX) --sender $(LEDGER_SENDER) --verify -vvvv --broadcast --slow
 
 # Deploy
-deploy-mainnet :; forge script scripts/DeployEthereum.s.sol:DeployEthereum --rpc-url mainnet $(common-flags)
-deploy-arbitrum :; forge script scripts/DeployArbitrum.s.sol:DeployArbitrum --rpc-url arbitrum $(common-flags)
-deploy-avalanche :; forge script scripts/DeployAvalanche.s.sol:DeployAvalanche --rpc-url avalanche $(common-flags)
-deploy-base :; forge script scripts/DeployBase.s.sol:DeployBase --rpc-url base $(common-flags)
-deploy-bnb :; forge script scripts/DeployBnb.s.sol:DeployBNB --rpc-url bnb $(common-flags)
-deploy-gnosis :; forge script scripts/DeployGnosis.s.sol:DeployGnosis --rpc-url gnosis $(common-flags)
-deploy-metis :; forge script scripts/DeployMetis.s.sol:DeployMetis --rpc-url metis $(common-flags)
-deploy-optimism :; forge script scripts/DeployOptimism.s.sol:DeployOptimism --rpc-url optimism $(common-flags)
-deploy-polygon :; forge script scripts/DeployPolygon.s.sol:DeployPolygon --rpc-url polygon $(common-flags)
-deploy-scroll :; forge script scripts/DeployScroll.s.sol:DeployScroll --rpc-url scroll $(common-flags)
-
 deploy-weeth-mainnet :; forge script scripts/DeployEthereumWeEth.s.sol:DeployWeEthEthereum --rpc-url mainnet $(common-flags)
 deploy-weeth-arbitrum :; forge script scripts/DeployArbitrumWeEth.s.sol:DeployWeEthArbitrum --rpc-url arbitrum $(common-flags)
-
-deploy-mainnet-v2 :; forge script scripts/AaveV2/DeployEthereum.s.sol:DeployEthereum --rpc-url mainnet $(common-flags)
-deploy-avalanche-v2 :; forge script scripts/AaveV2/DeployAvalanche.s.sol:DeployAvalanche --rpc-url avalanche $(common-flags)
-deploy-polygon-v2 :; forge script scripts/AaveV2/DeployPolygon.s.sol:DeployPolygon --rpc-url polygon $(common-flags)
 
 
 # Utilities
