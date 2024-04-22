@@ -12,8 +12,7 @@ contract weETHArbitrumPriceCapAdapterTest is CLAdapterBaseTest {
   constructor()
     CLAdapterBaseTest(
       CapAdaptersCodeArbitrum.weETHAdapterCode(),
-      AaveV3ArbitrumAssets.WETH_ORACLE,
-      10,
+      30,
       ForkParams({network: 'arbitrum', blockNumber: 197799635})
     )
   {}

@@ -12,7 +12,6 @@ contract weETHPriceCapAdapterTest is BaseTest {
   constructor()
     BaseTest(
       CapAdaptersCodeEthereum.weETHAdapterCode(),
-      AaveV3EthereumAssets.WETH_ORACLE,
       90,
       ForkParams({network: 'mainnet', blockNumber: 19575450})
     )

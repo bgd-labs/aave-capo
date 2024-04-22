@@ -5,7 +5,7 @@ import 'forge-std/Test.sol';
 
 import {IACLManager, BasicIACLManager} from 'aave-address-book/AaveV3.sol';
 import {GovV3Helpers} from 'aave-helpers/GovV3Helpers.sol';
-import {IPriceCapAdapter, ICLSynchronicityPriceAdapter} from '../src/interfaces/IPriceCapAdapter.sol';
+import {IPriceCapAdapter} from '../src/interfaces/IPriceCapAdapter.sol';
 
 abstract contract BaseTest is Test {
   uint256 public constant SECONDS_PER_DAY = 86400;
@@ -28,18 +28,14 @@ abstract contract BaseTest is Test {
     IPriceCapAdapter.PriceCapUpdateParams priceCapParams;
   }
 
-  ICLSynchronicityPriceAdapter public immutable REFERENCE_ADAPTER;
-
   ForkParams public forkParams;
   bytes public deploymentCode;
 
   constructor(
     bytes memory _deploymentCode,
-    address _referenceAdapter,
     uint8 _retrospectiveDays,
     ForkParams memory _forkParams
   ) {
-    REFERENCE_ADAPTER = ICLSynchronicityPriceAdapter(_referenceAdapter);
     forkParams = _forkParams;
     deploymentCode = _deploymentCode;
     RETROSPECTIVE_DAYS = _retrospectiveDays;
@@ -53,7 +49,7 @@ abstract contract BaseTest is Test {
     IPriceCapAdapter adapter = IPriceCapAdapter(GovV3Helpers.deployDeterministic(deploymentCode));
 
     int256 price = adapter.latestAnswer();
-    int256 priceOfReferenceAdapter = REFERENCE_ADAPTER.latestAnswer();
+    int256 priceOfReferenceAdapter = adapter.BASE_TO_USD_AGGREGATOR().latestAnswer();
 
     assertFalse(adapter.isCapped());
     assertGt(
@@ -85,7 +81,7 @@ abstract contract BaseTest is Test {
 
       // TODO: use for report
       // int256 price = adapter.latestAnswer();
-      // int256 priceOfReferenceAdapter = REFERENCE_ADAPTER.latestAnswer();
+      // int256 priceOfReferenceAdapter = adapter.BASE_TO_USD_AGGREGATOR().latestAnswer();
 
       assertFalse(adapter.isCapped());
 
@@ -199,13 +195,41 @@ abstract contract BaseTest is Test {
 
   function _getBlocksPerDayByNetwork(string memory network) internal pure returns (uint256) {
     if (keccak256(bytes(network)) == keccak256(bytes('mainnet'))) {
-      return 7500;
+      return 7300;
     }
 
     if (keccak256(bytes(network)) == keccak256(bytes('arbitrum'))) {
-      return 350000;
+      return 340000;
     }
 
-    return 7500;
+    if (keccak256(bytes(network)) == keccak256(bytes('avalanche'))) {
+      return 43000;
+    }
+
+    if (keccak256(bytes(network)) == keccak256(bytes('base'))) {
+      return 44000;
+    }
+
+    if (keccak256(bytes(network)) == keccak256(bytes('bnb'))) {
+      return 30000;
+    }
+
+    if (keccak256(bytes(network)) == keccak256(bytes('optimism'))) {
+      return 44000;
+    }
+
+    if (keccak256(bytes(network)) == keccak256(bytes('polygon'))) {
+      return 38000;
+    }
+
+    if (keccak256(bytes(network)) == keccak256(bytes('scroll'))) {
+      return 25500;
+    }
+
+    if (keccak256(bytes(network)) == keccak256(bytes('gnosis'))) {
+      return 17000;
+    }
+
+    return 7300;
   }
 }

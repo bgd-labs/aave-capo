@@ -9,10 +9,9 @@ import {CLRatePriceCapAdapter} from '../src/contracts/CLRatePriceCapAdapter.sol'
 abstract contract CLAdapterBaseTest is BaseTest {
   constructor(
     bytes memory _deploymentCode,
-    address _referenceAdapter,
     uint8 _retrospectiveDays,
     ForkParams memory _forkParams
-  ) BaseTest(_deploymentCode, _referenceAdapter, _retrospectiveDays, _forkParams) {}
+  ) BaseTest(_deploymentCode, _retrospectiveDays, _forkParams) {}
 
   function _createAdapter(
     CapAdapterParams memory capAdapterParams
