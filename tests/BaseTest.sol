@@ -5,7 +5,7 @@ import 'forge-std/Test.sol';
 
 import {IACLManager, BasicIACLManager} from 'aave-address-book/AaveV3.sol';
 import {GovV3Helpers} from 'aave-helpers/GovV3Helpers.sol';
-import {IPriceCapAdapter} from '../src/interfaces/IPriceCapAdapter.sol';
+import {IPriceCapAdapter, ICLSynchronicityPriceAdapter} from '../src/interfaces/IPriceCapAdapter.sol';
 
 abstract contract BaseTest is Test {
   uint256 public constant SECONDS_PER_DAY = 86400;
@@ -28,17 +28,28 @@ abstract contract BaseTest is Test {
     IPriceCapAdapter.PriceCapUpdateParams priceCapParams;
   }
 
+  struct PriceParams {
+    int256 sourcePrice;
+    int256 referencePrice;
+    uint256 blockNumber;
+    uint256 timestamp;
+  }
+
   ForkParams public forkParams;
   bytes public deploymentCode;
+  string public reportName;
+  PriceParams[] prices;
 
   constructor(
     bytes memory _deploymentCode,
     uint8 _retrospectiveDays,
-    ForkParams memory _forkParams
+    ForkParams memory _forkParams,
+    string memory _reportName
   ) {
     forkParams = _forkParams;
     deploymentCode = _deploymentCode;
     RETROSPECTIVE_DAYS = _retrospectiveDays;
+    reportName = _reportName;
   }
 
   function setUp() public {
@@ -79,14 +90,27 @@ abstract contract BaseTest is Test {
     while (currentBlock <= finishBlock) {
       vm.createSelectFork(vm.rpcUrl(forkParams.network), currentBlock);
 
-      // TODO: use for report
-      // int256 price = adapter.latestAnswer();
-      // int256 priceOfReferenceAdapter = adapter.BASE_TO_USD_AGGREGATOR().latestAnswer();
+      int256 price = adapter.latestAnswer();
+      int256 priceOfReferenceAdapter = adapter.BASE_TO_USD_AGGREGATOR().latestAnswer();
+
+      prices.push(
+        PriceParams({
+          sourcePrice: price,
+          referencePrice: priceOfReferenceAdapter,
+          blockNumber: currentBlock,
+          timestamp: block.timestamp
+        })
+      );
 
       assertFalse(adapter.isCapped());
 
       currentBlock += step;
     }
+
+    _generateReport(
+      adapter.description(),
+      ICLSynchronicityPriceAdapter(address(adapter.BASE_TO_USD_AGGREGATOR())).description()
+    );
 
     vm.revokePersistent(address(adapter));
     vm.createSelectFork(vm.rpcUrl(forkParams.network), finishBlock);
@@ -231,5 +255,26 @@ abstract contract BaseTest is Test {
     }
 
     return 7300;
+  }
+
+  function _generateReport(string memory sourceName, string memory referenceName) internal {
+    string memory path = string(abi.encodePacked('./reports/', reportName, '.json'));
+    vm.serializeString('root', 'source', sourceName);
+    vm.serializeString('root', 'reference', referenceName);
+    string memory pricesKey = 'prices';
+    string memory content = '{}';
+    vm.serializeJson(pricesKey, '{}');
+
+    for (uint256 i = 0; i < prices.length; i++) {
+      string memory key = vm.toString(prices[i].blockNumber);
+      vm.serializeJson(key, '{}');
+      vm.serializeUint(key, 'timestamp', prices[i].timestamp);
+      vm.serializeInt(key, 'sourcePrice', prices[i].sourcePrice);
+      string memory object = vm.serializeInt(key, 'referencePrice', prices[i].referencePrice);
+      content = vm.serializeString(pricesKey, key, object);
+    }
+
+    string memory output = vm.serializeString('root', pricesKey, content);
+    vm.writeJson(output, path);
   }
 }

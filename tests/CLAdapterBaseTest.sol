@@ -10,8 +10,9 @@ abstract contract CLAdapterBaseTest is BaseTest {
   constructor(
     bytes memory _deploymentCode,
     uint8 _retrospectiveDays,
-    ForkParams memory _forkParams
-  ) BaseTest(_deploymentCode, _retrospectiveDays, _forkParams) {}
+    ForkParams memory _forkParams,
+    string memory _reportName
+  ) BaseTest(_deploymentCode, _retrospectiveDays, _forkParams, _reportName) {}
 
   function _createAdapter(
     CapAdapterParams memory capAdapterParams
