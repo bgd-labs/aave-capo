@@ -109,7 +109,8 @@ abstract contract BaseTest is Test {
 
     _generateReport(
       adapter.description(),
-      ICLSynchronicityPriceAdapter(address(adapter.BASE_TO_USD_AGGREGATOR())).description()
+      ICLSynchronicityPriceAdapter(address(adapter.BASE_TO_USD_AGGREGATOR())).description(),
+      adapter.decimals()
     );
 
     vm.revokePersistent(address(adapter));
@@ -257,10 +258,15 @@ abstract contract BaseTest is Test {
     return 7300;
   }
 
-  function _generateReport(string memory sourceName, string memory referenceName) internal {
+  function _generateReport(
+    string memory sourceName,
+    string memory referenceName,
+    uint8 decimals
+  ) internal {
     string memory path = string(abi.encodePacked('./reports/', reportName, '.json'));
     vm.serializeString('root', 'source', sourceName);
     vm.serializeString('root', 'reference', referenceName);
+    vm.serializeUint('root', 'decimals', decimals);
     string memory pricesKey = 'prices';
     string memory content = '{}';
     vm.serializeJson(pricesKey, '{}');
