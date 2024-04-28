@@ -24,31 +24,35 @@ import {IChainlinkAggregator} from 'cl-synchronicity-price-adapter/interfaces/IC
 import {ISAvax} from '../../src/interfaces/ISAvax.sol';
 import {IStEUR} from '../../src/interfaces/IStEUR.sol';
 import {IWeEth} from '../../src/interfaces/IWeEth.sol';
+import {IOsTokenVaultController} from '../../src/interfaces/IOsTokenVaultController.sol';
 
-import {CapAdaptersCodeEthereum} from '../../scripts/DeployEthereumWeEth.s.sol';
+import {CapAdaptersCodeEthereum} from '../../scripts/DeployEthereum.s.sol';
 import {CapAdaptersCodeArbitrum} from '../../scripts/DeployArbitrumWeEth.s.sol';
 
 contract ExchangeRatesEth is Test {
   function setUp() public {
-    vm.createSelectFork(vm.rpcUrl('mainnet'), 19515330); // 26th of March
+    vm.createSelectFork(vm.rpcUrl('mainnet'), 19696377); // 20th of April
   }
 
   function test_getExchangeRate() public view {
-    uint256 cbEthRate = ICbEthRateProvider(AaveV3EthereumAssets.cbETH_UNDERLYING).exchangeRate();
-    uint256 rEthRate = IrETH(AaveV3EthereumAssets.rETH_UNDERLYING).getExchangeRate();
-    uint256 sDaiRate = IPot(MiscEthereum.sDAI_POT).chi();
-    uint256 wstEthRate = IStETH(AaveV2EthereumAssets.stETH_UNDERLYING).getPooledEthByShares(
-      10 ** 18
-    );
-    uint256 stEurRate = IStEUR(MiscEthereum.stEUR).convertToAssets(10 ** 18);
-    uint256 weEthRate = IWeEth(CapAdaptersCodeEthereum.weETH).getRate();
+    // uint256 cbEthRate = ICbEthRateProvider(AaveV3EthereumAssets.cbETH_UNDERLYING).exchangeRate();
+    // uint256 rEthRate = IrETH(AaveV3EthereumAssets.rETH_UNDERLYING).getExchangeRate();
+    // uint256 sDaiRate = IPot(MiscEthereum.sDAI_POT).chi();
+    // uint256 wstEthRate = IStETH(AaveV2EthereumAssets.stETH_UNDERLYING).getPooledEthByShares(
+    //   10 ** 18
+    // );
+    // uint256 stEurRate = IStEUR(MiscEthereum.stEUR).convertToAssets(10 ** 18);
+    // uint256 weEthRate = IWeEth(CapAdaptersCodeEthereum.weETH).getRate();
+    uint256 osEthRate = IOsTokenVaultController(CapAdaptersCodeEthereum.osETH_VAULT_CONTROLLER)
+      .convertToAssets(10 ** 18);
 
-    console.log('cbEthRate', cbEthRate);
-    console.log('rEthRate', rEthRate);
-    console.log('sDaiRate', sDaiRate);
-    console.log('wstEthRate', wstEthRate);
-    console.log('stEurRate', stEurRate);
-    console.log('weEthRate', weEthRate);
+    // console.log('cbEthRate', cbEthRate);
+    // console.log('rEthRate', rEthRate);
+    // console.log('sDaiRate', sDaiRate);
+    // console.log('wstEthRate', wstEthRate);
+    // console.log('stEurRate', stEurRate);
+    // console.log('weEthRate', weEthRate);
+    console.log('osEthRate', osEthRate);
 
     console.log(block.timestamp);
   }

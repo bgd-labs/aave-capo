@@ -91,7 +91,7 @@ abstract contract BaseTest is Test {
       adapter,
       uint104(adapter.getSnapshotRatio()),
       uint48(adapter.getSnapshotTimestamp() + 1),
-      uint16(1_00)
+      uint16(50)
     );
 
     // check is capped
