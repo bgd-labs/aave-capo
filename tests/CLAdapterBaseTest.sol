@@ -14,16 +14,8 @@ abstract contract CLAdapterBaseTest is BaseTest {
   ) BaseTest(_deploymentCode, _retrospectiveDays, _forkParams) {}
 
   function _createAdapter(
-    CapAdapterParams memory capAdapterParams
+    IPriceCapAdapter.CapAdapterParams memory capAdapterParams
   ) internal override returns (IPriceCapAdapter) {
-    return
-      new CLRatePriceCapAdapter(
-        capAdapterParams.aclManager,
-        capAdapterParams.baseAggregatorAddress,
-        capAdapterParams.ratioProviderAddress,
-        capAdapterParams.pairDescription,
-        capAdapterParams.minimumSnapshotDelay,
-        capAdapterParams.priceCapParams
-      );
+    return new CLRatePriceCapAdapter(capAdapterParams);
   }
 }
