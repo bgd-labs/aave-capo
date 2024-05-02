@@ -8,7 +8,7 @@ remappings = [
 ]
 ffi = true
 fs_permissions = [{ access = "write", path = "./reports" }]
-evm_version = 'shanghai'
+evm_version = 'cancun'
 
 [rpc_endpoints]
 mainnet = "${RPC_MAINNET}"
