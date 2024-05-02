@@ -11,21 +11,18 @@ import {PriceCapAdapterBase} from '../src/contracts/PriceCapAdapterBase.sol';
 
 contract TestAdapter is PriceCapAdapterBase {
   constructor(
-    IACLManager aclManager,
-    address baseAggregatorAddress,
-    address ratioProviderAddress,
-    string memory pairDescription,
-    uint48 minimumSnapshotDelay,
-    IPriceCapAdapter.PriceCapUpdateParams memory priceCapParams
+    IPriceCapAdapter.CapAdapterParams memory capAdapterParams
   )
     PriceCapAdapterBase(
-      aclManager,
-      baseAggregatorAddress,
-      ratioProviderAddress,
-      pairDescription,
-      18,
-      minimumSnapshotDelay,
-      priceCapParams
+      IPriceCapAdapter.CapAdapterBaseParams({
+        aclManager: capAdapterParams.aclManager,
+        baseAggregatorAddress: capAdapterParams.baseAggregatorAddress,
+        ratioProviderAddress: capAdapterParams.ratioProviderAddress,
+        pairDescription: capAdapterParams.pairDescription,
+        ratioDecimals: 18,
+        minimumSnapshotDelay: capAdapterParams.minimumSnapshotDelay,
+        priceCapParams: capAdapterParams.priceCapParams
+      })
     )
   {}
 
@@ -88,12 +85,14 @@ contract PriceCapAdapterBaseTest is Test {
     );
 
     IPriceCapAdapter adapter = _createAdapter(
-      aclManager,
-      baseAggregatorAddress,
-      ratioProviderAddress,
-      pairDescription,
-      minimumSnapshotDelay,
-      priceCapParams
+      IPriceCapAdapter.CapAdapterParams({
+        aclManager: aclManager,
+        baseAggregatorAddress: baseAggregatorAddress,
+        ratioProviderAddress: ratioProviderAddress,
+        pairDescription: pairDescription,
+        minimumSnapshotDelay: minimumSnapshotDelay,
+        priceCapParams: priceCapParams
+      })
     );
 
     assertEq(address(adapter.ACL_MANAGER()), address(aclManager), 'aclManager not set properly');
@@ -238,22 +237,9 @@ contract PriceCapAdapterBaseTest is Test {
   }
 
   function _createAdapter(
-    IACLManager aclManager,
-    address baseAggregatorAddress,
-    address ratioProviderAddress,
-    string memory pairDescription,
-    uint48 minimumSnapshotDelay,
-    IPriceCapAdapter.PriceCapUpdateParams memory priceCapParams
+    IPriceCapAdapter.CapAdapterParams memory capAdapterParams
   ) private returns (IPriceCapAdapter) {
-    return
-      new TestAdapter(
-        aclManager,
-        baseAggregatorAddress,
-        ratioProviderAddress,
-        pairDescription,
-        minimumSnapshotDelay,
-        priceCapParams
-      );
+    return new TestAdapter(capAdapterParams);
   }
 
   function _createAdapterSimple(
@@ -264,15 +250,17 @@ contract PriceCapAdapterBaseTest is Test {
   ) private returns (IPriceCapAdapter) {
     return
       _createAdapter(
-        AaveV3Ethereum.ACL_MANAGER,
-        AaveV3EthereumAssets.WETH_ORACLE,
-        address(1),
-        'test adapter',
-        minimumSnapshotDelay,
-        IPriceCapAdapter.PriceCapUpdateParams({
-          snapshotRatio: snapshotRatio,
-          snapshotTimestamp: snapshotTimestamp,
-          maxYearlyRatioGrowthPercent: maxYearlyRatioGrowthPercent
+        IPriceCapAdapter.CapAdapterParams({
+          aclManager: AaveV3Ethereum.ACL_MANAGER,
+          baseAggregatorAddress: AaveV3EthereumAssets.WETH_ORACLE,
+          ratioProviderAddress: address(1),
+          pairDescription: 'test adapter',
+          minimumSnapshotDelay: minimumSnapshotDelay,
+          priceCapParams: IPriceCapAdapter.PriceCapUpdateParams({
+            snapshotRatio: snapshotRatio,
+            snapshotTimestamp: snapshotTimestamp,
+            maxYearlyRatioGrowthPercent: maxYearlyRatioGrowthPercent
+          })
         })
       );
   }

@@ -14,29 +14,21 @@ import {ISAvax} from '../../interfaces/ISAvax.sol';
  */
 contract SAvaxPriceCapAdapter is PriceCapAdapterBase {
   /**
-   * @param aclManager ACL manager contract
-   * @param avaxToBaseAggregatorAddress the address of (AVAX / USD) feed
-   * @param sAVAXAddress the address of the sAVAX token, the (sAVAX / AVAX) ratio feed
-   * @param pairName name identifier
-   * @param minimumSnapshotDelay minimum time (in seconds) that should have passed from the snapshot timestamp to the current block.timestamp
-   * @param priceCapParams parameters to set price cap
+   * @param capAdapterParams parameters to create cap adapter
    */
   constructor(
-    IACLManager aclManager,
-    address avaxToBaseAggregatorAddress,
-    address sAVAXAddress,
-    string memory pairName,
-    uint48 minimumSnapshotDelay,
-    PriceCapUpdateParams memory priceCapParams
+    CapAdapterParams memory capAdapterParams
   )
     PriceCapAdapterBase(
-      aclManager,
-      avaxToBaseAggregatorAddress,
-      sAVAXAddress,
-      pairName,
-      18,
-      minimumSnapshotDelay,
-      priceCapParams
+      CapAdapterBaseParams({
+        aclManager: capAdapterParams.aclManager,
+        baseAggregatorAddress: capAdapterParams.baseAggregatorAddress,
+        ratioProviderAddress: capAdapterParams.ratioProviderAddress,
+        pairDescription: capAdapterParams.pairDescription,
+        ratioDecimals: 18,
+        minimumSnapshotDelay: capAdapterParams.minimumSnapshotDelay,
+        priceCapParams: capAdapterParams.priceCapParams
+      })
     )
   {}
 

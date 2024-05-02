@@ -14,6 +14,17 @@ interface IPriceCapAdapterStable is ICLSynchronicityPriceAdapter {
   event PriceCapUpdated(int256 priceCap);
 
   /**
+   * @notice Parameters to create stable cap adapter
+   * @param capAdapterStableParams parameters to create stable cap adapter
+   */
+  struct CapAdapterStableParams {
+    IACLManager aclManager;
+    IChainlinkAggregator assetToUsdAggregator;
+    string adapterDescription;
+    int256 priceCap;
+  }
+
+  /**
    * @notice Price feed for (ASSET / USD) pair
    */
   function ASSET_TO_USD_AGGREGATOR() external view returns (IChainlinkAggregator);

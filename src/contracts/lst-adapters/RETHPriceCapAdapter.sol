@@ -14,29 +14,21 @@ import {PriceCapAdapterBase, IPriceCapAdapter} from '../PriceCapAdapterBase.sol'
  */
 contract RETHPriceCapAdapter is PriceCapAdapterBase {
   /**
-   * @param aclManager ACL manager contract
-   * @param rETHToBaseAggregatorAddress the address of (rETH / USD) feed
-   * @param rETHAddress the address of the rETH token, the (rETH / ETH) ratio feed
-   * @param pairName name identifier
-   * @param minimumSnapshotDelay minimum time (in seconds) that should have passed from the snapshot timestamp to the current block.timestamp
-   * @param priceCapParams parameters to set price cap
+   * @param capAdapterParams parameters to create cap adapter
    */
   constructor(
-    IACLManager aclManager,
-    address rETHToBaseAggregatorAddress,
-    address rETHAddress,
-    string memory pairName,
-    uint48 minimumSnapshotDelay,
-    PriceCapUpdateParams memory priceCapParams
+    CapAdapterParams memory capAdapterParams
   )
     PriceCapAdapterBase(
-      aclManager,
-      rETHToBaseAggregatorAddress,
-      rETHAddress,
-      pairName,
-      18,
-      minimumSnapshotDelay,
-      priceCapParams
+      CapAdapterBaseParams({
+        aclManager: capAdapterParams.aclManager,
+        baseAggregatorAddress: capAdapterParams.baseAggregatorAddress,
+        ratioProviderAddress: capAdapterParams.ratioProviderAddress,
+        pairDescription: capAdapterParams.pairDescription,
+        ratioDecimals: 18,
+        minimumSnapshotDelay: capAdapterParams.minimumSnapshotDelay,
+        priceCapParams: capAdapterParams.priceCapParams
+      })
     )
   {}
 

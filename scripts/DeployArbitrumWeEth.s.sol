@@ -15,15 +15,17 @@ library CapAdaptersCodeArbitrum {
       abi.encodePacked(
         type(CLRatePriceCapAdapter).creationCode,
         abi.encode(
-          AaveV3Arbitrum.ACL_MANAGER,
-          AaveV3ArbitrumAssets.WETH_ORACLE,
-          weETH_eETH_AGGREGATOR,
-          'Capped weETH / eETH(ETH) / USD',
-          7 days,
-          IPriceCapAdapter.PriceCapUpdateParams({
-            snapshotRatio: 1034704981376366213,
-            snapshotTimestamp: 1711555350, // 27th of March 2024
-            maxYearlyRatioGrowthPercent: 8_75
+          IPriceCapAdapter.CapAdapterParams({
+            aclManager: AaveV3Arbitrum.ACL_MANAGER,
+            baseAggregatorAddress: AaveV3ArbitrumAssets.WETH_ORACLE,
+            ratioProviderAddress: weETH_eETH_AGGREGATOR,
+            pairDescription: 'Capped weETH / eETH(ETH) / USD',
+            minimumSnapshotDelay: 7 days,
+            priceCapParams: IPriceCapAdapter.PriceCapUpdateParams({
+              snapshotRatio: 1034704981376366213,
+              snapshotTimestamp: 1711555350, // 27th of March 2024
+              maxYearlyRatioGrowthPercent: 8_75
+            })
           })
         )
       );

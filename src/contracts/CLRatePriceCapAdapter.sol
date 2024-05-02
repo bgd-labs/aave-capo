@@ -14,29 +14,21 @@ import {PriceCapAdapterBase, IPriceCapAdapter} from './PriceCapAdapterBase.sol';
  */
 contract CLRatePriceCapAdapter is PriceCapAdapterBase {
   /**
-   * @param aclManager ACL manager contract
-   * @param assetToBaseAggregatorAddress the address of (ASSET / USD) feed
-   * @param ratioProviderAddress the address of the (lstASSET / ASSET) ratio feed
-   * @param pairName name identifier
-   * @param minimumSnapshotDelay minimum time (in seconds) that should have passed from the snapshot timestamp to the current block.timestamp
-   * @param priceCapParams parameters to set price cap
+   * @param capAdapterParams parameters to create cap adapter
    */
   constructor(
-    IACLManager aclManager,
-    address assetToBaseAggregatorAddress,
-    address ratioProviderAddress,
-    string memory pairName,
-    uint48 minimumSnapshotDelay,
-    PriceCapUpdateParams memory priceCapParams
+    CapAdapterParams memory capAdapterParams
   )
     PriceCapAdapterBase(
-      aclManager,
-      assetToBaseAggregatorAddress,
-      ratioProviderAddress,
-      pairName,
-      IChainlinkAggregator(ratioProviderAddress).decimals(),
-      minimumSnapshotDelay,
-      priceCapParams
+      CapAdapterBaseParams({
+        aclManager: capAdapterParams.aclManager,
+        baseAggregatorAddress: capAdapterParams.baseAggregatorAddress,
+        ratioProviderAddress: capAdapterParams.ratioProviderAddress,
+        pairDescription: capAdapterParams.pairDescription,
+        ratioDecimals: IChainlinkAggregator(capAdapterParams.ratioProviderAddress).decimals(),
+        minimumSnapshotDelay: capAdapterParams.minimumSnapshotDelay,
+        priceCapParams: capAdapterParams.priceCapParams
+      })
     )
   {}
 
