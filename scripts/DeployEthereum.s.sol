@@ -45,9 +45,9 @@ library CapAdaptersCodeEthereum {
             pairDescription: 'Capped osETH / ETH / USD',
             minimumSnapshotDelay: 7 days,
             priceCapParams: IPriceCapAdapter.PriceCapUpdateParams({
-              snapshotRatio: 1014137378357729078,
-              snapshotTimestamp: 1711416299, // 20-04-2024
-              maxYearlyRatioGrowthPercent: 9_75
+              snapshotRatio: 1014445878439441413,
+              snapshotTimestamp: 1713934379, // 24-04-2024
+              maxYearlyRatioGrowthPercent: 8_75
             })
           })
         )
