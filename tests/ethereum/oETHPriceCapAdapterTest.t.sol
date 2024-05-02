@@ -13,7 +13,8 @@ contract osETHPriceCapAdapterTest is BaseTest {
     BaseTest(
       CapAdaptersCodeEthereum.osETHAdapterCode(),
       90,
-      ForkParams({network: 'mainnet', blockNumber: 19756408})
+      ForkParams({network: 'mainnet', blockNumber: 19783192}),
+      'osETH_Ethereum'
     )
   {}
 
