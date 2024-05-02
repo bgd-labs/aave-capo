@@ -18,16 +18,6 @@ abstract contract BaseTest is Test {
     uint256 blockNumber;
   }
 
-  struct CapAdapterParams {
-    IACLManager aclManager;
-    address baseAggregatorAddress;
-    address ratioProviderAddress;
-    string pairDescription;
-    uint8 ratioDecimals;
-    uint48 minimumSnapshotDelay;
-    IPriceCapAdapter.PriceCapUpdateParams priceCapParams;
-  }
-
   struct PriceParams {
     int256 sourcePrice;
     int256 referencePrice;
@@ -74,7 +64,7 @@ abstract contract BaseTest is Test {
     uint256 finishBlock = forkParams.blockNumber;
 
     // get adapter parameters
-    CapAdapterParams memory capAdapterParams = _getCapAdapterParams();
+    IPriceCapAdapter.CapAdapterParams memory capAdapterParams = _getCapAdapterParams();
 
     // get start block
     uint256 currentBlock = _getStartBlock(finishBlock);
@@ -133,16 +123,15 @@ abstract contract BaseTest is Test {
     assertTrue(adapter.isCapped());
   }
 
-  function _getCapAdapterParams() internal returns (CapAdapterParams memory) {
+  function _getCapAdapterParams() internal returns (IPriceCapAdapter.CapAdapterParams memory) {
     IPriceCapAdapter adapter = IPriceCapAdapter(GovV3Helpers.deployDeterministic(deploymentCode));
 
     return
-      CapAdapterParams({
+      IPriceCapAdapter.CapAdapterParams({
         aclManager: adapter.ACL_MANAGER(),
         baseAggregatorAddress: address(adapter.BASE_TO_USD_AGGREGATOR()),
         ratioProviderAddress: adapter.RATIO_PROVIDER(),
         pairDescription: adapter.description(),
-        ratioDecimals: adapter.RATIO_DECIMALS(),
         minimumSnapshotDelay: adapter.MINIMUM_SNAPSHOT_DELAY(),
         priceCapParams: IPriceCapAdapter.PriceCapUpdateParams({
           snapshotRatio: uint104(adapter.getSnapshotRatio()),
@@ -153,11 +142,11 @@ abstract contract BaseTest is Test {
   }
 
   function _createAdapter(
-    CapAdapterParams memory capAdapterParams
+    IPriceCapAdapter.CapAdapterParams memory capAdapterParams
   ) internal virtual returns (IPriceCapAdapter) {}
 
   function _createRetrospectiveAdapter(
-    CapAdapterParams memory capAdapterParams,
+    IPriceCapAdapter.CapAdapterParams memory capAdapterParams,
     uint256 currentBlock
   ) internal returns (IPriceCapAdapter) {
     // save temporary minimum snapshot delay

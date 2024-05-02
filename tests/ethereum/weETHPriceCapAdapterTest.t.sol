@@ -19,16 +19,8 @@ contract weETHPriceCapAdapterTest is BaseTest {
   {}
 
   function _createAdapter(
-    CapAdapterParams memory capAdapterParams
+    IPriceCapAdapter.CapAdapterParams memory capAdapterParams
   ) internal override returns (IPriceCapAdapter) {
-    return
-      new WeETHPriceCapAdapter(
-        capAdapterParams.aclManager,
-        capAdapterParams.baseAggregatorAddress,
-        capAdapterParams.ratioProviderAddress,
-        capAdapterParams.pairDescription,
-        capAdapterParams.minimumSnapshotDelay,
-        capAdapterParams.priceCapParams
-      );
+    return new WeETHPriceCapAdapter(capAdapterParams);
   }
 }

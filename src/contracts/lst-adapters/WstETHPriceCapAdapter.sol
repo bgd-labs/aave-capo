@@ -14,29 +14,21 @@ import {PriceCapAdapterBase, IPriceCapAdapter} from '../PriceCapAdapterBase.sol'
  */
 contract WstETHPriceCapAdapter is PriceCapAdapterBase {
   /**
-   * @param aclManager ACL manager contract
-   * @param ethToBaseAggregatorAddress the address of (ETH / USD) feed
-   * @param stEthAddress the address of the stETH contract, the (wStETH / ETH) ratio feed
-   * @param pairName name identifier
-   * @param minimumSnapshotDelay minimum time (in seconds) that should have passed from the snapshot timestamp to the current block.timestamp
-   * @param priceCapParams parameters to set price cap
+   * @param capAdapterParams parameters to create cap adapter
    */
   constructor(
-    IACLManager aclManager,
-    address ethToBaseAggregatorAddress,
-    address stEthAddress,
-    string memory pairName,
-    uint48 minimumSnapshotDelay,
-    PriceCapUpdateParams memory priceCapParams
+    CapAdapterParams memory capAdapterParams
   )
     PriceCapAdapterBase(
-      aclManager,
-      ethToBaseAggregatorAddress,
-      stEthAddress,
-      pairName,
-      18,
-      minimumSnapshotDelay,
-      priceCapParams
+      CapAdapterBaseParams({
+        aclManager: capAdapterParams.aclManager,
+        baseAggregatorAddress: capAdapterParams.baseAggregatorAddress,
+        ratioProviderAddress: capAdapterParams.ratioProviderAddress,
+        pairDescription: capAdapterParams.pairDescription,
+        ratioDecimals: 18,
+        minimumSnapshotDelay: capAdapterParams.minimumSnapshotDelay,
+        priceCapParams: capAdapterParams.priceCapParams
+      })
     )
   {}
 

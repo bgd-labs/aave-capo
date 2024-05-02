@@ -62,36 +62,22 @@ abstract contract PriceCapAdapterBase is IPriceCapAdapter {
   uint16 private _maxYearlyRatioGrowthPercent;
 
   /**
-   * @param aclManager ACL manager contract
-   * @param baseAggregatorAddress the address of (underlyingAsset / USD) price feed
-   * @param ratioProviderAddress the address of (lst /underlyingAsset) ratio feed
-   * @param pairDescription the capped (lstAsset / underlyingAsset) pair description
-   * @param ratioDecimals the number of decimal places of the (lstAsset / underlyingAsset) ratio feed
-   * @param minimumSnapshotDelay minimum time (in seconds) that should have passed from the snapshot timestamp to the current block.timestamp
-   * @param priceCapParams parameters to set price cap
+   * @param capAdapterBaseParams parameters to create adapter
    */
-  constructor(
-    IACLManager aclManager,
-    address baseAggregatorAddress,
-    address ratioProviderAddress,
-    string memory pairDescription,
-    uint8 ratioDecimals,
-    uint48 minimumSnapshotDelay,
-    PriceCapUpdateParams memory priceCapParams
-  ) {
-    if (address(aclManager) == address(0)) {
+  constructor(CapAdapterBaseParams memory capAdapterBaseParams) {
+    if (address(capAdapterBaseParams.aclManager) == address(0)) {
       revert ACLManagerIsZeroAddress();
     }
-    ACL_MANAGER = aclManager;
-    BASE_TO_USD_AGGREGATOR = IChainlinkAggregator(baseAggregatorAddress);
-    RATIO_PROVIDER = ratioProviderAddress;
+    ACL_MANAGER = capAdapterBaseParams.aclManager;
+    BASE_TO_USD_AGGREGATOR = IChainlinkAggregator(capAdapterBaseParams.baseAggregatorAddress);
+    RATIO_PROVIDER = capAdapterBaseParams.ratioProviderAddress;
     DECIMALS = BASE_TO_USD_AGGREGATOR.decimals();
-    RATIO_DECIMALS = ratioDecimals;
-    MINIMUM_SNAPSHOT_DELAY = minimumSnapshotDelay;
+    RATIO_DECIMALS = capAdapterBaseParams.ratioDecimals;
+    MINIMUM_SNAPSHOT_DELAY = capAdapterBaseParams.minimumSnapshotDelay;
 
-    _description = pairDescription;
+    _description = capAdapterBaseParams.pairDescription;
 
-    _setCapParameters(priceCapParams);
+    _setCapParameters(capAdapterBaseParams.priceCapParams);
   }
 
   /// @inheritdoc ICLSynchronicityPriceAdapter

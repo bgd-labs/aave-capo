@@ -21,6 +21,33 @@ interface IPriceCapAdapter is ICLSynchronicityPriceAdapter {
   );
 
   /**
+   * @notice Parameters to create adapter
+   * @param capAdapterParams parameters to create adapter
+   */
+  struct CapAdapterBaseParams {
+    IACLManager aclManager;
+    address baseAggregatorAddress;
+    address ratioProviderAddress;
+    string pairDescription;
+    uint8 ratioDecimals;
+    uint48 minimumSnapshotDelay;
+    PriceCapUpdateParams priceCapParams;
+  }
+
+  /**
+   * @notice Parameters to create CL cap adapter
+   * @param clCapAdapterParams parameters to create CL cap adapter
+   */
+  struct CapAdapterParams {
+    IACLManager aclManager;
+    address baseAggregatorAddress;
+    address ratioProviderAddress;
+    string pairDescription;
+    uint48 minimumSnapshotDelay;
+    PriceCapUpdateParams priceCapParams;
+  }
+
+  /**
    * @notice Parameters to update price cap
    * @param priceCapParams parameters to set price cap
    */
