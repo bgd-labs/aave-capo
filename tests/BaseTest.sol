@@ -263,6 +263,20 @@ abstract contract BaseTest is Test {
     string memory referenceName,
     uint8 decimals
   ) internal {
+    string memory path = _generateJsonReport(sourceName, referenceName, decimals);
+    _generateMdReport(path);
+
+    string[] memory inputs = new string[](2);
+    inputs[0] = 'rm';
+    inputs[1] = path;
+    vm.ffi(inputs);
+  }
+
+  function _generateJsonReport(
+    string memory sourceName,
+    string memory referenceName,
+    uint8 decimals
+  ) internal returns (string memory) {
     string memory path = string(abi.encodePacked('./reports/', reportName, '.json'));
     vm.serializeString('root', 'source', sourceName);
     vm.serializeString('root', 'reference', referenceName);
@@ -282,5 +296,20 @@ abstract contract BaseTest is Test {
 
     string memory output = vm.serializeString('root', pricesKey, content);
     vm.writeJson(output, path);
+
+    return path;
+  }
+
+  function _generateMdReport(string memory sourcePath) internal {
+    string memory outPath = string(abi.encodePacked('./reports/', reportName, '.md'));
+
+    string[] memory inputs = new string[](7);
+    inputs[0] = 'npx';
+    inputs[1] = '@bgd-labs/aave-cli';
+    inputs[2] = 'capo-report';
+    inputs[3] = sourcePath;
+    inputs[5] = '-o';
+    inputs[6] = outPath;
+    vm.ffi(inputs);
   }
 }
