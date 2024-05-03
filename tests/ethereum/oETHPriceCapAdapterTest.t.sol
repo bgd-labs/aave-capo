@@ -5,22 +5,22 @@ import '../BaseTest.sol';
 
 import {AaveV3Ethereum, AaveV3EthereumAssets} from 'aave-address-book/AaveV3Ethereum.sol';
 
-import {WeETHPriceCapAdapter, IWeEth} from '../../src/contracts/lst-adapters/WeETHPriceCapAdapter.sol';
+import {OsETHPriceCapAdapter} from '../../src/contracts/lst-adapters/OsETHPriceCapAdapter.sol';
 import {CapAdaptersCodeEthereum} from '../../scripts/DeployEthereum.s.sol';
 
-contract weETHPriceCapAdapterTest is BaseTest {
+contract osETHPriceCapAdapterTest is BaseTest {
   constructor()
     BaseTest(
-      CapAdaptersCodeEthereum.weETHAdapterCode(),
+      CapAdaptersCodeEthereum.osETHAdapterCode(),
       90,
-      ForkParams({network: 'mainnet', blockNumber: 19575450}),
-      'weETH_Ethereum'
+      ForkParams({network: 'mainnet', blockNumber: 19783192}),
+      'osETH_Ethereum'
     )
   {}
 
   function _createAdapter(
     IPriceCapAdapter.CapAdapterParams memory capAdapterParams
   ) internal override returns (IPriceCapAdapter) {
-    return new WeETHPriceCapAdapter(capAdapterParams);
+    return new OsETHPriceCapAdapter(capAdapterParams);
   }
 }
