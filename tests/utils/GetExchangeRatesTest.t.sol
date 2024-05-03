@@ -31,7 +31,7 @@ import {CapAdaptersCodeArbitrum} from '../../scripts/DeployArbitrumWeEth.s.sol';
 
 contract ExchangeRatesEth is Test {
   function setUp() public {
-    vm.createSelectFork(vm.rpcUrl('mainnet'), 19722981); // 20th of April
+    vm.createSelectFork(vm.rpcUrl('mainnet'), 19722981); // 24th of April
   }
 
   function test_getExchangeRate() public view {
