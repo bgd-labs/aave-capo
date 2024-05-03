@@ -7,7 +7,7 @@ update:; forge update
 
 # Build & test
 build  :; forge build --sizes
-test   :; forge test -vvv
+test   :; forge test -vvv --evm-version shanghai
 
 # Common
 common-flags := --legacy --ledger --mnemonic-indexes $(MNEMONIC_INDEX) --sender $(LEDGER_SENDER) --verify -vvvv --broadcast --slow
