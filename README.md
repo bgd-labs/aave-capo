@@ -4,6 +4,10 @@ Price oracle adapter smart contracts, introducing different types of range price
 
 <br>
 
+## Notes
+
+The contracts in this repository use the Shanghai EVM version, please check network support before deploying.
+
 ## Types
 
 ### [RatioCapPriceAdapter](./src/contracts/PriceCapAdapterBase.sol)
@@ -47,4 +51,4 @@ Created by [BGD Labs](https://bgdlabs.com/).
 
 The default license of this repository is [BUSL1.1](./LICENSE), but all interfaces and the content of the [libs folder](./src/contracts/libs/) and [Polygon tunnel](./src/contracts/adapters/polygon/tunnel/) folders are open source, MIT-licensed.
 
-**IMPORTANT**. The BUSL1.1 license of this repository allows for any usage of the software, if respecting the *Additional Use Grant* limitations, forbidding any use case damaging anyhow the Aave DAO's interests.
+**IMPORTANT**. The BUSL1.1 license of this repository allows for any usage of the software, if respecting the _Additional Use Grant_ limitations, forbidding any use case damaging anyhow the Aave DAO's interests.
