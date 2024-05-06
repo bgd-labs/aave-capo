@@ -1,10 +1,10 @@
 # How to add a new CAPO adapter
 
-This documentation describes the steps required to add a new price cap adapter for an lst or stablecoin asset.
+This documentation describes the steps required to add a new price cap adapter for LST or stablecoin asset.
 
 As a first step, contact risk providers for recommendations on capo parameters:
 
-- `maxYearlyGrowthPercent` and `minimumSnapshotDelay` parameters in case of lst asset
+- `maxYearlyGrowthPercent` and `minimumSnapshotDelay` parameters in case of an LST asset
 - fixed capo value for the stablecoin asset
 
 Deploying a new cap adapter consists of three simple steps:
@@ -15,7 +15,7 @@ Deploying a new cap adapter consists of three simple steps:
 
 ## 1. Creating an adapter for LST
 
-Depending on the asset type and data source, three options are possible:
+Depending on the asset type and data source, two options are possible:
 
 ### Native exchange rate
 
@@ -55,7 +55,7 @@ Alter the appropriate deployment script:
    - `snapshotTimestamp`: timestamp of the snapshot ratio
    - `maxYearlyRatioGrowthPercent`: the maximum possible annual LST growth percentage
 
-2. Add the deployment script and command to the makefile.
+2. Add the deployment script and command to the Makefile.
 
 ## 3. Testing
 
@@ -82,7 +82,7 @@ No need to add a specific adapter, existing [`PriceCapAdapterStable`](src/contra
    - `adapterDescription`: description of the adapter
    - `priceCap`: the value of the price cap, for example for 4% it would be `int256(1.04 * 1e8)`
 
-2. Add the deployment script and command to the makefile.
+2. Add the deployment script and command to the Makefile.
 
 ## Testing
 
