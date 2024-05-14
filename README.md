@@ -8,6 +8,10 @@ Price oracle adapter smart contracts, introducing different types of range price
 
 The contracts in this repository use the Shanghai EVM version, please check network support before deploying.
 
+## How to add a new adapter
+
+[Described here](/how-to.md).
+
 ## Types
 
 ### [RatioCapPriceAdapter](./src/contracts/PriceCapAdapterBase.sol)
