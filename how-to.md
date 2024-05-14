@@ -13,6 +13,8 @@ Deploying a new cap adapter consists of three simple steps:
 - write a deployment script
 - add and run tests
 
+There are situations, when the sync adapter should be used together with the cap adapter. Detailed description is in the [separate section](#synchronicity-adapters).
+
 ## 1. Creating an adapter for LST
 
 Depending on the asset type and data source, two options are possible:
@@ -87,3 +89,12 @@ No need to add a specific adapter, existing [`PriceCapAdapterStable`](src/contra
 ## Testing
 
 Base test for stables would be added soon. Stay tuned.
+
+## Sync adapter
+
+When you need to cap the asset which is not pegged to the base asset of the pool (to `USD`), such as `agEUR`, then you need to use a combination of adapters:
+
+1.  Cap adapter for `agEUR / EUR` as `agEUR` should be capped against `EUR`.
+2.  [CLSynchronicityPriceAdapterPegToBase](https://github.com/bgd-labs/cl-synchronicity-price-adapter/blob/main/src/contracts/CLSynchronicityPriceAdapterPegToBase.sol) to combine capped adapter with `EUR / USD` feed to create capped `agEUR / EUR / USD`.
+
+[Here is the example](scripts/Example.s.sol).
