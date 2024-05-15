@@ -61,6 +61,11 @@ contract PriceCapAdapterStable is IPriceCapAdapterStable {
   }
 
   /// @inheritdoc IPriceCapAdapterStable
+  function getPriceCap() external view returns (int256) {
+    return _priceCap;
+  }
+
+  /// @inheritdoc IPriceCapAdapterStable
   function isCapped() public view virtual returns (bool) {
     return (ASSET_TO_USD_AGGREGATOR.latestAnswer() > this.latestAnswer());
   }

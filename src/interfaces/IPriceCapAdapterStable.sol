@@ -41,6 +41,11 @@ interface IPriceCapAdapterStable is ICLSynchronicityPriceAdapter {
   function setPriceCap(int256 priceCap) external;
 
   /**
+   * @notice Get price cap value
+   */
+  function getPriceCap() external view returns (int256);
+
+  /**
    * @notice Returns if the price is currently capped
    */
   function isCapped() external view returns (bool);
