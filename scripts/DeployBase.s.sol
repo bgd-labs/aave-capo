@@ -23,7 +23,7 @@ library CapAdaptersCodeBase {
             minimumSnapshotDelay: 7 days,
             priceCapParams: IPriceCapAdapter.PriceCapUpdateParams({
               snapshotRatio: 1038264880178601326,
-              snapshotTimestamp: 1715620171, // 20th of May 2024
+              snapshotTimestamp: 1715620171, // 13th of May 2024
               maxYearlyRatioGrowthPercent: 8_75
             })
           })
