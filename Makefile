@@ -17,6 +17,7 @@ deploy-weeth-mainnet :; forge script scripts/DeployEthereum.s.sol:DeployWeEthEth
 deploy-weeth-arbitrum :; forge script scripts/DeployArbitrumWeEth.s.sol:DeployWeEthArbitrum --rpc-url arbitrum $(common-flags)
 
 deploy-oseth-mainnet :; forge script scripts/DeployEthereum.s.sol:DeployOsEthEthereum --rpc-url mainnet $(common-flags)
+deploy-ethx-mainnet :; forge script scripts/DeployEthereum.s.sol:DeployEthxEthereum --rpc-url mainnet $(common-flags)
 
 # Utilities
 download :; cast etherscan-source --chain ${chain} -d src/etherscan/${chain}_${address} ${address}
