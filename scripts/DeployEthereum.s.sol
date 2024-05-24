@@ -13,7 +13,7 @@ import {OsETHPriceCapAdapter} from '../src/contracts/lst-adapters/OsETHPriceCapA
 library CapAdaptersCodeEthereum {
   address public constant weETH = 0xCd5fE23C85820F7B72D0926FC9b05b43E359b7ee;
   address public constant osETH_VAULT_CONTROLLER = 0x2A261e60FB14586B474C208b1B7AC6D0f5000306;
-  address public constant USDe_PRICE_FEED = 0x4c9EDD5852cd905f086C759E8383e09bff1E68B3;
+  address public constant USDe_PRICE_FEED = 0xa569d910839Ae8865Da8F8e70FfFb0cBA869F961;
 
   function weETHAdapterCode() internal pure returns (bytes memory) {
     return
