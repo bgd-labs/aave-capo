@@ -28,7 +28,7 @@ import {IOsTokenVaultController} from '../../src/interfaces/IOsTokenVaultControl
 
 import {CapAdaptersCodeEthereum} from '../../scripts/DeployEthereum.s.sol';
 import {CapAdaptersCodeArbitrum} from '../../scripts/DeployArbitrumWeEth.s.sol';
-import {CapAdaptersCodeBase} from '../../scripts/DeployBaseWeEth.s.sol';
+import {CapAdaptersCodeBase} from '../../scripts/DeployBase.s.sol';
 
 contract ExchangeRatesEth is Test {
   function setUp() public {
