@@ -13,10 +13,4 @@ contract USDePriceCapAdapterTest is BaseStableTest {
       ForkParams({network: 'mainnet', blockNumber: 19940721})
     )
   {}
-
-  //function _createAdapter(
-  //  PriceCapAdapterStable.CapAdapterStableParams memory capAdapterStableParams
-  //) internal override returns (PriceCapAdapterStable) {
-  //  return new PriceCapAdapterStable(capAdapterStableParams);
-  //}
 }

@@ -57,7 +57,7 @@ library CapAdaptersCodeEthereum {
       );
   }
 
-  function USDeAdapterCode() internal pure returns(bytes memory) {
+  function USDeAdapterCode() internal pure returns (bytes memory) {
     return
       abi.encodePacked(
         type(PriceCapAdapterStable).creationCode,
@@ -71,7 +71,6 @@ library CapAdaptersCodeEthereum {
         )
       );
   }
-      
 }
 
 contract DeployWeEthEthereum is EthereumScript {
