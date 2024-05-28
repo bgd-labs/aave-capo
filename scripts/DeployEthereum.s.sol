@@ -4,13 +4,16 @@ import {GovV3Helpers} from 'aave-helpers/GovV3Helpers.sol';
 import {EthereumScript} from 'aave-helpers/ScriptUtils.sol';
 import {AaveV3Ethereum, AaveV3EthereumAssets} from 'aave-address-book/AaveV3Ethereum.sol';
 
-import {IPriceCapAdapter} from '../src/interfaces/IPriceCapAdapter.sol';
+import {PriceCapAdapterStable} from '../src/contracts/PriceCapAdapterStable.sol';
+import {IPriceCapAdapter, IChainlinkAggregator} from '../src/interfaces/IPriceCapAdapter.sol';
+import {IPriceCapAdapterStable} from '../src/interfaces/IPriceCapAdapterStable.sol';
 import {WeETHPriceCapAdapter} from '../src/contracts/lst-adapters/WeETHPriceCapAdapter.sol';
 import {OsETHPriceCapAdapter} from '../src/contracts/lst-adapters/OsETHPriceCapAdapter.sol';
 
 library CapAdaptersCodeEthereum {
   address public constant weETH = 0xCd5fE23C85820F7B72D0926FC9b05b43E359b7ee;
   address public constant osETH_VAULT_CONTROLLER = 0x2A261e60FB14586B474C208b1B7AC6D0f5000306;
+  address public constant USDe_PRICE_FEED = 0xa569d910839Ae8865Da8F8e70FfFb0cBA869F961;
 
   function weETHAdapterCode() internal pure returns (bytes memory) {
     return
@@ -53,6 +56,21 @@ library CapAdaptersCodeEthereum {
         )
       );
   }
+
+  function USDeAdapterCode() internal pure returns (bytes memory) {
+    return
+      abi.encodePacked(
+        type(PriceCapAdapterStable).creationCode,
+        abi.encode(
+          IPriceCapAdapterStable.CapAdapterStableParams({
+            aclManager: AaveV3Ethereum.ACL_MANAGER,
+            assetToUsdAggregator: IChainlinkAggregator(USDe_PRICE_FEED),
+            adapterDescription: 'Capped USDe / USD',
+            priceCap: int256(1.04 * 1e8)
+          })
+        )
+      );
+  }
 }
 
 contract DeployWeEthEthereum is EthereumScript {
@@ -64,5 +82,11 @@ contract DeployWeEthEthereum is EthereumScript {
 contract DeployOsEthEthereum is EthereumScript {
   function run() external broadcast {
     GovV3Helpers.deployDeterministic(CapAdaptersCodeEthereum.osETHAdapterCode());
+  }
+}
+
+contract DeployUSDeEthereum is EthereumScript {
+  function run() external broadcast {
+    GovV3Helpers.deployDeterministic(CapAdaptersCodeEthereum.USDeAdapterCode());
   }
 }
