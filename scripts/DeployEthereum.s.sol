@@ -4,7 +4,9 @@ import {GovV3Helpers} from 'aave-helpers/GovV3Helpers.sol';
 import {EthereumScript} from 'aave-helpers/ScriptUtils.sol';
 import {AaveV3Ethereum, AaveV3EthereumAssets} from 'aave-address-book/AaveV3Ethereum.sol';
 
-import {IPriceCapAdapter} from '../src/interfaces/IPriceCapAdapter.sol';
+import {PriceCapAdapterStable} from '../src/contracts/PriceCapAdapterStable.sol';
+import {IPriceCapAdapter, IChainlinkAggregator} from '../src/interfaces/IPriceCapAdapter.sol';
+import {IPriceCapAdapterStable} from '../src/interfaces/IPriceCapAdapterStable.sol';
 import {WeETHPriceCapAdapter} from '../src/contracts/lst-adapters/WeETHPriceCapAdapter.sol';
 import {OsETHPriceCapAdapter} from '../src/contracts/lst-adapters/OsETHPriceCapAdapter.sol';
 import {ETHxPriceCapAdapter} from '../src/contracts/lst-adapters/ETHxPriceCapAdapter.sol';
@@ -13,6 +15,8 @@ library CapAdaptersCodeEthereum {
   address public constant weETH = 0xCd5fE23C85820F7B72D0926FC9b05b43E359b7ee;
   address public constant osETH_VAULT_CONTROLLER = 0x2A261e60FB14586B474C208b1B7AC6D0f5000306;
   address public constant ETHX_ORACLE = 0xF64bAe65f6f2a5277571143A24FaaFDFC0C2a737;
+  address public constant USDe_PRICE_FEED = 0xa569d910839Ae8865Da8F8e70FfFb0cBA869F961;
+
 
   function weETHAdapterCode() internal pure returns (bytes memory) {
     return
@@ -72,6 +76,21 @@ library CapAdaptersCodeEthereum {
               snapshotTimestamp:  1715870699, // 16-05-2024
               maxYearlyRatioGrowthPercent: 9_24
             })
+          })
+        )
+      );
+  }
+
+  function USDeAdapterCode() internal pure returns (bytes memory) {
+    return
+      abi.encodePacked(
+        type(PriceCapAdapterStable).creationCode,
+        abi.encode(
+          IPriceCapAdapterStable.CapAdapterStableParams({
+            aclManager: AaveV3Ethereum.ACL_MANAGER,
+            assetToUsdAggregator: IChainlinkAggregator(USDe_PRICE_FEED),
+            adapterDescription: 'Capped USDe / USD',
+            priceCap: int256(1.04 * 1e8)
           })
         )
       );

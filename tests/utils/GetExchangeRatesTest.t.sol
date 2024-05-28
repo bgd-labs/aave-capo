@@ -29,6 +29,7 @@ import {IOsTokenVaultController} from '../../src/interfaces/IOsTokenVaultControl
 
 import {CapAdaptersCodeEthereum} from '../../scripts/DeployEthereum.s.sol';
 import {CapAdaptersCodeArbitrum} from '../../scripts/DeployArbitrumWeEth.s.sol';
+import {CapAdaptersCodeBase} from '../../scripts/DeployBase.s.sol';
 
 contract ExchangeRatesEth is Test {
   function setUp() public {
@@ -105,7 +106,7 @@ contract ExchangeRatesAvax is Test {
 
 contract ExchangeRatesBase is Test {
   function setUp() public {
-    vm.createSelectFork(vm.rpcUrl('base'), 10586628); // 15th of February
+    vm.createSelectFork(vm.rpcUrl('base'), 14415412); // may 13
   }
 
   function test_getExchangeRate() public view {
@@ -113,10 +114,14 @@ contract ExchangeRatesBase is Test {
     uint256 wstEthRate = uint256(
       IChainlinkAggregator(MiscBase.wstETH_stETH_AGGREGATOR).latestAnswer()
     );
+    uint256 weEthRate = uint256(
+      IChainlinkAggregator(CapAdaptersCodeBase.weETH_eETH_AGGREGATOR).latestAnswer()
+    );
 
     console.log('Base');
     console.log('cbEthRate', cbEthRate);
     console.log('wstEthRate', wstEthRate);
+    console.log('weEthRate', weEthRate);
 
     console.log(block.timestamp);
   }

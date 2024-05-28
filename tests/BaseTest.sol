@@ -6,6 +6,7 @@ import 'forge-std/Test.sol';
 import {IACLManager, BasicIACLManager} from 'aave-address-book/AaveV3.sol';
 import {GovV3Helpers} from 'aave-helpers/GovV3Helpers.sol';
 import {IPriceCapAdapter, ICLSynchronicityPriceAdapter} from '../src/interfaces/IPriceCapAdapter.sol';
+import {BlockUtils} from './utils/BlockUtils.sol';
 
 abstract contract BaseTest is Test {
   uint256 public constant SECONDS_PER_DAY = 86400;
@@ -67,7 +68,11 @@ abstract contract BaseTest is Test {
     IPriceCapAdapter.CapAdapterParams memory capAdapterParams = _getCapAdapterParams();
 
     // get start block
-    uint256 currentBlock = _getStartBlock(finishBlock);
+    uint256 currentBlock = BlockUtils.getStartBlock(
+      finishBlock,
+      RETROSPECTIVE_DAYS,
+      forkParams.network
+    );
 
     IPriceCapAdapter adapter = _createRetrospectiveAdapter(capAdapterParams, currentBlock);
 
@@ -75,7 +80,7 @@ abstract contract BaseTest is Test {
     vm.makePersistent(address(adapter));
 
     // get step
-    uint256 step = _getStep();
+    uint256 step = BlockUtils.getStep(RETROSPECTIVE_STEP, forkParams.network);
 
     while (currentBlock <= finishBlock) {
       vm.createSelectFork(vm.rpcUrl(forkParams.network), currentBlock);
@@ -195,56 +200,10 @@ abstract contract BaseTest is Test {
     );
   }
 
-  function _getStartBlock(uint256 finishBlock) internal view returns (uint256) {
-    return finishBlock - RETROSPECTIVE_DAYS * _getBlocksPerDayByNetwork(forkParams.network);
-  }
-
-  function _getStep() internal view returns (uint256) {
-    return RETROSPECTIVE_STEP * _getBlocksPerDayByNetwork(forkParams.network);
-  }
-
   function _getSnapshotDelayInBlocks(uint48 minimumSnapshotDelay) internal view returns (uint256) {
-    return (minimumSnapshotDelay * _getBlocksPerDayByNetwork(forkParams.network)) / SECONDS_PER_DAY;
-  }
-
-  function _getBlocksPerDayByNetwork(string memory network) internal pure returns (uint256) {
-    if (keccak256(bytes(network)) == keccak256(bytes('mainnet'))) {
-      return 7300;
-    }
-
-    if (keccak256(bytes(network)) == keccak256(bytes('arbitrum'))) {
-      return 340000;
-    }
-
-    if (keccak256(bytes(network)) == keccak256(bytes('avalanche'))) {
-      return 43000;
-    }
-
-    if (keccak256(bytes(network)) == keccak256(bytes('base'))) {
-      return 44000;
-    }
-
-    if (keccak256(bytes(network)) == keccak256(bytes('bnb'))) {
-      return 30000;
-    }
-
-    if (keccak256(bytes(network)) == keccak256(bytes('optimism'))) {
-      return 44000;
-    }
-
-    if (keccak256(bytes(network)) == keccak256(bytes('polygon'))) {
-      return 38000;
-    }
-
-    if (keccak256(bytes(network)) == keccak256(bytes('scroll'))) {
-      return 25500;
-    }
-
-    if (keccak256(bytes(network)) == keccak256(bytes('gnosis'))) {
-      return 17000;
-    }
-
-    return 7300;
+    return
+      (minimumSnapshotDelay * BlockUtils.getBlocksPerDayByNetwork(forkParams.network)) /
+      SECONDS_PER_DAY;
   }
 
   function _generateReport(
