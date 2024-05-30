@@ -14,9 +14,8 @@ import {ETHxPriceCapAdapter} from '../src/contracts/lst-adapters/ETHxPriceCapAda
 library CapAdaptersCodeEthereum {
   address public constant weETH = 0xCd5fE23C85820F7B72D0926FC9b05b43E359b7ee;
   address public constant osETH_VAULT_CONTROLLER = 0x2A261e60FB14586B474C208b1B7AC6D0f5000306;
-  address public constant ETHX_ORACLE = 0xF64bAe65f6f2a5277571143A24FaaFDFC0C2a737;
   address public constant USDe_PRICE_FEED = 0xa569d910839Ae8865Da8F8e70FfFb0cBA869F961;
-
+  address public constant ETHX_POOLS_MANAGER = 0xcf5EA1b38380f6aF39068375516Daf40Ed70D299;
 
   function weETHAdapterCode() internal pure returns (bytes memory) {
     return
@@ -68,7 +67,7 @@ library CapAdaptersCodeEthereum {
           IPriceCapAdapter.CapAdapterParams({
             aclManager: AaveV3Ethereum.ACL_MANAGER,
             baseAggregatorAddress: AaveV3EthereumAssets.WETH_ORACLE,
-            ratioProviderAddress: ETHX_ORACLE,
+            ratioProviderAddress: ETHX_POOLS_MANAGER,
             pairDescription: 'Capped ETHx / ETH / USD',
             minimumSnapshotDelay: 7 days,
             priceCapParams: IPriceCapAdapter.PriceCapUpdateParams({

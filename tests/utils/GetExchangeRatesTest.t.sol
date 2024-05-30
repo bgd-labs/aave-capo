@@ -24,7 +24,7 @@ import {IChainlinkAggregator} from 'cl-synchronicity-price-adapter/interfaces/IC
 import {ISAvax} from '../../src/interfaces/ISAvax.sol';
 import {IStEUR} from '../../src/interfaces/IStEUR.sol';
 import {IWeEth} from '../../src/interfaces/IWeEth.sol';
-import {IEthxOracle} from '../../src/interfaces/IEthxOracle.sol';
+import {IStaderStakePoolsManager} from '../../src/interfaces/IStaderStakePoolsManager.sol';
 import {IOsTokenVaultController} from '../../src/interfaces/IOsTokenVaultController.sol';
 
 import {CapAdaptersCodeEthereum} from '../../scripts/DeployEthereum.s.sol';
@@ -47,8 +47,7 @@ contract ExchangeRatesEth is Test {
     uint256 weEthRate = IWeEth(CapAdaptersCodeEthereum.weETH).getRate();
     uint256 osEthRate = IOsTokenVaultController(CapAdaptersCodeEthereum.osETH_VAULT_CONTROLLER)
       .convertToAssets(10 ** 18);
-    IEthxOracle.ExchangeRate memory exchangeRate = IEthxOracle(CapAdaptersCodeEthereum.ETHX_ORACLE).getExchangeRate();
-    uint256 EthxRate = (exchangeRate.totalETHBalance * 10**18)/exchangeRate.totalETHXSupply;
+    uint256 EthxRate = IStaderStakePoolsManager(CapAdaptersCodeEthereum.ETHX_POOLS_MANAGER).getExchangeRate();
 
     console.log('cbEthRate', cbEthRate);
     console.log('rEthRate', rEthRate);

@@ -4,7 +4,7 @@ pragma solidity ^0.8.19;
 import {IACLManager} from 'aave-address-book/AaveV3.sol';
 
 import {PriceCapAdapterBase, IPriceCapAdapter} from '../PriceCapAdapterBase.sol';
-import {IEthxOracle} from '../../interfaces/IEthxOracle.sol';
+import {IStaderStakePoolsManager} from '../../interfaces/IStaderStakePoolsManager.sol';
 
 /**
  * @title ETHxPriceCapAdapter
@@ -34,7 +34,6 @@ contract ETHxPriceCapAdapter is PriceCapAdapterBase {
 
   /// @inheritdoc IPriceCapAdapter
   function getRatio() public view override returns (int256) {
-    IEthxOracle.ExchangeRate memory exchangeRate = IEthxOracle(RATIO_PROVIDER).getExchangeRate();
-    return int256((exchangeRate.totalETHBalance * 10**RATIO_DECIMALS)/ exchangeRate.totalETHXSupply);
+    return int256(IStaderStakePoolsManager(RATIO_PROVIDER).getExchangeRate());
   }
 }

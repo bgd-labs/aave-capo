@@ -5,7 +5,7 @@ import '../BaseTest.sol';
 
 import {AaveV3Ethereum, AaveV3EthereumAssets} from 'aave-address-book/AaveV3Ethereum.sol';
 
-import {ETHxPriceCapAdapter, IEthxOracle} from '../../src/contracts/lst-adapters/ETHxPriceCapAdapter.sol';
+import {ETHxPriceCapAdapter} from '../../src/contracts/lst-adapters/ETHxPriceCapAdapter.sol';
 import {CapAdaptersCodeEthereum} from '../../scripts/DeployEthereum.s.sol';
 
 contract ETHxPriceCapAdapterTest is BaseTest {
@@ -13,7 +13,7 @@ contract ETHxPriceCapAdapterTest is BaseTest {
     BaseTest(
       CapAdaptersCodeEthereum.ETHxAdapterCode(),
       90,
-      ForkParams({network: 'mainnet', blockNumber: 19933669}),
+      ForkParams({network: 'mainnet', blockNumber: 19984323}),
       'ETHx_Ethereum'
     )
   {}
