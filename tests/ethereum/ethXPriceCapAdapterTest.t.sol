@@ -13,7 +13,7 @@ contract ethXPriceCapAdapterTest is BaseTest {
     BaseTest(
       CapAdaptersCodeEthereum.ethXAdapterCode(),
       90,
-      ForkParams({network: 'mainnet', blockNumber: 19783192}),
+      ForkParams({network: 'mainnet', blockNumber: 20040889}),
       'EthX_Ethereum'
     )
   {}
