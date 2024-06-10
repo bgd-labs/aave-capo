@@ -10,8 +10,9 @@ import {BlockUtils} from './utils/BlockUtils.sol';
 
 abstract contract BaseTest is Test {
   uint256 public constant SECONDS_PER_DAY = 86400;
+  uint256 public constant SECONDS_PER_YEAR = 365 days;
 
-  uint256 public constant RETROSPECTIVE_STEP = 3;
+  uint256 public constant RETROSPECTIVE_STEP = 1;
   uint256 public immutable RETROSPECTIVE_DAYS;
 
   struct ForkParams {
@@ -24,6 +25,9 @@ abstract contract BaseTest is Test {
     int256 referencePrice;
     uint256 blockNumber;
     uint256 timestamp;
+    int256 ratio;
+    int256 dayToDayGrowth;
+    int256 smoothedGrowth;
   }
 
   ForkParams public forkParams;
@@ -75,37 +79,68 @@ abstract contract BaseTest is Test {
     );
 
     IPriceCapAdapter adapter = _createRetrospectiveAdapter(capAdapterParams, currentBlock);
+    uint256 snapshotDelayDays = uint256(adapter.MINIMUM_SNAPSHOT_DELAY()) / SECONDS_PER_DAY;
 
     // persist adapter
     vm.makePersistent(address(adapter));
 
     // get step
     uint256 step = BlockUtils.getStep(RETROSPECTIVE_STEP, forkParams.network);
+    uint256 i = 0;
 
     while (currentBlock <= finishBlock) {
       vm.createSelectFork(vm.rpcUrl(forkParams.network), currentBlock);
 
       int256 price = adapter.latestAnswer();
       int256 priceOfReferenceAdapter = adapter.BASE_TO_USD_AGGREGATOR().latestAnswer();
+      int256 ratio = adapter.getRatio();
+
+      int256 dayToDayGrowthPercent = 0;
+
+      if (i > 0) {
+        dayToDayGrowthPercent = _calculateGrowthPercent(
+          ratio,
+          prices[i - 1].ratio,
+          block.timestamp,
+          prices[i - 1].timestamp
+        );
+      }
+
+      int256 smoothedGrowth = 0;
+
+      if (i >= snapshotDelayDays) {
+        smoothedGrowth = _calculateGrowthPercent(
+          ratio,
+          prices[i - snapshotDelayDays].ratio,
+          block.timestamp,
+          prices[i - snapshotDelayDays].timestamp
+        );
+      }
 
       prices.push(
         PriceParams({
           sourcePrice: price,
           referencePrice: priceOfReferenceAdapter,
           blockNumber: currentBlock,
-          timestamp: block.timestamp
+          timestamp: block.timestamp,
+          ratio: ratio,
+          dayToDayGrowth: dayToDayGrowthPercent,
+          smoothedGrowth: smoothedGrowth
         })
       );
 
       assertFalse(adapter.isCapped());
 
       currentBlock += step;
+      i++;
     }
 
     _generateReport(
       adapter.description(),
       ICLSynchronicityPriceAdapter(address(adapter.BASE_TO_USD_AGGREGATOR())).description(),
-      adapter.decimals()
+      adapter.decimals(),
+      capAdapterParams.priceCapParams.maxYearlyRatioGrowthPercent,
+      snapshotDelayDays
     );
 
     vm.revokePersistent(address(adapter));
@@ -206,12 +241,31 @@ abstract contract BaseTest is Test {
       SECONDS_PER_DAY;
   }
 
+  function _calculateGrowthPercent(
+    int256 ratio,
+    int256 previousRatio,
+    uint256 currentTimestamp,
+    uint256 previousTimestamp
+  ) private pure returns (int256) {
+    return
+      (((ratio - previousRatio) * int256(SECONDS_PER_YEAR)) * 100_00) /
+      (previousRatio * int256(currentTimestamp - previousTimestamp));
+  }
+
   function _generateReport(
     string memory sourceName,
     string memory referenceName,
-    uint8 decimals
+    uint8 decimals,
+    uint16 maxYearlyGrowthPercent,
+    uint256 snapshotDelayDays
   ) internal {
-    string memory path = _generateJsonReport(sourceName, referenceName, decimals);
+    string memory path = _generateJsonReport(
+      sourceName,
+      referenceName,
+      decimals,
+      maxYearlyGrowthPercent,
+      snapshotDelayDays
+    );
     _generateMdReport(path);
 
     string[] memory inputs = new string[](2);
@@ -223,12 +277,16 @@ abstract contract BaseTest is Test {
   function _generateJsonReport(
     string memory sourceName,
     string memory referenceName,
-    uint8 decimals
+    uint8 decimals,
+    uint16 maxYearlyGrowthPercent,
+    uint256 snapshotDelayDays
   ) internal returns (string memory) {
     string memory path = string(abi.encodePacked('./reports/', reportName, '.json'));
     vm.serializeString('root', 'source', sourceName);
     vm.serializeString('root', 'reference', referenceName);
     vm.serializeUint('root', 'decimals', decimals);
+    vm.serializeUint('root', 'maxYearlyGrowthPercent', maxYearlyGrowthPercent);
+    vm.serializeUint('root', 'minSnapshotDelay', snapshotDelayDays);
     string memory pricesKey = 'prices';
     string memory content = '{}';
     vm.serializeJson(pricesKey, '{}');
@@ -238,7 +296,9 @@ abstract contract BaseTest is Test {
       vm.serializeJson(key, '{}');
       vm.serializeUint(key, 'timestamp', prices[i].timestamp);
       vm.serializeInt(key, 'sourcePrice', prices[i].sourcePrice);
-      string memory object = vm.serializeInt(key, 'referencePrice', prices[i].referencePrice);
+      vm.serializeInt(key, 'referencePrice', prices[i].referencePrice);
+      vm.serializeInt(key, 'dayToDayGrowth', prices[i].dayToDayGrowth);
+      string memory object = vm.serializeInt(key, 'smoothedGrowth', prices[i].smoothedGrowth);
       content = vm.serializeString(pricesKey, key, object);
     }
 
