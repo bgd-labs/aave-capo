@@ -5,7 +5,8 @@ import {GovV3Helpers} from 'aave-helpers/GovV3Helpers.sol';
 import {BNBScript} from 'aave-helpers/ScriptUtils.sol';
 import {AaveV3BNB, AaveV3BNBAssets} from 'aave-address-book/AaveV3BNB.sol';
 
-import {CLRatePriceCapAdapter, IPriceCapAdapter} from '../src/contracts/CLRatePriceCapAdapter.sol';
+import {BNBxPriceCapAdapter} from '../src/contracts/lst-adapters/BNBxPriceCapAdapter.sol';
+import {IPriceCapAdapter} from '../src/interfaces/IPriceCapAdapter.sol';
 
 library CapAdaptersCodeBNB {
   address public constant STADER_STAKE_MANAGER = 0x7276241a669489E4BBB76f63d2A43Bfe63080F2F;
@@ -13,7 +14,7 @@ library CapAdaptersCodeBNB {
   function BNBxAdapterCode() internal pure returns (bytes memory) {
     return
       abi.encodePacked(
-        type(CLRatePriceCapAdapter).creationCode,
+        type(BNBxPriceCapAdapter).creationCode,
         abi.encode(
           IPriceCapAdapter.CapAdapterParams({
             aclManager: AaveV3BNB.ACL_MANAGER,
@@ -22,7 +23,7 @@ library CapAdaptersCodeBNB {
             pairDescription: 'Capped BNBx / BNB / USD',
             minimumSnapshotDelay: 14 days,
             priceCapParams: IPriceCapAdapter.PriceCapUpdateParams({
-              snapshotRatio: 10905755436,
+              snapshotRatio: 1090575543659184652,
               snapshotTimestamp: 1716823740, // 27th of May 2024
               maxYearlyRatioGrowthPercent: 12_00
             })

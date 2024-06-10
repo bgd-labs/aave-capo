@@ -133,7 +133,7 @@ contract ExchangeRatesBNB is Test {
 
   function test_getExchangeRate() public view {
     uint256 bnbXRate = IStaderStakeManager(CapAdaptersCodeBNB.STADER_STAKE_MANAGER).convertBnbXToBnb(
-      10 ** 10
+      10 ** 18
     );
 
     console.log('BNBxRate', bnbXRate);

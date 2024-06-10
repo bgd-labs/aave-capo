@@ -25,7 +25,7 @@ contract BNBxPriceCapAdapter is PriceCapAdapterBase {
         baseAggregatorAddress: capAdapterParams.baseAggregatorAddress,
         ratioProviderAddress: capAdapterParams.ratioProviderAddress,
         pairDescription: capAdapterParams.pairDescription,
-        ratioDecimals: 10,
+        ratioDecimals: 18,
         minimumSnapshotDelay: capAdapterParams.minimumSnapshotDelay,
         priceCapParams: capAdapterParams.priceCapParams
       })
