@@ -27,7 +27,7 @@ import {IWeEth} from '../../src/interfaces/IWeEth.sol';
 import {IOsTokenVaultController} from '../../src/interfaces/IOsTokenVaultController.sol';
 
 import {CapAdaptersCodeEthereum} from '../../scripts/DeployEthereum.s.sol';
-import {CapAdaptersCodeArbitrum} from '../../scripts/DeployArbitrumWeEth.s.sol';
+import {CapAdaptersCodeArbitrum} from '../../scripts/DeployArbitrum.s.sol';
 import {CapAdaptersCodeBase} from '../../scripts/DeployBase.s.sol';
 
 contract ExchangeRatesEth is Test {
