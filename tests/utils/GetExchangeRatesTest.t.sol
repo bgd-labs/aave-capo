@@ -26,6 +26,7 @@ import {IStEUR} from '../../src/interfaces/IStEUR.sol';
 import {IWeEth} from '../../src/interfaces/IWeEth.sol';
 import {IOsTokenVaultController} from '../../src/interfaces/IOsTokenVaultController.sol';
 import {IEthX} from '../../src/interfaces/IEthX.sol';
+import {ISUSDe} from '../../src/interfaces/ISUSDe.sol';
 
 import {CapAdaptersCodeEthereum} from '../../scripts/DeployEthereum.s.sol';
 import {CapAdaptersCodeArbitrum} from '../../scripts/DeployArbitrumWeEth.s.sol';
@@ -33,7 +34,7 @@ import {CapAdaptersCodeBase} from '../../scripts/DeployBase.s.sol';
 
 contract ExchangeRatesEth is Test {
   function setUp() public {
-    vm.createSelectFork(vm.rpcUrl('mainnet'), 19883815); // 16th of May
+    vm.createSelectFork(vm.rpcUrl('mainnet'), 20024431); // 5th of June
   }
 
   function test_getExchangeRate() public view {
@@ -48,6 +49,7 @@ contract ExchangeRatesEth is Test {
     uint256 osEthRate = IOsTokenVaultController(CapAdaptersCodeEthereum.osETH_VAULT_CONTROLLER)
       .convertToAssets(10 ** 18);
     uint256 ethXRate = IEthX(CapAdaptersCodeEthereum.STADER_STAKE_POOLS_MANAGER).getExchangeRate();
+    uint256 sUSDeRate = ISUSDe(CapAdaptersCodeEthereum.sUSDe).convertToAssets(10 ** 18);
 
     console.log('cbEthRate', cbEthRate);
     console.log('rEthRate', rEthRate);
@@ -57,6 +59,7 @@ contract ExchangeRatesEth is Test {
     console.log('weEthRate', weEthRate);
     console.log('osEthRate', osEthRate);
     console.log('ethXRate', ethXRate);
+    console.log('usUSDe', sUSDeRate);
 
     console.log(block.timestamp);
   }
