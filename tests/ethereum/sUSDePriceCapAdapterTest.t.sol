@@ -8,11 +8,12 @@ import {AaveV3Ethereum, AaveV3EthereumAssets} from 'aave-address-book/AaveV3Ethe
 import {SUSDePriceCapAdapter} from '../../src/contracts/lst-adapters/SUSDePriceCapAdapter.sol';
 import {CapAdaptersCodeEthereum} from '../../scripts/DeployEthereum.s.sol';
 
+// was tested with USDe / USD feed for a longer period
 contract sUSDePriceCapAdapterTest is BaseTest {
   constructor()
     BaseTest(
       CapAdaptersCodeEthereum.sUSDeAdapterCode(),
-      16,
+      8,
       ForkParams({network: 'mainnet', blockNumber: 20131922}),
       'sUSDe_Ethereum'
     )
