@@ -104,7 +104,7 @@ library CapAdaptersCodeEthereum {
         abi.encode(
           IPriceCapAdapter.CapAdapterParams({
             aclManager: AaveV3Ethereum.ACL_MANAGER,
-            baseAggregatorAddress: USDe_PRICE_FEED,
+            baseAggregatorAddress: AaveV3EthereumAssets.USDe_ORACLE,
             ratioProviderAddress: sUSDe,
             pairDescription: 'Capped sUSDe / USDe / USD',
             minimumSnapshotDelay: 14 days,
