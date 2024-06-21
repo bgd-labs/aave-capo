@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: BUSL-1.1
 pragma solidity ^0.8.19;
 
+import {IERC4626} from 'forge-std/interfaces/IERC4626.sol';
 import {IACLManager} from 'aave-address-book/AaveV3.sol';
-import {ISUSDe} from '../../interfaces/ISUSDe.sol';
 
 import {PriceCapAdapterBase, IPriceCapAdapter} from '../PriceCapAdapterBase.sol';
 
@@ -34,6 +34,6 @@ contract SUSDePriceCapAdapter is PriceCapAdapterBase {
 
   /// @inheritdoc IPriceCapAdapter
   function getRatio() public view override returns (int256) {
-    return int256(ISUSDe(RATIO_PROVIDER).convertToAssets(10 ** RATIO_DECIMALS));
+    return int256(IERC4626(RATIO_PROVIDER).convertToAssets(10 ** RATIO_DECIMALS));
   }
 }
