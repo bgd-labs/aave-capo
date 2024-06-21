@@ -3,6 +3,8 @@ pragma solidity ^0.8.0;
 
 import 'forge-std/Test.sol';
 
+import {IERC4626} from 'forge-std/interfaces/IERC4626.sol';
+
 import {AaveV3EthereumAssets} from 'aave-address-book/AaveV3Ethereum.sol';
 import {AaveV2EthereumAssets} from 'aave-address-book/AaveV2Ethereum.sol';
 import {AaveV3AvalancheAssets} from 'aave-address-book/AaveV3Avalanche.sol';
@@ -33,7 +35,7 @@ import {CapAdaptersCodeBase} from '../../scripts/DeployBase.s.sol';
 
 contract ExchangeRatesEth is Test {
   function setUp() public {
-    vm.createSelectFork(vm.rpcUrl('mainnet'), 19883815); // 16th of May
+    vm.createSelectFork(vm.rpcUrl('mainnet'), 20024431); // 5th of June
   }
 
   function test_getExchangeRate() public view {
@@ -48,6 +50,7 @@ contract ExchangeRatesEth is Test {
     uint256 osEthRate = IOsTokenVaultController(CapAdaptersCodeEthereum.osETH_VAULT_CONTROLLER)
       .convertToAssets(10 ** 18);
     uint256 ethXRate = IEthX(CapAdaptersCodeEthereum.STADER_STAKE_POOLS_MANAGER).getExchangeRate();
+    uint256 sUSDeRate = IERC4626(CapAdaptersCodeEthereum.sUSDe).convertToAssets(10 ** 18);
 
     console.log('cbEthRate', cbEthRate);
     console.log('rEthRate', rEthRate);
@@ -57,6 +60,7 @@ contract ExchangeRatesEth is Test {
     console.log('weEthRate', weEthRate);
     console.log('osEthRate', osEthRate);
     console.log('ethXRate', ethXRate);
+    console.log('usUSDe', sUSDeRate);
 
     console.log(block.timestamp);
   }
