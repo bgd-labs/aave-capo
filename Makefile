@@ -23,6 +23,8 @@ deploy-oseth-mainnet :; forge script scripts/DeployEthereum.s.sol:DeployOsEthEth
 
 deploy-ethx-mainnet :; forge script scripts/DeployEthereum.s.sol:DeployEthXEthereum --rpc-url mainnet $(common-flags)
 
+deploy-susde-mainnet :; forge script scripts/DeployEthereum.s.sol:DeploySUSDeEthereum --rpc-url mainnet $(common-flags)
+
 # Utilities
 download :; cast etherscan-source --chain ${chain} -d src/etherscan/${chain}_${address} ${address}
 git-diff :
