@@ -34,6 +34,6 @@
 
 | Max Yearly % | Max Day-to-day yearly % | Max 14-day yearly % |
 | ------------ | ----------------------- | ------------------- |
-| 60.00%       | 24.99%                  | 21.20%              |
+| 50.00%       | 24.99%                  | 21.20%              |
 
 - Max day-to-day yearly % indicates the maximum growth between two emissions as an annualized percentage.
