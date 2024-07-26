@@ -11,6 +11,7 @@ import {WeETHPriceCapAdapter} from '../src/contracts/lst-adapters/WeETHPriceCapA
 import {OsETHPriceCapAdapter} from '../src/contracts/lst-adapters/OsETHPriceCapAdapter.sol';
 import {EthXPriceCapAdapter} from '../src/contracts/lst-adapters/EthXPriceCapAdapter.sol';
 import {SUSDePriceCapAdapter} from '../src/contracts/lst-adapters/SUSDePriceCapAdapter.sol';
+import {RsETHPriceCapAdapter} from '../src/contracts/lst-adapters/RsETHPriceCapAdapter.sol';
 
 library CapAdaptersCodeEthereum {
   address public constant weETH = 0xCd5fE23C85820F7B72D0926FC9b05b43E359b7ee;
@@ -18,6 +19,7 @@ library CapAdaptersCodeEthereum {
   address public constant USDe_PRICE_FEED = 0xa569d910839Ae8865Da8F8e70FfFb0cBA869F961;
   address public constant STADER_STAKE_POOLS_MANAGER = 0xcf5EA1b38380f6aF39068375516Daf40Ed70D299;
   address public constant sUSDe = 0x9D39A5DE30e57443BfF2A8307A4256c8797A3497;
+  address public constant RsETH_PRICE_FEED = 0x03c68933f7a3F76875C0bc670a58e69294cDFD01;
 
   function weETHAdapterCode() internal pure returns (bytes memory) {
     return
@@ -117,6 +119,27 @@ library CapAdaptersCodeEthereum {
         )
       );
   }
+  
+  function rsETHAdapterCode() internal pure returns (bytes memory) {
+    return
+      abi.encodePacked(
+        type(RsETHPriceCapAdapter).creationCode,
+        abi.encode(
+          IPriceCapAdapter.CapAdapterParams({
+            aclManager: AaveV3Ethereum.ACL_MANAGER,
+            baseAggregatorAddress: AaveV3EthereumAssets.WETH_ORACLE,
+            ratioProviderAddress: RsETH_PRICE_FEED,
+            pairDescription: 'rsETH / ETH / USD',
+            minimumSnapshotDelay: 7 days,
+            priceCapParams: IPriceCapAdapter.PriceCapUpdateParams({
+              snapshotRatio: 1020699755172883700,
+              snapshotTimestamp: 1722009251,
+              maxYearlyRatioGrowthPercent: 50_00
+            })
+          })
+        )
+      );
+  }
 }
 
 contract DeployWeEthEthereum is EthereumScript {
@@ -148,3 +171,10 @@ contract DeploySUSDeEthereum is EthereumScript {
     GovV3Helpers.deployDeterministic(CapAdaptersCodeEthereum.sUSDeAdapterCode());
   }
 }
+
+contract DeployRsETHEthereum is EthereumScript {
+  function run() external broadcast {
+    GovV3Helpers.deployDeterministic(CapAdaptersCodeEthereum.rsETHAdapterCode());
+  }
+}
+
