@@ -78,6 +78,8 @@ abstract contract BaseTest is Test {
       forkParams.network
     );
 
+    console.log("current block", currentBlock);
+
     IPriceCapAdapter adapter = _createRetrospectiveAdapter(capAdapterParams, currentBlock);
     uint256 snapshotDelayDays = uint256(adapter.MINIMUM_SNAPSHOT_DELAY()) / SECONDS_PER_DAY;
 
