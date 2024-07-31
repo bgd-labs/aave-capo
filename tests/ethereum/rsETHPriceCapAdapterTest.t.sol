@@ -12,8 +12,8 @@ contract rsETHPriceCapAdapterTest is BaseTest {
   constructor()
     BaseTest(
       CapAdaptersCodeEthereum.rsETHAdapterCode(),
-      60,
-      ForkParams({network: 'mainnet', blockNumber: 19987000}),
+      90,
+      ForkParams({network: 'mainnet', blockNumber: 20427128}),
       'rsETH_Ethereum'
     )
   {}

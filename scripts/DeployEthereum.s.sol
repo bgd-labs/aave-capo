@@ -132,9 +132,9 @@ library CapAdaptersCodeEthereum {
             pairDescription: 'rsETH / ETH / USD',
             minimumSnapshotDelay: 7 days,
             priceCapParams: IPriceCapAdapter.PriceCapUpdateParams({
-              snapshotRatio: 991446965537067700,
-              snapshotTimestamp: 1709895491,
-              maxYearlyRatioGrowthPercent: 10_00
+              snapshotRatio: 1017500000000000000,
+              snapshotTimestamp: 1721713667,
+              maxYearlyRatioGrowthPercent: 8_75
             })
           })
         )

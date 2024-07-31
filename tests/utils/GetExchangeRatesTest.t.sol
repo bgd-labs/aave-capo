@@ -35,7 +35,7 @@ import {CapAdaptersCodeBase} from '../../scripts/DeployBase.s.sol';
 
 contract ExchangeRatesEth is Test {
   function setUp() public {
-    vm.createSelectFork(vm.rpcUrl('mainnet'), 19390000); // 5th of June
+    vm.createSelectFork(vm.rpcUrl('mainnet'), 20367238); // 23th of July
   }
 
   function test_getExchangeRate() public view {
