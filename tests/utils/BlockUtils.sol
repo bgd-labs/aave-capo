@@ -45,7 +45,7 @@ library BlockUtils {
     }
 
     if (keccak256(bytes(network)) == keccak256(bytes('scroll'))) {
-      return 25500;
+      return 28800;
     }
 
     if (keccak256(bytes(network)) == keccak256(bytes('gnosis'))) {
