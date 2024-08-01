@@ -32,6 +32,7 @@ import {IEthX} from '../../src/interfaces/IEthX.sol';
 import {CapAdaptersCodeEthereum} from '../../scripts/DeployEthereum.s.sol';
 import {CapAdaptersCodeArbitrum} from '../../scripts/DeployArbitrumWeEth.s.sol';
 import {CapAdaptersCodeBase} from '../../scripts/DeployBase.s.sol';
+import {CapAdaptersCodeScroll} from '../../scripts/DeployScroll.s.sol';
 
 contract ExchangeRatesEth is Test {
   function setUp() public {
@@ -206,17 +207,20 @@ contract ExchangeRates14Polygon is Test {
 
 contract ExchangeRatesScroll is Test {
   function setUp() public {
-    vm.createSelectFork(vm.rpcUrl('scroll'), 3504770); // 20th of February
+    vm.createSelectFork(vm.rpcUrl('scroll'), 7740000); // July 24th
   }
 
   function test_getExchangeRate() public view {
     uint256 wstEthRate = uint256(
       IChainlinkAggregator(0xE61Da4C909F7d86797a0D06Db63c34f76c9bCBDC).latestAnswer()
     );
+    uint256 weEthRate = uint256(
+      IChainlinkAggregator(CapAdaptersCodeScroll.weETH_eETH_AGGREGATOR).latestAnswer()
+    );
 
     console.log('Scroll');
     console.log('wstEthRate', wstEthRate);
-
+    console.log('weEthRate', weEthRate);
     console.log(block.timestamp);
   }
 }
