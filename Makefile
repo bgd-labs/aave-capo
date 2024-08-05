@@ -15,7 +15,6 @@ deploy-pk := --sender $(SENDER) --private-key ${PRIVATE_KEY} --verify -vvvv --sl
 
 # Deploy
 deploy-weeth-mainnet :; forge script scripts/DeployEthereum.s.sol:DeployWeEthEthereum --rpc-url mainnet $(common-flags)
-deploy-usde-mainnet :; forge script scripts/DeployEthereum.s.sol:DeployUSDeEthereum --rpc-url mainnet $(common-flags)
 deploy-weeth-arbitrum :; forge script scripts/DeployArbitrumWeEth.s.sol:DeployWeEthArbitrum --rpc-url arbitrum $(common-flags)
 deploy-weeth-scroll :; forge script scripts/DeployScroll.s.sol:DeployWeEthScroll --rpc-url scroll $(common-flags)
 deploy-weeth-base :; forge script scripts/DeployBase.s.sol:DeployWeEthBase --rpc-url base $(deploy-pk)
@@ -24,7 +23,10 @@ deploy-oseth-mainnet :; forge script scripts/DeployEthereum.s.sol:DeployOsEthEth
 
 deploy-ethx-mainnet :; forge script scripts/DeployEthereum.s.sol:DeployEthXEthereum --rpc-url mainnet $(common-flags)
 
+deploy-usde-mainnet :; forge script scripts/DeployEthereum.s.sol:DeployUSDeEthereum --rpc-url mainnet $(common-flags)
 deploy-susde-mainnet :; forge script scripts/DeployEthereum.s.sol:DeploySUSDeEthereum --rpc-url mainnet $(common-flags)
+
+deploy-sfrax-mainnet :; forge script scripts/DeployEthereum.s.sol:DeploysFRAXeEthereum --rpc-url mainnet $(common-flags)
 
 # Utilities
 download :; cast etherscan-source --chain ${chain} -d src/etherscan/${chain}_${address} ${address}
