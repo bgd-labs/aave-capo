@@ -130,11 +130,11 @@ library CapAdaptersCodeEthereum {
             baseAggregatorAddress: AaveV3EthereumAssets.WETH_ORACLE,
             ratioProviderAddress: RsETH_PRICE_FEED,
             pairDescription: 'rsETH / ETH / USD',
-            minimumSnapshotDelay: 7 days,
+            minimumSnapshotDelay: 14 days,
             priceCapParams: IPriceCapAdapter.PriceCapUpdateParams({
               snapshotRatio: 1017500000000000000,
-              snapshotTimestamp: 1721713667,
-              maxYearlyRatioGrowthPercent: 8_75
+              snapshotTimestamp: 1721719835, // Jul-23-2024 07:30:35 AM +UTC
+              maxYearlyRatioGrowthPercent: 9_83
             })
           })
         )
