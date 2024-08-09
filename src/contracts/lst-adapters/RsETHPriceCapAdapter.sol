@@ -8,7 +8,7 @@ import {PriceCapAdapterBase, IPriceCapAdapter} from '../PriceCapAdapterBase.sol'
 
 /**
  * @title RsETHPriceCapAdapter
- * @author BGD Labs
+ * @author Tokenlogic
  * @notice Price capped adapter to calculate price of (rsETH / USD) pair by using
  * @notice Chainlink data feed for (ETH / USD) and (rsETH / ETH) ratio.
  */
