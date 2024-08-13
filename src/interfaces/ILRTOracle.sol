@@ -2,17 +2,19 @@
 pragma solidity 0.8.21;
 
 interface ILRTOracle {
-    // errors
-    error AssetOracleNotSupported();
-    error RSETHPriceExceedsLimit();
+  // errors
+  error AssetOracleNotSupported();
+  error RSETHPriceExceedsLimit();
 
-    // events
-    event AssetPriceOracleUpdate(address indexed asset, address indexed priceOracle);
-    event RsETHPriceUpdate(uint256 newPrice);
-    event PricePercentageLimitUpdate(uint256 newLimit);
+  // events
+  event AssetPriceOracleUpdate(address indexed asset, address indexed priceOracle);
+  event RsETHPriceUpdate(uint256 newPrice);
+  event PricePercentageLimitUpdate(uint256 newLimit);
 
-    // methods
-    function getAssetPrice(address asset) external view returns (uint256);
-    function assetPriceOracle(address asset) external view returns (address);
-    function rsETHPrice() external view returns (uint256);
+  // methods
+  function getAssetPrice(address asset) external view returns (uint256);
+
+  function assetPriceOracle(address asset) external view returns (address);
+
+  function rsETHPrice() external view returns (uint256);
 }

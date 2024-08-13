@@ -119,7 +119,7 @@ library CapAdaptersCodeEthereum {
         )
       );
   }
-  
+
   function rsETHAdapterCode() internal pure returns (bytes memory) {
     return
       abi.encodePacked(
@@ -177,4 +177,3 @@ contract DeployRsETHEthereum is EthereumScript {
     GovV3Helpers.deployDeterministic(CapAdaptersCodeEthereum.rsETHAdapterCode());
   }
 }
-
