@@ -19,7 +19,7 @@ library CapAdaptersCodeEthereum {
   address public constant USDe_PRICE_FEED = 0xa569d910839Ae8865Da8F8e70FfFb0cBA869F961;
   address public constant STADER_STAKE_POOLS_MANAGER = 0xcf5EA1b38380f6aF39068375516Daf40Ed70D299;
   address public constant sUSDe = 0x9D39A5DE30e57443BfF2A8307A4256c8797A3497;
-  address public constant RsETH_PRICE_FEED = 0x03c68933f7a3F76875C0bc670a58e69294cDFD01;
+  address public constant LRT_ORACLE = 0x349A73444b1a310BAe67ef67973022020d70020d;
 
   function weETHAdapterCode() internal pure returns (bytes memory) {
     return
@@ -128,12 +128,12 @@ library CapAdaptersCodeEthereum {
           IPriceCapAdapter.CapAdapterParams({
             aclManager: AaveV3Ethereum.ACL_MANAGER,
             baseAggregatorAddress: AaveV3EthereumAssets.WETH_ORACLE,
-            ratioProviderAddress: RsETH_PRICE_FEED,
+            ratioProviderAddress: LRT_ORACLE,
             pairDescription: 'rsETH / ETH / USD',
             minimumSnapshotDelay: 14 days,
             priceCapParams: IPriceCapAdapter.PriceCapUpdateParams({
-              snapshotRatio: 1017500000000000000,
-              snapshotTimestamp: 1721719835, // Jul-23-2024 07:30:35 AM +UTC
+              snapshotRatio: 1019332425808081895,
+              snapshotTimestamp: 1722056963, // Jul-27-2024 05:09:23 AM +UTC
               maxYearlyRatioGrowthPercent: 9_83
             })
           })

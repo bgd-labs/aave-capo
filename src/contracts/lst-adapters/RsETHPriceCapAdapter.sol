@@ -2,7 +2,7 @@
 pragma solidity ^0.8.19;
 
 import {IACLManager} from 'aave-address-book/AaveV3.sol';
-import {IChainlinkAggregator} from 'cl-synchronicity-price-adapter/interfaces/IChainlinkAggregator.sol';
+import {ILRTOracle} from '../../interfaces/ILRTOracle.sol';
 
 import {PriceCapAdapterBase, IPriceCapAdapter} from '../PriceCapAdapterBase.sol';
 
@@ -10,7 +10,7 @@ import {PriceCapAdapterBase, IPriceCapAdapter} from '../PriceCapAdapterBase.sol'
  * @title RsETHPriceCapAdapter
  * @author Tokenlogic
  * @notice Price capped adapter to calculate price of (rsETH / USD) pair by using
- * @notice Chainlink data feed for (ETH / USD) and (rsETH / ETH) ratio.
+ * @notice LRT Oracle for (ETH / USD) and (rsETH / ETH) ratio.
  */
 contract RsETHPriceCapAdapter is PriceCapAdapterBase {
   /**
@@ -34,6 +34,6 @@ contract RsETHPriceCapAdapter is PriceCapAdapterBase {
 
   /// @inheritdoc IPriceCapAdapter
   function getRatio() public view override returns (int256) {
-    return IChainlinkAggregator(RATIO_PROVIDER).latestAnswer();
+    return int256(ILRTOracle(RATIO_PROVIDER).rsETHPrice());
   }
 }

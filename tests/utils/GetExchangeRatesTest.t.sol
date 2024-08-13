@@ -28,6 +28,7 @@ import {IStEUR} from '../../src/interfaces/IStEUR.sol';
 import {IWeEth} from '../../src/interfaces/IWeEth.sol';
 import {IOsTokenVaultController} from '../../src/interfaces/IOsTokenVaultController.sol';
 import {IEthX} from '../../src/interfaces/IEthX.sol';
+import {ILRTOracle} from '../../src/interfaces/ILRTOracle.sol';
 
 import {CapAdaptersCodeEthereum} from '../../scripts/DeployEthereum.s.sol';
 import {CapAdaptersCodeArbitrum} from '../../scripts/DeployArbitrumWeEth.s.sol';
@@ -35,7 +36,7 @@ import {CapAdaptersCodeBase} from '../../scripts/DeployBase.s.sol';
 
 contract ExchangeRatesEth is Test {
   function setUp() public {
-    vm.createSelectFork(vm.rpcUrl('mainnet'), 20367746); // Jul-23-2024 07:30:35 AM +UTC
+    vm.createSelectFork(vm.rpcUrl('mainnet'), 20395699); // Jul-27-2024 05:09:23 AM +UTC
   }
 
   function test_getExchangeRate() public view {
@@ -51,7 +52,7 @@ contract ExchangeRatesEth is Test {
       .convertToAssets(10 ** 18);
     uint256 ethXRate = IEthX(CapAdaptersCodeEthereum.STADER_STAKE_POOLS_MANAGER).getExchangeRate();
     uint256 sUSDeRate = IERC4626(CapAdaptersCodeEthereum.sUSDe).convertToAssets(10 ** 18);
-    int256 rsEthRate = IChainlinkAggregator(CapAdaptersCodeEthereum.RsETH_PRICE_FEED).latestAnswer();
+    uint256 rsEthRate = ILRTOracle(CapAdaptersCodeEthereum.LRT_ORACLE).rsETHPrice();
 
     console.log('cbEthRate', cbEthRate);
     console.log('rEthRate', rEthRate);
@@ -62,7 +63,7 @@ contract ExchangeRatesEth is Test {
     console.log('osEthRate', osEthRate);
     console.log('ethXRate', ethXRate);
     console.log('usUSDe', sUSDeRate);
-    console.log('rsETH', uint256(rsEthRate));
+    console.log('rsETH', rsEthRate);
 
     console.log(block.timestamp);
   }
