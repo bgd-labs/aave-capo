@@ -26,6 +26,10 @@ deploy-ethx-mainnet :; forge script scripts/DeployEthereum.s.sol:DeployEthXEther
 
 deploy-susde-mainnet :; forge script scripts/DeployEthereum.s.sol:DeploySUSDeEthereum --rpc-url mainnet $(common-flags)
 
+deploy-wsteth-zksync :; FOUNDRY_PROFILE=zksync forge script --zksync scripts/DeployZkSync.s.sol:DeployWstEthZkSync --rpc-url zksync $(common-flags)
+deploy-usdc-zksync :; FOUNDRY_PROFILE=zksync forge script --zksync scripts/DeployZkSync.s.sol:DeployUsdcZkSync --rpc-url zksync $(common-flags)
+deploy-usdt-zksync :; FOUNDRY_PROFILE=zksync forge script --zksync scripts/DeployZkSync.s.sol:DeployUsdtZkSync --rpc-url zksync $(common-flags)
+
 # Utilities
 download :; cast etherscan-source --chain ${chain} -d src/etherscan/${chain}_${address} ${address}
 git-diff :

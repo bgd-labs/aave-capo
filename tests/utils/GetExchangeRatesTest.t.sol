@@ -15,7 +15,8 @@ import {MiscBase} from 'aave-address-book/MiscBase.sol';
 import {MiscGnosis} from 'aave-address-book/MiscGnosis.sol';
 import {MiscOptimism} from 'aave-address-book/MiscOptimism.sol';
 import {MiscPolygon} from 'aave-address-book/MiscPolygon.sol';
-
+import {CLRatePriceCapAdapter, IPriceCapAdapter, IACLManager} from 'src/contracts/CLRatePriceCapAdapter.sol';
+import {PriceCapAdapterStable, IPriceCapAdapterStable, IChainlinkAggregator} from 'src/contracts/PriceCapAdapterStable.sol';
 import {ICbEthRateProvider} from 'cl-synchronicity-price-adapter/interfaces/ICbEthRateProvider.sol';
 import {IrETH} from 'cl-synchronicity-price-adapter/interfaces/IrETH.sol';
 import {IPot} from 'cl-synchronicity-price-adapter/interfaces/IPot.sol';
@@ -222,5 +223,21 @@ contract ExchangeRatesScroll is Test {
     console.log('wstEthRate', wstEthRate);
     console.log('weEthRate', weEthRate);
     console.log(block.timestamp);
+  }
+}
+
+contract ExchangeRatesZksync is Test {
+  function setUp() public {
+    vm.createSelectFork(vm.rpcUrl('zksync'), 40127505); // Jul-27-2024
+  }
+
+  function test_getExchangeRate() public view {
+    uint256 wstEthRate = uint256(
+      IChainlinkAggregator(0x24a0C9404101A8d7497676BE12F10aEa356bAC28).latestAnswer()
+    ); // wst-stETH exchange rate feed
+
+    console.log('zkSync');
+    console.log('wstEthRate', wstEthRate);
+    console.log(40127505);
   }
 }

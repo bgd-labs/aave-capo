@@ -38,7 +38,8 @@ base = "${RPC_BASE}"
 zkevm = "${RPC_ZKEVM}"
 gnosis = "${RPC_GNOSIS}"
 bnb = "${RPC_BNB}"
-scroll="${RPC_SCROLL}"
+scroll = "${RPC_SCROLL}"
+zksync = "${RPC_ZKSYNC}"
 
 [etherscan]
 mainnet = { key="${ETHERSCAN_API_KEY_MAINNET}", chainId=1 }
@@ -51,7 +52,8 @@ metis = { key="any", chainId=1088, url='https://andromeda-explorer.metis.io/' }
 base = { key="${ETHERSCAN_API_KEY_BASE}", chainId=8453 }
 zkevm = { key="${ETHERSCAN_API_KEY_ZKEVM}", chainId=1101 }
 gnosis = { key="${ETHERSCAN_API_KEY_GNOSIS}", chainId=100 }
-bnb= { key="${ETHERSCAN_API_KEY_BNB}",chainId=56,url='https://api.bscscan.com/api'}
-scroll={key="${ETHERSCAN_API_KEY_SCROLL}",chainId=534352}
+bnb = { key="${ETHERSCAN_API_KEY_BNB}", chainId=56,url='https://api.bscscan.com/api' }
+scroll = {key="${ETHERSCAN_API_KEY_SCROLL}", chainId=534352 }
+zksync = {key="${ETHERSCAN_API_KEY_ZKSYNC}", chainId=324 }
 
 # See more config options https://github.com/gakonst/foundry/tree/master/config
