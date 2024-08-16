@@ -238,6 +238,6 @@ contract ExchangeRatesZksync is Test {
 
     console.log('zkSync');
     console.log('wstEthRate', wstEthRate);
-    console.log(40127505);
+    console.log(block.timestamp);
   }
 }

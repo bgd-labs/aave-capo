@@ -18,7 +18,7 @@ contract DeployWstEthZkSync is Script {
         minimumSnapshotDelay: 7 days,
         priceCapParams: IPriceCapAdapter.PriceCapUpdateParams({
           snapshotRatio: 1173774471238681571,
-          snapshotTimestamp: 40127505, // Jul-27-2024
+          snapshotTimestamp: 1722043665, // Jul-27-2024
           maxYearlyRatioGrowthPercent: 9_68
         })
       })
