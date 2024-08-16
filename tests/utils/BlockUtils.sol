@@ -7,15 +7,15 @@ library BlockUtils {
     uint256 finishBlock,
     uint256 retrospectiveDays,
     string memory network
-  ) public pure returns (uint256) {
+  ) internal pure returns (uint256) {
     return finishBlock - retrospectiveDays * getBlocksPerDayByNetwork(network);
   }
 
-  function getStep(uint256 stepDays, string memory network) public pure returns (uint256) {
+  function getStep(uint256 stepDays, string memory network) internal pure returns (uint256) {
     return stepDays * getBlocksPerDayByNetwork(network);
   }
 
-  function getBlocksPerDayByNetwork(string memory network) public pure returns (uint256) {
+  function getBlocksPerDayByNetwork(string memory network) internal pure returns (uint256) {
     if (keccak256(bytes(network)) == keccak256(bytes('mainnet'))) {
       return 7300;
     }
