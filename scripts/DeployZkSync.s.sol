@@ -17,8 +17,8 @@ contract DeployWstEthZkSync is Script {
         pairDescription: 'Capped wstETH / stETH(ETH) / USD',
         minimumSnapshotDelay: 7 days,
         priceCapParams: IPriceCapAdapter.PriceCapUpdateParams({
-          snapshotRatio: 1173774471238681571,
-          snapshotTimestamp: 1722043665, // Jul-27-2024
+          snapshotRatio: 1175156638813790774,
+          snapshotTimestamp: 1723046338, // 7 August 2024
           maxYearlyRatioGrowthPercent: 9_68
         })
       })

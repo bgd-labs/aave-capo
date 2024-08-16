@@ -228,7 +228,7 @@ contract ExchangeRatesScroll is Test {
 
 contract ExchangeRatesZksync is Test {
   function setUp() public {
-    vm.createSelectFork(vm.rpcUrl('zksync'), 40127505); // Jul-27-2024
+    vm.createSelectFork(vm.rpcUrl('zksync'), 41100000); // Aug-07-2024
   }
 
   function test_getExchangeRate() public view {
