@@ -12,6 +12,7 @@ import {AaveV3GnosisAssets} from 'aave-address-book/AaveV3Gnosis.sol';
 import {MiscEthereum} from 'aave-address-book/MiscEthereum.sol';
 import {MiscArbitrum} from 'aave-address-book/MiscArbitrum.sol';
 import {MiscBase} from 'aave-address-book/MiscBase.sol';
+import {MiscBNB} from 'aave-address-book/MiscBNB.sol';
 import {MiscGnosis} from 'aave-address-book/MiscGnosis.sol';
 import {MiscOptimism} from 'aave-address-book/MiscOptimism.sol';
 import {MiscPolygon} from 'aave-address-book/MiscPolygon.sol';
@@ -26,12 +27,14 @@ import {IChainlinkAggregator} from 'cl-synchronicity-price-adapter/interfaces/IC
 import {ISAvax} from '../../src/interfaces/ISAvax.sol';
 import {IStEUR} from '../../src/interfaces/IStEUR.sol';
 import {IWeEth} from '../../src/interfaces/IWeEth.sol';
+import {IStaderStakeManager} from '../../src/interfaces/IStaderStakeManager.sol';
 import {IOsTokenVaultController} from '../../src/interfaces/IOsTokenVaultController.sol';
 import {IEthX} from '../../src/interfaces/IEthX.sol';
 
 import {CapAdaptersCodeEthereum} from '../../scripts/DeployEthereum.s.sol';
 import {CapAdaptersCodeArbitrum} from '../../scripts/DeployArbitrumWeEth.s.sol';
 import {CapAdaptersCodeBase} from '../../scripts/DeployBase.s.sol';
+import {CapAdaptersCodeBNB} from '../../scripts/DeployBNB.s.sol';
 import {CapAdaptersCodeScroll} from '../../scripts/DeployScroll.s.sol';
 
 contract ExchangeRatesEth is Test {
@@ -126,6 +129,22 @@ contract ExchangeRatesBase is Test {
     console.log('cbEthRate', cbEthRate);
     console.log('wstEthRate', wstEthRate);
     console.log('weEthRate', weEthRate);
+
+    console.log(block.timestamp);
+  }
+}
+
+contract ExchangeRatesBNB is Test {
+  function setUp() public {
+    vm.createSelectFork(vm.rpcUrl('bnb'), 41000000); // August 2nd
+  }
+
+  function test_getExchangeRate() public view {
+    uint256 bnbXRate = IStaderStakeManager(CapAdaptersCodeBNB.STADER_STAKE_MANAGER).convertBnbXToBnb(
+      10 ** 18
+    );
+
+    console.log('BNBxRate', bnbXRate);
 
     console.log(block.timestamp);
   }
