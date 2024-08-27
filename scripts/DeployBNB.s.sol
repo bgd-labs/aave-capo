@@ -9,7 +9,7 @@ import {BNBxPriceCapAdapter} from '../src/contracts/lst-adapters/BNBxPriceCapAda
 import {IPriceCapAdapter} from '../src/interfaces/IPriceCapAdapter.sol';
 
 library CapAdaptersCodeBNB {
-  address public constant STADER_STAKE_MANAGER = 0x7276241a669489E4BBB76f63d2A43Bfe63080F2F;
+  address public constant STADER_STAKE_MANAGER = 0x3b961e83400D51e6E1AF5c450d3C7d7b80588d28;
 
   function BNBxAdapterCode() internal pure returns (bytes memory) {
     return

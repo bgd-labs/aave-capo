@@ -12,8 +12,8 @@ contract bnbXPriceCapAdapterTest is BaseTest {
   constructor()
     BaseTest(
       CapAdaptersCodeBNB.BNBxAdapterCode(),
-      90,
-      ForkParams({network: 'bnb', blockNumber: 41507984}),
+      6,
+      ForkParams({network: 'bnb', blockNumber: 41732866}),
       'BNBx_BNB'
     )
   {}
