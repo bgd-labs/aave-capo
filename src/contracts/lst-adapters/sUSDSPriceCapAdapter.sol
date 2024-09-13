@@ -7,7 +7,7 @@ import {IACLManager} from 'aave-address-book/AaveV3.sol';
 import {PriceCapAdapterBase, IPriceCapAdapter} from '../PriceCapAdapterBase.sol';
 
 /**
- * @title SUSDePriceCapAdapter
+ * @title sUSDSPriceCapAdapter
  * @author BGD Labs
  * @notice Price capped adapter to calculate price of (sUSDS / USD) pair by using
  * @notice Capped adapter for (USDS <-> DAI / USD) and (sUSDS / USDS) ratio.
