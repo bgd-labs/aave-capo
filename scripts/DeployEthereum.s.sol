@@ -128,9 +128,9 @@ library CapAdaptersCodeEthereum {
         abi.encode(
           IPriceCapAdapterStable.CapAdapterStableParams({
             aclManager: AaveV3Ethereum.ACL_MANAGER,
-            assetToUsdAggregator: IChainlinkAggregator(DAI_PRICE_FEED), //TODO: check with BGD for Oracle
+            assetToUsdAggregator: IChainlinkAggregator(DAI_PRICE_FEED),
             adapterDescription: 'Capped USDS <-> DAI / USD',
-            priceCap: int256(1.04 * 1e18) //TODO: Change to CL recommendation
+            priceCap: int256(1.04 * 1e18)
           })
         )
       );
@@ -146,7 +146,7 @@ library CapAdaptersCodeEthereum {
             baseAggregatorAddress: GovV3Helpers.predictDeterministicAddress(USDSAdapterCode()),
             ratioProviderAddress: sUSDS,
             pairDescription: 'Capped sUSDS / USDS <-> DAI / USD',
-            minimumSnapshotDelay: 4 days, //TODO: replace by CL recommendation
+            minimumSnapshotDelay: 4 days,
             priceCapParams: IPriceCapAdapter.PriceCapUpdateParams({
               snapshotRatio: 1000000000000000000,
               snapshotTimestamp: 1725455495,
