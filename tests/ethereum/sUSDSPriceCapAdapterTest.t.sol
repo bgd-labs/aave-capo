@@ -21,6 +21,7 @@ contract sUSDSPriceCapAdapterTest is BaseTest {
   }
 
   function test_latestAnswer() public override {
+    GovV3Helpers.deployDeterministic(CapAdaptersCodeEthereum.USDSAdapterCode());
     IPriceCapAdapter adapter = IPriceCapAdapter(GovV3Helpers.deployDeterministic(deploymentCode));
 
     int256 price = adapter.latestAnswer();
