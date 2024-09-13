@@ -10,7 +10,7 @@ import {PriceCapAdapterBase, IPriceCapAdapter} from '../PriceCapAdapterBase.sol'
  * @title SUSDePriceCapAdapter
  * @author BGD Labs
  * @notice Price capped adapter to calculate price of (sUSDS / USD) pair by using
- * @notice Capped adapter for (USDS / USD) and (sUSDS / USDS) ratio.
+ * @notice Capped adapter for (USDS <-> DAI / USD) and (sUSDS / USDS) ratio.
  */
 contract sUSDSPriceCapAdapter is PriceCapAdapterBase {
   /**
