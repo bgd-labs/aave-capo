@@ -9,7 +9,6 @@ import {GovV3Helpers} from 'aave-helpers/GovV3Helpers.sol';
 import {sUSDSPriceCapAdapter} from '../../src/contracts/lst-adapters/sUSDSPriceCapAdapter.sol';
 import {CapAdaptersCodeEthereum} from '../../scripts/DeployEthereum.s.sol';
 
-// was tested with USDe / USD feed for a longer period
 contract sUSDSPriceCapAdapterTest is BaseTest {
   constructor()
     BaseTest(
