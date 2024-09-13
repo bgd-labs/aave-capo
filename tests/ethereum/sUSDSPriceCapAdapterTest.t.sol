@@ -21,8 +21,17 @@ contract sUSDSPriceCapAdapterTest is BaseTest {
   }
 
   function test_latestAnswer() public override {
-    GovV3Helpers.deployDeterministic(CapAdaptersCodeEthereum.USDSAdapterCode());
-    super.test_latestAnswer();
+    IPriceCapAdapter adapter = IPriceCapAdapter(GovV3Helpers.deployDeterministic(deploymentCode));
+
+    int256 price = adapter.latestAnswer();
+    int256 priceOfReferenceAdapter = adapter.BASE_TO_USD_AGGREGATOR().latestAnswer();
+
+    assertFalse(adapter.isCapped());
+    assertGe(
+      price,
+      priceOfReferenceAdapter,
+      'lst price is not greater than the reference adapter price'
+    );
   }
 
   function test_latestAnswerRetrospective() public override {
