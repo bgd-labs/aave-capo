@@ -5,7 +5,7 @@ import '../BaseStableTest.sol';
 import {PriceCapAdapterStable} from '../../src/contracts/PriceCapAdapterStable.sol';
 import {CapAdaptersCodeEthereum} from '../../scripts/DeployEthereum.s.sol';
 
-contract USDePriceCapAdapterTest is BaseStableTest {
+contract USDSPriceCapAdapterTest is BaseStableTest {
   constructor()
     BaseStableTest(
       CapAdaptersCodeEthereum.USDSAdapterCode(),
