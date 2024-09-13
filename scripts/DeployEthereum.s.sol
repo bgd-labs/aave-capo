@@ -11,6 +11,7 @@ import {WeETHPriceCapAdapter} from '../src/contracts/lst-adapters/WeETHPriceCapA
 import {OsETHPriceCapAdapter} from '../src/contracts/lst-adapters/OsETHPriceCapAdapter.sol';
 import {EthXPriceCapAdapter} from '../src/contracts/lst-adapters/EthXPriceCapAdapter.sol';
 import {SUSDePriceCapAdapter} from '../src/contracts/lst-adapters/SUSDePriceCapAdapter.sol';
+import {sUSDSPriceCapAdapter} from '../src/contracts/lst-adapters/sUSDSPriceCapAdapter.sol';
 
 library CapAdaptersCodeEthereum {
   address public constant weETH = 0xCd5fE23C85820F7B72D0926FC9b05b43E359b7ee;
@@ -18,6 +19,8 @@ library CapAdaptersCodeEthereum {
   address public constant USDe_PRICE_FEED = 0xa569d910839Ae8865Da8F8e70FfFb0cBA869F961;
   address public constant STADER_STAKE_POOLS_MANAGER = 0xcf5EA1b38380f6aF39068375516Daf40Ed70D299;
   address public constant sUSDe = 0x9D39A5DE30e57443BfF2A8307A4256c8797A3497;
+  address public constant DAI_PRICE_FEED = 0xAed0c38402a5d19df6E4c03F4E2DceD6e29c1ee9;
+  address public constant sUSDS = 0xa3931d71877C0E7a3148CB7Eb4463524FEc27fbD;
 
   function weETHAdapterCode() internal pure returns (bytes memory) {
     return
@@ -117,6 +120,42 @@ library CapAdaptersCodeEthereum {
         )
       );
   }
+
+  function USDSAdapterCode() internal pure returns (bytes memory) {
+    return
+      abi.encodePacked(
+        type(PriceCapAdapterStable).creationCode,
+        abi.encode(
+          IPriceCapAdapterStable.CapAdapterStableParams({
+            aclManager: AaveV3Ethereum.ACL_MANAGER,
+            assetToUsdAggregator: IChainlinkAggregator(DAI_PRICE_FEED),
+            adapterDescription: 'Capped USDS <-> DAI / USD',
+            priceCap: int256(1.04 * 1e18)
+          })
+        )
+      );
+  }
+
+  function sUSDSAdapterCode() internal pure returns (bytes memory) {
+    return
+      abi.encodePacked(
+        type(sUSDSPriceCapAdapter).creationCode,
+        abi.encode(
+          IPriceCapAdapter.CapAdapterParams({
+            aclManager: AaveV3Ethereum.ACL_MANAGER,
+            baseAggregatorAddress: GovV3Helpers.predictDeterministicAddress(USDSAdapterCode()),
+            ratioProviderAddress: sUSDS,
+            pairDescription: 'Capped sUSDS / USDS <-> DAI / USD',
+            minimumSnapshotDelay: 4 days,
+            priceCapParams: IPriceCapAdapter.PriceCapUpdateParams({
+              snapshotRatio: 1000000000000000000,
+              snapshotTimestamp: 1725455495,
+              maxYearlyRatioGrowthPercent: 15_00
+            })
+          })
+        )
+      );
+  }
 }
 
 contract DeployWeEthEthereum is EthereumScript {
@@ -148,3 +187,16 @@ contract DeploySUSDeEthereum is EthereumScript {
     GovV3Helpers.deployDeterministic(CapAdaptersCodeEthereum.sUSDeAdapterCode());
   }
 }
+
+contract DeployUSDSEthereum is EthereumScript {
+  function run() external broadcast {
+    GovV3Helpers.deployDeterministic(CapAdaptersCodeEthereum.USDSAdapterCode());
+  }
+}
+
+contract DeploysUSDSEthereum is EthereumScript {
+  function run() external broadcast {
+    GovV3Helpers.deployDeterministic(CapAdaptersCodeEthereum.sUSDSAdapterCode());
+  }
+}
+
