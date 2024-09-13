@@ -129,7 +129,7 @@ library CapAdaptersCodeEthereum {
           IPriceCapAdapterStable.CapAdapterStableParams({
             aclManager: AaveV3Ethereum.ACL_MANAGER,
             assetToUsdAggregator: IChainlinkAggregator(DAI_PRICE_FEED), //TODO: check with BGD for Oracle
-            adapterDescription: 'Capped USDS / USD',
+            adapterDescription: 'Capped USDS <-> DAI / USD',
             priceCap: int256(1.04 * 1e18) //TODO: Change to CL recommendation
           })
         )
