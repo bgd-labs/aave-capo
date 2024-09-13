@@ -145,7 +145,7 @@ library CapAdaptersCodeEthereum {
             aclManager: AaveV3Ethereum.ACL_MANAGER,
             baseAggregatorAddress: GovV3Helpers.predictDeterministicAddress(USDSAdapterCode()),
             ratioProviderAddress: sUSDS,
-            pairDescription: 'Capped sUSDS / USDS / USD',
+            pairDescription: 'Capped sUSDS / USDS <-> DAI / USD',
             minimumSnapshotDelay: 4 days, //TODO: replace by CL recommendation
             priceCapParams: IPriceCapAdapter.PriceCapUpdateParams({
               snapshotRatio: 1000000000000000000,
