@@ -33,6 +33,7 @@ import {ILRTOracle} from '../../src/interfaces/ILRTOracle.sol';
 import {CapAdaptersCodeEthereum} from '../../scripts/DeployEthereum.s.sol';
 import {CapAdaptersCodeArbitrum} from '../../scripts/DeployArbitrumWeEth.s.sol';
 import {CapAdaptersCodeBase} from '../../scripts/DeployBase.s.sol';
+import {CapAdaptersCodeScroll} from '../../scripts/DeployScroll.s.sol';
 
 contract ExchangeRatesEth is Test {
   function setUp() public {
@@ -53,6 +54,7 @@ contract ExchangeRatesEth is Test {
     uint256 ethXRate = IEthX(CapAdaptersCodeEthereum.STADER_STAKE_POOLS_MANAGER).getExchangeRate();
     uint256 sUSDeRate = IERC4626(CapAdaptersCodeEthereum.sUSDe).convertToAssets(10 ** 18);
     uint256 rsEthRate = ILRTOracle(CapAdaptersCodeEthereum.LRT_ORACLE).rsETHPrice();
+    uint256 sUSDSRate = IERC4626(CapAdaptersCodeEthereum.sUSDS).convertToAssets(10 ** 18);
 
     console.log('cbEthRate', cbEthRate);
     console.log('rEthRate', rEthRate);
@@ -62,8 +64,9 @@ contract ExchangeRatesEth is Test {
     console.log('weEthRate', weEthRate);
     console.log('osEthRate', osEthRate);
     console.log('ethXRate', ethXRate);
-    console.log('usUSDe', sUSDeRate);
     console.log('rsETH', rsEthRate);
+    console.log('sUSDe', sUSDeRate);
+    console.log('sUSDS', sUSDSRate);
 
     console.log(block.timestamp);
   }
@@ -209,17 +212,20 @@ contract ExchangeRates14Polygon is Test {
 
 contract ExchangeRatesScroll is Test {
   function setUp() public {
-    vm.createSelectFork(vm.rpcUrl('scroll'), 3504770); // 20th of February
+    vm.createSelectFork(vm.rpcUrl('scroll'), 7740000); // July 24th
   }
 
   function test_getExchangeRate() public view {
     uint256 wstEthRate = uint256(
       IChainlinkAggregator(0xE61Da4C909F7d86797a0D06Db63c34f76c9bCBDC).latestAnswer()
     );
+    uint256 weEthRate = uint256(
+      IChainlinkAggregator(CapAdaptersCodeScroll.weETH_eETH_AGGREGATOR).latestAnswer()
+    );
 
     console.log('Scroll');
     console.log('wstEthRate', wstEthRate);
-
+    console.log('weEthRate', weEthRate);
     console.log(block.timestamp);
   }
 }
