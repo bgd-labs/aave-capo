@@ -143,7 +143,7 @@ library CapAdaptersCodeEthereum {
         )
       );
   }
-  
+
   function USDSAdapterCode() internal pure returns (bytes memory) {
     return
       abi.encodePacked(
@@ -211,13 +211,12 @@ contract DeploySUSDeEthereum is EthereumScript {
   }
 }
 
-<<<<<<< HEAD
 contract DeployRsETHEthereum is EthereumScript {
   function run() external broadcast {
     GovV3Helpers.deployDeterministic(CapAdaptersCodeEthereum.rsETHAdapterCode());
   }
 }
-=======
+
 contract DeployUSDSEthereum is EthereumScript {
   function run() external broadcast {
     GovV3Helpers.deployDeterministic(CapAdaptersCodeEthereum.USDSAdapterCode());
@@ -229,5 +228,3 @@ contract DeploysUSDSEthereum is EthereumScript {
     GovV3Helpers.deployDeterministic(CapAdaptersCodeEthereum.sUSDSAdapterCode());
   }
 }
-
->>>>>>> develop
