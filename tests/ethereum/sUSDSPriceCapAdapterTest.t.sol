@@ -17,29 +17,19 @@ contract sUSDSPriceCapAdapterTest is BaseTest {
       ForkParams({network: 'mainnet', blockNumber: 20729672}),
       'sUSDS_Ethereum'
     )
-  {
-  }
+  {}
 
   function test_latestAnswer() public override {
     GovV3Helpers.deployDeterministic(CapAdaptersCodeEthereum.USDSAdapterCode());
-    IPriceCapAdapter adapter = IPriceCapAdapter(GovV3Helpers.deployDeterministic(deploymentCode));
 
-    int256 price = adapter.latestAnswer();
-    int256 priceOfReferenceAdapter = adapter.BASE_TO_USD_AGGREGATOR().latestAnswer();
-
-    assertFalse(adapter.isCapped());
-    assertGe(
-      price,
-      priceOfReferenceAdapter,
-      'lst price is not greater than the reference adapter price'
-    );
+    super.test_latestAnswer();
   }
 
   function test_latestAnswerRetrospective() public override {
     assert(true);
   }
 
-  function test_cappedLatestAnswer() public override pure {
+  function test_cappedLatestAnswer() public pure override {
     assert(true);
   }
 
