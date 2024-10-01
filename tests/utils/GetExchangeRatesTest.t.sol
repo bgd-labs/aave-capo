@@ -53,6 +53,7 @@ contract ExchangeRatesEth is Test {
       .convertToAssets(10 ** 18);
     uint256 ethXRate = IEthX(CapAdaptersCodeEthereum.STADER_STAKE_POOLS_MANAGER).getExchangeRate();
     uint256 sUSDeRate = IERC4626(CapAdaptersCodeEthereum.sUSDe).convertToAssets(10 ** 18);
+    uint256 sUSDSRate = IERC4626(CapAdaptersCodeEthereum.sUSDS).convertToAssets(10 ** 18);
 
     (, , uint256 totalTVL) = IEzETHRestakeManager(CapAdaptersCodeEthereum.ezETH_RESTAKE_MANAGER)
       .calculateTVLs();
@@ -68,6 +69,8 @@ contract ExchangeRatesEth is Test {
     console.log('osEthRate', osEthRate);
     console.log('ethXRate', ethXRate);
     console.log('usUSDe', sUSDeRate);
+    console.log('sUSDe', sUSDeRate);
+    console.log('sUSDS', sUSDSRate);
     console.log('ezETHRate', ezETHRate);
 
     console.log(block.timestamp);
