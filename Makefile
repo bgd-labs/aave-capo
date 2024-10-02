@@ -30,7 +30,7 @@ deploy-susds-mainnet :
 	forge script scripts/DeployEthereum.s.sol:DeployUSDSEthereum --rpc-url mainnet $(common-flags)
 	forge script scripts/DeployEthereum.s.sol:DeploysUSDSEthereum --rpc-url mainnet $(common-flags)
 
-deploy-wsteth-bnb :; forge script scripts/DeployBNB.s.sol:DeployWstEthBnb --rpc-url bnb $(common-flags)
+deploy-wsteth-bnb :; forge script scripts/DeployBnb.s.sol:DeployWstEthBnb --rpc-url bnb $(common-flags)
 
 # Utilities
 download :; cast etherscan-source --chain ${chain} -d src/etherscan/${chain}_${address} ${address}
