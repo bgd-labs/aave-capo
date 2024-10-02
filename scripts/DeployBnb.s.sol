@@ -17,8 +17,8 @@ library CapAdaptersCodeBNB {
         type(CLRatePriceCapAdapter).creationCode,
         abi.encode(
           IPriceCapAdapter.CapAdapterParams({
-            aclManager: IACLManager(address(AaveV3BNB.ACL_MANAGER)),
-            baseAggregatorAddress: ETH_USD_AGGREGATOR,
+            aclManager: AaveV3BNB.ACL_MANAGER,
+            baseAggregatorAddress: AaveV3BNBAssets.ETH_ORACLE,
             ratioProviderAddress: wstETH_stETH_AGGREGATOR,
             pairDescription: 'Capped wstETH / stETH(ETH) / USD',
             minimumSnapshotDelay: 7 days,
