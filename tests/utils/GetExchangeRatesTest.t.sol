@@ -28,6 +28,7 @@ import {IStEUR} from '../../src/interfaces/IStEUR.sol';
 import {IWeEth} from '../../src/interfaces/IWeEth.sol';
 import {IOsTokenVaultController} from '../../src/interfaces/IOsTokenVaultController.sol';
 import {IEthX} from '../../src/interfaces/IEthX.sol';
+import {ILRTOracle} from '../../src/interfaces/ILRTOracle.sol';
 
 import {CapAdaptersCodeEthereum} from '../../scripts/DeployEthereum.s.sol';
 import {CapAdaptersCodeArbitrum} from '../../scripts/DeployArbitrumWeEth.s.sol';
@@ -37,7 +38,7 @@ import {CapAdaptersCodeBNB} from '../../scripts/DeployBnb.s.sol';
 
 contract ExchangeRatesEth is Test {
   function setUp() public {
-    vm.createSelectFork(vm.rpcUrl('mainnet'), 20677435); // 2024-09-04: Deployment of sUSDS
+    vm.createSelectFork(vm.rpcUrl('mainnet'), 20395699); // Jul-27-2024 05:09:23 AM +UTC
   }
 
   function test_getExchangeRate() public view {
@@ -53,6 +54,7 @@ contract ExchangeRatesEth is Test {
       .convertToAssets(10 ** 18);
     uint256 ethXRate = IEthX(CapAdaptersCodeEthereum.STADER_STAKE_POOLS_MANAGER).getExchangeRate();
     uint256 sUSDeRate = IERC4626(CapAdaptersCodeEthereum.sUSDe).convertToAssets(10 ** 18);
+    uint256 rsEthRate = ILRTOracle(CapAdaptersCodeEthereum.LRT_ORACLE).rsETHPrice();
     uint256 sUSDSRate = IERC4626(CapAdaptersCodeEthereum.sUSDS).convertToAssets(10 ** 18);
 
     console.log('cbEthRate', cbEthRate);
@@ -63,6 +65,7 @@ contract ExchangeRatesEth is Test {
     console.log('weEthRate', weEthRate);
     console.log('osEthRate', osEthRate);
     console.log('ethXRate', ethXRate);
+    console.log('rsETH', rsEthRate);
     console.log('sUSDe', sUSDeRate);
     console.log('sUSDS', sUSDSRate);
 

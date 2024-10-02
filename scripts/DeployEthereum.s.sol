@@ -11,6 +11,7 @@ import {WeETHPriceCapAdapter} from '../src/contracts/lst-adapters/WeETHPriceCapA
 import {OsETHPriceCapAdapter} from '../src/contracts/lst-adapters/OsETHPriceCapAdapter.sol';
 import {EthXPriceCapAdapter} from '../src/contracts/lst-adapters/EthXPriceCapAdapter.sol';
 import {SUSDePriceCapAdapter} from '../src/contracts/lst-adapters/SUSDePriceCapAdapter.sol';
+import {RsETHPriceCapAdapter} from '../src/contracts/lst-adapters/RsETHPriceCapAdapter.sol';
 import {sUSDSPriceCapAdapter} from '../src/contracts/lst-adapters/sUSDSPriceCapAdapter.sol';
 
 library CapAdaptersCodeEthereum {
@@ -19,6 +20,7 @@ library CapAdaptersCodeEthereum {
   address public constant USDe_PRICE_FEED = 0xa569d910839Ae8865Da8F8e70FfFb0cBA869F961;
   address public constant STADER_STAKE_POOLS_MANAGER = 0xcf5EA1b38380f6aF39068375516Daf40Ed70D299;
   address public constant sUSDe = 0x9D39A5DE30e57443BfF2A8307A4256c8797A3497;
+  address public constant LRT_ORACLE = 0x349A73444b1a310BAe67ef67973022020d70020d;
   address public constant DAI_PRICE_FEED = 0xAed0c38402a5d19df6E4c03F4E2DceD6e29c1ee9;
   address public constant sUSDS = 0xa3931d71877C0E7a3148CB7Eb4463524FEc27fbD;
 
@@ -121,6 +123,27 @@ library CapAdaptersCodeEthereum {
       );
   }
 
+  function rsETHAdapterCode() internal pure returns (bytes memory) {
+    return
+      abi.encodePacked(
+        type(RsETHPriceCapAdapter).creationCode,
+        abi.encode(
+          IPriceCapAdapter.CapAdapterParams({
+            aclManager: AaveV3Ethereum.ACL_MANAGER,
+            baseAggregatorAddress: AaveV3EthereumAssets.WETH_ORACLE,
+            ratioProviderAddress: LRT_ORACLE,
+            pairDescription: 'rsETH / ETH / USD',
+            minimumSnapshotDelay: 14 days,
+            priceCapParams: IPriceCapAdapter.PriceCapUpdateParams({
+              snapshotRatio: 1019332425808081895,
+              snapshotTimestamp: 1722056963, // Jul-27-2024 05:09:23 AM +UTC
+              maxYearlyRatioGrowthPercent: 9_83
+            })
+          })
+        )
+      );
+  }
+
   function USDSAdapterCode() internal pure returns (bytes memory) {
     return
       abi.encodePacked(
@@ -188,6 +211,12 @@ contract DeploySUSDeEthereum is EthereumScript {
   }
 }
 
+contract DeployRsETHEthereum is EthereumScript {
+  function run() external broadcast {
+    GovV3Helpers.deployDeterministic(CapAdaptersCodeEthereum.rsETHAdapterCode());
+  }
+}
+
 contract DeployUSDSEthereum is EthereumScript {
   function run() external broadcast {
     GovV3Helpers.deployDeterministic(CapAdaptersCodeEthereum.USDSAdapterCode());
@@ -199,4 +228,3 @@ contract DeploysUSDSEthereum is EthereumScript {
     GovV3Helpers.deployDeterministic(CapAdaptersCodeEthereum.sUSDSAdapterCode());
   }
 }
-
