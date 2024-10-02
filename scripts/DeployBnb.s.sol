@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: BUSL-1.1
 pragma solidity ^0.8.0;
 
-import {Script} from 'forge-std/Script.sol';
 import {GovV3Helpers} from 'aave-helpers/GovV3Helpers.sol';
 import {BNBScript} from 'aave-helpers/ScriptUtils.sol';
-import {CLRatePriceCapAdapter, IPriceCapAdapter, IACLManager} from 'src/contracts/CLRatePriceCapAdapter.sol';
-import {AaveV3BNB} from 'aave-address-book/AaveV3BNB.sol';
+import {AaveV3BNB, AaveV3BNBAssets} from 'aave-address-book/AaveV3BNB.sol';
+
+import {CLRatePriceCapAdapter, IPriceCapAdapter, IACLManager} from '../src/contracts/CLRatePriceCapAdapter.sol';
 
 library CapAdaptersCodeBNB {
   address public constant ETH_USD_AGGREGATOR = 0x9ef1B8c0E4F7dc8bF5719Ea496883DC6401d5b2e;
