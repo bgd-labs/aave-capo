@@ -5,7 +5,7 @@ import {GovV3Helpers} from 'aave-helpers/GovV3Helpers.sol';
 import {BNBScript} from 'aave-helpers/ScriptUtils.sol';
 import {AaveV3BNB, AaveV3BNBAssets} from 'aave-address-book/AaveV3BNB.sol';
 
-import {CLRatePriceCapAdapter, IPriceCapAdapter, IACLManager} from '../src/contracts/CLRatePriceCapAdapter.sol';
+import {CLRatePriceCapAdapter, IPriceCapAdapter} from '../src/contracts/CLRatePriceCapAdapter.sol';
 
 library CapAdaptersCodeBNB {
   address public constant wstETH_stETH_AGGREGATOR = 0x4c75d01cfa4D998770b399246400a6dc40FB9645;

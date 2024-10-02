@@ -2,6 +2,7 @@
 pragma solidity ^0.8.0;
 
 import '../BaseTest.sol';
+
 import {CapAdaptersCodeBNB, CLRatePriceCapAdapter} from '../../scripts/DeployBnb.s.sol';
 
 contract wstETHPriceCapAdapterTest is BaseTest {
