@@ -8,7 +8,6 @@ import {AaveV3BNB, AaveV3BNBAssets} from 'aave-address-book/AaveV3BNB.sol';
 import {CLRatePriceCapAdapter, IPriceCapAdapter, IACLManager} from '../src/contracts/CLRatePriceCapAdapter.sol';
 
 library CapAdaptersCodeBNB {
-  address public constant ETH_USD_AGGREGATOR = 0x9ef1B8c0E4F7dc8bF5719Ea496883DC6401d5b2e;
   address public constant wstETH_stETH_AGGREGATOR = 0x4c75d01cfa4D998770b399246400a6dc40FB9645;
 
   function wstETHAdapterCode() internal pure returns (bytes memory) {
