@@ -33,6 +33,7 @@ import {CapAdaptersCodeEthereum} from '../../scripts/DeployEthereum.s.sol';
 import {CapAdaptersCodeArbitrum} from '../../scripts/DeployArbitrumWeEth.s.sol';
 import {CapAdaptersCodeBase} from '../../scripts/DeployBase.s.sol';
 import {CapAdaptersCodeScroll} from '../../scripts/DeployScroll.s.sol';
+import {CapAdaptersCodeBNB} from '../../scripts/DeployBnb.s.sol';
 
 contract ExchangeRatesEth is Test {
   function setUp() public {
@@ -223,6 +224,22 @@ contract ExchangeRatesScroll is Test {
     console.log('Scroll');
     console.log('wstEthRate', wstEthRate);
     console.log('weEthRate', weEthRate);
+    console.log(block.timestamp);
+  }
+}
+
+contract ExchangeRatesBNB is Test {
+  function setUp() public {
+    vm.createSelectFork(vm.rpcUrl('bnb'), 42490000); // Sep-22-2024
+  }
+
+  function test_getExchangeRate() public view {
+    uint256 wstEthRate = uint256(
+      IChainlinkAggregator(CapAdaptersCodeBNB.wstETH_stETH_AGGREGATOR).latestAnswer()
+    );
+
+    console.log('BNB');
+    console.log('wstEthRate', wstEthRate);
     console.log(block.timestamp);
   }
 }
