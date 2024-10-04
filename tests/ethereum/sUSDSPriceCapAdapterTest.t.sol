@@ -1,10 +1,8 @@
 // SPDX-License-Identifier: BUSL-1.1
 pragma solidity ^0.8.0;
 
-import 'forge-std/Test.sol';
 import '../BaseTest.sol';
 
-import {AaveV3Ethereum, AaveV3EthereumAssets} from 'aave-address-book/AaveV3Ethereum.sol';
 import {GovV3Helpers} from 'aave-helpers/GovV3Helpers.sol';
 import {sUSDSPriceCapAdapter} from '../../src/contracts/lst-adapters/sUSDSPriceCapAdapter.sol';
 import {CapAdaptersCodeEthereum} from '../../scripts/DeployEthereum.s.sol';
@@ -25,7 +23,7 @@ contract sUSDSPriceCapAdapterTest is BaseTest {
     super.test_latestAnswer();
   }
 
-  function test_latestAnswerRetrospective() public override {
+  function test_latestAnswerRetrospective() public pure override {
     assert(true);
   }
 
