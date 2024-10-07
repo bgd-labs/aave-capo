@@ -3,10 +3,7 @@ pragma solidity ^0.8.0;
 
 import '../BaseTest.sol';
 
-import {AaveV3EthereumLido, AaveV3EthereumLidoAssets} from 'aave-address-book/AaveV3EthereumLido.sol';
-
 import {EzETHPriceCapAdapter} from '../../src/contracts/lst-adapters/EzETHPriceCapAdapter.sol';
-
 import {CapAdaptersCodeEthereum} from '../../scripts/DeployEthereum.s.sol';
 
 contract ezETHPriceCapAdapterTest is BaseTest {

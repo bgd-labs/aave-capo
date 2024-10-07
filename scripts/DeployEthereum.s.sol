@@ -168,7 +168,7 @@ library CapAdaptersCodeEthereum {
             aclManager: AaveV3Ethereum.ACL_MANAGER,
             baseAggregatorAddress: AaveV3EthereumAssets.WETH_ORACLE,
             ratioProviderAddress: ezETH_RESTAKE_MANAGER,
-            pairDescription: 'Capped ezETH / ETH / USD',
+            pairDescription: 'Capped ezETH / ezETH(ETH) / USD',
             minimumSnapshotDelay: 7 days,
             priceCapParams: IPriceCapAdapter.PriceCapUpdateParams({
               snapshotRatio: 1019883708003361006,

@@ -2,7 +2,6 @@
 pragma solidity ^0.8.0;
 
 /// @notice A simple version of the Renzo ezETH system interface allowing to get exchange ratio with ETH
-
 interface IEzETHRestakeManager {
   /// @dev This function calculates the TVLs for each operator delegator by individual token, total for each OD, and total for the protocol.
   /// @return operatorDelegatorTokenTVLs Each OD's TVL indexed by operatorDelegators array by collateralTokens array
