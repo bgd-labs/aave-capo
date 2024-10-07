@@ -2,7 +2,7 @@
 pragma solidity ^0.8.0;
 
 import {GovV3Helpers} from 'aave-helpers/GovV3Helpers.sol';
-import {ArbitrumScript} from 'aave-helpers/ScriptUtils.sol';
+import {ArbitrumScript} from 'solidity-utils/contracts/utils/ScriptUtils.sol';
 import {AaveV3Arbitrum, AaveV3ArbitrumAssets} from 'aave-address-book/AaveV3Arbitrum.sol';
 
 import {CLRatePriceCapAdapter, IPriceCapAdapter} from '../src/contracts/CLRatePriceCapAdapter.sol';

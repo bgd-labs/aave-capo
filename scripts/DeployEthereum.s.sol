@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: BUSL-1.1
 pragma solidity ^0.8.0;
 import {GovV3Helpers} from 'aave-helpers/GovV3Helpers.sol';
-import {EthereumScript} from 'aave-helpers/ScriptUtils.sol';
+import {EthereumScript} from 'solidity-utils/contracts/utils/ScriptUtils.sol';
 import {AaveV3Ethereum, AaveV3EthereumAssets} from 'aave-address-book/AaveV3Ethereum.sol';
 
 import {PriceCapAdapterStable} from '../src/contracts/PriceCapAdapterStable.sol';
@@ -12,6 +12,7 @@ import {OsETHPriceCapAdapter} from '../src/contracts/lst-adapters/OsETHPriceCapA
 import {EthXPriceCapAdapter} from '../src/contracts/lst-adapters/EthXPriceCapAdapter.sol';
 import {SUSDePriceCapAdapter} from '../src/contracts/lst-adapters/SUSDePriceCapAdapter.sol';
 import {sUSDSPriceCapAdapter} from '../src/contracts/lst-adapters/sUSDSPriceCapAdapter.sol';
+import {EzETHPriceCapAdapter} from '../src/contracts/lst-adapters/EzETHPriceCapAdapter.sol';
 
 library CapAdaptersCodeEthereum {
   address public constant weETH = 0xCd5fE23C85820F7B72D0926FC9b05b43E359b7ee;
@@ -21,6 +22,7 @@ library CapAdaptersCodeEthereum {
   address public constant sUSDe = 0x9D39A5DE30e57443BfF2A8307A4256c8797A3497;
   address public constant DAI_PRICE_FEED = 0xAed0c38402a5d19df6E4c03F4E2DceD6e29c1ee9;
   address public constant sUSDS = 0xa3931d71877C0E7a3148CB7Eb4463524FEc27fbD;
+  address public constant ezETH_RESTAKE_MANAGER = 0x74a09653A083691711cF8215a6ab074BB4e99ef5;
 
   function weETHAdapterCode() internal pure returns (bytes memory) {
     return
@@ -156,6 +158,27 @@ library CapAdaptersCodeEthereum {
         )
       );
   }
+
+  function ezETHAdapterCode() internal pure returns (bytes memory) {
+    return
+      abi.encodePacked(
+        type(EzETHPriceCapAdapter).creationCode,
+        abi.encode(
+          IPriceCapAdapter.CapAdapterParams({
+            aclManager: AaveV3Ethereum.ACL_MANAGER,
+            baseAggregatorAddress: AaveV3EthereumAssets.WETH_ORACLE,
+            ratioProviderAddress: ezETH_RESTAKE_MANAGER,
+            pairDescription: 'Capped ezETH / ezETH(ETH) / USD',
+            minimumSnapshotDelay: 7 days,
+            priceCapParams: IPriceCapAdapter.PriceCapUpdateParams({
+              snapshotRatio: 1019883708003361006,
+              snapshotTimestamp: 1727172839, // Sep-24-2024
+              maxYearlyRatioGrowthPercent: 7_39
+            })
+          })
+        )
+      );
+  }
 }
 
 contract DeployWeEthEthereum is EthereumScript {
@@ -200,3 +223,8 @@ contract DeploysUSDSEthereum is EthereumScript {
   }
 }
 
+contract DeployEzEthEthereum is EthereumScript {
+  function run() external broadcast {
+    GovV3Helpers.deployDeterministic(CapAdaptersCodeEthereum.ezETHAdapterCode());
+  }
+}
