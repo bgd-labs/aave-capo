@@ -69,7 +69,6 @@ contract ExchangeRatesEth is Test {
     console.log('weEthRate', weEthRate);
     console.log('osEthRate', osEthRate);
     console.log('ethXRate', ethXRate);
-    console.log('usUSDe', sUSDeRate);
     console.log('sUSDe', sUSDeRate);
     console.log('sUSDS', sUSDSRate);
     console.log('ezETHRate', ezETHRate);
