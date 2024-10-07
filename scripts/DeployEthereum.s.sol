@@ -172,7 +172,7 @@ library CapAdaptersCodeEthereum {
             minimumSnapshotDelay: 7 days,
             priceCapParams: IPriceCapAdapter.PriceCapUpdateParams({
               snapshotRatio: 1019883708003361006,
-              snapshotTimestamp: 1727172839,
+              snapshotTimestamp: 1727172839, // Sep-24-2024
               maxYearlyRatioGrowthPercent: 7_39
             })
           })
