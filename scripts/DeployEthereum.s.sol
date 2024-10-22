@@ -3,6 +3,7 @@ pragma solidity ^0.8.0;
 import {GovV3Helpers} from 'aave-helpers/GovV3Helpers.sol';
 import {EthereumScript} from 'solidity-utils/contracts/utils/ScriptUtils.sol';
 import {AaveV3Ethereum, AaveV3EthereumAssets} from 'aave-address-book/AaveV3Ethereum.sol';
+import {AaveV3EthereumLido, AaveV3EthereumLidoAssets} from 'aave-address-book/AaveV3EthereumLido.sol';
 
 import {PriceCapAdapterStable} from '../src/contracts/PriceCapAdapterStable.sol';
 import {IPriceCapAdapter, IChainlinkAggregator} from '../src/interfaces/IPriceCapAdapter.sol';
@@ -165,15 +166,15 @@ library CapAdaptersCodeEthereum {
         type(EzETHPriceCapAdapter).creationCode,
         abi.encode(
           IPriceCapAdapter.CapAdapterParams({
-            aclManager: AaveV3Ethereum.ACL_MANAGER,
-            baseAggregatorAddress: AaveV3EthereumAssets.WETH_ORACLE,
+            aclManager: AaveV3EthereumLido.ACL_MANAGER,
+            baseAggregatorAddress: AaveV3EthereumLidoAssets.WETH_ORACLE,
             ratioProviderAddress: ezETH_RESTAKE_MANAGER,
             pairDescription: 'Capped ezETH / ezETH(ETH) / USD',
-            minimumSnapshotDelay: 7 days,
+            minimumSnapshotDelay: 14 days,
             priceCapParams: IPriceCapAdapter.PriceCapUpdateParams({
               snapshotRatio: 1019883708003361006,
               snapshotTimestamp: 1727172839, // Sep-24-2024
-              maxYearlyRatioGrowthPercent: 7_39
+              maxYearlyRatioGrowthPercent: 10_89
             })
           })
         )
