@@ -38,7 +38,7 @@ import {CapAdaptersCodeBNB} from '../../scripts/DeployBnb.s.sol';
 
 contract ExchangeRatesEth is Test {
   function setUp() public {
-    vm.createSelectFork(vm.rpcUrl('mainnet'), 20870886); // 1st of October
+    vm.createSelectFork(vm.rpcUrl('mainnet'), 21017352); // 21st of October
   }
 
   function test_getExchangeRate() public view {

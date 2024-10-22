@@ -169,11 +169,11 @@ library CapAdaptersCodeEthereum {
             baseAggregatorAddress: AaveV3EthereumAssets.WETH_ORACLE,
             ratioProviderAddress: ezETH_RESTAKE_MANAGER,
             pairDescription: 'Capped ezETH / ezETH(ETH) / USD',
-            minimumSnapshotDelay: 7 days,
+            minimumSnapshotDelay: 14 days,
             priceCapParams: IPriceCapAdapter.PriceCapUpdateParams({
-              snapshotRatio: 1019883708003361006,
-              snapshotTimestamp: 1727172839, // Sep-24-2024
-              maxYearlyRatioGrowthPercent: 7_39
+              snapshotRatio: 1021071979952190954,
+              snapshotTimestamp: 1728321815, // Oct-07-2024
+              maxYearlyRatioGrowthPercent: 10_89
             })
           })
         )
