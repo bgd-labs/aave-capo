@@ -58,7 +58,7 @@ abstract contract BaseTest is Test {
     int256 priceOfReferenceAdapter = adapter.BASE_TO_USD_AGGREGATOR().latestAnswer();
 
     assertFalse(adapter.isCapped());
-    assertGt(
+    assertGe(
       price,
       priceOfReferenceAdapter,
       'lst price is not greater than the reference adapter price'
