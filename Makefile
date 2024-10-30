@@ -32,6 +32,8 @@ deploy-susds-mainnet :
 
 deploy-wsteth-bnb :; forge script scripts/DeployBnb.s.sol:DeployWstEthBnb --rpc-url bnb $(common-flags)
 
+deploy-bnbx-bnb :; forge script scripts/DeployBnb.s.sol:DeployBNBxBnb --rpc-url bnb $(common-flags)
+
 deploy-ezeth-mainnet :; forge script scripts/DeployEthereum.s.sol:DeployEzEthEthereum --rpc-url mainnet $(common-flags)
 
 # Utilities
