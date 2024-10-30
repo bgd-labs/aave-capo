@@ -34,6 +34,9 @@ deploy-wsteth-bnb :; forge script scripts/DeployBnb.s.sol:DeployWstEthBnb --rpc-
 
 deploy-ezeth-mainnet :; forge script scripts/DeployEthereum.s.sol:DeployEzEthEthereum --rpc-url mainnet $(common-flags)
 
+deploy-sdai-mainnet :; forge script scripts/DeployEthereum.s.sol:DeploySDaiEthereum --rpc-url mainnet $(common-flags)
+deploy-sdai-gnosis :; forge script scripts/DeployGnosis.s.sol:DeploySDaiGnosis --rpc-url gnosis $(common-flags)
+
 # Utilities
 download :; cast etherscan-source --chain ${chain} -d src/etherscan/${chain}_${address} ${address}
 git-diff :
