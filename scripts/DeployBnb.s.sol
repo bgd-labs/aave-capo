@@ -42,7 +42,7 @@ library CapAdaptersCodeBNB {
             aclManager: AaveV3BNB.ACL_MANAGER,
             baseAggregatorAddress: AaveV3BNBAssets.WBNB_ORACLE,
             ratioProviderAddress: BNBx_STAKE_MANAGER_V2,
-            pairDescription: 'Capped BNBx / BNBx(BNB) / USD',
+            pairDescription: 'Capped BNBx / BNB / USD',
             minimumSnapshotDelay: 21 days,
             priceCapParams: IPriceCapAdapter.PriceCapUpdateParams({
               snapshotRatio: 1093544888172635115,

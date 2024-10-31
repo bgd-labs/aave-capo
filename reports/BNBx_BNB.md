@@ -1,6 +1,6 @@
 # Capo Report
 
-| Capped BNBx / BNBx(BNB) / USD | BNB / USD    | Diff  | Date        | 21-day growth in yearly % |
+| Capped BNBx / BNB / USD | BNB / USD    | Diff  | Date        | 21-day growth in yearly % |
 | ----------------------------- | ------------ | ----- | ----------- | ------------------------- |
 | 661.3962654                   | 604.67224    | 8.96% | 21 Oct 2024 | 0.68%                     |
 | 653.09003325                  | 597.06962985 | 8.96% | 22 Oct 2024 | 0.62%                     |
