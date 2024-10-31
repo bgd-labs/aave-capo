@@ -29,6 +29,7 @@ import {IWeEth} from '../../src/interfaces/IWeEth.sol';
 import {IOsTokenVaultController} from '../../src/interfaces/IOsTokenVaultController.sol';
 import {IEthX} from '../../src/interfaces/IEthX.sol';
 import {IEzETHRestakeManager, IEzEthToken} from '../../src/interfaces/IEzETH.sol';
+import {IRsETH} from '../../src/interfaces/IRsETH.sol';
 import {IBNBx} from '../../src/interfaces/IBNBx.sol';
 
 import {CapAdaptersCodeEthereum} from '../../scripts/DeployEthereum.s.sol';
@@ -39,7 +40,7 @@ import {CapAdaptersCodeBNB} from '../../scripts/DeployBnb.s.sol';
 
 contract ExchangeRatesEth is Test {
   function setUp() public {
-    vm.createSelectFork(vm.rpcUrl('mainnet'), 20870886); // 1st of October
+    vm.createSelectFork(vm.rpcUrl('mainnet'), 20963424); // 14th of October
   }
 
   function test_getExchangeRate() public view {
@@ -62,6 +63,7 @@ contract ExchangeRatesEth is Test {
     uint256 ezETHRate = ((totalTVL * 1 ether) /
       IEzETHRestakeManager(CapAdaptersCodeEthereum.ezETH_RESTAKE_MANAGER).ezETH().totalSupply());
 
+    uint256 rsETHRate = IRsETH(CapAdaptersCodeEthereum.rsETH_LRT_ORACLE).rsETHPrice();
     console.log('cbEthRate', cbEthRate);
     console.log('rEthRate', rEthRate);
     console.log('sDaiRate', sDaiRate);
@@ -73,6 +75,7 @@ contract ExchangeRatesEth is Test {
     console.log('sUSDe', sUSDeRate);
     console.log('sUSDS', sUSDSRate);
     console.log('ezETHRate', ezETHRate);
+    console.log('rsETHRate', rsETHRate);
 
     console.log(block.timestamp);
   }
