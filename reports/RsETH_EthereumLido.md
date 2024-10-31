@@ -1,6 +1,6 @@
 # Capo Report
 
-| Capped rsETH / rsETH(ETH) / USD | ETH / USD | Diff | Date | 14-day growth in yearly % |
+| Capped rsETH / ETH / USD | ETH / USD | Diff | Date | 14-day growth in yearly % |
 | --- | --- | --- | --- | --- |
 | 2711.57859276 | 2655.564 | 2.09% | 13 Aug 2024 | 3.98% |
 | 2786.10410793 | 2728.55 | 2.09% | 14 Aug 2024 | 3.55% |
