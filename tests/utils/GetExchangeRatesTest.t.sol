@@ -30,6 +30,7 @@ import {IOsTokenVaultController} from '../../src/interfaces/IOsTokenVaultControl
 import {IEthX} from '../../src/interfaces/IEthX.sol';
 import {IEzETHRestakeManager, IEzEthToken} from '../../src/interfaces/IEzETH.sol';
 import {IRsETH} from '../../src/interfaces/IRsETH.sol';
+import {IBNBx} from '../../src/interfaces/IBNBx.sol';
 
 import {CapAdaptersCodeEthereum} from '../../scripts/DeployEthereum.s.sol';
 import {CapAdaptersCodeArbitrum} from '../../scripts/DeployArbitrumWeEth.s.sol';
@@ -240,7 +241,7 @@ contract ExchangeRatesScroll is Test {
 
 contract ExchangeRatesBNB is Test {
   function setUp() public {
-    vm.createSelectFork(vm.rpcUrl('bnb'), 42490000); // Sep-22-2024
+    vm.createSelectFork(vm.rpcUrl('bnb'), 42938803); // Oct-08-2024
   }
 
   function test_getExchangeRate() public view {
@@ -248,8 +249,13 @@ contract ExchangeRatesBNB is Test {
       IChainlinkAggregator(CapAdaptersCodeBNB.wstETH_stETH_AGGREGATOR).latestAnswer()
     );
 
+    uint256 bnbxRate = uint256(
+      IBNBx(CapAdaptersCodeBNB.BNBx_STAKE_MANAGER_V2).convertBnbXToBnb(10 ** 18)
+    );
+
     console.log('BNB');
     console.log('wstEthRate', wstEthRate);
+    console.log('bnbxRate', bnbxRate);
     console.log(block.timestamp);
   }
 }
