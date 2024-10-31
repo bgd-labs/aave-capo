@@ -192,7 +192,7 @@ library CapAdaptersCodeEthereum {
             aclManager: AaveV3EthereumLido.ACL_MANAGER,
             baseAggregatorAddress: AaveV3EthereumLidoAssets.WETH_ORACLE,
             ratioProviderAddress: rsETH_LRT_ORACLE,
-            pairDescription: 'Capped rsETH / rsETH(ETH) / USD',
+            pairDescription: 'Capped rsETH / ETH / USD',
             minimumSnapshotDelay: 14 days,
             priceCapParams: IPriceCapAdapter.PriceCapUpdateParams({
               snapshotRatio: 1026549069391100903,
