@@ -16,7 +16,7 @@ import {IRsETH} from '../../interfaces/IRsETH.sol';
  * It internally calls the `getAssetDistributionData(asset)` to obtain the balances via the `asset.balanceOf()` function, meaning that the exchange rate of rsETH can be
  * manipulated by inflating its price via the donation of these assets. But it's understood that, exclusively in this case, the donations cannot cause a 'completed' manipulation because
  * the token donated cannot be rescued after the donation and can be considered as an 'injection of rewards', which would benefit all rsETH shareholders. Also,
- * it is important to mention that the Aave Protocol does not allow the rsETH to be borrowed in its system, which limits any benefit to the attacker from the 'possible'
+ * it is important to mention that the Aave Protocol does not allow the rsETH to be borrowed in its system (this restriction has been in place since the asset's listing, but it may/could change in the future if the governance decides otherwise.), which limits any benefit to the attacker from the 'possible'
  * manipulation of the exchange rate. Other systems using this oracle should consider and evaluate those risks described here.
  * More information can be found in the rsETH discussion in the forum: https://governance.aave.com/t/arfc-add-rseth-to-aave-v3-ethereum/17696/16
  */
