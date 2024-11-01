@@ -65,10 +65,11 @@ To test the adapter:
 
 1. Add the test to the destination network folder inside `tests`.
 2. Inherit it from [`BaseTest`](tests/BaseTest.sol) and implement the simple `_createAdapter()` method, when the specific adapter is created. Or just inherit the test from [CLAdapterBaseTest.sol](tests/CLAdapterBaseTest.sol) when Chainlink oracle is used.
-   
+
    2.1. If the adapter will be tested against the zksync network:
-      - It must also implement the `_capAdapterParams() ` with the corresponding adapter's parameters. Because the parameters cannot be obtained from the regular deterministic deployment ( `GovV3Helpers.deployDeterministic(deploymentCode)` ).
-      - add the `salt` parameter using the `new` keyword for deployment: e.g.: `new CLRatePriceCapAdapter{salt: 'test'}(capAdapterParams)`
+
+   - It must also implement the `_capAdapterParams() ` with the corresponding adapter's parameters. Because the parameters cannot be obtained from the regular deterministic deployment ( `GovV3Helpers.deployDeterministic(deploymentCode)` ).
+   - add the `salt` parameter using the `new` keyword for deployment: e.g.: `new CLRatePriceCapAdapter{salt: 'test'}(capAdapterParams)`
 
 3. Specify the following test parameters:
    - adapter code
