@@ -12,7 +12,7 @@ contract RsETHPriceCapAdapterTest is BaseTest {
       CapAdaptersCodeEthereum.rsETHAdapterCode(),
       90,
       ForkParams({network: 'mainnet', blockNumber: 21072950}),
-      'RsETH_EthereumLido'
+      'RsETH_Ethereum'
     )
   {}
 

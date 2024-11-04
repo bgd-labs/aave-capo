@@ -213,8 +213,8 @@ library CapAdaptersCodeEthereum {
         type(RsETHPriceCapAdapter).creationCode,
         abi.encode(
           IPriceCapAdapter.CapAdapterParams({
-            aclManager: AaveV3EthereumLido.ACL_MANAGER,
-            baseAggregatorAddress: AaveV3EthereumLidoAssets.WETH_ORACLE,
+            aclManager: AaveV3Ethereum.ACL_MANAGER,
+            baseAggregatorAddress: AaveV3EthereumAssets.WETH_ORACLE,
             ratioProviderAddress: rsETH_LRT_ORACLE,
             pairDescription: 'Capped rsETH / ETH / USD',
             minimumSnapshotDelay: 14 days,
