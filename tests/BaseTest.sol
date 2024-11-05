@@ -32,19 +32,24 @@ abstract contract BaseTest is Test {
 
   ForkParams public forkParams;
   bytes public deploymentCode;
+  bytes public adapterParams;
   string public reportName;
   PriceParams[] prices;
 
   constructor(
-    bytes memory _deploymentCode,
+    bytes memory _deploymentCodeOrParams,
     uint8 _retrospectiveDays,
     ForkParams memory _forkParams,
     string memory _reportName
   ) {
     forkParams = _forkParams;
-    deploymentCode = _deploymentCode;
     RETROSPECTIVE_DAYS = _retrospectiveDays;
     reportName = _reportName;
+    if (keccak256(bytes(_forkParams.network)) == keccak256(bytes('zksync'))) {
+      adapterParams = _deploymentCodeOrParams;
+    } else {
+      deploymentCode = _deploymentCodeOrParams;
+    }
   }
 
   function setUp() public {
@@ -165,7 +170,7 @@ abstract contract BaseTest is Test {
 
   function _getCapAdapterParams() internal returns (IPriceCapAdapter.CapAdapterParams memory) {
     if (keccak256(bytes(forkParams.network)) == keccak256(bytes('zksync'))) {
-      return _capAdapterParams();
+      return abi.decode(adapterParams, (IPriceCapAdapter.CapAdapterParams));
     }
     IPriceCapAdapter adapter = _createAdapter();
     return
@@ -187,15 +192,9 @@ abstract contract BaseTest is Test {
     IPriceCapAdapter.CapAdapterParams memory capAdapterParams
   ) internal virtual returns (IPriceCapAdapter) {}
 
-  function _capAdapterParams()
-    internal
-    virtual
-    returns (IPriceCapAdapter.CapAdapterParams memory)
-  {}
-
   function _createAdapter() internal returns (IPriceCapAdapter) {
     if (keccak256(bytes(forkParams.network)) == keccak256(bytes('zksync'))) {
-      return _createAdapter(_capAdapterParams());
+      return _createAdapter(_getCapAdapterParams());
     }
     return IPriceCapAdapter(GovV3Helpers.deployDeterministic(deploymentCode));
   }
