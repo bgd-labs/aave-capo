@@ -5,7 +5,6 @@ import '../BaseTest.sol';
 
 import {CLRatePriceCapAdapter} from '../../src/contracts/CLRatePriceCapAdapter.sol';
 import {CapAdaptersCodeZkSync} from '../../scripts/DeployZkSync.s.sol';
-import {AaveV3ZkSync} from 'aave-address-book/AaveV3ZkSync.sol';
 
 contract sUSDePriceCapAdapterZkSyncTest is BaseTest {
   constructor()
@@ -22,6 +21,4 @@ contract sUSDePriceCapAdapterZkSyncTest is BaseTest {
   ) internal override returns (IPriceCapAdapter) {
     return new CLRatePriceCapAdapter{salt: 'test'}(capAdapterParams);
   }
-
-
 }

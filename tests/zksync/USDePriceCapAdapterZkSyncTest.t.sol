@@ -2,9 +2,8 @@
 pragma solidity ^0.8.0;
 
 import '../BaseStableTest.sol';
-import {PriceCapAdapterStable, IChainlinkAggregator} from '../../src/contracts/PriceCapAdapterStable.sol';
+import {PriceCapAdapterStable} from '../../src/contracts/PriceCapAdapterStable.sol';
 import {CapAdaptersCodeZkSync} from '../../scripts/DeployZkSync.s.sol';
-import {AaveV3ZkSync} from 'aave-address-book/AaveV3ZkSync.sol';
 
 contract USDePriceCapAdapterZKSyncTest is BaseStableTest {
   constructor()
@@ -14,6 +13,4 @@ contract USDePriceCapAdapterZKSyncTest is BaseStableTest {
       ForkParams({network: 'zksync', blockNumber: 47910214})
     )
   {}
-
- 
 }

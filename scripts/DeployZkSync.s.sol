@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: BUSL-1.1
 pragma solidity ^0.8.0;
-import {GovV3Helpers} from 'aave-helpers/GovV3Helpers.sol';
 import {ZkSyncScript} from 'solidity-utils/contracts/utils/ScriptUtils.sol';
 import {CLRatePriceCapAdapter} from '../src/contracts/CLRatePriceCapAdapter.sol';
 import {AaveV3ZkSync, AaveV3ZkSyncAssets} from 'aave-address-book/AaveV3ZkSync.sol';
