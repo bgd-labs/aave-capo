@@ -57,6 +57,8 @@ Alter the appropriate deployment script:
    - `snapshotTimestamp`: timestamp of the snapshot ratio
    - `maxYearlyRatioGrowthPercent`: the maximum possible annual LST growth percentage
 
+   1.1 If the adapter is deployed on zkSync network, you'll need to create a function that only returns the encoded parameters above instead of returning the deployment code.
+
 2. Add the deployment script and command to the Makefile.
 
 ## 3. Testing
@@ -68,7 +70,6 @@ To test the adapter:
 
    2.1. If the adapter will be tested against the zksync network:
 
-   - It must also implement the `_capAdapterParams() ` with the corresponding adapter's parameters. Because the parameters cannot be obtained from the regular deterministic deployment ( `GovV3Helpers.deployDeterministic(deploymentCode)` ).
    - add the `salt` parameter using the `new` keyword for deployment: e.g.: `new CLRatePriceCapAdapter{salt: 'test'}(capAdapterParams)`
 
 3. Specify the following test parameters:
