@@ -13,7 +13,7 @@ library CapAdaptersCodeZkSync {
   address public constant sUSDe_USDe_AGGREGATOR = 0x97920183c36B022B46D6C14b9dA36c5f31A98C6A;
   address public constant USDe_PRICE_FEED = 0x4899faF0b6c36620168D00e3DbD4CB9361244c4d;
 
-  function weETHAdapterCode() internal pure returns (bytes memory) {
+  function weETHAdapterParams() internal pure returns (bytes memory) {
     return
       abi.encode(
         IPriceCapAdapter.CapAdapterParams({
@@ -31,7 +31,7 @@ library CapAdaptersCodeZkSync {
       );
   }
 
-  function sUSDeAdapterCode() internal pure returns (bytes memory) {
+  function sUSDeAdapterParams() internal pure returns (bytes memory) {
     return
       abi.encode(
         IPriceCapAdapter.CapAdapterParams({
@@ -49,7 +49,7 @@ library CapAdaptersCodeZkSync {
       );
   }
 
-  function USDeAdapterCode() internal pure returns (bytes memory) {
+  function USDeAdapterParams() internal pure returns (bytes memory) {
     return
       abi.encode(
         IPriceCapAdapterStable.CapAdapterStableParams({
@@ -65,7 +65,7 @@ library CapAdaptersCodeZkSync {
 contract DeployWeEthZkSync is ZkSyncScript {
   function run() external broadcast {
     new CLRatePriceCapAdapter{salt: 'capo'}(
-      abi.decode(CapAdaptersCodeZkSync.weETHAdapterCode(), (IPriceCapAdapter.CapAdapterParams))
+      abi.decode(CapAdaptersCodeZkSync.weETHAdapterParams(), (IPriceCapAdapter.CapAdapterParams))
     );
   }
 }
@@ -73,7 +73,7 @@ contract DeployWeEthZkSync is ZkSyncScript {
 contract DeploySUSDeZkSync is ZkSyncScript {
   function run() external broadcast {
     new CLRatePriceCapAdapter{salt: 'capo'}(
-      abi.decode(CapAdaptersCodeZkSync.sUSDeAdapterCode(), (IPriceCapAdapter.CapAdapterParams))
+      abi.decode(CapAdaptersCodeZkSync.sUSDeAdapterParams(), (IPriceCapAdapter.CapAdapterParams))
     );
   }
 }
@@ -82,7 +82,7 @@ contract DeployUSDeZkSync is ZkSyncScript {
   function run() external broadcast {
     new PriceCapAdapterStable{salt: 'capo'}(
       abi.decode(
-        CapAdaptersCodeZkSync.USDeAdapterCode(),
+        CapAdaptersCodeZkSync.USDeAdapterParams(),
         (IPriceCapAdapterStable.CapAdapterStableParams)
       )
     );
