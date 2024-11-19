@@ -10,8 +10,8 @@ contract weETHPriceCapAdapterZkSyncTest is BaseTest {
   constructor()
     BaseTest(
       CapAdaptersCodeZkSync.weETHAdapterParams(),
-      8,
-      ForkParams({network: 'zksync', blockNumber: 47840214}),
+      35,
+      ForkParams({network: 'zksync', blockNumber: 49309193}),
       'weETH_ZkSync'
     )
   {}

@@ -9,8 +9,8 @@ contract USDePriceCapAdapterZKSyncTest is BaseStableTest {
   constructor()
     BaseStableTest(
       CapAdaptersCodeZkSync.USDeAdapterParams(),
-      10,
-      ForkParams({network: 'zksync', blockNumber: 47910214})
+      35,
+      ForkParams({network: 'zksync', blockNumber: 49309220})
     )
   {}
 }
