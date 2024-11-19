@@ -8,6 +8,16 @@ on:
   workflow_dispatch:
 
 jobs:
-  test:
+  test-sol:
     uses: bgd-labs/github-workflows/.github/workflows/foundry-test.yml@main
     secrets: inherit
+    with:
+      mode: "CHANGED"
+    
+  test-sol-zksync:
+    uses: bgd-labs/github-workflows/.github/workflows/foundry-test.yml@main
+    secrets: inherit
+    with:
+      mode: "CHANGED"
+      zksync: true
+      ROOT_DIR: "zksync"
