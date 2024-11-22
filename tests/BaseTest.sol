@@ -87,7 +87,7 @@ abstract contract BaseTest is Test {
     uint256 snapshotDelayDays = uint256(adapter.MINIMUM_SNAPSHOT_DELAY()) / SECONDS_PER_DAY;
 
     // persist adapter
-    vm.makePersistent(address(adapter)); // does not work on zksync
+    vm.makePersistent(address(adapter));
 
     // get step
     uint256 step = BlockUtils.getStep(RETROSPECTIVE_STEP, forkParams.network);

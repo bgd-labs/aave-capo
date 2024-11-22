@@ -1,9 +1,11 @@
 // SPDX-License-Identifier: BUSL-1.1
 pragma solidity ^0.8.0;
+
 import {GovV3Helpers} from 'aave-helpers/GovV3Helpers.sol';
 import {EthereumScript} from 'solidity-utils/contracts/utils/ScriptUtils.sol';
 import {AaveV3Ethereum, AaveV3EthereumAssets} from 'aave-address-book/AaveV3Ethereum.sol';
 import {AaveV3EthereumLido, AaveV3EthereumLidoAssets} from 'aave-address-book/AaveV3EthereumLido.sol';
+import {MiscEthereum} from 'aave-address-book/MiscEthereum.sol';
 
 import {PriceCapAdapterStable} from '../src/contracts/PriceCapAdapterStable.sol';
 import {IPriceCapAdapter, IChainlinkAggregator} from '../src/interfaces/IPriceCapAdapter.sol';
@@ -14,6 +16,7 @@ import {EthXPriceCapAdapter} from '../src/contracts/lst-adapters/EthXPriceCapAda
 import {SUSDePriceCapAdapter} from '../src/contracts/lst-adapters/SUSDePriceCapAdapter.sol';
 import {sUSDSPriceCapAdapter} from '../src/contracts/lst-adapters/sUSDSPriceCapAdapter.sol';
 import {EzETHPriceCapAdapter} from '../src/contracts/lst-adapters/EzETHPriceCapAdapter.sol';
+import {sDAIMainnetPriceCapAdapter} from '../src/contracts/lst-adapters/sDAIMainnetPriceCapAdapter.sol';
 import {RsETHPriceCapAdapter} from '../src/contracts/lst-adapters/RsETHPriceCapAdapter.sol';
 
 library CapAdaptersCodeEthereum {
@@ -120,6 +123,27 @@ library CapAdaptersCodeEthereum {
               snapshotRatio: 1073500440864333503,
               snapshotTimestamp: 1717576067,
               maxYearlyRatioGrowthPercent: 50_00
+            })
+          })
+        )
+      );
+  }
+
+  function sDAIAdapterCode() internal pure returns (bytes memory) {
+    return
+      abi.encodePacked(
+        type(sDAIMainnetPriceCapAdapter).creationCode,
+        abi.encode(
+          IPriceCapAdapter.CapAdapterParams({
+            aclManager: AaveV3Ethereum.ACL_MANAGER,
+            baseAggregatorAddress: DAI_PRICE_FEED,
+            ratioProviderAddress: MiscEthereum.sDAI_POT,
+            pairDescription: 'Capped sDAI / DAI / USD',
+            minimumSnapshotDelay: 7 days,
+            priceCapParams: IPriceCapAdapter.PriceCapUpdateParams({
+              snapshotRatio: 1_114312383890349337561189736,
+              snapshotTimestamp: 1729467251,
+              maxYearlyRatioGrowthPercent: 9_69
             })
           })
         )
@@ -250,6 +274,12 @@ contract DeploysUSDSEthereum is EthereumScript {
 contract DeployEzEthEthereum is EthereumScript {
   function run() external broadcast {
     GovV3Helpers.deployDeterministic(CapAdaptersCodeEthereum.ezETHAdapterCode());
+  }
+}
+
+contract DeploySDaiEthereum is EthereumScript {
+  function run() external broadcast {
+    GovV3Helpers.deployDeterministic(CapAdaptersCodeEthereum.sDAIAdapterCode());
   }
 }
 

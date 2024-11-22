@@ -1,18 +1,16 @@
 // SPDX-License-Identifier: BUSL-1.1
-pragma solidity 0.8.20;
+pragma solidity ^0.8.19;
 
-import {IACLManager} from 'aave-address-book/AaveV3.sol';
-import {IChainlinkAggregator} from 'cl-synchronicity-price-adapter/interfaces/IChainlinkAggregator.sol';
-
-import {PriceCapAdapterBase, IPriceCapAdapter} from './PriceCapAdapterBase.sol';
+import {IERC4626} from 'forge-std/interfaces/IERC4626.sol';
+import {PriceCapAdapterBase, IPriceCapAdapter} from '../PriceCapAdapterBase.sol';
 
 /**
- * @title CLRatePriceCapAdapter
+ * @title sDAIGnosisPriceCapAdapter
  * @author BGD Labs
- * @notice Price capped adapter to calculate price of (lstASSET / USD) pair by using
- * @notice Chainlink data feeds for (ASSET / USD) and (lstASSET / ASSET).
+ * @notice Price capped adapter to calculate price of (sDAI / USD) pair by using
+ * @notice Chainlink data feed for (DAI / USD) and (sDAI / DAI) ratio on Gnosis network.
  */
-contract CLRatePriceCapAdapter is PriceCapAdapterBase {
+contract sDAIGnosisPriceCapAdapter is PriceCapAdapterBase {
   /**
    * @param capAdapterParams parameters to create cap adapter
    */
@@ -25,7 +23,7 @@ contract CLRatePriceCapAdapter is PriceCapAdapterBase {
         baseAggregatorAddress: capAdapterParams.baseAggregatorAddress,
         ratioProviderAddress: capAdapterParams.ratioProviderAddress,
         pairDescription: capAdapterParams.pairDescription,
-        ratioDecimals: IChainlinkAggregator(capAdapterParams.ratioProviderAddress).decimals(),
+        ratioDecimals: 18,
         minimumSnapshotDelay: capAdapterParams.minimumSnapshotDelay,
         priceCapParams: capAdapterParams.priceCapParams
       })
@@ -34,6 +32,6 @@ contract CLRatePriceCapAdapter is PriceCapAdapterBase {
 
   /// @inheritdoc IPriceCapAdapter
   function getRatio() public view override returns (int256) {
-    return IChainlinkAggregator(RATIO_PROVIDER).latestAnswer();
+    return int256(IERC4626(RATIO_PROVIDER).convertToAssets(10 ** RATIO_DECIMALS));
   }
 }
