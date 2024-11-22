@@ -7,6 +7,7 @@ import {IACLManager, BasicIACLManager} from 'aave-address-book/AaveV3.sol';
 import {GovV3Helpers} from 'aave-helpers/GovV3Helpers.sol';
 import {IPriceCapAdapterStable, ICLSynchronicityPriceAdapter} from '../src/interfaces/IPriceCapAdapterStable.sol';
 import {BlockUtils} from './utils/BlockUtils.sol';
+import {PriceCapAdapterStable} from '../src/contracts/PriceCapAdapterStable.sol';
 
 abstract contract BaseStableTest is Test {
   uint256 public constant RETROSPECTIVE_STEP = 3;
@@ -19,15 +20,20 @@ abstract contract BaseStableTest is Test {
 
   ForkParams public forkParams;
   bytes public deploymentCode;
+  bytes public adapterParams;
 
   constructor(
-    bytes memory _deploymentCode,
+    bytes memory _deploymentCodeOrParams,
     uint8 _retrospectiveDays,
     ForkParams memory _forkParams
   ) {
     forkParams = _forkParams;
-    deploymentCode = _deploymentCode;
     RETROSPECTIVE_DAYS = _retrospectiveDays;
+    if (keccak256(bytes(_forkParams.network)) == keccak256(bytes('zksync'))) {
+      adapterParams = _deploymentCodeOrParams;
+    } else {
+      deploymentCode = _deploymentCodeOrParams;
+    }
   }
 
   function setUp() public {
@@ -35,9 +41,7 @@ abstract contract BaseStableTest is Test {
   }
 
   function test_latestAnswer() public virtual {
-    IPriceCapAdapterStable adapter = IPriceCapAdapterStable(
-      GovV3Helpers.deployDeterministic(deploymentCode)
-    );
+    IPriceCapAdapterStable adapter = _createAdapter();
 
     int256 price = adapter.latestAnswer();
     int256 referencePrice = adapter.ASSET_TO_USD_AGGREGATOR().latestAnswer();
@@ -57,9 +61,7 @@ abstract contract BaseStableTest is Test {
     );
     vm.createSelectFork(vm.rpcUrl(forkParams.network), currentBlock);
 
-    IPriceCapAdapterStable adapter = IPriceCapAdapterStable(
-      GovV3Helpers.deployDeterministic(deploymentCode)
-    );
+    IPriceCapAdapterStable adapter = _createAdapter();
 
     // persist adapter
     vm.makePersistent(address(adapter));
@@ -81,5 +83,15 @@ abstract contract BaseStableTest is Test {
 
     vm.revokePersistent(address(adapter));
     vm.createSelectFork(vm.rpcUrl(forkParams.network), finishBlock);
+  }
+
+  function _createAdapter() internal returns (IPriceCapAdapterStable) {
+    if (keccak256(bytes(forkParams.network)) == keccak256(bytes('zksync'))) {
+      return
+        new PriceCapAdapterStable{salt: 'test'}(
+          abi.decode(adapterParams, (IPriceCapAdapterStable.CapAdapterStableParams))
+        );
+    }
+    return IPriceCapAdapterStable(GovV3Helpers.deployDeterministic(deploymentCode));
   }
 }

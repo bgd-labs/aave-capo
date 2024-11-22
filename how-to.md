@@ -57,6 +57,8 @@ Alter the appropriate deployment script:
    - `snapshotTimestamp`: timestamp of the snapshot ratio
    - `maxYearlyRatioGrowthPercent`: the maximum possible annual LST growth percentage
 
+   1.1 If the adapter is deployed on zkSync network, you'll need to create a function that only returns the encoded parameters above instead of returning the deployment code.
+
 2. Add the deployment script and command to the Makefile.
 
 ## 3. Testing
@@ -65,6 +67,11 @@ To test the adapter:
 
 1. Add the test to the destination network folder inside `tests`.
 2. Inherit it from [`BaseTest`](tests/BaseTest.sol) and implement the simple `_createAdapter()` method, when the specific adapter is created. Or just inherit the test from [CLAdapterBaseTest.sol](tests/CLAdapterBaseTest.sol) when Chainlink oracle is used.
+
+   2.1. If the adapter will be tested against the zksync network:
+
+   - add the `salt` parameter using the `new` keyword for deployment: e.g.: `new CLRatePriceCapAdapter{salt: 'test'}(capAdapterParams)`
+
 3. Specify the following test parameters:
    - adapter code
    - number of days for retrospective testing (default is 90). Check that with the specified parameters the adapter has not been capped for the last X days. A report comparing prices with the base aggregator is also generated.

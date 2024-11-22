@@ -1,4 +1,4 @@
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.18;
 
 import 'forge-std/Test.sol';
 
@@ -7,15 +7,15 @@ library BlockUtils {
     uint256 finishBlock,
     uint256 retrospectiveDays,
     string memory network
-  ) public pure returns (uint256) {
+  ) internal pure returns (uint256) {
     return finishBlock - retrospectiveDays * getBlocksPerDayByNetwork(network);
   }
 
-  function getStep(uint256 stepDays, string memory network) public pure returns (uint256) {
+  function getStep(uint256 stepDays, string memory network) internal pure returns (uint256) {
     return stepDays * getBlocksPerDayByNetwork(network);
   }
 
-  function getBlocksPerDayByNetwork(string memory network) public pure returns (uint256) {
+  function getBlocksPerDayByNetwork(string memory network) internal pure returns (uint256) {
     if (keccak256(bytes(network)) == keccak256(bytes('mainnet'))) {
       return 7300;
     }
@@ -50,6 +50,10 @@ library BlockUtils {
 
     if (keccak256(bytes(network)) == keccak256(bytes('gnosis'))) {
       return 17000;
+    }
+
+    if (keccak256(bytes(network)) == keccak256(bytes('zksync'))) {
+      return 80_000;
     }
 
     return 7300;

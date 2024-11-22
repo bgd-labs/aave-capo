@@ -37,6 +37,7 @@ import {CapAdaptersCodeArbitrum} from '../../scripts/DeployArbitrumWeEth.s.sol';
 import {CapAdaptersCodeBase} from '../../scripts/DeployBase.s.sol';
 import {CapAdaptersCodeScroll} from '../../scripts/DeployScroll.s.sol';
 import {CapAdaptersCodeBNB} from '../../scripts/DeployBnb.s.sol';
+import {CapAdaptersCodeZkSync} from '../../scripts/DeployZkSync.s.sol';
 
 contract ExchangeRatesEth is Test {
   function setUp() public {
@@ -256,6 +257,27 @@ contract ExchangeRatesBNB is Test {
     console.log('BNB');
     console.log('wstEthRate', wstEthRate);
     console.log('bnbxRate', bnbxRate);
+    console.log(block.timestamp);
+  }
+}
+
+contract ExchangeRatesZKSync is Test {
+  function setUp() public {
+    vm.createSelectFork(vm.rpcUrl('zksync'), 48189193); // Nov-05-2024
+  }
+
+  function test_getExchangeRate() public view {
+    uint256 weETHRate = uint256(
+      IChainlinkAggregator(CapAdaptersCodeZkSync.weETH_eETH_AGGREGATOR).latestAnswer()
+    );
+
+    uint256 sUSDeRate = uint256(
+      IChainlinkAggregator(CapAdaptersCodeZkSync.sUSDe_USDe_AGGREGATOR).latestAnswer()
+    );
+
+    console.log('ZkSync');
+    console.log('weETHRate', weETHRate);
+    console.log('sUSDeRate', sUSDeRate);
     console.log(block.timestamp);
   }
 }
