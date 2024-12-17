@@ -65,7 +65,7 @@ library CapAdaptersCodeLinea {
           IPriceCapAdapterStable.CapAdapterStableParams({
             aclManager: AaveV3Linea.ACL_MANAGER,
             assetToUsdAggregator: IChainlinkAggregator(USDC_PRICE_FEED),
-            adapterDescription: 'Capped USDC / USD',
+            adapterDescription: 'Capped USDC/USD',
             priceCap: int256(1.04 * 1e8)
           })
         )
@@ -80,7 +80,7 @@ library CapAdaptersCodeLinea {
           IPriceCapAdapterStable.CapAdapterStableParams({
             aclManager: AaveV3Linea.ACL_MANAGER,
             assetToUsdAggregator: IChainlinkAggregator(USDT_PRICE_FEED),
-            adapterDescription: 'Capped USDT / USD',
+            adapterDescription: 'Capped USDT/USD',
             priceCap: int256(1.04 * 1e8)
           })
         )
