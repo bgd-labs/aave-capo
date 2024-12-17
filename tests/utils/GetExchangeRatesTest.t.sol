@@ -294,7 +294,7 @@ contract ExchangeRatesLinea is Test {
     );
 
     uint256 weETHRate = uint256(
-      IChainlinkAggregator(CapAdaptersCodeLinea.weETH_ETH_AGGREGATOR).latestAnswer()
+      IChainlinkAggregator(CapAdaptersCodeLinea.weETH_eETH_AGGREGATOR).latestAnswer()
     );
 
     console.log('Linea');

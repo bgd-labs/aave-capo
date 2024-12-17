@@ -10,7 +10,7 @@ import {IPriceCapAdapter, IChainlinkAggregator} from '../src/interfaces/IPriceCa
 
 library CapAdaptersCodeLinea {
   address public constant ezETH_ETH_AGGREGATOR = 0xb71F79770BA599940F454c70e63d4DE0E8606731;
-  address public constant weETH_ETH_AGGREGATOR = 0x1FBc7d24654b10c71fd74d3730d9Df17836181EF;
+  address public constant weETH_eETH_AGGREGATOR = 0x1FBc7d24654b10c71fd74d3730d9Df17836181EF;
   address public constant WETH_PRICE_FEED = 0x3c6Cd9Cc7c7a4c2Cf5a82734CD249D7D593354dA;
   address public constant USDC_PRICE_FEED = 0xAADAa473C1bDF7317ec07c915680Af29DeBfdCb5;
   address public constant USDT_PRICE_FEED = 0xefCA2bbe0EdD0E22b2e0d2F8248E99F4bEf4A7dB;
@@ -23,8 +23,8 @@ library CapAdaptersCodeLinea {
           IPriceCapAdapter.CapAdapterParams({
             aclManager: AaveV3Linea.ACL_MANAGER,
             baseAggregatorAddress: WETH_PRICE_FEED,
-            ratioProviderAddress: weETH_ETH_AGGREGATOR,
-            pairDescription: 'Capped weETH / ETH / USD',
+            ratioProviderAddress: weETH_eETH_AGGREGATOR,
+            pairDescription: 'Capped weETH / eETH(ETH) / USD',
             minimumSnapshotDelay: 7 days,
             priceCapParams: IPriceCapAdapter.PriceCapUpdateParams({
               snapshotRatio: 1054169605180649721,
