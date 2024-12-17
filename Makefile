@@ -43,6 +43,11 @@ deploy-rseth-mainnet :; forge script scripts/DeployEthereum.s.sol:DeployRsEthEth
 
 deploy-ausd-avalanche :; forge script scripts/DeployAvalanche.s.sol:DeployAUSDAvalanche --rpc-url avalanche $(common-flags)
 
+deploy-weeth-linea :; forge script scripts/DeployLinea.s.sol:DeployWeEthLinea --rpc-url linea $(common-flags)
+deploy-ezeth-linea :; forge script scripts/DeployLinea.s.sol:DeployEzEthLinea --rpc-url linea $(common-flags)
+deploy-usdc-linea :; forge script scripts/DeployLinea.s.sol:DeployUSDCLinea --rpc-url linea $(common-flags)
+deploy-usdt-linea :; forge script scripts/DeployLinea.s.sol:DeployUSDTLinea --rpc-url linea $(common-flags)
+
 # Utilities
 download :; cast etherscan-source --chain ${chain} -d src/etherscan/${chain}_${address} ${address}
 git-diff :
