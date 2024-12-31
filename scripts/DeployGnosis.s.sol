@@ -62,7 +62,7 @@ contract DeploySDaiGnosis is GnosisScript {
   }
 }
 
-contract DeployOsGNOEthereum is GnosisScript {
+contract DeployOsGNOGnosis is GnosisScript {
   function run() external broadcast {
     GovV3Helpers.deployDeterministic(CapAdaptersCodeGnosis.osGNOAdapterCode());
   }
