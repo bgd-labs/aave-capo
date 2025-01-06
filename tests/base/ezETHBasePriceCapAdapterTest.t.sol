@@ -8,7 +8,7 @@ import {IPriceCapAdapter} from '../../src/interfaces/IPriceCapAdapter.sol';
 import {CLAdapterBaseTest} from '../CLAdapterBaseTest.sol';
 import {CapAdaptersCodeBase} from '../../scripts/DeployBase.s.sol';
 
-contract weETHBasePriceCapAdapterTest is CLAdapterBaseTest {
+contract ezETHBasePriceCapAdapterTest is CLAdapterBaseTest {
   constructor()
     CLAdapterBaseTest(
       CapAdaptersCodeBase.ezETHAdapterCode(),
