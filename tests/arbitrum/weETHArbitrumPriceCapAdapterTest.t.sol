@@ -6,7 +6,7 @@ import {MiscArbitrum} from 'aave-address-book/MiscArbitrum.sol';
 
 import {IPriceCapAdapter} from '../../src/interfaces/IPriceCapAdapter.sol';
 import {CLAdapterBaseTest} from '../CLAdapterBaseTest.sol';
-import {CapAdaptersCodeArbitrum} from '../../scripts/DeployArbitrumWeEth.s.sol';
+import {CapAdaptersCodeArbitrum} from '../../scripts/DeployArbitrum.s.sol';
 
 contract weETHArbitrumPriceCapAdapterTest is CLAdapterBaseTest {
   constructor()
