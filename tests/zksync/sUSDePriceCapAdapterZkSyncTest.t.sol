@@ -11,7 +11,7 @@ contract sUSDePriceCapAdapterZkSyncTest is BaseTest {
     BaseTest(
       CapAdaptersCodeZkSync.sUSDeAdapterParams(),
       35,
-      ForkParams({network: 'zksync', blockNumber: 49309220}),
+      ForkParams({network: 'zksync', blockNumber: 53221414}),
       'sUSDe_ZkSync'
     )
   {}

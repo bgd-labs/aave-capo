@@ -271,7 +271,7 @@ contract ExchangeRatesBNB is Test {
 
 contract ExchangeRatesZKSync is Test {
   function setUp() public {
-    vm.createSelectFork(vm.rpcUrl('zksync'), 52570550); // Dec-31-2024
+    vm.createSelectFork(vm.rpcUrl('zksync'), 52101414); // Dec-25-2024
   }
 
   function test_getExchangeRate() public view {
