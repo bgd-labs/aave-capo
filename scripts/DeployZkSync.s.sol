@@ -22,8 +22,8 @@ library CapAdaptersCodeZkSync {
           pairDescription: 'Capped weETH / eETH(ETH) / USD',
           minimumSnapshotDelay: 7 days,
           priceCapParams: IPriceCapAdapter.PriceCapUpdateParams({
-            snapshotRatio: 1_052574497679413779,
-            snapshotTimestamp: 1731404006, // 12th of November 2024
+            snapshotRatio: 1_056433075845463320,
+            snapshotTimestamp: 1735631006, // 31st of December 2024
             maxYearlyRatioGrowthPercent: 8_75
           })
         })
