@@ -53,13 +53,13 @@ library CapAdaptersCodeArbitrum {
       );
   }
 }
-  
+
 contract DeployWeEthArbitrum is ArbitrumScript {
   function run() external broadcast {
     GovV3Helpers.deployDeterministic(CapAdaptersCodeArbitrum.weETHAdapterCode());
   }
 }
-  
+
 contract DeployEzEthArbitrum is ArbitrumScript {
   function run() external broadcast {
     GovV3Helpers.deployDeterministic(CapAdaptersCodeArbitrum.ezETHAdapterCode());
