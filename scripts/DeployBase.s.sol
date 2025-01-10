@@ -45,7 +45,7 @@ library CapAdaptersCodeBase {
             minimumSnapshotDelay: 14 days,
             priceCapParams: IPriceCapAdapter.PriceCapUpdateParams({
               snapshotRatio: 1029613402295302804,
-              snapshotTimestamp:  1733389347, // 2024-12-05
+              snapshotTimestamp: 1733389347, // 2024-12-05
               maxYearlyRatioGrowthPercent: 10_89
             })
           })
@@ -53,13 +53,13 @@ library CapAdaptersCodeBase {
       );
   }
 }
-   
+
 contract DeployWeEthBase is BaseScript {
   function run() external broadcast {
     GovV3Helpers.deployDeterministic(CapAdaptersCodeBase.weETHAdapterCode());
   }
 }
-  
+
 contract DeployEzEthBase is BaseScript {
   function run() external broadcast {
     GovV3Helpers.deployDeterministic(CapAdaptersCodeBase.ezETHAdapterCode());

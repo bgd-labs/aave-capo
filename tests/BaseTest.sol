@@ -225,7 +225,7 @@ abstract contract BaseTest is Test {
     assertGe(
       uint48(block.timestamp) - capAdapterParams.priceCapParams.snapshotTimestamp,
       minimumSnapshotDelay,
-      "BlockUtils is underestimating the number of block per day for the network"
+      'BlockUtils is underestimating the number of block per day for the network'
     );
 
     capAdapterParams.priceCapParams.snapshotRatio = currentRatio;
