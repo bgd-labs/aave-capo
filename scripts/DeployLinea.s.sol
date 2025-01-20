@@ -11,6 +11,7 @@ import {IPriceCapAdapter, IChainlinkAggregator} from '../src/interfaces/IPriceCa
 library CapAdaptersCodeLinea {
   address public constant ezETH_ETH_AGGREGATOR = 0xb71F79770BA599940F454c70e63d4DE0E8606731;
   address public constant weETH_eETH_AGGREGATOR = 0x1FBc7d24654b10c71fd74d3730d9Df17836181EF;
+  address public constant wstETH_stETH_AGGREGATOR = 0x3C8A95F2264bB3b52156c766b738357008d87cB7;
   address public constant WETH_PRICE_FEED = 0x3c6Cd9Cc7c7a4c2Cf5a82734CD249D7D593354dA;
   address public constant USDC_PRICE_FEED = 0xAADAa473C1bDF7317ec07c915680Af29DeBfdCb5;
   address public constant USDT_PRICE_FEED = 0xefCA2bbe0EdD0E22b2e0d2F8248E99F4bEf4A7dB;
@@ -51,6 +52,27 @@ library CapAdaptersCodeLinea {
               snapshotRatio: 1029140608890425422,
               snapshotTimestamp: 1733109809,
               maxYearlyRatioGrowthPercent: 10_89
+            })
+          })
+        )
+      );
+  }
+
+  function wstETHAdapterCode() internal pure returns (bytes memory) {
+    return
+      abi.encodePacked(
+        type(CLRatePriceCapAdapter).creationCode,
+        abi.encode(
+          IPriceCapAdapter.CapAdapterParams({
+            aclManager: AaveV3Linea.ACL_MANAGER,
+            baseAggregatorAddress: WETH_PRICE_FEED,
+            ratioProviderAddress: wstETH_stETH_AGGREGATOR,
+            pairDescription: 'Capped wstETH / stETH(ETH) / USD',
+            minimumSnapshotDelay: 7 days,
+            priceCapParams: IPriceCapAdapter.PriceCapUpdateParams({
+              snapshotRatio: 1190272828525538502,
+              snapshotTimestamp: 1736592058, // Jan-11-2025
+              maxYearlyRatioGrowthPercent: 9_68
             })
           })
         )
@@ -109,5 +131,11 @@ contract DeployUSDCLinea is LineaScript {
 contract DeployUSDTLinea is LineaScript {
   function run() external broadcast {
     GovV3Helpers.deployDeterministic(CapAdaptersCodeLinea.USDTAdapterCode());
+  }
+}
+
+contract DeployWstETHLinea is LineaScript {
+  function run() external broadcast {
+    GovV3Helpers.deployDeterministic(CapAdaptersCodeLinea.wstETHAdapterCode());
   }
 }

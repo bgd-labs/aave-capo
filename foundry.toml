@@ -9,6 +9,7 @@ remappings = [
 ffi = true
 fs_permissions = [{ access = "write", path = "./reports" }]
 evm_version = 'shanghai'
+optimizer = true
 
 [profile.zksync]
 src = 'zksync/src'
@@ -26,6 +27,9 @@ compile = true
 fallback_oz = true
 mode = '3'
 zksolc = '1.5.3'
+
+[profile.linea]
+evm_version = 'london'
 
 [rpc_endpoints]
 mainnet = "${RPC_MAINNET}"

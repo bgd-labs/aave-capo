@@ -285,7 +285,7 @@ contract ExchangeRatesZKSync is Test {
 
 contract ExchangeRatesLinea is Test {
   function setUp() public {
-    vm.createSelectFork(vm.rpcUrl('linea'), 12792222); // Dec-02-2024
+    vm.createSelectFork(vm.rpcUrl('linea'), 14450000); // Jan-11-2025
   }
 
   function test_getExchangeRate() public view {
@@ -297,9 +297,14 @@ contract ExchangeRatesLinea is Test {
       IChainlinkAggregator(CapAdaptersCodeLinea.weETH_eETH_AGGREGATOR).latestAnswer()
     );
 
+    uint256 wstEthRate = uint256(
+      IChainlinkAggregator(CapAdaptersCodeLinea.wstETH_stETH_AGGREGATOR).latestAnswer()
+    );
+
     console.log('Linea');
     console.log('ezETHRate', ezETHRate);
     console.log('weETHRate', weETHRate);
+    console.log('wstEthRate', wstEthRate);
     console.log(block.timestamp);
   }
 }
