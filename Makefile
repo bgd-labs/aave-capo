@@ -38,6 +38,7 @@ deploy-ezeth-mainnet :; forge script scripts/DeployEthereum.s.sol:DeployEzEthEth
 
 deploy-sdai-mainnet :; forge script scripts/DeployEthereum.s.sol:DeploySDaiEthereum --rpc-url mainnet $(common-flags)
 deploy-sdai-gnosis :; forge script scripts/DeployGnosis.s.sol:DeploySDaiGnosis --rpc-url gnosis $(common-flags)
+deploy-osgno-gnosis :; forge script scripts/DeployGnosis.s.sol:DeployOsGNOGnosis --rpc-url gnosis $(common-flags)
 
 deploy-rseth-mainnet :; forge script scripts/DeployEthereum.s.sol:DeployRsEthEthereum --rpc-url mainnet $(common-flags)
 
