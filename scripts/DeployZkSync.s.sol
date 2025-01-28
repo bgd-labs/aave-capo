@@ -22,8 +22,8 @@ library CapAdaptersCodeZkSync {
           pairDescription: 'Capped weETH / eETH(ETH) / USD',
           minimumSnapshotDelay: 7 days,
           priceCapParams: IPriceCapAdapter.PriceCapUpdateParams({
-            snapshotRatio: 1_052574497679413779,
-            snapshotTimestamp: 1731404006, // 12th of November 2024
+            snapshotRatio: 1_056433075845463320,
+            snapshotTimestamp: 1735631006, // 31st of December 2024
             maxYearlyRatioGrowthPercent: 8_75
           })
         })
@@ -40,8 +40,8 @@ library CapAdaptersCodeZkSync {
           pairDescription: 'Capped sUSDe / USDe / USD',
           minimumSnapshotDelay: 14 days,
           priceCapParams: IPriceCapAdapter.PriceCapUpdateParams({
-            snapshotRatio: 1_114017044432046603,
-            snapshotTimestamp: 1730790353, // 05th of November 2024
+            snapshotRatio: 1_140801069964914224,
+            snapshotTimestamp: 1735087890, // 25st of December 2024
             maxYearlyRatioGrowthPercent: 50_00
           })
         })
@@ -63,7 +63,7 @@ library CapAdaptersCodeZkSync {
 
 contract DeployWeEthZkSync is ZkSyncScript {
   function run() external broadcast {
-    new CLRatePriceCapAdapter{salt: 'capo'}(
+    new CLRatePriceCapAdapter(
       abi.decode(CapAdaptersCodeZkSync.weETHAdapterParams(), (IPriceCapAdapter.CapAdapterParams))
     );
   }
@@ -71,7 +71,7 @@ contract DeployWeEthZkSync is ZkSyncScript {
 
 contract DeploySUSDeZkSync is ZkSyncScript {
   function run() external broadcast {
-    new CLRatePriceCapAdapter{salt: 'capo'}(
+    new CLRatePriceCapAdapter(
       abi.decode(CapAdaptersCodeZkSync.sUSDeAdapterParams(), (IPriceCapAdapter.CapAdapterParams))
     );
   }
@@ -79,7 +79,7 @@ contract DeploySUSDeZkSync is ZkSyncScript {
 
 contract DeployUSDeZkSync is ZkSyncScript {
   function run() external broadcast {
-    new PriceCapAdapterStable{salt: 'capo'}(
+    new PriceCapAdapterStable(
       abi.decode(
         CapAdaptersCodeZkSync.USDeAdapterParams(),
         (IPriceCapAdapterStable.CapAdapterStableParams)

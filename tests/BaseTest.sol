@@ -221,6 +221,13 @@ abstract contract BaseTest is Test {
 
     // select current block and create retrospective adapter
     vm.createSelectFork(vm.rpcUrl(forkParams.network), currentBlock);
+
+    assertGe(
+      uint48(block.timestamp) - capAdapterParams.priceCapParams.snapshotTimestamp,
+      minimumSnapshotDelay,
+      'BlockUtils is underestimating the number of block per day for the network'
+    );
+
     capAdapterParams.priceCapParams.snapshotRatio = currentRatio;
     capAdapterParams.minimumSnapshotDelay = minimumSnapshotDelay;
     IPriceCapAdapter adapter = _createAdapter(capAdapterParams);

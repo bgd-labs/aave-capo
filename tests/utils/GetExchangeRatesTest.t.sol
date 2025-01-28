@@ -33,7 +33,7 @@ import {IRsETH} from '../../src/interfaces/IRsETH.sol';
 import {IBNBx} from '../../src/interfaces/IBNBx.sol';
 
 import {CapAdaptersCodeEthereum} from '../../scripts/DeployEthereum.s.sol';
-import {CapAdaptersCodeArbitrum} from '../../scripts/DeployArbitrumWeEth.s.sol';
+import {CapAdaptersCodeArbitrum} from '../../scripts/DeployArbitrum.s.sol';
 import {CapAdaptersCodeBase} from '../../scripts/DeployBase.s.sol';
 import {CapAdaptersCodeScroll} from '../../scripts/DeployScroll.s.sol';
 import {CapAdaptersCodeBNB} from '../../scripts/DeployBnb.s.sol';
@@ -85,7 +85,7 @@ contract ExchangeRatesEth is Test {
 
 contract ExchangeRatesArbitrum is Test {
   function setUp() public {
-    vm.createSelectFork(vm.rpcUrl('arbitrum'), 194797824); // 27th of March
+    vm.createSelectFork(vm.rpcUrl('arbitrum'), 281000000); // 2024-12-03
   }
 
   function test_getExchangeRate() public view {
@@ -98,11 +98,15 @@ contract ExchangeRatesArbitrum is Test {
     uint256 weEthRate = uint256(
       IChainlinkAggregator(CapAdaptersCodeArbitrum.weETH_eETH_AGGREGATOR).latestAnswer()
     );
+    uint256 ezEthRate = uint256(
+      IChainlinkAggregator(CapAdaptersCodeArbitrum.ezETH_ETH_AGGREGATOR).latestAnswer()
+    );
 
     console.log('Arbitrum');
     console.log('rEthRate', rEthRate);
     console.log('wstEthRate', wstEthRate);
     console.log('weEthRate', weEthRate);
+    console.log('ezEthRate', ezEthRate);
     console.log(block.timestamp);
   }
 }
@@ -126,7 +130,7 @@ contract ExchangeRatesAvax is Test {
 
 contract ExchangeRatesBase is Test {
   function setUp() public {
-    vm.createSelectFork(vm.rpcUrl('base'), 14415412); // may 13
+    vm.createSelectFork(vm.rpcUrl('base'), 23300000); // 2024-12-05
   }
 
   function test_getExchangeRate() public view {
@@ -137,11 +141,15 @@ contract ExchangeRatesBase is Test {
     uint256 weEthRate = uint256(
       IChainlinkAggregator(CapAdaptersCodeBase.weETH_eETH_AGGREGATOR).latestAnswer()
     );
+    uint256 ezEthRate = uint256(
+      IChainlinkAggregator(CapAdaptersCodeBase.ezETH_ETH_AGGREGATOR).latestAnswer()
+    );
 
     console.log('Base');
     console.log('cbEthRate', cbEthRate);
     console.log('wstEthRate', wstEthRate);
     console.log('weEthRate', weEthRate);
+    console.log('ezEthRate', ezEthRate);
 
     console.log(block.timestamp);
   }
@@ -264,7 +272,7 @@ contract ExchangeRatesBNB is Test {
 
 contract ExchangeRatesZKSync is Test {
   function setUp() public {
-    vm.createSelectFork(vm.rpcUrl('zksync'), 48189193); // Nov-05-2024
+    vm.createSelectFork(vm.rpcUrl('zksync'), 52101414); // Dec-25-2024
   }
 
   function test_getExchangeRate() public view {

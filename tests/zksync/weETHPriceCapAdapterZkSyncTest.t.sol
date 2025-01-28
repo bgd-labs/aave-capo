@@ -11,7 +11,7 @@ contract weETHPriceCapAdapterZkSyncTest is BaseTest {
     BaseTest(
       CapAdaptersCodeZkSync.weETHAdapterParams(),
       35,
-      ForkParams({network: 'zksync', blockNumber: 49309193}),
+      ForkParams({network: 'zksync', blockNumber: 53130550}),
       'weETH_ZkSync'
     )
   {}
