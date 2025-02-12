@@ -59,6 +59,24 @@ library CapAdaptersCodeZkSync {
         })
       );
   }
+
+  function newSUSDeAdapterParams() internal pure returns (bytes memory) {
+    return
+      abi.encode(
+        IPriceCapAdapter.CapAdapterParams({
+          aclManager: AaveV3ZkSync.ACL_MANAGER,
+          baseAggregatorAddress: AaveV3ZkSyncAssets.USDT_ORACLE,
+          ratioProviderAddress: sUSDe_USDe_AGGREGATOR,
+          pairDescription: 'Capped sUSDe / USDT / USD',
+          minimumSnapshotDelay: 14 days,
+          priceCapParams: IPriceCapAdapter.PriceCapUpdateParams({
+            snapshotRatio: 1150485992969698694,
+            snapshotTimestamp: 1737789743,
+            maxYearlyRatioGrowthPercent: 50_00
+          })
+        })
+      );
+  }
 }
 
 contract DeployWeEthZkSync is ZkSyncScript {
@@ -73,6 +91,14 @@ contract DeploySUSDeZkSync is ZkSyncScript {
   function run() external broadcast {
     new CLRatePriceCapAdapter(
       abi.decode(CapAdaptersCodeZkSync.sUSDeAdapterParams(), (IPriceCapAdapter.CapAdapterParams))
+    );
+  }
+}
+
+contract DeployNewSUSDeZkSync is ZkSyncScript {
+  function run() external broadcast {
+    new CLRatePriceCapAdapter(
+      abi.decode(CapAdaptersCodeZkSync.newSUSDeAdapterParams(), (IPriceCapAdapter.CapAdapterParams))
     );
   }
 }

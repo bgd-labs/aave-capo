@@ -227,6 +227,27 @@ library CapAdaptersCodeEthereum {
         )
       );
   }
+
+  function newSUSDeAdapterCode() internal pure returns (bytes memory) {
+    return
+      abi.encodePacked(
+        type(SUSDePriceCapAdapter).creationCode,
+        abi.encode(
+          IPriceCapAdapter.CapAdapterParams({
+            aclManager: AaveV3Ethereum.ACL_MANAGER,
+            baseAggregatorAddress: AaveV3EthereumAssets.USDT_ORACLE,
+            ratioProviderAddress: sUSDe,
+            pairDescription: 'Capped sUSDe / USDT / USD',
+            minimumSnapshotDelay: 14 days,
+            priceCapParams: IPriceCapAdapter.PriceCapUpdateParams({
+              snapshotRatio: 1150485992969698694,
+              snapshotTimestamp: 1737789743,
+              maxYearlyRatioGrowthPercent: 50_00
+            })
+          })
+        )
+      );
+  }
 }
 
 contract DeployWeEthEthereum is EthereumScript {
@@ -286,5 +307,11 @@ contract DeploySDaiEthereum is EthereumScript {
 contract DeployRsEthEthereum is EthereumScript {
   function run() external broadcast {
     GovV3Helpers.deployDeterministic(CapAdaptersCodeEthereum.rsETHAdapterCode());
+  }
+}
+
+contract DeployNewSUSDeEthereum is EthereumScript {
+  function run() external broadcast {
+    GovV3Helpers.deployDeterministic(CapAdaptersCodeEthereum.newSUSDeAdapterCode());
   }
 }

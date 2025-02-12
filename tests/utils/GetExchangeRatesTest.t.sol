@@ -42,7 +42,7 @@ import {CapAdaptersCodeLinea} from '../../scripts/DeployLinea.s.sol';
 
 contract ExchangeRatesEth is Test {
   function setUp() public {
-    vm.createSelectFork(vm.rpcUrl('mainnet'), 21010101); // Oct-20-2024
+    vm.createSelectFork(vm.rpcUrl('mainnet'), 21700000); // Jan-25-2025
   }
 
   function test_getExchangeRate() public view {
