@@ -1,6 +1,6 @@
 # Capo Report
 
-| Capped sUSDe / USDT / USD | Capped USDT/USD | Diff | Date | 14-day growth in yearly % |
+| Capped sUSDe / USDT / USD | USDT / USD | Diff | Date | 14-day growth in yearly % |
 | --- | --- | --- | --- | --- |
 | 1.14760099 | 0.99869 | 13.88% | 20 Jan 2025 | 9.50% |
 | 1.14826053 | 0.99905 | 13.90% | 21 Jan 2025 | 9.39% |

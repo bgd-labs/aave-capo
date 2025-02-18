@@ -1,6 +1,6 @@
 # Capo Report
 
-| Capped sUSDe / USDT / USD | Capped USDT/USD | Diff | Date | 14-day growth in yearly % |
+| Capped sUSDe / USDT / USD | USDT / USD | Diff | Date | 14-day growth in yearly % |
 | --- | --- | --- | --- | --- |
 
 

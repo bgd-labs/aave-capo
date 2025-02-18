@@ -29,6 +29,7 @@ library CapAdaptersCodeEthereum {
   address public constant sUSDS = 0xa3931d71877C0E7a3148CB7Eb4463524FEc27fbD;
   address public constant ezETH_RESTAKE_MANAGER = 0x74a09653A083691711cF8215a6ab074BB4e99ef5;
   address public constant rsETH_LRT_ORACLE = 0x349A73444b1a310BAe67ef67973022020d70020d;
+  address public constant USDT_CL_ORACLE = 0x3E7d1eAB13ad0104d2750B8863b489D65364e32D;
 
   function weETHAdapterCode() internal pure returns (bytes memory) {
     return
@@ -235,7 +236,7 @@ library CapAdaptersCodeEthereum {
         abi.encode(
           IPriceCapAdapter.CapAdapterParams({
             aclManager: AaveV3Ethereum.ACL_MANAGER,
-            baseAggregatorAddress: AaveV3EthereumAssets.USDT_ORACLE,
+            baseAggregatorAddress: USDT_CL_ORACLE,
             ratioProviderAddress: sUSDe,
             pairDescription: 'Capped sUSDe / USDT / USD',
             minimumSnapshotDelay: 14 days,
