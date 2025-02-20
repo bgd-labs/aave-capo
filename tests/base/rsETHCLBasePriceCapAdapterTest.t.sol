@@ -8,8 +8,8 @@ contract rsETHCLBasePriceCapAdapterTest is CLAdapterBaseTest {
   constructor()
     CLAdapterBaseTest(
       CapAdaptersCodeBase.rsETHCLAdapterCode(),
-      10,
-      ForkParams({network: 'base', blockNumber: 26638800}),
+      90,
+      ForkParams({network: 'base', blockNumber: 26640002}),
       'RsETH_CL_Base'
     )
   {}
