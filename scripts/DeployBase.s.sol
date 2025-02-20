@@ -13,7 +13,7 @@ library CapAdaptersCodeBase {
   address public constant weETH_eETH_AGGREGATOR = 0x35e9D7001819Ea3B39Da906aE6b06A62cfe2c181;
   address public constant ezETH_ETH_AGGREGATOR = 0xC4300B7CF0646F0Fe4C5B2ACFCCC4dCA1346f5d8;
   address public constant rsETH_LRT_ORACLE = 0x7781ae9B47FeCaCEAeCc4FcA8d0b6187E3eF9ba7;
-  address public constant rsETH_ETH_AGGREGATOR = 0xd7221b10FBBC1e1ba95Fd0B4D031C15f7F365296;
+  address public constant rsETH_ETH_AGGREGATOR = 0x99DAf760d2CFB770cc17e883dF45454FE421616b;
 
   function weETHAdapterCode() internal pure returns (bytes memory) {
     return
@@ -90,7 +90,7 @@ library CapAdaptersCodeBase {
             pairDescription: 'Capped rsETH / ETH / USD',
             minimumSnapshotDelay: 14 days,
             priceCapParams: IPriceCapAdapter.PriceCapUpdateParams({
-              snapshotRatio: 1_032476592423495500,
+              snapshotRatio: 1_036271920052097966,
               snapshotTimestamp: 1738834947, // Feb-06-2025
               maxYearlyRatioGrowthPercent: 9_83
             })
