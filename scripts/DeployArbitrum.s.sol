@@ -13,6 +13,8 @@ library CapAdaptersCodeArbitrum {
   address public constant weETH_eETH_AGGREGATOR = 0x20bAe7e1De9c596f5F7615aeaa1342Ba99294e12;
   address public constant ezETH_ETH_AGGREGATOR = 0x989a480b6054389075CBCdC385C18CfB6FC08186;
   address public constant rsETH_LRT_ORACLE = 0x3222d3De5A9a3aB884751828903044CC4ADC627e;
+  address public constant rsETH_ETH_AGGREGATOR = 0xb0EA543f9F8d4B818550365d13F66Da747e1476A;
+
 
   function weETHAdapterCode() internal pure returns (bytes memory) {
     return
@@ -76,6 +78,27 @@ library CapAdaptersCodeArbitrum {
         )
       );
   }
+
+  function rsETHCLAdapterCode() internal pure returns (bytes memory) {
+    return
+      abi.encodePacked(
+        type(CLRatePriceCapAdapter).creationCode,
+        abi.encode(
+          IPriceCapAdapter.CapAdapterParams({
+            aclManager: AaveV3Arbitrum.ACL_MANAGER,
+            baseAggregatorAddress: AaveV3ArbitrumAssets.WETH_ORACLE,
+            ratioProviderAddress: rsETH_ETH_AGGREGATOR,
+            pairDescription: 'Capped rsETH / ETH / USD',
+            minimumSnapshotDelay: 14 days,
+            priceCapParams: IPriceCapAdapter.PriceCapUpdateParams({
+              snapshotRatio: 1_030448152284394750,
+              snapshotTimestamp: 1738849445, // Feb-06-2025
+              maxYearlyRatioGrowthPercent: 9_83
+            })
+          })
+        )
+      );
+  }
 }
 
 contract DeployWeEthArbitrum is ArbitrumScript {
@@ -92,6 +115,6 @@ contract DeployEzEthArbitrum is ArbitrumScript {
 
 contract DeployRsETHArbitrum is ArbitrumScript {
   function run() external broadcast {
-    GovV3Helpers.deployDeterministic(CapAdaptersCodeArbitrum.rsETHAdapterCode());
+    GovV3Helpers.deployDeterministic(CapAdaptersCodeArbitrum.rsETHCLAdapterCode());
   }
 }

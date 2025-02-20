@@ -86,7 +86,7 @@ contract ExchangeRatesEth is Test {
 
 contract ExchangeRatesArbitrum is Test {
   function setUp() public {
-    vm.createSelectFork(vm.rpcUrl('arbitrum'), 302171415); // 2025-02-03
+    vm.createSelectFork(vm.rpcUrl('arbitrum'), 303250000); // 2025-02-06
   }
 
   function test_getExchangeRate() public view {
@@ -105,12 +105,17 @@ contract ExchangeRatesArbitrum is Test {
 
     uint256 rsETHRate = uint256(IRsETHL2(CapAdaptersCodeArbitrum.rsETH_LRT_ORACLE).rate());
 
+    uint256 rsETHCLRate = uint256(
+      IChainlinkAggregator(CapAdaptersCodeArbitrum.rsETH_ETH_AGGREGATOR).latestAnswer()
+    );
+
     console.log('Arbitrum');
     console.log('rEthRate', rEthRate);
     console.log('wstEthRate', wstEthRate);
     console.log('weEthRate', weEthRate);
     console.log('ezEthRate', ezEthRate);
     console.log('rsETHRate', rsETHRate);
+    console.log('rsETHCLRate', rsETHCLRate);
     console.log(block.timestamp);
   }
 }
@@ -134,7 +139,7 @@ contract ExchangeRatesAvax is Test {
 
 contract ExchangeRatesBase is Test {
   function setUp() public {
-    vm.createSelectFork(vm.rpcUrl('base'), 25887333); // 2025-02-03
+    vm.createSelectFork(vm.rpcUrl('base'), 26022800); // 2025-02-06
   }
 
   function test_getExchangeRate() public view {
@@ -151,12 +156,17 @@ contract ExchangeRatesBase is Test {
 
     uint256 rsETHRate = uint256(IRsETHL2(CapAdaptersCodeBase.rsETH_LRT_ORACLE).rate());
 
+    uint256 rsETHCLRate = uint256(
+      IChainlinkAggregator(CapAdaptersCodeBase.rsETH_ETH_AGGREGATOR).latestAnswer()
+    );
+
     console.log('Base');
     console.log('cbEthRate', cbEthRate);
     console.log('wstEthRate', wstEthRate);
     console.log('weEthRate', weEthRate);
     console.log('ezEthRate', ezEthRate);
     console.log('rsETHRate', rsETHRate);
+    console.log('rsETHCLRate', rsETHCLRate);
 
     console.log(block.timestamp);
   }
