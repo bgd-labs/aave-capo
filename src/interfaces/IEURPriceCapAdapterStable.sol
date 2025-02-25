@@ -16,6 +16,7 @@ interface IEURPriceCapAdapterStable is ICLSynchronicityPriceAdapter {
     IChainlinkAggregator baseToUsdAggregator;
     string adapterDescription;
     int256 priceCapRatio;
+    uint8 ratioDecimals;
   }
 
   /**
@@ -33,6 +34,11 @@ interface IEURPriceCapAdapterStable is ICLSynchronicityPriceAdapter {
    * @notice Price feed for (BASE / USD) pair
    */
   function BASE_TO_USD_AGGREGATOR() external view returns (IChainlinkAggregator);
+
+  /**
+   * @notice Number of decimals of the priceCap ratio
+   */
+  function RATIO_DECIMALS() external view returns (uint8);
 
   /**
    * @notice ACL manager contract

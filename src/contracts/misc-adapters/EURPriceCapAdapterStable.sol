@@ -19,6 +19,9 @@ contract EURPriceCapAdapterStable is IEURPriceCapAdapterStable {
   /// @inheritdoc IEURPriceCapAdapterStable
   IACLManager public immutable ACL_MANAGER;
 
+  /// @inheritdoc IEURPriceCapAdapterStable
+  uint8 public immutable RATIO_DECIMALS;
+
   /// @inheritdoc ICLSynchronicityPriceAdapter
   uint8 public decimals;
 
@@ -38,6 +41,7 @@ contract EURPriceCapAdapterStable is IEURPriceCapAdapterStable {
     ASSET_TO_USD_AGGREGATOR = capAdapterStableParams.assetToUsdAggregator;
     BASE_TO_USD_AGGREGATOR = capAdapterStableParams.assetToUsdAggregator;
     ACL_MANAGER = capAdapterStableParams.aclManager;
+    RATIO_DECIMALS = capAdapterStableParams.ratioDecimals;
     description = capAdapterStableParams.adapterDescription;
     decimals = ASSET_TO_USD_AGGREGATOR.decimals();
 
@@ -48,7 +52,7 @@ contract EURPriceCapAdapterStable is IEURPriceCapAdapterStable {
   function latestAnswer() external view returns (int256) {
     int256 assetPrice = ASSET_TO_USD_AGGREGATOR.latestAnswer();
     int256 basePrice = BASE_TO_USD_AGGREGATOR.latestAnswer();
-    int256 maxPrice = (basePrice * _priceCapRatio) / 1e8;
+    int256 maxPrice = (basePrice * _priceCapRatio) / int256(10 ** RATIO_DECIMALS);
 
     if (assetPrice > maxPrice) {
       return maxPrice;
@@ -84,7 +88,7 @@ contract EURPriceCapAdapterStable is IEURPriceCapAdapterStable {
     int256 assetPrice = ASSET_TO_USD_AGGREGATOR.latestAnswer();
     int256 basePrice = BASE_TO_USD_AGGREGATOR.latestAnswer();
 
-    if ((basePrice * priceCapRatio) / 1e8 < assetPrice) {
+    if ((basePrice * priceCapRatio) / int256(10 ** RATIO_DECIMALS) < assetPrice) {
       revert CapLowerThanActualPrice();
     }
 
