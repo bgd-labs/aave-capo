@@ -65,7 +65,7 @@ library CapAdaptersCodeBase {
             assetToUsdAggregator: IChainlinkAggregator(EURC_PRICE_FEED),
             baseToUsdAggregator: IChainlinkAggregator(EUR_PRICE_FEED),
             adapterDescription: 'Capped EURC/USD',
-            priceCap: int256(1.04 * 1e8)
+            priceCapRatio: int256(1.04 * 1e8)
           })
         )
       );
