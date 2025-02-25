@@ -40,7 +40,7 @@ contract PriceCapAdapterStable is IPriceCapAdapterStable {
   }
 
   /// @inheritdoc ICLSynchronicityPriceAdapter
-  function latestAnswer() external view override returns (int256) {
+  function latestAnswer() external view override virtual returns (int256) {
     int256 basePrice = ASSET_TO_USD_AGGREGATOR.latestAnswer();
     int256 priceCap = _priceCap;
 
@@ -74,7 +74,7 @@ contract PriceCapAdapterStable is IPriceCapAdapterStable {
    * @notice Updates price cap
    * @param priceCap the new price cap
    */
-  function _setPriceCap(int256 priceCap) internal {
+  function _setPriceCap(int256 priceCap) internal virtual {
     int256 basePrice = ASSET_TO_USD_AGGREGATOR.latestAnswer();
 
     if (priceCap < basePrice) {
