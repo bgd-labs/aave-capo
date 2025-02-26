@@ -1,24 +1,16 @@
 // SPDX-License-Identifier: BUSL-1.1
 pragma solidity ^0.8.0;
 
-import '../BaseTest.sol';
-
-import {CLRatePriceCapAdapter} from '../../src/contracts/CLRatePriceCapAdapter.sol';
+import {CLAdapterBaseTest} from '../CLAdapterBaseTest.sol';
 import {CapAdaptersCodeBase} from '../../scripts/DeployBase.s.sol';
 
-contract sUSDePriceCapAdapterBaseTest is BaseTest {
+contract sUSDePriceCapAdapterBaseTest is CLAdapterBaseTest {
   constructor()
-    BaseTest(
-      CapAdaptersCodeBase.sUSDeAdapterParams(),
+    CLAdapterBaseTest(
+      CapAdaptersCodeBase.sUSDeAdapterCode(),
       35,
-      ForkParams({network: 'base', blockNumber: 26904449}),
+      ForkParams({network: 'base', blockNumber: 26904450}),
       'sUSDe_Base'
     )
   {}
-
-  function _createAdapter(
-    IPriceCapAdapter.CapAdapterParams memory capAdapterParams
-  ) internal override returns (IPriceCapAdapter) {
-    return new CLRatePriceCapAdapter{salt: 'test'}(capAdapterParams);
-  }
 }

@@ -55,7 +55,7 @@ library CapAdaptersCodeBase {
       );
   }
 
-  function sUSDeAdapterParams() internal pure returns (bytes memory) {
+  function sUSDeAdapterCode() internal pure returns (bytes memory) {
     return
       abi.encodePacked(
         type(CLRatePriceCapAdapter).creationCode,
@@ -91,8 +91,6 @@ contract DeployEzEthBase is BaseScript {
 
 contract DeploySUSDeBase is BaseScript {
   function run() external broadcast {
-    new CLRatePriceCapAdapter(
-      abi.decode(CapAdaptersCodeBase.sUSDeAdapterParams(), (IPriceCapAdapter.CapAdapterParams))
-    );
+    GovV3Helpers.deployDeterministic(CapAdaptersCodeBase.sUSDeAdapterCode());
   }
 }

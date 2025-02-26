@@ -25,7 +25,7 @@ deploy-oseth-mainnet :; forge script scripts/DeployEthereum.s.sol:DeployOsEthEth
 deploy-ethx-mainnet :; forge script scripts/DeployEthereum.s.sol:DeployEthXEthereum --rpc-url mainnet $(common-flags)
 
 deploy-susde-mainnet :; forge script scripts/DeployEthereum.s.sol:DeploySUSDeEthereum --rpc-url mainnet $(common-flags)
-deploy-susde-base :; forge script scripts/Deploybase.s.sol:DeploySUSDeBase --rpc-url base $(common-flags)
+deploy-susde-base :; forge script scripts/DeployBase.s.sol:DeploySUSDeBase --rpc-url base $(common-flags)
 
 deploy-susds-mainnet :
 	forge script scripts/DeployEthereum.s.sol:DeployUSDSEthereum --rpc-url mainnet $(common-flags)
