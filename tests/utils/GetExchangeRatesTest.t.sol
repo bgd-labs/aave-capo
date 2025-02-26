@@ -130,7 +130,7 @@ contract ExchangeRatesAvax is Test {
 
 contract ExchangeRatesBase is Test {
   function setUp() public {
-    vm.createSelectFork(vm.rpcUrl('base'), 23300000); // 2024-12-05
+    vm.createSelectFork(vm.rpcUrl('base'), 26200000); // 2025-02-10
   }
 
   function test_getExchangeRate() public view {
@@ -144,12 +144,16 @@ contract ExchangeRatesBase is Test {
     uint256 ezEthRate = uint256(
       IChainlinkAggregator(CapAdaptersCodeBase.ezETH_ETH_AGGREGATOR).latestAnswer()
     );
+    uint256 sUSDeRate = uint256(
+      IChainlinkAggregator(CapAdaptersCodeBase.sUSDe_USDe_AGGREGATOR).latestAnswer()
+    );
 
     console.log('Base');
     console.log('cbEthRate', cbEthRate);
     console.log('wstEthRate', wstEthRate);
     console.log('weEthRate', weEthRate);
     console.log('ezEthRate', ezEthRate);
+    console.log('sUSDeRate', sUSDeRate);
 
     console.log(block.timestamp);
   }
