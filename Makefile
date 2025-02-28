@@ -54,6 +54,8 @@ deploy-weETH-zksync :; forge script --zksync scripts/DeployZkSync.s.sol:DeployWe
 deploy-sUSDe-zksync :; forge script --zksync scripts/DeployZkSync.s.sol:DeploySUSDeZkSync --rpc-url zksync $(common-flags)
 deploy-USDe-zksync :; forge script --zksync scripts/DeployZkSync.s.sol:DeployUSDeZkSync --rpc-url zksync $(common-flags)
 
+deploy-eurc-base :; forge script scripts/DeployBase.s.sol:DeployEURCBase --rpc-url base $(common-flags)
+
 # Utilities
 download :; cast etherscan-source --chain ${chain} -d src/etherscan/${chain}_${address} ${address}
 git-diff :
