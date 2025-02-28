@@ -39,7 +39,7 @@ contract EURPriceCapAdapterStable is IEURPriceCapAdapterStable {
     }
 
     ASSET_TO_USD_AGGREGATOR = capAdapterStableParams.assetToUsdAggregator;
-    BASE_TO_USD_AGGREGATOR = capAdapterStableParams.assetToUsdAggregator;
+    BASE_TO_USD_AGGREGATOR = capAdapterStableParams.baseToUsdAggregator;
     ACL_MANAGER = capAdapterStableParams.aclManager;
     RATIO_DECIMALS = capAdapterStableParams.ratioDecimals;
     description = capAdapterStableParams.adapterDescription;
