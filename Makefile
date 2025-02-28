@@ -25,6 +25,7 @@ deploy-oseth-mainnet :; forge script scripts/DeployEthereum.s.sol:DeployOsEthEth
 deploy-ethx-mainnet :; forge script scripts/DeployEthereum.s.sol:DeployEthXEthereum --rpc-url mainnet $(common-flags)
 
 deploy-susde-mainnet :; forge script scripts/DeployEthereum.s.sol:DeploySUSDeEthereum --rpc-url mainnet $(common-flags)
+deploy-new-susde-mainnet :; forge script scripts/DeployEthereum.s.sol:DeployNewSUSDeEthereum --rpc-url mainnet $(common-flags)
 
 deploy-susds-mainnet :
 	forge script scripts/DeployEthereum.s.sol:DeployUSDSEthereum --rpc-url mainnet $(common-flags)
@@ -52,6 +53,7 @@ deploy-wsteth-linea :; FOUNDRY_PROFILE=linea forge script scripts/DeployLinea.s.
 
 deploy-weETH-zksync :; forge script --zksync scripts/DeployZkSync.s.sol:DeployWeEthZkSync --rpc-url zksync $(common-flags)
 deploy-sUSDe-zksync :; forge script --zksync scripts/DeployZkSync.s.sol:DeploySUSDeZkSync --rpc-url zksync $(common-flags)
+deploy-new-sUSDe-zksync :; forge script --zksync scripts/DeployZkSync.s.sol:DeployNewSUSDeZkSync --rpc-url zksync $(common-flags)
 deploy-USDe-zksync :; forge script --zksync scripts/DeployZkSync.s.sol:DeployUSDeZkSync --rpc-url zksync $(common-flags)
 
 deploy-eurc-base :; forge script scripts/DeployBase.s.sol:DeployEURCBase --rpc-url base $(common-flags)
