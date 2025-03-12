@@ -121,7 +121,7 @@ contract PendlePriceCapAdapter is IPendlePriceCapAdapter {
 
   function _setMaxDiscountPerYear(uint16 maxDiscountPerYear_) internal {
     if (
-      ((MATURITY - block.timestamp) * maxDiscountPerYear_) / SECONDS_PER_YEAR > PERCENTAGE_FACTOR
+      ((MATURITY - block.timestamp) * maxDiscountPerYear_) / SECONDS_PER_YEAR >= PERCENTAGE_FACTOR
     ) {
       revert DiscountExceeds100Percent();
     }
