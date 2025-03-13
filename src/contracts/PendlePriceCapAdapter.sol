@@ -8,6 +8,13 @@ import {IPendlePrincipalToken} from '../interfaces/IPendlePrincipalToken.sol';
  * @title PendlePriceCapAdapter
  * @author BGD Labs
  * @notice Price adapter to cap the price of the PT-tokens.
+ * This adapter uses a linear discount decay model, from `maxDiscountPerYear * timeToMaturity` to 0 after and at maturity.
+ * `_maxDiscountPerYear` cannot be increased after initial setup, only decreased.
+ *
+ * The price of PT token (PT_price) is calculated as:
+ *
+ * currentDiscount = (maturity - block.timestamp) * _maxDiscountPerYear / SECONDS_PER_YEAR
+ * PT_price = priceOfAsset - (priceOfAsset * linearCurrentDiscount / PERCENTAGE_FACTOR)
  */
 contract PendlePriceCapAdapter is IPendlePriceCapAdapter {
   /// @inheritdoc IPendlePriceCapAdapter
@@ -41,45 +48,39 @@ contract PendlePriceCapAdapter is IPendlePriceCapAdapter {
    */
   uint16 private _maxDiscountPerYear;
 
-  constructor(
-    address assetToUsdAggregator_,
-    address pendlePrincipalToken_,
-    uint16 maxDiscountPerYear_,
-    address aclManager_,
-    string memory description_
-  ) {
+  constructor(PendlePriceCapAdapterParams memory params) {
     if (
-      assetToUsdAggregator_ == address(0) ||
-      pendlePrincipalToken_ == address(0) ||
-      aclManager_ == address(0)
+      params.assetToUsdAggregator == address(0) ||
+      params.pendlePrincipalToken == address(0) ||
+      params.aclManager == address(0)
     ) {
       revert ZeroAddress();
     }
 
-    ACL_MANAGER = IACLManager(aclManager_);
+    ACL_MANAGER = IACLManager(params.aclManager);
 
-    ASSET_TO_USD_AGGREGATOR = IChainlinkAggregator(assetToUsdAggregator_);
+    ASSET_TO_USD_AGGREGATOR = IChainlinkAggregator(params.assetToUsdAggregator);
     DECIMALS = ASSET_TO_USD_AGGREGATOR.decimals();
 
-    PENDLE_PRINCIPAL_TOKEN = IPendlePrincipalToken(pendlePrincipalToken_);
+    PENDLE_PRINCIPAL_TOKEN = IPendlePrincipalToken(params.pendlePrincipalToken);
     MATURITY = PENDLE_PRINCIPAL_TOKEN.expiry();
 
     if (MATURITY <= block.timestamp) {
       revert MaturityHasAlreadyPassed();
     }
 
-    _description = description_;
+    _description = params.description;
 
-    _setMaxDiscountPerYear(maxDiscountPerYear_);
+    _setMaxDiscountPerYear(params.maxDiscountPerYear);
   }
 
   /// @inheritdoc IPendlePriceCapAdapter
-  function setMaxDiscountPerYear(uint16 maxDiscountPerYear_) external {
+  function setMaxDiscountPerYear(uint16 maxDiscountPerYear) external {
     if (!ACL_MANAGER.isRiskAdmin(msg.sender) && !ACL_MANAGER.isPoolAdmin(msg.sender)) {
       revert CallerIsNotRiskOrPoolAdmin();
     }
 
-    _setMaxDiscountPerYear(maxDiscountPerYear_);
+    _setMaxDiscountPerYear(maxDiscountPerYear);
   }
 
   /// @inheritdoc ICLSynchronicityPriceAdapter
@@ -119,13 +120,21 @@ contract PendlePriceCapAdapter is IPendlePriceCapAdapter {
     return (timeToMaturity * _maxDiscountPerYear) / SECONDS_PER_YEAR;
   }
 
-  function _setMaxDiscountPerYear(uint16 maxDiscountPerYear_) internal {
+  function _setMaxDiscountPerYear(uint16 maxDiscountPerYear) internal {
+    uint16 oldMaxDiscountPerYear = _maxDiscountPerYear;
+
+    if (maxDiscountPerYear == 0 || oldMaxDiscountPerYear <= maxDiscountPerYear) {
+      revert InvalidNewMaxDiscountPerYear();
+    }
+
     if (
-      ((MATURITY - block.timestamp) * maxDiscountPerYear_) / SECONDS_PER_YEAR >= PERCENTAGE_FACTOR
+      ((MATURITY - block.timestamp) * maxDiscountPerYear) / SECONDS_PER_YEAR >= PERCENTAGE_FACTOR
     ) {
       revert DiscountExceeds100Percent();
     }
 
-    _maxDiscountPerYear = maxDiscountPerYear_;
+    _maxDiscountPerYear = maxDiscountPerYear;
+
+    emit maxDiscountPerYearUpdated(oldMaxDiscountPerYear, maxDiscountPerYear);
   }
 }

@@ -9,20 +9,47 @@ import {ICLSynchronicityPriceAdapter} from 'cl-synchronicity-price-adapter/inter
 import {IPendlePrincipalToken} from '../interfaces/IPendlePrincipalToken.sol';
 
 interface IPendlePriceCapAdapter is ICLSynchronicityPriceAdapter {
+  /**
+   * @notice Parameters to create adapter
+   * @param assetToUsdAggregator Price feed contract address for (ASSET / USD) pair, can also be CAPO adapter
+   * @param pendlePrincipalToken Pendle principal token contract address
+   * @param maxDiscountPerYear Maximum discount per year (in percents), can be up to 1e4 (`PERCENTAGE_FACTOR` = 100%)
+   * @param aclManager ACL manager contract
+   * @param description Description of the adapter
+   */
+  struct PendlePriceCapAdapterParams {
+    address assetToUsdAggregator;
+    address pendlePrincipalToken;
+    uint16 maxDiscountPerYear;
+    address aclManager;
+    string description;
+  }
+
+  /**
+   * @notice Event is emitted when `_maxDiscountPerYear` is changed from old value to the new one
+   * @param oldMaxDiscountPerYear Old `_maxDiscountPerYear` value
+   * @param newMaxDiscountPerYear New `_maxDiscountPerYear` value
+   */
+  event maxDiscountPerYearUpdated(uint16 oldMaxDiscountPerYear, uint16 newMaxDiscountPerYear);
+
   /// @dev Attempted to set zero address
   error ZeroAddress();
 
   /// @dev Attempted to create price adapter for pendle token with already passed maturity
   error MaturityHasAlreadyPassed();
 
+  /// @dev Attempted to change `_maxDiscountPerYear` from unauthorized address
+  error CallerIsNotRiskOrPoolAdmin();
+
+  /// @dev Attempted to not decrease new `_maxDiscountPerYear` or set zero
+  /// Increasing `_maxDiscountPerYear` is prohibited because it will lead to immediate liquidations
+  error InvalidNewMaxDiscountPerYear();
+
   /// @dev Attempted to set parameters that are valued at a discount of more than 100% for this linear model
   error DiscountExceeds100Percent();
 
-  /// @dev Attempted to change `maxDiscountPerYear` from unauthorized address
-  error CallerIsNotRiskOrPoolAdmin();
-
   /**
-   * @notice Sets a new value `maxDiscountPerYear` used for PT tokens pricing
+   * @notice Sets a new value `_maxDiscountPerYear` used for PT tokens pricing
    * @dev Can be called from risk admin or pool admin only
    * @param maxDiscountPerYear_ New max discount per year
    */
