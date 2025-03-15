@@ -18,7 +18,7 @@ import {IPendlePrincipalToken} from '../interfaces/IPendlePrincipalToken.sol';
  */
 contract PendlePriceCapAdapter is IPendlePriceCapAdapter {
   /// @inheritdoc IPendlePriceCapAdapter
-  uint256 public constant PERCENTAGE_FACTOR = 1e4; // 100%
+  uint256 public constant PERCENTAGE_FACTOR = 1e18; // 100%
 
   /// @inheritdoc IPendlePriceCapAdapter
   uint256 public constant SECONDS_PER_YEAR = 365 days;
@@ -46,7 +46,7 @@ contract PendlePriceCapAdapter is IPendlePriceCapAdapter {
   /**
    * @notice The maximum APY that is set for a given asset before maturity occurs
    */
-  uint16 private _maxDiscountPerYear;
+  uint64 private _maxDiscountPerYear;
 
   constructor(PendlePriceCapAdapterParams memory params) {
     if (
@@ -75,7 +75,7 @@ contract PendlePriceCapAdapter is IPendlePriceCapAdapter {
   }
 
   /// @inheritdoc IPendlePriceCapAdapter
-  function setMaxDiscountPerYear(uint16 maxDiscountPerYear) external {
+  function setMaxDiscountPerYear(uint64 maxDiscountPerYear) external {
     if (!ACL_MANAGER.isRiskAdmin(msg.sender) && !ACL_MANAGER.isPoolAdmin(msg.sender)) {
       revert CallerIsNotRiskOrPoolAdmin();
     }
@@ -90,12 +90,10 @@ contract PendlePriceCapAdapter is IPendlePriceCapAdapter {
       return 0;
     }
 
-    int256 currentDiscount = int256(getCurrentDiscount());
-    int256 price = currentAssetPrice -
-      (currentAssetPrice * currentDiscount) /
-      int256(PERCENTAGE_FACTOR);
+    uint256 price = (uint256(currentAssetPrice) * (PERCENTAGE_FACTOR - getCurrentDiscount())) /
+      PERCENTAGE_FACTOR;
 
-    return price;
+    return int256(price);
   }
 
   /// @inheritdoc IPendlePriceCapAdapter
@@ -120,8 +118,8 @@ contract PendlePriceCapAdapter is IPendlePriceCapAdapter {
     return (timeToMaturity * _maxDiscountPerYear) / SECONDS_PER_YEAR;
   }
 
-  function _setMaxDiscountPerYear(uint16 maxDiscountPerYear) internal {
-    uint16 oldMaxDiscountPerYear = _maxDiscountPerYear;
+  function _setMaxDiscountPerYear(uint64 maxDiscountPerYear) internal {
+    uint64 oldMaxDiscountPerYear = _maxDiscountPerYear;
 
     if (
       maxDiscountPerYear == 0 ||
