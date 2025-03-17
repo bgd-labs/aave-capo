@@ -86,7 +86,7 @@ contract ExchangeRatesEth is Test {
 
 contract ExchangeRatesArbitrum is Test {
   function setUp() public {
-    vm.createSelectFork(vm.rpcUrl('arbitrum'), 303250000); // 2025-02-06
+    vm.createSelectFork(vm.rpcUrl('arbitrum'), 311775777); // 2025-03-03
   }
 
   function test_getExchangeRate() public view {
@@ -103,9 +103,7 @@ contract ExchangeRatesArbitrum is Test {
       IChainlinkAggregator(CapAdaptersCodeArbitrum.ezETH_ETH_AGGREGATOR).latestAnswer()
     );
 
-    uint256 rsETHRate = uint256(IRsETHL2(CapAdaptersCodeArbitrum.rsETH_LRT_ORACLE).rate());
-
-    uint256 rsETHCLRate = uint256(
+    uint256 rsETHRate = uint256(
       IChainlinkAggregator(CapAdaptersCodeArbitrum.rsETH_ETH_AGGREGATOR).latestAnswer()
     );
 
@@ -115,7 +113,6 @@ contract ExchangeRatesArbitrum is Test {
     console.log('weEthRate', weEthRate);
     console.log('ezEthRate', ezEthRate);
     console.log('rsETHRate', rsETHRate);
-    console.log('rsETHCLRate', rsETHCLRate);
     console.log(block.timestamp);
   }
 }
