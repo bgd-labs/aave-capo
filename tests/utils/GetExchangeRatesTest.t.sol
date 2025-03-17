@@ -284,9 +284,14 @@ contract ExchangeRatesZKSync is Test {
       IChainlinkAggregator(CapAdaptersCodeZkSync.sUSDe_USDe_AGGREGATOR).latestAnswer()
     );
 
+    uint256 rsETHRate = uint256(
+      IChainlinkAggregator(CapAdaptersCodeZkSync.rsETH_ETH_AGGREGATOR).latestAnswer()
+    );
+
     console.log('ZkSync');
     console.log('weETHRate', weETHRate);
     console.log('sUSDeRate', sUSDeRate);
+    console.log('rsETHRate', rsETHRate);
     console.log(block.timestamp);
   }
 }
