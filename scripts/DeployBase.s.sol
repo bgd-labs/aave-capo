@@ -4,7 +4,7 @@ pragma solidity ^0.8.0;
 import {GovV3Helpers} from 'aave-helpers/GovV3Helpers.sol';
 import {BaseScript} from 'solidity-utils/contracts/utils/ScriptUtils.sol';
 import {AaveV3Base, AaveV3BaseAssets} from 'aave-address-book/AaveV3Base.sol';
-
+import {EURPriceCapAdapterStable, IEURPriceCapAdapterStable, IChainlinkAggregator} from '../src/contracts/misc-adapters/EURPriceCapAdapterStable.sol';
 import {CLRatePriceCapAdapter, IPriceCapAdapter} from '../src/contracts/CLRatePriceCapAdapter.sol';
 
 library CapAdaptersCodeBase {
@@ -12,6 +12,8 @@ library CapAdaptersCodeBase {
   address public constant ezETH_ETH_AGGREGATOR = 0xC4300B7CF0646F0Fe4C5B2ACFCCC4dCA1346f5d8;
   address public constant rsETH_LRT_ORACLE = 0x7781ae9B47FeCaCEAeCc4FcA8d0b6187E3eF9ba7;
   address public constant rsETH_ETH_AGGREGATOR = 0x99DAf760d2CFB770cc17e883dF45454FE421616b;
+  address public constant EURC_PRICE_FEED = 0xDAe398520e2B67cd3f27aeF9Cf14D93D927f8250;
+  address public constant EUR_PRICE_FEED = 0xc91D87E81faB8f93699ECf7Ee9B44D11e1D53F0F;
 
   function weETHAdapterCode() internal pure returns (bytes memory) {
     return
@@ -75,6 +77,23 @@ library CapAdaptersCodeBase {
         )
       );
   }
+
+  function EURCAdapterCode() internal pure returns (bytes memory) {
+    return
+      abi.encodePacked(
+        type(EURPriceCapAdapterStable).creationCode,
+        abi.encode(
+          IEURPriceCapAdapterStable.CapAdapterStableParamsEUR({
+            aclManager: AaveV3Base.ACL_MANAGER,
+            assetToUsdAggregator: IChainlinkAggregator(EURC_PRICE_FEED),
+            baseToUsdAggregator: IChainlinkAggregator(EUR_PRICE_FEED),
+            adapterDescription: 'Capped EURC/USD',
+            priceCapRatio: int256(1.04 * 1e8),
+            ratioDecimals: 8
+          })
+        )
+      );
+  }
 }
 
 contract DeployWeEthBase is BaseScript {
@@ -92,5 +111,11 @@ contract DeployEzEthBase is BaseScript {
 contract DeployRsETHBase is BaseScript {
   function run() external broadcast {
     GovV3Helpers.deployDeterministic(CapAdaptersCodeBase.rsETHCLAdapterCode());
+  }
+}
+
+contract DeployEURCBase is BaseScript {
+  function run() external broadcast {
+    GovV3Helpers.deployDeterministic(CapAdaptersCodeBase.EURCAdapterCode());
   }
 }
