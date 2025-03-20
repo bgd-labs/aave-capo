@@ -31,6 +31,7 @@ import {IEthX} from '../../src/interfaces/IEthX.sol';
 import {IEzETHRestakeManager, IEzEthToken} from '../../src/interfaces/IEzETH.sol';
 import {IRsETH} from '../../src/interfaces/IRsETH.sol';
 import {IBNBx} from '../../src/interfaces/IBNBx.sol';
+import {IEBTC} from '../../src/interfaces/IEBTC.sol';
 
 import {CapAdaptersCodeEthereum} from '../../scripts/DeployEthereum.s.sol';
 import {CapAdaptersCodeArbitrum} from '../../scripts/DeployArbitrum.s.sol';
@@ -42,7 +43,7 @@ import {CapAdaptersCodeLinea} from '../../scripts/DeployLinea.s.sol';
 
 contract ExchangeRatesEth is Test {
   function setUp() public {
-    vm.createSelectFork(vm.rpcUrl('mainnet'), 21010101); // Oct-20-2024
+    vm.createSelectFork(vm.rpcUrl('mainnet'), 22081033); // Mar-19-2025
   }
 
   function test_getExchangeRate() public view {
@@ -66,6 +67,8 @@ contract ExchangeRatesEth is Test {
       IEzETHRestakeManager(CapAdaptersCodeEthereum.ezETH_RESTAKE_MANAGER).ezETH().totalSupply());
 
     uint256 rsETHRate = IRsETH(CapAdaptersCodeEthereum.rsETH_LRT_ORACLE).rsETHPrice();
+    uint256 eBTCRate = IEBTC(CapAdaptersCodeEthereum.eBTC_ACCOUNTANT).getRate();
+
     console.log('cbEthRate', cbEthRate);
     console.log('rEthRate', rEthRate);
     console.log('sDaiRate', sDaiRate);
@@ -78,6 +81,7 @@ contract ExchangeRatesEth is Test {
     console.log('sUSDS', sUSDSRate);
     console.log('ezETHRate', ezETHRate);
     console.log('rsETHRate', rsETHRate);
+    console.log('eBTCRate', eBTCRate);
 
     console.log(block.timestamp);
   }
