@@ -156,6 +156,11 @@ abstract contract BaseTest is Test {
     // deploy adapter
     IPriceCapAdapter adapter = _createAdapter();
 
+    // adapters without a growth rate
+    if (adapter.getMaxYearlyGrowthRatePercent() == 0) {
+      return;
+    }
+
     // set cap to 1%
     _setCapParametersByAdmin(
       adapter,
