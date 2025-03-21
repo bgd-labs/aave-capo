@@ -9,12 +9,12 @@ import {IPendlePrincipalToken} from '../interfaces/IPendlePrincipalToken.sol';
  * @author BGD Labs
  * @notice Price adapter to cap the price of the PT-tokens.
  * This adapter uses a linear discount decay model, from `maxDiscountPerYear * timeToMaturity` to 0 after and at maturity.
- * `_maxDiscountPerYear` cannot be increased after initial setup, only decreased.
+ * `discountRatePerYear` cannot be set greater than `MAX_DISCOUNT_RATE_PER_YEAR`, only less than, but not zero.
  *
  * The price of PT token (PT_price) is calculated as:
  *
- * currentDiscount = (maturity - block.timestamp) * _maxDiscountPerYear / SECONDS_PER_YEAR
- * PT_price = priceOfAsset - (priceOfAsset * linearCurrentDiscount / PERCENTAGE_FACTOR)
+ * currentDiscount = (maturity - block.timestamp) * discountRatePerYear / SECONDS_PER_YEAR
+ * PT_price = priceOfAsset * (PERCENTAGE_FACTOR - currentDiscount) / PERCENTAGE_FACTOR
  */
 contract PendlePriceCapAdapter is IPendlePriceCapAdapter {
   /// @inheritdoc IPendlePriceCapAdapter
@@ -33,20 +33,19 @@ contract PendlePriceCapAdapter is IPendlePriceCapAdapter {
   IACLManager public immutable ACL_MANAGER;
 
   /// @inheritdoc IPendlePriceCapAdapter
+  uint8 public immutable DECIMALS;
+
+  /// @inheritdoc IPendlePriceCapAdapter
   uint256 public immutable MATURITY;
 
   /// @inheritdoc IPendlePriceCapAdapter
-  uint8 public immutable DECIMALS;
+  uint64 public immutable MAX_DISCOUNT_RATE_PER_YEAR;
 
-  /**
-   * @notice Description of the adapter
-   */
-  string private _description;
+  /// @inheritdoc IPendlePriceCapAdapter
+  uint64 public discountRatePerYear;
 
-  /**
-   * @notice The maximum APY that is set for a given asset before maturity occurs
-   */
-  uint64 private _maxDiscountPerYear;
+  /// @inheritdoc ICLSynchronicityPriceAdapter
+  string public description;
 
   constructor(PendlePriceCapAdapterParams memory params) {
     if (
@@ -69,18 +68,20 @@ contract PendlePriceCapAdapter is IPendlePriceCapAdapter {
       revert MaturityHasAlreadyPassed();
     }
 
-    _description = params.description;
+    MAX_DISCOUNT_RATE_PER_YEAR = params.maxDiscountRatePerYear;
 
-    _setMaxDiscountPerYear(params.maxDiscountPerYear);
+    description = params.description;
+
+    _setDiscountRatePerYear(params.maxDiscountRatePerYear);
   }
 
   /// @inheritdoc IPendlePriceCapAdapter
-  function setMaxDiscountPerYear(uint64 maxDiscountPerYear) external {
+  function setDiscountRatePerYear(uint64 discountRatePerYear_) external {
     if (!ACL_MANAGER.isRiskAdmin(msg.sender) && !ACL_MANAGER.isPoolAdmin(msg.sender)) {
       revert CallerIsNotRiskOrPoolAdmin();
     }
 
-    _setMaxDiscountPerYear(maxDiscountPerYear);
+    _setDiscountRatePerYear(discountRatePerYear_);
   }
 
   /// @inheritdoc ICLSynchronicityPriceAdapter
@@ -96,16 +97,6 @@ contract PendlePriceCapAdapter is IPendlePriceCapAdapter {
     return int256(price);
   }
 
-  /// @inheritdoc IPendlePriceCapAdapter
-  function getMaxDiscountPerYear() external view returns (uint256) {
-    return _maxDiscountPerYear;
-  }
-
-  /// @inheritdoc ICLSynchronicityPriceAdapter
-  function description() external view returns (string memory) {
-    return _description;
-  }
-
   /// @inheritdoc ICLSynchronicityPriceAdapter
   function decimals() external view returns (uint8) {
     return DECIMALS;
@@ -115,27 +106,24 @@ contract PendlePriceCapAdapter is IPendlePriceCapAdapter {
   function getCurrentDiscount() public view returns (uint256) {
     uint256 timeToMaturity = (MATURITY > block.timestamp) ? MATURITY - block.timestamp : 0;
 
-    return (timeToMaturity * _maxDiscountPerYear) / SECONDS_PER_YEAR;
+    return (timeToMaturity * discountRatePerYear) / SECONDS_PER_YEAR;
   }
 
-  function _setMaxDiscountPerYear(uint64 maxDiscountPerYear) internal {
-    uint64 oldMaxDiscountPerYear = _maxDiscountPerYear;
+  function _setDiscountRatePerYear(uint64 discountRatePerYear_) internal {
+    uint64 oldMaxDiscountPerYear = discountRatePerYear;
 
-    if (
-      maxDiscountPerYear == 0 ||
-      (oldMaxDiscountPerYear != 0 && oldMaxDiscountPerYear <= maxDiscountPerYear)
-    ) {
-      revert InvalidNewMaxDiscountPerYear();
+    if (discountRatePerYear_ == 0 || discountRatePerYear_ >= MAX_DISCOUNT_RATE_PER_YEAR) {
+      revert InvalidNewDiscountRatePerYear();
     }
 
     if (
-      ((MATURITY - block.timestamp) * maxDiscountPerYear) / SECONDS_PER_YEAR >= PERCENTAGE_FACTOR
+      ((MATURITY - block.timestamp) * discountRatePerYear_) / SECONDS_PER_YEAR >= PERCENTAGE_FACTOR
     ) {
       revert DiscountExceeds100Percent();
     }
 
-    _maxDiscountPerYear = maxDiscountPerYear;
+    discountRatePerYear = discountRatePerYear_;
 
-    emit maxDiscountPerYearUpdated(oldMaxDiscountPerYear, maxDiscountPerYear);
+    emit DiscountRatePerYearUpdated(oldMaxDiscountPerYear, discountRatePerYear_);
   }
 }
