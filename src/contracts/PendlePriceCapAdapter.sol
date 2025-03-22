@@ -112,7 +112,7 @@ contract PendlePriceCapAdapter is IPendlePriceCapAdapter {
   function _setDiscountRatePerYear(uint64 discountRatePerYear_) internal {
     uint64 oldMaxDiscountPerYear = discountRatePerYear;
 
-    if (discountRatePerYear_ == 0 || discountRatePerYear_ >= MAX_DISCOUNT_RATE_PER_YEAR) {
+    if (discountRatePerYear_ == 0 || discountRatePerYear_ > MAX_DISCOUNT_RATE_PER_YEAR) {
       revert InvalidNewDiscountRatePerYear();
     }
 
