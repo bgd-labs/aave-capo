@@ -50,6 +50,16 @@ abstract contract BaseStableTest is Test {
     assertEq(price, referencePrice);
   }
 
+  /// @dev check if cap decimals was set correctly
+  function test_configuration() public {
+    IPriceCapAdapterStable adapter = _createAdapter();
+
+    uint256 priceCap = uint256(adapter.getPriceCap());
+    uint256 decimals = 10 ** adapter.decimals();
+
+    assertEq(priceCap / (decimals * 10), 0);
+  }
+
   function test_latestAnswerRetrospective() public virtual {
     uint256 finishBlock = forkParams.blockNumber;
 
