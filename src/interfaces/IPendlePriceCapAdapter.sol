@@ -14,6 +14,7 @@ interface IPendlePriceCapAdapter is ICLSynchronicityPriceAdapter {
    * @param assetToUsdAggregator Price feed contract address for (ASSET / USD) pair, can also be CAPO adapter
    * @param pendlePrincipalToken Pendle principal token contract address
    * @param maxDiscountRatePerYear Maximum discount rate per year (in percents)
+   * @param discountRatePerYear Discount rate per year to set during construction (should be greater than zero and up to `maxDiscountRatePerYear`)
    * @param aclManager ACL manager contract
    * @param description Description of the adapter
    */
@@ -21,6 +22,7 @@ interface IPendlePriceCapAdapter is ICLSynchronicityPriceAdapter {
     address assetToUsdAggregator;
     address pendlePrincipalToken;
     uint64 maxDiscountRatePerYear;
+    uint64 discountRatePerYear;
     address aclManager;
     string description;
   }
