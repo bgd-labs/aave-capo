@@ -72,7 +72,7 @@ contract PendlePriceCapAdapter is IPendlePriceCapAdapter {
 
     description = params.description;
 
-    _setDiscountRatePerYear(params.maxDiscountRatePerYear);
+    _setDiscountRatePerYear(params.discountRatePerYear);
   }
 
   /// @inheritdoc IPendlePriceCapAdapter
