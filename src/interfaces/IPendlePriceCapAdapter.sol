@@ -37,6 +37,9 @@ interface IPendlePriceCapAdapter is ICLSynchronicityPriceAdapter {
   /// @dev Attempted to set zero address
   error ZeroAddress();
 
+  /// @dev Attempted to set zero `MAX_DISCOUNT_RATE_PER_YEAR`
+  error ZeroMaxDiscount();
+
   /// @dev Attempted to create price adapter for pendle token with already passed maturity
   error MaturityHasAlreadyPassed();
 
