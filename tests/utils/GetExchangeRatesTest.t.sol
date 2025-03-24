@@ -31,10 +31,12 @@ import {IEthX} from '../../src/interfaces/IEthX.sol';
 import {IEzETHRestakeManager, IEzEthToken} from '../../src/interfaces/IEzETH.sol';
 import {IRsETH} from '../../src/interfaces/IRsETH.sol';
 import {IBNBx} from '../../src/interfaces/IBNBx.sol';
+import {IOsGNO} from '../../src/interfaces/IOsGNO.sol';
 
 import {CapAdaptersCodeEthereum} from '../../scripts/DeployEthereum.s.sol';
 import {CapAdaptersCodeArbitrum} from '../../scripts/DeployArbitrum.s.sol';
 import {CapAdaptersCodeBase} from '../../scripts/DeployBase.s.sol';
+import {CapAdaptersCodeGnosis} from '../../scripts/DeployGnosis.s.sol';
 import {CapAdaptersCodeScroll} from '../../scripts/DeployScroll.s.sol';
 import {CapAdaptersCodeBNB} from '../../scripts/DeployBnb.s.sol';
 import {CapAdaptersCodeZkSync} from '../../scripts/DeployZkSync.s.sol';
@@ -157,11 +159,12 @@ contract ExchangeRatesBase is Test {
 
 contract ExchangeRatesGnosis is Test {
   function setUp() public {
-    vm.createSelectFork(vm.rpcUrl('gnosis'), 36600000); // Oct-20-2024
+    vm.createSelectFork(vm.rpcUrl('gnosis'), 37500000); // dec-13-2024
   }
 
   function test_getExchangeRate() public view {
     uint256 sDaiRate = IERC4626(AaveV3GnosisAssets.sDAI_UNDERLYING).convertToAssets(10 ** 18);
+    uint256 osGNORate = IOsGNO(CapAdaptersCodeGnosis.OSGNO_RATE).getRate();
     uint256 wstEthRate = uint256(
       IChainlinkAggregator(MiscGnosis.wstETH_stETH_AGGREGATOR).latestAnswer()
     );
@@ -169,6 +172,7 @@ contract ExchangeRatesGnosis is Test {
     console.log('Gnosis');
     console.log('sDaiRate', sDaiRate);
     console.log('wstEthRate', wstEthRate);
+    console.log('osGNORate', osGNORate);
 
     console.log(block.timestamp);
   }
