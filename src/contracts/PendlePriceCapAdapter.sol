@@ -56,6 +56,10 @@ contract PendlePriceCapAdapter is IPendlePriceCapAdapter {
       revert ZeroAddress();
     }
 
+    if (params.maxDiscountRatePerYear == 0) {
+      revert ZeroMaxDiscount();
+    }
+
     ACL_MANAGER = IACLManager(params.aclManager);
 
     ASSET_TO_USD_AGGREGATOR = IChainlinkAggregator(params.assetToUsdAggregator);
