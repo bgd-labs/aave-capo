@@ -31,8 +31,8 @@ import {IEthX} from '../../src/interfaces/IEthX.sol';
 import {IEzETHRestakeManager, IEzEthToken} from '../../src/interfaces/IEzETH.sol';
 import {IRsETH} from '../../src/interfaces/IRsETH.sol';
 import {IBNBx} from '../../src/interfaces/IBNBx.sol';
-import {IEBTC} from '../../src/interfaces/IEBTC.sol';
 import {IRsETHL2} from '../../src/interfaces/IRsETHL2.sol';
+import {IEBTC} from '../../src/interfaces/IEBTC.sol';
 
 import {CapAdaptersCodeEthereum} from '../../scripts/DeployEthereum.s.sol';
 import {CapAdaptersCodeArbitrum} from '../../scripts/DeployArbitrum.s.sol';
