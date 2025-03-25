@@ -10,6 +10,8 @@ import {CLRatePriceCapAdapter, IPriceCapAdapter} from '../src/contracts/CLRatePr
 library CapAdaptersCodeBase {
   address public constant weETH_eETH_AGGREGATOR = 0x35e9D7001819Ea3B39Da906aE6b06A62cfe2c181;
   address public constant ezETH_ETH_AGGREGATOR = 0xC4300B7CF0646F0Fe4C5B2ACFCCC4dCA1346f5d8;
+  address public constant rsETH_LRT_ORACLE = 0x7781ae9B47FeCaCEAeCc4FcA8d0b6187E3eF9ba7;
+  address public constant rsETH_ETH_AGGREGATOR = 0x99DAf760d2CFB770cc17e883dF45454FE421616b;
   address public constant EURC_PRICE_FEED = 0xDAe398520e2B67cd3f27aeF9Cf14D93D927f8250;
   address public constant EUR_PRICE_FEED = 0xc91D87E81faB8f93699ECf7Ee9B44D11e1D53F0F;
 
@@ -55,6 +57,27 @@ library CapAdaptersCodeBase {
       );
   }
 
+  function rsETHCLAdapterCode() internal pure returns (bytes memory) {
+    return
+      abi.encodePacked(
+        type(CLRatePriceCapAdapter).creationCode,
+        abi.encode(
+          IPriceCapAdapter.CapAdapterParams({
+            aclManager: AaveV3Base.ACL_MANAGER,
+            baseAggregatorAddress: AaveV3BaseAssets.WETH_ORACLE,
+            ratioProviderAddress: rsETH_ETH_AGGREGATOR,
+            pairDescription: 'Capped rsETH / ETH / USD',
+            minimumSnapshotDelay: 14 days,
+            priceCapParams: IPriceCapAdapter.PriceCapUpdateParams({
+              snapshotRatio: 1_036271920052097966,
+              snapshotTimestamp: 1738837347, // Feb-06-2025
+              maxYearlyRatioGrowthPercent: 9_83
+            })
+          })
+        )
+      );
+  }
+
   function EURCAdapterCode() internal pure returns (bytes memory) {
     return
       abi.encodePacked(
@@ -82,6 +105,12 @@ contract DeployWeEthBase is BaseScript {
 contract DeployEzEthBase is BaseScript {
   function run() external broadcast {
     GovV3Helpers.deployDeterministic(CapAdaptersCodeBase.ezETHAdapterCode());
+  }
+}
+
+contract DeployRsETHBase is BaseScript {
+  function run() external broadcast {
+    GovV3Helpers.deployDeterministic(CapAdaptersCodeBase.rsETHCLAdapterCode());
   }
 }
 
