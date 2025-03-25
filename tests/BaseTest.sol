@@ -156,16 +156,29 @@ abstract contract BaseTest is Test {
     // deploy adapter
     IPriceCapAdapter adapter = _createAdapter();
 
-    // set cap to 1%
-    _setCapParametersByAdmin(
-      adapter,
-      uint104(adapter.getSnapshotRatio()),
-      uint48(adapter.getSnapshotTimestamp() + 1),
-      uint16(50)
-    );
+    uint256 growthPercent = adapter.getMaxYearlyGrowthRatePercent();
+    if (growthPercent > 0) {
+      // set cap to 1%
+      _setCapParametersByAdmin(
+        adapter,
+        uint104(adapter.getSnapshotRatio()),
+        uint48(adapter.getSnapshotTimestamp() + 1),
+        uint16(50)
+      );
+    } else {
+      // adapters without a growth rate we mock the exchange rate
+      uint256 ratioCapped = (_getMaxRatio(adapter) + 1);
+      _mockRatioProviderRate(ratioCapped);
+    }
 
     // check is capped
     assertTrue(adapter.isCapped());
+  }
+
+  function test_configuration() public {
+    IPriceCapAdapter adapter = _createAdapter();
+    _validateDecimals(adapter);
+    _validateGrowth(adapter);
   }
 
   function _getCapAdapterParams() internal returns (IPriceCapAdapter.CapAdapterParams memory) {
@@ -271,6 +284,32 @@ abstract contract BaseTest is Test {
     return
       (((ratio - previousRatio) * int256(SECONDS_PER_YEAR)) * 100_00) /
       (previousRatio * int256(currentTimestamp - previousTimestamp));
+  }
+
+  function _getMaxRatio(IPriceCapAdapter adapter) private view returns (uint256) {
+    uint256 snapshotRatio = adapter.getSnapshotRatio();
+    uint256 snapshotTimestamp = adapter.getSnapshotTimestamp();
+    uint256 maxGrowthPerSecond = adapter.getMaxRatioGrowthPerSecond();
+    return (snapshotRatio + maxGrowthPerSecond * (block.timestamp - snapshotTimestamp));
+  }
+
+  function _mockRatioProviderRate(uint256 amount) internal virtual {}
+
+  /// @dev verifies that growth in a year won't be more than 100% 
+  function _validateGrowth(IPriceCapAdapter adapter) private view {
+    assertLe(adapter.getMaxYearlyGrowthRatePercent(), adapter.PERCENTAGE_FACTOR());
+  }
+
+  /// @dev verifies ratio(snapshot, current, max) are at the same decimal places
+  function _validateDecimals(IPriceCapAdapter adapter) private view {
+    uint256 currentRatio = uint256(adapter.getRatio());
+    uint256 snapshotRatio = adapter.getSnapshotRatio();
+    uint256 maxRatio = _getMaxRatio(adapter);
+    uint256 ratioDecimals = 10 ** adapter.RATIO_DECIMALS();
+
+    assertEq(currentRatio / (ratioDecimals * 10), 0);
+    assertEq(snapshotRatio / (ratioDecimals * 10), 0);
+    assertEq(maxRatio / (ratioDecimals * 10), 0);
   }
 
   function _generateReport(
