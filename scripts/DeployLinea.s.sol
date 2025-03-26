@@ -122,8 +122,8 @@ library CapAdaptersCodeLinea {
             pairDescription: 'Capped wrsETH / rsETH(ETH) / USD',
             minimumSnapshotDelay: 14 days,
             priceCapParams: IPriceCapAdapter.PriceCapUpdateParams({
-              snapshotRatio: 1_034014476047575982,
-              snapshotTimestamp: 1736592058, // Mar-09-2025
+              snapshotRatio: 1_038839717415900257,
+              snapshotTimestamp: 1741541239, // Mar-09-2025
               maxYearlyRatioGrowthPercent: 9_83
             })
           })
