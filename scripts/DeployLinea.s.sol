@@ -15,6 +15,7 @@ library CapAdaptersCodeLinea {
   address public constant WETH_PRICE_FEED = 0x3c6Cd9Cc7c7a4c2Cf5a82734CD249D7D593354dA;
   address public constant USDC_PRICE_FEED = 0xAADAa473C1bDF7317ec07c915680Af29DeBfdCb5;
   address public constant USDT_PRICE_FEED = 0xefCA2bbe0EdD0E22b2e0d2F8248E99F4bEf4A7dB;
+  address public constant wrsETH_rsETH_AGGREGATOR = 0xEEDF0B095B5dfe75F3881Cb26c19DA209A27463a;
 
   function weETHAdapterCode() internal pure returns (bytes memory) {
     return
@@ -108,6 +109,27 @@ library CapAdaptersCodeLinea {
         )
       );
   }
+
+  function wrsETHAdapterCode() internal pure returns (bytes memory) {
+    return
+      abi.encodePacked(
+        type(CLRatePriceCapAdapter).creationCode,
+        abi.encode(
+          IPriceCapAdapter.CapAdapterParams({
+            aclManager: AaveV3Linea.ACL_MANAGER,
+            baseAggregatorAddress: WETH_PRICE_FEED,
+            ratioProviderAddress: wrsETH_rsETH_AGGREGATOR,
+            pairDescription: 'Capped wrsETH / rsETH(ETH) / USD',
+            minimumSnapshotDelay: 14 days,
+            priceCapParams: IPriceCapAdapter.PriceCapUpdateParams({
+              snapshotRatio: 1_038839717415900257,
+              snapshotTimestamp: 1741541239, // Mar-09-2025
+              maxYearlyRatioGrowthPercent: 9_83
+            })
+          })
+        )
+      );
+  }
 }
 
 contract DeployWeEthLinea is LineaScript {
@@ -137,5 +159,11 @@ contract DeployUSDTLinea is LineaScript {
 contract DeployWstETHLinea is LineaScript {
   function run() external broadcast {
     GovV3Helpers.deployDeterministic(CapAdaptersCodeLinea.wstETHAdapterCode());
+  }
+}
+
+contract DeployWRstETHLinea is LineaScript {
+  function run() external broadcast {
+    GovV3Helpers.deployDeterministic(CapAdaptersCodeLinea.wrsETHAdapterCode());
   }
 }
