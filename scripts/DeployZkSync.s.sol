@@ -61,18 +61,18 @@ library CapAdaptersCodeZkSync {
       );
   }
 
-  function rsETHAdapterCode() internal pure returns (bytes memory) {
+  function rsETHAdapterParams() internal pure returns (bytes memory) {
     return
       abi.encode(
         IPriceCapAdapter.CapAdapterParams({
-          aclManager: AaveV3EthereumLido.ACL_MANAGER,
-          baseAggregatorAddress: AaveV3EthereumLidoAssets.WETH_ORACLE,
+          aclManager: AaveV3ZkSync.ACL_MANAGER,
+          baseAggregatorAddress: AaveV3ZkSyncAssets.WETH_ORACLE,
           ratioProviderAddress: rsETH_ETH_AGGREGATOR,
           pairDescription: 'Capped rsETH / ETH / USD',
           minimumSnapshotDelay: 14 days,
           priceCapParams: IPriceCapAdapter.PriceCapUpdateParams({
-            snapshotRatio: 0, // TODO
-            snapshotTimestamp: 0, // TODO
+            snapshotRatio: 1_039212733924157636,
+            snapshotTimestamp: 1741797067, // 12th of March 2025
             maxYearlyRatioGrowthPercent: 9_83
           })
         })
@@ -107,10 +107,10 @@ contract DeployUSDeZkSync is ZkSyncScript {
   }
 }
 
-contract DeployWeEthZkSync is ZkSyncScript {
+contract DeployRsETHZkSync is ZkSyncScript {
   function run() external broadcast {
     new CLRatePriceCapAdapter(
-      abi.decode(CapAdaptersCodeZkSync.rsETHAdapterCode(), (IPriceCapAdapter.CapAdapterParams))
+      abi.decode(CapAdaptersCodeZkSync.rsETHAdapterParams(), (IPriceCapAdapter.CapAdapterParams))
     );
   }
 }
