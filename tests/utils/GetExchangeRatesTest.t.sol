@@ -31,6 +31,8 @@ import {IEthX} from '../../src/interfaces/IEthX.sol';
 import {IEzETHRestakeManager, IEzEthToken} from '../../src/interfaces/IEzETH.sol';
 import {IRsETH} from '../../src/interfaces/IRsETH.sol';
 import {IBNBx} from '../../src/interfaces/IBNBx.sol';
+import {IRsETHL2} from '../../src/interfaces/IRsETHL2.sol';
+import {IEBTC} from '../../src/interfaces/IEBTC.sol';
 
 import {CapAdaptersCodeEthereum} from '../../scripts/DeployEthereum.s.sol';
 import {CapAdaptersCodeArbitrum} from '../../scripts/DeployArbitrum.s.sol';
@@ -42,7 +44,7 @@ import {CapAdaptersCodeLinea} from '../../scripts/DeployLinea.s.sol';
 
 contract ExchangeRatesEth is Test {
   function setUp() public {
-    vm.createSelectFork(vm.rpcUrl('mainnet'), 21010101); // Oct-20-2024
+    vm.createSelectFork(vm.rpcUrl('mainnet'), 22081033); // Mar-19-2025
   }
 
   function test_getExchangeRate() public view {
@@ -66,6 +68,8 @@ contract ExchangeRatesEth is Test {
       IEzETHRestakeManager(CapAdaptersCodeEthereum.ezETH_RESTAKE_MANAGER).ezETH().totalSupply());
 
     uint256 rsETHRate = IRsETH(CapAdaptersCodeEthereum.rsETH_LRT_ORACLE).rsETHPrice();
+    uint256 eBTCRate = IEBTC(CapAdaptersCodeEthereum.eBTC_ACCOUNTANT).getRate();
+
     console.log('cbEthRate', cbEthRate);
     console.log('rEthRate', rEthRate);
     console.log('sDaiRate', sDaiRate);
@@ -78,6 +82,7 @@ contract ExchangeRatesEth is Test {
     console.log('sUSDS', sUSDSRate);
     console.log('ezETHRate', ezETHRate);
     console.log('rsETHRate', rsETHRate);
+    console.log('eBTCRate', eBTCRate);
 
     console.log(block.timestamp);
   }
@@ -85,7 +90,7 @@ contract ExchangeRatesEth is Test {
 
 contract ExchangeRatesArbitrum is Test {
   function setUp() public {
-    vm.createSelectFork(vm.rpcUrl('arbitrum'), 281000000); // 2024-12-03
+    vm.createSelectFork(vm.rpcUrl('arbitrum'), 311775777); // 2025-03-03
   }
 
   function test_getExchangeRate() public view {
@@ -102,11 +107,16 @@ contract ExchangeRatesArbitrum is Test {
       IChainlinkAggregator(CapAdaptersCodeArbitrum.ezETH_ETH_AGGREGATOR).latestAnswer()
     );
 
+    uint256 rsETHRate = uint256(
+      IChainlinkAggregator(CapAdaptersCodeArbitrum.rsETH_ETH_AGGREGATOR).latestAnswer()
+    );
+
     console.log('Arbitrum');
     console.log('rEthRate', rEthRate);
     console.log('wstEthRate', wstEthRate);
     console.log('weEthRate', weEthRate);
     console.log('ezEthRate', ezEthRate);
+    console.log('rsETHRate', rsETHRate);
     console.log(block.timestamp);
   }
 }
@@ -130,7 +140,7 @@ contract ExchangeRatesAvax is Test {
 
 contract ExchangeRatesBase is Test {
   function setUp() public {
-    vm.createSelectFork(vm.rpcUrl('base'), 23300000); // 2024-12-05
+    vm.createSelectFork(vm.rpcUrl('base'), 26024000); // 2025-02-06
   }
 
   function test_getExchangeRate() public view {
@@ -145,11 +155,19 @@ contract ExchangeRatesBase is Test {
       IChainlinkAggregator(CapAdaptersCodeBase.ezETH_ETH_AGGREGATOR).latestAnswer()
     );
 
+    uint256 rsETHRate = uint256(IRsETHL2(CapAdaptersCodeBase.rsETH_LRT_ORACLE).rate());
+
+    uint256 rsETHCLRate = uint256(
+      IChainlinkAggregator(CapAdaptersCodeBase.rsETH_ETH_AGGREGATOR).latestAnswer()
+    );
+
     console.log('Base');
     console.log('cbEthRate', cbEthRate);
     console.log('wstEthRate', wstEthRate);
     console.log('weEthRate', weEthRate);
     console.log('ezEthRate', ezEthRate);
+    console.log('rsETHRate', rsETHRate);
+    console.log('rsETHCLRate', rsETHCLRate);
 
     console.log(block.timestamp);
   }
@@ -298,7 +316,7 @@ contract ExchangeRatesZKSync is Test {
 
 contract ExchangeRatesLinea is Test {
   function setUp() public {
-    vm.createSelectFork(vm.rpcUrl('linea'), 14450000); // Jan-11-2025
+    vm.createSelectFork(vm.rpcUrl('linea'), 16741300); // Mar-09-2025
   }
 
   function test_getExchangeRate() public view {
@@ -314,10 +332,15 @@ contract ExchangeRatesLinea is Test {
       IChainlinkAggregator(CapAdaptersCodeLinea.wstETH_stETH_AGGREGATOR).latestAnswer()
     );
 
+    uint256 wrsETHRate = uint256(
+      IChainlinkAggregator(CapAdaptersCodeLinea.wrsETH_rsETH_AGGREGATOR).latestAnswer()
+    );
+
     console.log('Linea');
     console.log('ezETHRate', ezETHRate);
     console.log('weETHRate', weETHRate);
     console.log('wstEthRate', wstEthRate);
+    console.log('wrsETHRate', wrsETHRate);
     console.log(block.timestamp);
   }
 }

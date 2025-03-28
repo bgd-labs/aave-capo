@@ -18,6 +18,7 @@ import {sUSDSPriceCapAdapter} from '../src/contracts/lst-adapters/sUSDSPriceCapA
 import {EzETHPriceCapAdapter} from '../src/contracts/lst-adapters/EzETHPriceCapAdapter.sol';
 import {sDAIMainnetPriceCapAdapter} from '../src/contracts/lst-adapters/sDAIMainnetPriceCapAdapter.sol';
 import {RsETHPriceCapAdapter} from '../src/contracts/lst-adapters/RsETHPriceCapAdapter.sol';
+import {EBTCPriceCapAdapter} from '../src/contracts/lst-adapters/EBTCPriceCapAdapter.sol';
 
 library CapAdaptersCodeEthereum {
   address public constant weETH = 0xCd5fE23C85820F7B72D0926FC9b05b43E359b7ee;
@@ -29,6 +30,7 @@ library CapAdaptersCodeEthereum {
   address public constant sUSDS = 0xa3931d71877C0E7a3148CB7Eb4463524FEc27fbD;
   address public constant ezETH_RESTAKE_MANAGER = 0x74a09653A083691711cF8215a6ab074BB4e99ef5;
   address public constant rsETH_LRT_ORACLE = 0x349A73444b1a310BAe67ef67973022020d70020d;
+  address public constant eBTC_ACCOUNTANT = 0x1b293DC39F94157fA0D1D36d7e0090C8B8B8c13F;
 
   function weETHAdapterCode() internal pure returns (bytes memory) {
     return
@@ -227,6 +229,27 @@ library CapAdaptersCodeEthereum {
         )
       );
   }
+
+  function eBTCAdapterCode() internal pure returns (bytes memory) {
+    return
+      abi.encodePacked(
+        type(EBTCPriceCapAdapter).creationCode,
+        abi.encode(
+          IPriceCapAdapter.CapAdapterParams({
+            aclManager: AaveV3Ethereum.ACL_MANAGER,
+            baseAggregatorAddress: AaveV3EthereumAssets.cbBTC_ORACLE, // BTC / USD feed
+            ratioProviderAddress: eBTC_ACCOUNTANT,
+            pairDescription: 'Capped eBTC / BTC / USD',
+            minimumSnapshotDelay: 1 days,
+            priceCapParams: IPriceCapAdapter.PriceCapUpdateParams({
+              snapshotRatio: 100000000,
+              snapshotTimestamp: 1742388719, // Mar-19-2025
+              maxYearlyRatioGrowthPercent: 0
+            })
+          })
+        )
+      );
+  }
 }
 
 contract DeployWeEthEthereum is EthereumScript {
@@ -286,5 +309,11 @@ contract DeploySDaiEthereum is EthereumScript {
 contract DeployRsEthEthereum is EthereumScript {
   function run() external broadcast {
     GovV3Helpers.deployDeterministic(CapAdaptersCodeEthereum.rsETHAdapterCode());
+  }
+}
+
+contract DeployEBTCEthereum is EthereumScript {
+  function run() external broadcast {
+    GovV3Helpers.deployDeterministic(CapAdaptersCodeEthereum.eBTCAdapterCode());
   }
 }

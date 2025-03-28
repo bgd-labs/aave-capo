@@ -40,6 +40,8 @@ deploy-sdai-mainnet :; forge script scripts/DeployEthereum.s.sol:DeploySDaiEther
 deploy-sdai-gnosis :; forge script scripts/DeployGnosis.s.sol:DeploySDaiGnosis --rpc-url gnosis $(common-flags)
 
 deploy-rseth-mainnet :; forge script scripts/DeployEthereum.s.sol:DeployRsEthEthereum --rpc-url mainnet $(common-flags)
+deploy-rseth-arbitrum :; forge script scripts/DeployArbitrum.s.sol:DeployRsETHArbitrum --rpc-url arbitrum $(common-flags)
+deploy-rseth-base :; forge script scripts/DeployBase.s.sol:DeployRsETHBase --rpc-url base $(common-flags)
 
 deploy-ausd-avalanche :; forge script scripts/DeployAvalanche.s.sol:DeployAUSDAvalanche --rpc-url avalanche $(common-flags)
 
@@ -49,6 +51,7 @@ deploy-ezeth-linea :; FOUNDRY_PROFILE=linea forge script scripts/DeployLinea.s.s
 deploy-usdc-linea :; FOUNDRY_PROFILE=linea forge script scripts/DeployLinea.s.sol:DeployUSDCLinea --rpc-url linea $(common-flags)
 deploy-usdt-linea :; FOUNDRY_PROFILE=linea forge script scripts/DeployLinea.s.sol:DeployUSDTLinea --rpc-url linea $(common-flags)
 deploy-wsteth-linea :; FOUNDRY_PROFILE=linea forge script scripts/DeployLinea.s.sol:DeployWstETHLinea --rpc-url linea $(common-flags)
+deploy-wrseth-linea :; FOUNDRY_PROFILE=linea forge script scripts/DeployLinea.s.sol:DeployWRstETHLinea --rpc-url linea $(common-flags)
 
 deploy-weETH-zksync :; forge script --zksync scripts/DeployZkSync.s.sol:DeployWeEthZkSync --rpc-url zksync $(common-flags)
 deploy-sUSDe-zksync :; forge script --zksync scripts/DeployZkSync.s.sol:DeploySUSDeZkSync --rpc-url zksync $(common-flags)
