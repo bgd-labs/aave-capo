@@ -290,7 +290,7 @@ contract ExchangeRatesBNB is Test {
 
 contract ExchangeRatesZKSync is Test {
   function setUp() public {
-    vm.createSelectFork(vm.rpcUrl('zksync'), 52101414); // Dec-25-2024
+    vm.createSelectFork(vm.rpcUrl('zksync'), 57550360); // Mar-12-2025
   }
 
   function test_getExchangeRate() public view {
@@ -302,9 +302,14 @@ contract ExchangeRatesZKSync is Test {
       IChainlinkAggregator(CapAdaptersCodeZkSync.sUSDe_USDe_AGGREGATOR).latestAnswer()
     );
 
+    uint256 rsETHRate = uint256(
+      IChainlinkAggregator(CapAdaptersCodeZkSync.rsETH_ETH_AGGREGATOR).latestAnswer()
+    );
+
     console.log('ZkSync');
     console.log('weETHRate', weETHRate);
     console.log('sUSDeRate', sUSDeRate);
+    console.log('rsETHRate', rsETHRate);
     console.log(block.timestamp);
   }
 }
