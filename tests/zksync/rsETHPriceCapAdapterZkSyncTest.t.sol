@@ -6,12 +6,12 @@ import '../BaseTest.sol';
 import {CLRatePriceCapAdapter} from '../../src/contracts/CLRatePriceCapAdapter.sol';
 import {CapAdaptersCodeZkSync} from '../../scripts/DeployZkSync.s.sol';
 
-contract weETHPriceCapAdapterZkSyncTest is BaseTest {
+contract rsETHPriceCapAdapterZkSyncTest is BaseTest {
   constructor()
     BaseTest(
       CapAdaptersCodeZkSync.rsETHAdapterParams(),
-      35,
-      ForkParams({network: 'zksync', blockNumber: 0}), // TODO
+      5,
+      ForkParams({network: 'zksync', blockNumber: 58320360}),
       'rsETH_ZkSync'
     )
   {}
