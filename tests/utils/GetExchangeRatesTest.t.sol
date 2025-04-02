@@ -33,6 +33,7 @@ import {IRsETH} from '../../src/interfaces/IRsETH.sol';
 import {IBNBx} from '../../src/interfaces/IBNBx.sol';
 import {IRsETHL2} from '../../src/interfaces/IRsETHL2.sol';
 import {IEBTC} from '../../src/interfaces/IEBTC.sol';
+import {IStS} from '../../src/interfaces/IStS.sol';
 
 import {CapAdaptersCodeEthereum} from '../../scripts/DeployEthereum.s.sol';
 import {CapAdaptersCodeArbitrum} from '../../scripts/DeployArbitrum.s.sol';
@@ -41,6 +42,7 @@ import {CapAdaptersCodeScroll} from '../../scripts/DeployScroll.s.sol';
 import {CapAdaptersCodeBNB} from '../../scripts/DeployBnb.s.sol';
 import {CapAdaptersCodeZkSync} from '../../scripts/DeployZkSync.s.sol';
 import {CapAdaptersCodeLinea} from '../../scripts/DeployLinea.s.sol';
+import {CapAdaptersCodeSonic} from '../../scripts/DeploySonic.s.sol';
 
 contract ExchangeRatesEth is Test {
   function setUp() public {
@@ -336,6 +338,19 @@ contract ExchangeRatesLinea is Test {
     console.log('weETHRate', weETHRate);
     console.log('wstEthRate', wstEthRate);
     console.log('wrsETHRate', wrsETHRate);
+    console.log(block.timestamp);
+  }
+}
+
+contract ExchangeRatesSonic is Test {
+  function setUp() public {
+    vm.createSelectFork(vm.rpcUrl('sonic'), 16058000); // Mar-26-2025
+  }
+
+  function test_getExchangeRate() public view {
+    uint256 stSRate = IStS(CapAdaptersCodeSonic.StS).convertToAssets(1 ether);
+
+    console.log('stSRate', stSRate);
     console.log(block.timestamp);
   }
 }
