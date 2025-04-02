@@ -31,6 +31,9 @@ zksolc = '1.5.3'
 [profile.linea]
 evm_version = 'london'
 
+[profile.sonic]
+evm_version = 'cancun'
+
 [rpc_endpoints]
 mainnet = "${RPC_MAINNET}"
 optimism = "${RPC_OPTIMISM}"
@@ -47,6 +50,7 @@ bnb = "${RPC_BNB}"
 scroll="${RPC_SCROLL}"
 zksync = "${RPC_ZKSYNC}"
 linea = "${RPC_LINEA}"
+sonic = "${RPC_SONIC}"
 
 [etherscan]
 mainnet = { key="${ETHERSCAN_API_KEY_MAINNET}", chainId=1 }
@@ -63,5 +67,6 @@ bnb = { key="${ETHERSCAN_API_KEY_BNB}", chainId=56,url='https://api.bscscan.com/
 scroll = { key="${ETHERSCAN_API_KEY_SCROLL}", chainId=534352 }
 zksync = { key="${ETHERSCAN_API_KEY_ZKSYNC}", chain = 324 }
 linea = { key="${ETHERSCAN_API_KEY_LINEA}", chain = 59144 }
+sonic = { key="${ETHERSCAN_API_KEY_SONIC}", chain = 146 }
 
 # See more config options https://github.com/gakonst/foundry/tree/master/config
