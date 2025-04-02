@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: SEE LICENSE IN LICENSE
+// SPDX-License-Identifier:  BUSL-1.1
 pragma solidity ^0.8.0;
 
 import {BaseTest} from '../BaseTest.sol';
