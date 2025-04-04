@@ -12,8 +12,8 @@ contract weETHPriceCapAdapterTest is BaseTest {
   constructor()
     BaseTest(
       CapAdaptersCodeEthereum.weETHAdapterCode(),
-      90,
-      ForkParams({network: 'mainnet', blockNumber: 19575450}),
+      7,
+      ForkParams({network: 'mainnet', blockNumber: 22195655}),
       'weETH_Ethereum'
     )
   {}

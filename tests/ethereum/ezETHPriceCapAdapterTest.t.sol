@@ -10,8 +10,8 @@ contract ezETHPriceCapAdapterTest is BaseTest {
   constructor()
     BaseTest(
       CapAdaptersCodeEthereum.ezETHAdapterCode(),
-      90,
-      ForkParams({network: 'mainnet', blockNumber: 21019676}),
+      1,
+      ForkParams({network: 'mainnet', blockNumber: 22195655}),
       'EzETH_EthereumLido'
     )
   {}
