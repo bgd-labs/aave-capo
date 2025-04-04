@@ -19,6 +19,8 @@ import {EzETHPriceCapAdapter} from '../src/contracts/lst-adapters/EzETHPriceCapA
 import {sDAIMainnetPriceCapAdapter} from '../src/contracts/lst-adapters/sDAIMainnetPriceCapAdapter.sol';
 import {RsETHPriceCapAdapter} from '../src/contracts/lst-adapters/RsETHPriceCapAdapter.sol';
 import {EBTCPriceCapAdapter} from '../src/contracts/lst-adapters/EBTCPriceCapAdapter.sol';
+import {WstETHPriceCapAdapter} from '../src/contracts/lst-adapters/WstETHPriceCapAdapter.sol';
+import {RETHPriceCapAdapter} from '../src/contracts/lst-adapters/RETHPriceCapAdapter.sol';
 
 library CapAdaptersCodeEthereum {
   address public constant weETH = 0xCd5fE23C85820F7B72D0926FC9b05b43E359b7ee;
@@ -31,6 +33,14 @@ library CapAdaptersCodeEthereum {
   address public constant ezETH_RESTAKE_MANAGER = 0x74a09653A083691711cF8215a6ab074BB4e99ef5;
   address public constant rsETH_LRT_ORACLE = 0x349A73444b1a310BAe67ef67973022020d70020d;
   address public constant eBTC_ACCOUNTANT = 0x1b293DC39F94157fA0D1D36d7e0090C8B8B8c13F;
+  address public constant stETH = 0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84;
+  address public constant rETH = 0xae78736Cd615f374D3085123A210448E74Fc6393;
+
+  // SVR feeds: https://docs.chain.link/data-feeds/price-feeds/addresses?page=1
+  address public constant BTC_SVR_PRICE_FEED = 0xb41E773f507F7a7EA890b1afB7d2b660c30C8B0A;
+  address public constant WETH_SVR_PRICE_FEED = 0x5424384B256154046E9667dDFaaa5e550145215e;
+  address public constant USDC_SVR_PRICE_FEED = 0xEa674bBC33AE708Bc9EB4ba348b04E4eB55b496b;
+  address public constant USDT_SVR_PRICE_FEED = 0x62c2ab773B7324ad9e030D777989B3b5d5c54c0A;
 
   function weETHAdapterCode() internal pure returns (bytes memory) {
     return
@@ -39,7 +49,7 @@ library CapAdaptersCodeEthereum {
         abi.encode(
           IPriceCapAdapter.CapAdapterParams({
             aclManager: AaveV3Ethereum.ACL_MANAGER,
-            baseAggregatorAddress: AaveV3EthereumAssets.WETH_ORACLE,
+            baseAggregatorAddress: WETH_SVR_PRICE_FEED,
             ratioProviderAddress: weETH,
             pairDescription: 'Capped weETH / eETH(ETH) / USD',
             minimumSnapshotDelay: 7 days,
@@ -60,7 +70,7 @@ library CapAdaptersCodeEthereum {
         abi.encode(
           IPriceCapAdapter.CapAdapterParams({
             aclManager: AaveV3Ethereum.ACL_MANAGER,
-            baseAggregatorAddress: AaveV3EthereumAssets.WETH_ORACLE,
+            baseAggregatorAddress: WETH_SVR_PRICE_FEED,
             ratioProviderAddress: osETH_VAULT_CONTROLLER,
             pairDescription: 'Capped osETH / ETH / USD',
             minimumSnapshotDelay: 7 days,
@@ -96,7 +106,7 @@ library CapAdaptersCodeEthereum {
         abi.encode(
           IPriceCapAdapter.CapAdapterParams({
             aclManager: AaveV3Ethereum.ACL_MANAGER,
-            baseAggregatorAddress: AaveV3EthereumAssets.WETH_ORACLE,
+            baseAggregatorAddress: WETH_SVR_PRICE_FEED,
             ratioProviderAddress: STADER_STAKE_POOLS_MANAGER,
             pairDescription: 'Capped ethX / ETH / USD',
             minimumSnapshotDelay: 7 days,
@@ -195,7 +205,7 @@ library CapAdaptersCodeEthereum {
         abi.encode(
           IPriceCapAdapter.CapAdapterParams({
             aclManager: AaveV3EthereumLido.ACL_MANAGER,
-            baseAggregatorAddress: AaveV3EthereumLidoAssets.WETH_ORACLE,
+            baseAggregatorAddress: WETH_SVR_PRICE_FEED,
             ratioProviderAddress: ezETH_RESTAKE_MANAGER,
             pairDescription: 'Capped ezETH / ezETH(ETH) / USD',
             minimumSnapshotDelay: 14 days,
@@ -215,8 +225,8 @@ library CapAdaptersCodeEthereum {
         type(RsETHPriceCapAdapter).creationCode,
         abi.encode(
           IPriceCapAdapter.CapAdapterParams({
-            aclManager: AaveV3EthereumLido.ACL_MANAGER,
-            baseAggregatorAddress: AaveV3EthereumLidoAssets.WETH_ORACLE,
+            aclManager: AaveV3Ethereum.ACL_MANAGER,
+            baseAggregatorAddress: WETH_SVR_PRICE_FEED,
             ratioProviderAddress: rsETH_LRT_ORACLE,
             pairDescription: 'Capped rsETH / ETH / USD',
             minimumSnapshotDelay: 14 days,
@@ -237,7 +247,7 @@ library CapAdaptersCodeEthereum {
         abi.encode(
           IPriceCapAdapter.CapAdapterParams({
             aclManager: AaveV3Ethereum.ACL_MANAGER,
-            baseAggregatorAddress: AaveV3EthereumAssets.cbBTC_ORACLE, // BTC / USD feed
+            baseAggregatorAddress: BTC_SVR_PRICE_FEED,
             ratioProviderAddress: eBTC_ACCOUNTANT,
             pairDescription: 'Capped eBTC / BTC / USD',
             minimumSnapshotDelay: 1 days,
@@ -249,6 +259,102 @@ library CapAdaptersCodeEthereum {
           })
         )
       );
+  }
+
+  function wstETHAdapterCode() internal pure returns (bytes memory) {
+    return
+      abi.encodePacked(
+        type(WstETHPriceCapAdapter).creationCode,
+        abi.encode(
+          IPriceCapAdapter.CapAdapterParams({
+            aclManager: AaveV3Ethereum.ACL_MANAGER,
+            baseAggregatorAddress: WETH_SVR_PRICE_FEED,
+            ratioProviderAddress: stETH,
+            pairDescription: 'Capped wstETH / stETH(ETH) / USD',
+            minimumSnapshotDelay: 7 days,
+            priceCapParams: IPriceCapAdapter.PriceCapUpdateParams({
+              snapshotRatio: 1_157209899495068171,
+              snapshotTimestamp: 1708004591, // Feb-15-2024
+              maxYearlyRatioGrowthPercent: 9_68
+            })
+          })
+        )
+      );
+  }
+
+  function rETHAdapterCode() internal pure returns (bytes memory) {
+    return
+      abi.encodePacked(
+        type(RETHPriceCapAdapter).creationCode,
+        abi.encode(
+          IPriceCapAdapter.CapAdapterParams({
+            aclManager: AaveV3Ethereum.ACL_MANAGER,
+            baseAggregatorAddress: WETH_SVR_PRICE_FEED,
+            ratioProviderAddress: rETH,
+            pairDescription: 'Capped rETH / ETH / USD',
+            minimumSnapshotDelay: 7 days,
+            priceCapParams: IPriceCapAdapter.PriceCapUpdateParams({
+              snapshotRatio: 1_098284517740008249,
+              snapshotTimestamp: 1708004591, // Feb-15-2024
+              maxYearlyRatioGrowthPercent: 9_30
+            })
+          })
+        )
+      );
+  }
+
+  function USDCAdapterCode() internal pure returns (bytes memory) {
+    return
+      abi.encodePacked(
+        type(PriceCapAdapterStable).creationCode,
+        abi.encode(
+          IPriceCapAdapterStable.CapAdapterStableParams({
+            aclManager: AaveV3Ethereum.ACL_MANAGER,
+            assetToUsdAggregator: IChainlinkAggregator(USDC_SVR_PRICE_FEED),
+            adapterDescription: 'Capped USDC / USD',
+            priceCap: int256(1.04 * 1e8)
+          })
+        )
+      );
+  }
+
+  function USDTAdapterCode() internal pure returns (bytes memory) {
+    return
+      abi.encodePacked(
+        type(PriceCapAdapterStable).creationCode,
+        abi.encode(
+          IPriceCapAdapterStable.CapAdapterStableParams({
+            aclManager: AaveV3Ethereum.ACL_MANAGER,
+            assetToUsdAggregator: IChainlinkAggregator(USDT_SVR_PRICE_FEED),
+            adapterDescription: 'Capped USDT / USD',
+            priceCap: int256(1.04 * 1e8)
+          })
+        )
+      );
+  }
+}
+
+contract DeployWsETHEthereum is EthereumScript {
+  function run() external broadcast {
+    GovV3Helpers.deployDeterministic(CapAdaptersCodeEthereum.wstETHAdapterCode());
+  }
+}
+
+contract DeployRETHEthereum is EthereumScript {
+  function run() external broadcast {
+    GovV3Helpers.deployDeterministic(CapAdaptersCodeEthereum.rETHAdapterCode());
+  }
+}
+
+contract DeployUSDCEthereum is EthereumScript {
+  function run() external broadcast {
+    GovV3Helpers.deployDeterministic(CapAdaptersCodeEthereum.USDCAdapterCode());
+  }
+}
+
+contract DeployUSDTEthereum is EthereumScript {
+  function run() external broadcast {
+    GovV3Helpers.deployDeterministic(CapAdaptersCodeEthereum.USDTAdapterCode());
   }
 }
 
