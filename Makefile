@@ -61,6 +61,9 @@ deploy-eurc-base :; forge script scripts/DeployBase.s.sol:DeployEURCBase --rpc-u
 
 deploy-rlusd-mainnet :; forge script scripts/DeployEthereum.s.sol:DeployRLUSDEthereum --rpc-url mainnet $(common-flags)
 
+deploy-usdc-mantle :; FOUNDRY_PROFILE=mantle forge script scripts/DeployMantle.s.sol:DeployUSDCMantle --rpc-url mantle $(common-flags)
+deploy-usdt-mantle :; FOUNDRY_PROFILE=mantle forge script scripts/DeployMantle.s.sol:DeployUSDTMantle --rpc-url mantle $(common-flags)
+
 # Utilities
 download :; cast etherscan-source --chain ${chain} -d src/etherscan/${chain}_${address} ${address}
 git-diff :
