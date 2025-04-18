@@ -32,6 +32,7 @@ library CapAdaptersCodeEthereum {
   address public constant rsETH_LRT_ORACLE = 0x349A73444b1a310BAe67ef67973022020d70020d;
   address public constant eBTC_ACCOUNTANT = 0x1b293DC39F94157fA0D1D36d7e0090C8B8B8c13F;
   address public constant RLUSD_PRICE_FEED = 0x26C46B7aD0012cA71F2298ada567dC9Af14E7f2A;
+  address public constant USDtb_PRICE_FEED = 0x66704DAD467A7cA508B3be15865D9B9F3E186c90;
 
   function weETHAdapterCode() internal pure returns (bytes memory) {
     return
@@ -266,6 +267,21 @@ library CapAdaptersCodeEthereum {
         )
       );
   }
+
+  function USDtbAdapterCode() internal pure returns (bytes memory) {
+    return
+      abi.encodePacked(
+        type(PriceCapAdapterStable).creationCode,
+        abi.encode(
+          IPriceCapAdapterStable.CapAdapterStableParams({
+            aclManager: AaveV3Ethereum.ACL_MANAGER,
+            assetToUsdAggregator: IChainlinkAggregator(USDtb_PRICE_FEED),
+            adapterDescription: 'Capped USDtb / USD',
+            priceCap: int256(1.04 * 1e8)
+          })
+        )
+      );
+  }
 }
 
 contract DeployWeEthEthereum is EthereumScript {
@@ -333,8 +349,15 @@ contract DeployEBTCEthereum is EthereumScript {
     GovV3Helpers.deployDeterministic(CapAdaptersCodeEthereum.eBTCAdapterCode());
   }
 }
+
 contract DeployRLUSDEthereum is EthereumScript {
   function run() external broadcast {
     GovV3Helpers.deployDeterministic(CapAdaptersCodeEthereum.RLUSDAdapterCode());
+  }
+}
+
+contract DeployUSDtbEthereum is EthereumScript {
+  function run() external broadcast {
+    GovV3Helpers.deployDeterministic(CapAdaptersCodeEthereum.USDtbAdapterCode());
   }
 }
