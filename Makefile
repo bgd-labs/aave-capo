@@ -61,6 +61,8 @@ deploy-eurc-base :; forge script scripts/DeployBase.s.sol:DeployEURCBase --rpc-u
 
 deploy-rlusd-mainnet :; forge script scripts/DeployEthereum.s.sol:DeployRLUSDEthereum --rpc-url mainnet $(common-flags)
 
+deploy-eUSDe-mainnet :; forge script scripts/DeployEthereum.s.sol:DeployEUSDeEthereum --rpc-url mainnet $(common-flags)
+
 # Utilities
 download :; cast etherscan-source --chain ${chain} -d src/etherscan/${chain}_${address} ${address}
 git-diff :
