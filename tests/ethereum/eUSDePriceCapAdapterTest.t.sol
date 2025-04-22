@@ -24,7 +24,7 @@ contract EUSDePriceCapAdapterTest is BaseTest {
   }
 
   function _mockRatioProviderRate(uint256 amount) internal override {
-      vm.mockCall(
+    vm.mockCall(
       CapAdaptersCodeEthereum.eUSDe,
       abi.encodeWithSelector(IERC4626.convertToAssets.selector, 1 ether),
       abi.encode(amount)

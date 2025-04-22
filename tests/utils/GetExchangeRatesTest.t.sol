@@ -72,7 +72,7 @@ contract ExchangeRatesEth is Test {
     uint256 rsETHRate = IRsETH(CapAdaptersCodeEthereum.rsETH_LRT_ORACLE).rsETHPrice();
     uint256 eBTCRate = IEBTC(CapAdaptersCodeEthereum.eBTC_ACCOUNTANT).getRate();
     uint256 eUSDeRate = IERC4626(CapAdaptersCodeEthereum.eUSDe).convertToAssets(10 ** 18);
-    
+
     console.log('cbEthRate', cbEthRate);
     console.log('rEthRate', rEthRate);
     console.log('sDaiRate', sDaiRate);
