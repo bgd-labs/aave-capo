@@ -9,6 +9,10 @@ import {PriceCapAdapterBase, IPriceCapAdapter} from '../PriceCapAdapterBase.sol'
  * @author BGD Labs
  * @notice Price capped adapter to calculate price of (eUSDe / USD) pair by using
  * @notice Chainlink data feed for (USDT / USD) and (eUSDe / USDe) ratio.
+ * @dev IMPORTANT: eUSDe lacks internal accounting in `totalAssets` and relies on the `USDe.balanceOf(eUSDe)`, making it vulnerable to inflation attacks.
+ * This adapter will be deployed with the `maxYearlyRatioGrowthPercent` parameter set to zero,
+ * and will cap the price if any increase in the exchange rate of eUSDe happens.
+ * Anyone who considers using this adapter should be aware of its behavior.
  */
 contract EUSDePriceCapAdapter is PriceCapAdapterBase {
   /**
