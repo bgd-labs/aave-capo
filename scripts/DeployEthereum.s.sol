@@ -19,6 +19,7 @@ import {EzETHPriceCapAdapter} from '../src/contracts/lst-adapters/EzETHPriceCapA
 import {sDAIMainnetPriceCapAdapter} from '../src/contracts/lst-adapters/sDAIMainnetPriceCapAdapter.sol';
 import {RsETHPriceCapAdapter} from '../src/contracts/lst-adapters/RsETHPriceCapAdapter.sol';
 import {EBTCPriceCapAdapter} from '../src/contracts/lst-adapters/EBTCPriceCapAdapter.sol';
+import {PendlePriceCapAdapter, IPendlePriceCapAdapter} from '../src/contracts/PendlePriceCapAdapter.sol';
 
 library CapAdaptersCodeEthereum {
   address public constant weETH = 0xCd5fE23C85820F7B72D0926FC9b05b43E359b7ee;
@@ -32,6 +33,7 @@ library CapAdaptersCodeEthereum {
   address public constant rsETH_LRT_ORACLE = 0x349A73444b1a310BAe67ef67973022020d70020d;
   address public constant eBTC_ACCOUNTANT = 0x1b293DC39F94157fA0D1D36d7e0090C8B8B8c13F;
   address public constant RLUSD_PRICE_FEED = 0x26C46B7aD0012cA71F2298ada567dC9Af14E7f2A;
+  address public constant PT_eUSDe_29_MAY_2025 = 0x50D2C7992b802Eef16c04FeADAB310f31866a545;
 
   function weETHAdapterCode() internal pure returns (bytes memory) {
     return
@@ -266,6 +268,29 @@ library CapAdaptersCodeEthereum {
         )
       );
   }
+
+  function ptEUSDe29May2025AdapterCode() internal pure returns (bytes memory) {
+    return
+      abi.encodePacked(
+        type(PendlePriceCapAdapter).creationCode,
+        abi.encode(
+          IPendlePriceCapAdapter.PendlePriceCapAdapterParams({
+            assetToUsdAggregator: AaveV3EthereumAssets.USDe_ORACLE,
+            pendlePrincipalToken: PT_eUSDe_29_MAY_2025,
+            maxDiscountRatePerYear: uint64(7.87e16),
+            discountRatePerYear: uint64(39.224e16),
+            aclManager: address(AaveV3Ethereum.ACL_MANAGER),
+            description: 'Capped PT-eUSDe-29-May-2025 / USDT / USD linear discount'
+          })
+        )
+      );
+  }
+}
+
+contract DeployPTEUSDe29MayEthereum is EthereumScript {
+  function run() external broadcast {
+    GovV3Helpers.deployDeterministic(CapAdaptersCodeEthereum.ptEUSDe29May2025AdapterCode());
+  }
 }
 
 contract DeployWeEthEthereum is EthereumScript {
@@ -333,6 +358,7 @@ contract DeployEBTCEthereum is EthereumScript {
     GovV3Helpers.deployDeterministic(CapAdaptersCodeEthereum.eBTCAdapterCode());
   }
 }
+
 contract DeployRLUSDEthereum is EthereumScript {
   function run() external broadcast {
     GovV3Helpers.deployDeterministic(CapAdaptersCodeEthereum.RLUSDAdapterCode());
