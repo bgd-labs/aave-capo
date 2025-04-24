@@ -20,6 +20,7 @@ import {sDAIMainnetPriceCapAdapter} from '../src/contracts/lst-adapters/sDAIMain
 import {RsETHPriceCapAdapter} from '../src/contracts/lst-adapters/RsETHPriceCapAdapter.sol';
 import {EBTCPriceCapAdapter} from '../src/contracts/lst-adapters/EBTCPriceCapAdapter.sol';
 import {PendlePriceCapAdapter, IPendlePriceCapAdapter} from '../src/contracts/PendlePriceCapAdapter.sol';
+import {EUSDePriceCapAdapter} from '../src/contracts/lst-adapters/EUSDePriceCapAdapter.sol';
 
 library CapAdaptersCodeEthereum {
   address public constant weETH = 0xCd5fE23C85820F7B72D0926FC9b05b43E359b7ee;
@@ -34,6 +35,8 @@ library CapAdaptersCodeEthereum {
   address public constant eBTC_ACCOUNTANT = 0x1b293DC39F94157fA0D1D36d7e0090C8B8B8c13F;
   address public constant RLUSD_PRICE_FEED = 0x26C46B7aD0012cA71F2298ada567dC9Af14E7f2A;
   address public constant PT_eUSDe_29_MAY_2025 = 0x50D2C7992b802Eef16c04FeADAB310f31866a545;
+  address public constant USDT_PRICE_FEED = 0x3E7d1eAB13ad0104d2750B8863b489D65364e32D;
+  address public constant eUSDe = 0x90D2af7d622ca3141efA4d8f1F24d86E5974Cc8F;
 
   function weETHAdapterCode() internal pure returns (bytes memory) {
     return
@@ -285,6 +288,27 @@ library CapAdaptersCodeEthereum {
         )
       );
   }
+
+  function eUSDeAdapterCode() internal pure returns (bytes memory) {
+    return
+      abi.encodePacked(
+        type(EUSDePriceCapAdapter).creationCode,
+        abi.encode(
+          IPriceCapAdapter.CapAdapterParams({
+            aclManager: AaveV3Ethereum.ACL_MANAGER,
+            baseAggregatorAddress: USDT_PRICE_FEED,
+            ratioProviderAddress: eUSDe,
+            pairDescription: 'Capped eUSDe / USDe / USD',
+            minimumSnapshotDelay: 1 days,
+            priceCapParams: IPriceCapAdapter.PriceCapUpdateParams({
+              snapshotRatio: 1_000000000000000000,
+              snapshotTimestamp: 1745242379, // Apr-21-2025
+              maxYearlyRatioGrowthPercent: 0
+            })
+          })
+        )
+      );
+  }
 }
 
 contract DeployPTEUSDe29MayEthereum is EthereumScript {
@@ -362,5 +386,11 @@ contract DeployEBTCEthereum is EthereumScript {
 contract DeployRLUSDEthereum is EthereumScript {
   function run() external broadcast {
     GovV3Helpers.deployDeterministic(CapAdaptersCodeEthereum.RLUSDAdapterCode());
+  }
+}
+
+contract DeployEUSDeEthereum is EthereumScript {
+  function run() external broadcast {
+    GovV3Helpers.deployDeterministic(CapAdaptersCodeEthereum.eUSDeAdapterCode());
   }
 }
