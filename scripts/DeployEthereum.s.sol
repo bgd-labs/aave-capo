@@ -278,7 +278,7 @@ library CapAdaptersCodeEthereum {
             assetToUsdAggregator: AaveV3EthereumAssets.USDe_ORACLE,
             pendlePrincipalToken: PT_eUSDe_29_MAY_2025,
             maxDiscountRatePerYear: uint64(7.87e16),
-            discountRatePerYear: uint64(39.224e16),
+            discountRatePerYear: uint64(39.22e16),
             aclManager: address(AaveV3Ethereum.ACL_MANAGER),
             description: 'Capped PT-eUSDe-29-May-2025 / USDT / USD linear discount'
           })
