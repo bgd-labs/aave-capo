@@ -42,7 +42,6 @@ library CapAdaptersCodeEthereum {
   address public constant eUSDe = 0x90D2af7d622ca3141efA4d8f1F24d86E5974Cc8F;
 
   address public constant PT_sUSDe_31_JULY_2025 = 0x3b3fB9C57858EF816833dC91565EFcd85D96f634;
-  address public constant sUSDe_USDT_CAPO = 0x42bc86f2f08419280a99d8fbEa4672e7c30a86ec;
   address public constant PT_eUSDe_19_MAY_2025 = 0x50D2C7992b802Eef16c04FeADAB310f31866a545;
 
   function ptSUSDeJuly2025AdapterCode() internal pure returns (bytes memory) {
