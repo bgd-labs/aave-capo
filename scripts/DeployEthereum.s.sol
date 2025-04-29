@@ -19,10 +19,15 @@ import {EzETHPriceCapAdapter} from '../src/contracts/lst-adapters/EzETHPriceCapA
 import {sDAIMainnetPriceCapAdapter} from '../src/contracts/lst-adapters/sDAIMainnetPriceCapAdapter.sol';
 import {RsETHPriceCapAdapter} from '../src/contracts/lst-adapters/RsETHPriceCapAdapter.sol';
 import {EBTCPriceCapAdapter} from '../src/contracts/lst-adapters/EBTCPriceCapAdapter.sol';
+import {PendlePriceCapAdapter, IPendlePriceCapAdapter} from '../src/contracts/PendlePriceCapAdapter.sol';
+import {SafeCast} from 'openzeppelin-contracts/contracts/utils/math/SafeCast.sol';
+import {EUSDePriceCapAdapter} from '../src/contracts/lst-adapters/EUSDePriceCapAdapter.sol';
 import {WstETHPriceCapAdapter} from '../src/contracts/lst-adapters/WstETHPriceCapAdapter.sol';
 import {RETHPriceCapAdapter} from '../src/contracts/lst-adapters/RETHPriceCapAdapter.sol';
 
 library CapAdaptersCodeEthereum {
+  using SafeCast for uint256;
+
   address public constant weETH = 0xCd5fE23C85820F7B72D0926FC9b05b43E359b7ee;
   address public constant osETH_VAULT_CONTROLLER = 0x2A261e60FB14586B474C208b1B7AC6D0f5000306;
   address public constant USDe_PRICE_FEED = 0xa569d910839Ae8865Da8F8e70FfFb0cBA869F961;
@@ -33,6 +38,9 @@ library CapAdaptersCodeEthereum {
   address public constant ezETH_RESTAKE_MANAGER = 0x74a09653A083691711cF8215a6ab074BB4e99ef5;
   address public constant rsETH_LRT_ORACLE = 0x349A73444b1a310BAe67ef67973022020d70020d;
   address public constant eBTC_ACCOUNTANT = 0x1b293DC39F94157fA0D1D36d7e0090C8B8B8c13F;
+  address public constant eUSDe = 0x90D2af7d622ca3141efA4d8f1F24d86E5974Cc8F;
+  address public constant PT_sUSDe_31_JULY_2025 = 0x3b3fB9C57858EF816833dC91565EFcd85D96f634;
+  address public constant PT_eUSDe_29_MAY_2025 = 0x50D2C7992b802Eef16c04FeADAB310f31866a545;
   address public constant stETH = 0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84;
   address public constant rETH = 0xae78736Cd615f374D3085123A210448E74Fc6393;
 
@@ -41,6 +49,42 @@ library CapAdaptersCodeEthereum {
   address public constant WETH_SVR_PRICE_FEED = 0x5424384B256154046E9667dDFaaa5e550145215e;
   address public constant USDC_SVR_PRICE_FEED = 0xEa674bBC33AE708Bc9EB4ba348b04E4eB55b496b;
   address public constant USDT_SVR_PRICE_FEED = 0x62c2ab773B7324ad9e030D777989B3b5d5c54c0A;
+  address public constant RLUSD_PRICE_FEED = 0x26C46B7aD0012cA71F2298ada567dC9Af14E7f2A;
+  address public constant USDT_PRICE_FEED = 0x3E7d1eAB13ad0104d2750B8863b489D65364e32D;
+
+  function ptSUSDeJuly2025AdapterCode() internal pure returns (bytes memory) {
+    return
+      abi.encodePacked(
+        type(PendlePriceCapAdapter).creationCode,
+        abi.encode(
+          IPendlePriceCapAdapter.PendlePriceCapAdapterParams({
+            assetToUsdAggregator: AaveV3EthereumAssets.USDT_ORACLE,
+            pendlePrincipalToken: PT_sUSDe_31_JULY_2025,
+            maxDiscountRatePerYear: uint256(21.22e16).toUint64(),
+            discountRatePerYear: uint256(7.5124e16).toUint64(),
+            aclManager: address(AaveV3Ethereum.ACL_MANAGER),
+            description: 'PT Capped sUSDe USDT/USD linear discount 31JUL2025'
+          })
+        )
+      );
+  }
+
+  function ptEUSDeMay2025AdapterCode() internal pure returns (bytes memory) {
+    return
+      abi.encodePacked(
+        type(PendlePriceCapAdapter).creationCode,
+        abi.encode(
+          IPendlePriceCapAdapter.PendlePriceCapAdapterParams({
+            assetToUsdAggregator: AaveV3EthereumAssets.USDT_ORACLE,
+            pendlePrincipalToken: PT_eUSDe_29_MAY_2025,
+            maxDiscountRatePerYear: uint256(39.22e16).toUint64(),
+            discountRatePerYear: uint256(7.87e16).toUint64(),
+            aclManager: address(AaveV3Ethereum.ACL_MANAGER),
+            description: 'PT Capped eUSDe USDT/USD linear discount 29MAY2025'
+          })
+        )
+      );
+  }
 
   function weETHAdapterCode() internal pure returns (bytes memory) {
     return
@@ -261,6 +305,42 @@ library CapAdaptersCodeEthereum {
       );
   }
 
+  function RLUSDAdapterCode() internal pure returns (bytes memory) {
+    return
+      abi.encodePacked(
+        type(PriceCapAdapterStable).creationCode,
+        abi.encode(
+          IPriceCapAdapterStable.CapAdapterStableParams({
+            aclManager: AaveV3Ethereum.ACL_MANAGER,
+            assetToUsdAggregator: IChainlinkAggregator(RLUSD_PRICE_FEED),
+            adapterDescription: 'Capped RLUSD / USD',
+            priceCap: int256(1.04 * 1e8)
+          })
+        )
+      );
+  }
+
+  function eUSDeAdapterCode() internal pure returns (bytes memory) {
+    return
+      abi.encodePacked(
+        type(EUSDePriceCapAdapter).creationCode,
+        abi.encode(
+          IPriceCapAdapter.CapAdapterParams({
+            aclManager: AaveV3Ethereum.ACL_MANAGER,
+            baseAggregatorAddress: USDT_PRICE_FEED,
+            ratioProviderAddress: eUSDe,
+            pairDescription: 'Capped eUSDe / USDe / USD',
+            minimumSnapshotDelay: 1 days,
+            priceCapParams: IPriceCapAdapter.PriceCapUpdateParams({
+              snapshotRatio: 1_000000000000000000,
+              snapshotTimestamp: 1745242379, // Apr-21-2025
+              maxYearlyRatioGrowthPercent: 0
+            })
+          })
+        )
+      );
+  }
+
   function wstETHAdapterCode() internal pure returns (bytes memory) {
     return
       abi.encodePacked(
@@ -421,5 +501,29 @@ contract DeployRsEthEthereum is EthereumScript {
 contract DeployEBTCEthereum is EthereumScript {
   function run() external broadcast {
     GovV3Helpers.deployDeterministic(CapAdaptersCodeEthereum.eBTCAdapterCode());
+  }
+}
+
+contract DeployRLUSDEthereum is EthereumScript {
+  function run() external broadcast {
+    GovV3Helpers.deployDeterministic(CapAdaptersCodeEthereum.RLUSDAdapterCode());
+  }
+}
+
+contract DeployPtSUSDe31JUL2025Ethereum is EthereumScript {
+  function run() external broadcast {
+    GovV3Helpers.deployDeterministic(CapAdaptersCodeEthereum.ptSUSDeJuly2025AdapterCode());
+  }
+}
+
+contract DeployPtEUSDe29MAY2025Ethereum is EthereumScript {
+  function run() external broadcast {
+    GovV3Helpers.deployDeterministic(CapAdaptersCodeEthereum.ptEUSDeMay2025AdapterCode());
+  }
+}
+
+contract DeployEUSDeEthereum is EthereumScript {
+  function run() external broadcast {
+    GovV3Helpers.deployDeterministic(CapAdaptersCodeEthereum.eUSDeAdapterCode());
   }
 }

@@ -59,6 +59,13 @@ deploy-USDe-zksync :; forge script --zksync scripts/DeployZkSync.s.sol:DeployUSD
 
 deploy-eurc-base :; forge script scripts/DeployBase.s.sol:DeployEURCBase --rpc-url base $(common-flags)
 
+deploy-rlusd-mainnet :; forge script scripts/DeployEthereum.s.sol:DeployRLUSDEthereum --rpc-url mainnet $(common-flags)
+
+deploy-pt-sudse-31-jul-2025-mainnet :; forge script scripts/DeployEthereum.s.sol:DeployPtSUSDe31JUL2025Ethereum --rpc-url mainnet $(common-flags)
+deploy-pt-eudse-29-may-2025-mainnet :; forge script scripts/DeployEthereum.s.sol:DeployPtEUSDe29MAY2025Ethereum --rpc-url mainnet $(common-flags)
+
+deploy-eUSDe-mainnet :; forge script scripts/DeployEthereum.s.sol:DeployEUSDeEthereum --rpc-url mainnet $(common-flags)
+
 # Utilities
 download :; cast etherscan-source --chain ${chain} -d src/etherscan/${chain}_${address} ${address}
 git-diff :
