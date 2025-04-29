@@ -73,12 +73,12 @@ contract ExchangeRatesEth is Test {
     uint256 eBTCRate = IEBTC(CapAdaptersCodeEthereum.eBTC_ACCOUNTANT).getRate();
     uint256 eUSDeRate = IERC4626(CapAdaptersCodeEthereum.eUSDe).convertToAssets(10 ** 18);
 
-    console.log('cbEthRate', cbEthRate);
-    console.log('rEthRate', rEthRate);
-    console.log('sDaiRate', sDaiRate);
-    console.log('wstEthRate', wstEthRate);
-    console.log('stEurRate', stEurRate);
-    console.log('weEthRate', weEthRate);
+    // console.log('cbEthRate', cbEthRate);
+    // console.log('rEthRate', rEthRate);
+    // console.log('sDaiRate', sDaiRate);
+    // console.log('wstEthRate', wstEthRate);
+    // console.log('stEurRate', stEurRate);
+    // console.log('weEthRate', weEthRate);
     console.log('osEthRate', osEthRate);
     console.log('ethXRate', ethXRate);
     console.log('sUSDe', sUSDeRate);
