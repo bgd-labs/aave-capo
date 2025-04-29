@@ -23,6 +23,8 @@ library CAPO_SVR {
   address public constant wstETH = 0xe1D97bF61901B075E9626c8A2340a7De385861Ef;
   // https://etherscan.io/address/0x6929706c42d637DF5Ebf7F0BcfF2aF47F84Ea69D
   address public constant rETH = 0x6929706c42d637DF5Ebf7F0BcfF2aF47F84Ea69D;
+  // https://etherscan.io/address/0x889399C34461b25d70d43931e6cE9E40280E617B
+  address public constant cbETH = 0x889399C34461b25d70d43931e6cE9E40280E617B;
   // https://etherscan.io/address/0x3f73F03aa83B2A48ed27E964eD0fDb590332095B
   address public constant USDC = 0x3f73F03aa83B2A48ed27E964eD0fDb590332095B;
   // https://etherscan.io/address/0x1D8217ef16c00A5717F3f384F41fd010FfCc0588
@@ -43,7 +45,7 @@ contract CapoSvrUpgradeTest is Test {
   Adapters[] public stables;
 
   function setUp() public {
-    vm.createSelectFork(vm.rpcUrl('mainnet'), 22224222);
+    vm.createSelectFork(vm.rpcUrl('mainnet'), 22375088);
     _setAdapters();
   }
 
@@ -130,6 +132,7 @@ contract CapoSvrUpgradeTest is Test {
     lsts.push(Adapters({current: AaveV3EthereumAssets.rsETH_ORACLE, svr: CAPO_SVR.rsETH}));
     lsts.push(Adapters({current: AaveV3EthereumAssets.wstETH_ORACLE, svr: CAPO_SVR.wstETH}));
     lsts.push(Adapters({current: AaveV3EthereumAssets.rETH_ORACLE, svr: CAPO_SVR.rETH}));
+    lsts.push(Adapters({current: AaveV3EthereumAssets.cbETH_ORACLE, svr: CAPO_SVR.cbETH}));
     lsts.push(Adapters({current: AaveV3EthereumLidoAssets.ezETH_ORACLE, svr: CAPO_SVR.ezETH}));
     lsts.push(Adapters({current: AaveV3EthereumAssets.eBTC_ORACLE, svr: CAPO_SVR.eBTC}));
     stables.push(Adapters({current: AaveV3EthereumAssets.USDC_ORACLE, svr: CAPO_SVR.USDC}));

@@ -24,6 +24,7 @@ import {SafeCast} from 'openzeppelin-contracts/contracts/utils/math/SafeCast.sol
 import {EUSDePriceCapAdapter} from '../src/contracts/lst-adapters/EUSDePriceCapAdapter.sol';
 import {WstETHPriceCapAdapter} from '../src/contracts/lst-adapters/WstETHPriceCapAdapter.sol';
 import {RETHPriceCapAdapter} from '../src/contracts/lst-adapters/RETHPriceCapAdapter.sol';
+import {CbETHPriceCapAdapter} from '../src/contracts/lst-adapters/CbETHPriceCapAdapter.sol';
 
 library CapAdaptersCodeEthereum {
   using SafeCast for uint256;
@@ -38,6 +39,8 @@ library CapAdaptersCodeEthereum {
   address public constant ezETH_RESTAKE_MANAGER = 0x74a09653A083691711cF8215a6ab074BB4e99ef5;
   address public constant rsETH_LRT_ORACLE = 0x349A73444b1a310BAe67ef67973022020d70020d;
   address public constant eBTC_ACCOUNTANT = 0x1b293DC39F94157fA0D1D36d7e0090C8B8B8c13F;
+  address public constant RLUSD_PRICE_FEED = 0x26C46B7aD0012cA71F2298ada567dC9Af14E7f2A;
+  address public constant USDT_PRICE_FEED = 0x3E7d1eAB13ad0104d2750B8863b489D65364e32D;
   address public constant eUSDe = 0x90D2af7d622ca3141efA4d8f1F24d86E5974Cc8F;
   address public constant PT_sUSDe_31_JULY_2025 = 0x3b3fB9C57858EF816833dC91565EFcd85D96f634;
   address public constant PT_eUSDe_29_MAY_2025 = 0x50D2C7992b802Eef16c04FeADAB310f31866a545;
@@ -49,8 +52,6 @@ library CapAdaptersCodeEthereum {
   address public constant WETH_SVR_PRICE_FEED = 0x5424384B256154046E9667dDFaaa5e550145215e;
   address public constant USDC_SVR_PRICE_FEED = 0xEa674bBC33AE708Bc9EB4ba348b04E4eB55b496b;
   address public constant USDT_SVR_PRICE_FEED = 0x62c2ab773B7324ad9e030D777989B3b5d5c54c0A;
-  address public constant RLUSD_PRICE_FEED = 0x26C46B7aD0012cA71F2298ada567dC9Af14E7f2A;
-  address public constant USDT_PRICE_FEED = 0x3E7d1eAB13ad0104d2750B8863b489D65364e32D;
 
   function ptSUSDeJuly2025AdapterCode() internal pure returns (bytes memory) {
     return
@@ -383,6 +384,27 @@ library CapAdaptersCodeEthereum {
       );
   }
 
+  function cbETHAdapterCode() internal pure returns (bytes memory) {
+    return
+      abi.encodePacked(
+        type(CbETHPriceCapAdapter).creationCode,
+        abi.encode(
+          IPriceCapAdapter.CapAdapterParams({
+            aclManager: AaveV3Ethereum.ACL_MANAGER,
+            baseAggregatorAddress: WETH_SVR_PRICE_FEED,
+            ratioProviderAddress: AaveV3EthereumAssets.cbETH_UNDERLYING,
+            pairDescription: 'Capped cbETH / ETH / USD',
+            minimumSnapshotDelay: 7 days,
+            priceCapParams: IPriceCapAdapter.PriceCapUpdateParams({
+              snapshotRatio: 1_063814269953974334,
+              snapshotTimestamp: 1708004591, // Feb-15-2024
+              maxYearlyRatioGrowthPercent: 8_12
+            })
+          })
+        )
+      );
+  }
+
   function USDCAdapterCode() internal pure returns (bytes memory) {
     return
       abi.encodePacked(
@@ -423,6 +445,12 @@ contract DeployWsETHEthereum is EthereumScript {
 contract DeployRETHEthereum is EthereumScript {
   function run() external broadcast {
     GovV3Helpers.deployDeterministic(CapAdaptersCodeEthereum.rETHAdapterCode());
+  }
+}
+
+contract DeployCbETHEthereum is EthereumScript {
+  function run() external broadcast {
+    GovV3Helpers.deployDeterministic(CapAdaptersCodeEthereum.cbETHAdapterCode());
   }
 }
 
