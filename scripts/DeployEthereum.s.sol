@@ -26,6 +26,9 @@ import {WstETHPriceCapAdapter} from '../src/contracts/lst-adapters/WstETHPriceCa
 import {RETHPriceCapAdapter} from '../src/contracts/lst-adapters/RETHPriceCapAdapter.sol';
 import {CbETHPriceCapAdapter} from '../src/contracts/lst-adapters/CbETHPriceCapAdapter.sol';
 
+import {CLSynchronicityPriceAdapterPegToBase} from 'cl-synchronicity-price-adapter/contracts/CLSynchronicityPriceAdapterPegToBase.sol';
+import {BaseAggregatorsMainnet} from 'cl-synchronicity-price-adapter/lib/BaseAggregatorsMainnet.sol';
+
 library CapAdaptersCodeEthereum {
   using SafeCast for uint256;
 
@@ -434,6 +437,19 @@ library CapAdaptersCodeEthereum {
         )
       );
   }
+
+  function WBTCAdapterCode() internal pure returns (bytes memory) {
+    return
+      abi.encodePacked(
+        type(CLSynchronicityPriceAdapterPegToBase).creationCode,
+        abi.encode(
+          BTC_SVR_PRICE_FEED,
+          BaseAggregatorsMainnet.WBTC_BTC_AGGREGATOR,
+          8,
+          'wBTC/BTC/USD'
+        )
+      );
+  }
 }
 
 contract DeployWsETHEthereum is EthereumScript {
@@ -451,6 +467,12 @@ contract DeployRETHEthereum is EthereumScript {
 contract DeployCbETHEthereum is EthereumScript {
   function run() external broadcast {
     GovV3Helpers.deployDeterministic(CapAdaptersCodeEthereum.cbETHAdapterCode());
+  }
+}
+
+contract DeployWBTCEthereum is EthereumScript {
+  function run() external broadcast {
+    GovV3Helpers.deployDeterministic(CapAdaptersCodeEthereum.WBTCAdapterCode());
   }
 }
 

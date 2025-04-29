@@ -10,6 +10,8 @@ import {IPriceCapAdapterStable} from '../../src/interfaces/IPriceCapAdapterStabl
 
 import {CapAdaptersCodeEthereum} from '../../scripts/DeployEthereum.s.sol';
 
+import {CLSynchronicityPriceAdapterPegToBase} from 'cl-synchronicity-price-adapter/contracts/CLSynchronicityPriceAdapterPegToBase.sol';
+
 library CAPO_SVR {
   // https://etherscan.io/address/0x87625393534d5C102cADB66D37201dF24cc26d4C
   address public constant weETH = 0x87625393534d5C102cADB66D37201dF24cc26d4C;
@@ -33,6 +35,8 @@ library CAPO_SVR {
   address public constant eBTC = 0x577C217cB5b1691A500D48aA7F69346409cFd668;
   // https://etherscan.io/address/0xF3d49021fF3bbBFDfC1992A4b09E5D1d141D044C
   address public constant ezETH = 0xF3d49021fF3bbBFDfC1992A4b09E5D1d141D044C;
+  // https://etherscan.io/address/0xDaa4B74C6bAc4e25188e64ebc68DB5050b690cAc
+  address public constant WBTC = 0xDaa4B74C6bAc4e25188e64ebc68DB5050b690cAc;
 }
 
 struct Adapters {
@@ -45,7 +49,7 @@ contract CapoSvrUpgradeTest is Test {
   Adapters[] public stables;
 
   function setUp() public {
-    vm.createSelectFork(vm.rpcUrl('mainnet'), 22375088);
+    vm.createSelectFork(vm.rpcUrl('mainnet'), 22376115);
     _setAdapters();
   }
 
@@ -87,6 +91,26 @@ contract CapoSvrUpgradeTest is Test {
         assertEq(baseAggregator, CapAdaptersCodeEthereum.USDT_SVR_PRICE_FEED);
       }
     }
+  }
+
+  function test_clSync_wbtc_parameters() public view {
+    CLSynchronicityPriceAdapterPegToBase currentWBTC = CLSynchronicityPriceAdapterPegToBase(
+      AaveV3EthereumAssets.WBTC_ORACLE
+    );
+    CLSynchronicityPriceAdapterPegToBase svrWBTC = CLSynchronicityPriceAdapterPegToBase(
+      CAPO_SVR.WBTC
+    );
+
+    // parameters
+    assertEq(address(currentWBTC.ASSET_TO_PEG()), address(svrWBTC.ASSET_TO_PEG()));
+    assertEq(currentWBTC.DENOMINATOR(), svrWBTC.DENOMINATOR());
+    assertEq(currentWBTC.DECIMALS(), svrWBTC.DECIMALS());
+    
+    // current wbtc doesn't have `description()` method
+    assertEq(svrWBTC.description(), 'wBTC/BTC/USD');
+
+    // svr oracle
+    assertEq(address(svrWBTC.PEG_TO_BASE()), CapAdaptersCodeEthereum.BTC_SVR_PRICE_FEED);
   }
 
   function _assertLstAdapterParams(IPriceCapAdapter current, IPriceCapAdapter svr) internal view {
