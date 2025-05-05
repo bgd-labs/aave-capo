@@ -105,7 +105,7 @@ contract CapoSvrUpgradeTest is Test {
     assertEq(address(currentWBTC.ASSET_TO_PEG()), address(svrWBTC.ASSET_TO_PEG()));
     assertEq(currentWBTC.DENOMINATOR(), svrWBTC.DENOMINATOR());
     assertEq(currentWBTC.DECIMALS(), svrWBTC.DECIMALS());
-    
+
     // current wbtc doesn't have `description()` method
     assertEq(svrWBTC.description(), 'wBTC/BTC/USD');
 
