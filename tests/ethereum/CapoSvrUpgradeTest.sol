@@ -9,6 +9,8 @@ import {IPriceCapAdapter} from '../../src/interfaces/IPriceCapAdapter.sol';
 import {IPriceCapAdapterStable} from '../../src/interfaces/IPriceCapAdapterStable.sol';
 
 import {CapAdaptersCodeEthereum} from '../../scripts/DeployEthereum.s.sol';
+import {ChainlinkEthereum} from 'aave-address-book/ChainlinkEthereum.sol';
+
 
 import {CLSynchronicityPriceAdapterPegToBase} from 'cl-synchronicity-price-adapter/contracts/CLSynchronicityPriceAdapterPegToBase.sol';
 
@@ -72,9 +74,9 @@ contract CapoSvrUpgradeTest is Test {
       address baseAggregator = address(IPriceCapAdapter(lsts[i].svr).BASE_TO_USD_AGGREGATOR());
 
       if (lsts[i].svr == CAPO_SVR.eBTC) {
-        assertEq(baseAggregator, CapAdaptersCodeEthereum.BTC_SVR_PRICE_FEED);
+        assertEq(baseAggregator, ChainlinkEthereum.SVR_BTC_USD);
       } else {
-        assertEq(baseAggregator, CapAdaptersCodeEthereum.WETH_SVR_PRICE_FEED);
+        assertEq(baseAggregator, ChainlinkEthereum.SVR_ETH_USD);
       }
     }
   }
@@ -86,9 +88,9 @@ contract CapoSvrUpgradeTest is Test {
       );
 
       if (stables[i].svr == CAPO_SVR.USDC) {
-        assertEq(baseAggregator, CapAdaptersCodeEthereum.USDC_SVR_PRICE_FEED);
+        assertEq(baseAggregator, ChainlinkEthereum.SVR_USDC_USD);
       } else {
-        assertEq(baseAggregator, CapAdaptersCodeEthereum.USDT_SVR_PRICE_FEED);
+        assertEq(baseAggregator, ChainlinkEthereum.SVR_USDT_USD);
       }
     }
   }
@@ -110,7 +112,7 @@ contract CapoSvrUpgradeTest is Test {
     assertEq(svrWBTC.description(), 'wBTC/BTC/USD');
 
     // svr oracle
-    assertEq(address(svrWBTC.PEG_TO_BASE()), CapAdaptersCodeEthereum.BTC_SVR_PRICE_FEED);
+    assertEq(address(svrWBTC.PEG_TO_BASE()), ChainlinkEthereum.SVR_BTC_USD);
   }
 
   function _assertLstAdapterParams(IPriceCapAdapter current, IPriceCapAdapter svr) internal view {

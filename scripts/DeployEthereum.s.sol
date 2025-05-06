@@ -6,6 +6,7 @@ import {EthereumScript} from 'solidity-utils/contracts/utils/ScriptUtils.sol';
 import {AaveV3Ethereum, AaveV3EthereumAssets} from 'aave-address-book/AaveV3Ethereum.sol';
 import {AaveV3EthereumLido, AaveV3EthereumLidoAssets} from 'aave-address-book/AaveV3EthereumLido.sol';
 import {MiscEthereum} from 'aave-address-book/MiscEthereum.sol';
+import {ChainlinkEthereum} from 'aave-address-book/ChainlinkEthereum.sol';
 
 import {PriceCapAdapterStable} from '../src/contracts/PriceCapAdapterStable.sol';
 import {IPriceCapAdapter, IChainlinkAggregator} from '../src/interfaces/IPriceCapAdapter.sol';
@@ -50,11 +51,6 @@ library CapAdaptersCodeEthereum {
   address public constant stETH = 0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84;
   address public constant rETH = 0xae78736Cd615f374D3085123A210448E74Fc6393;
 
-  // SVR feeds: https://docs.chain.link/data-feeds/price-feeds/addresses?page=1
-  address public constant BTC_SVR_PRICE_FEED = 0xb41E773f507F7a7EA890b1afB7d2b660c30C8B0A;
-  address public constant WETH_SVR_PRICE_FEED = 0x5424384B256154046E9667dDFaaa5e550145215e;
-  address public constant USDC_SVR_PRICE_FEED = 0xEa674bBC33AE708Bc9EB4ba348b04E4eB55b496b;
-  address public constant USDT_SVR_PRICE_FEED = 0x62c2ab773B7324ad9e030D777989B3b5d5c54c0A;
 
   function ptSUSDeJuly2025AdapterCode() internal pure returns (bytes memory) {
     return
@@ -97,7 +93,7 @@ library CapAdaptersCodeEthereum {
         abi.encode(
           IPriceCapAdapter.CapAdapterParams({
             aclManager: AaveV3Ethereum.ACL_MANAGER,
-            baseAggregatorAddress: WETH_SVR_PRICE_FEED,
+            baseAggregatorAddress: ChainlinkEthereum.SVR_ETH_USD,
             ratioProviderAddress: weETH,
             pairDescription: 'Capped weETH / eETH(ETH) / USD',
             minimumSnapshotDelay: 7 days,
@@ -118,7 +114,7 @@ library CapAdaptersCodeEthereum {
         abi.encode(
           IPriceCapAdapter.CapAdapterParams({
             aclManager: AaveV3Ethereum.ACL_MANAGER,
-            baseAggregatorAddress: WETH_SVR_PRICE_FEED,
+            baseAggregatorAddress: ChainlinkEthereum.SVR_ETH_USD,
             ratioProviderAddress: osETH_VAULT_CONTROLLER,
             pairDescription: 'Capped osETH / ETH / USD',
             minimumSnapshotDelay: 7 days,
@@ -154,7 +150,7 @@ library CapAdaptersCodeEthereum {
         abi.encode(
           IPriceCapAdapter.CapAdapterParams({
             aclManager: AaveV3Ethereum.ACL_MANAGER,
-            baseAggregatorAddress: WETH_SVR_PRICE_FEED,
+            baseAggregatorAddress: ChainlinkEthereum.SVR_ETH_USD,
             ratioProviderAddress: STADER_STAKE_POOLS_MANAGER,
             pairDescription: 'Capped ethX / ETH / USD',
             minimumSnapshotDelay: 7 days,
@@ -253,7 +249,7 @@ library CapAdaptersCodeEthereum {
         abi.encode(
           IPriceCapAdapter.CapAdapterParams({
             aclManager: AaveV3EthereumLido.ACL_MANAGER,
-            baseAggregatorAddress: WETH_SVR_PRICE_FEED,
+            baseAggregatorAddress: ChainlinkEthereum.SVR_ETH_USD,
             ratioProviderAddress: ezETH_RESTAKE_MANAGER,
             pairDescription: 'Capped ezETH / ezETH(ETH) / USD',
             minimumSnapshotDelay: 14 days,
@@ -274,7 +270,7 @@ library CapAdaptersCodeEthereum {
         abi.encode(
           IPriceCapAdapter.CapAdapterParams({
             aclManager: AaveV3Ethereum.ACL_MANAGER,
-            baseAggregatorAddress: WETH_SVR_PRICE_FEED,
+            baseAggregatorAddress: ChainlinkEthereum.SVR_ETH_USD,
             ratioProviderAddress: rsETH_LRT_ORACLE,
             pairDescription: 'Capped rsETH / ETH / USD',
             minimumSnapshotDelay: 14 days,
@@ -295,7 +291,7 @@ library CapAdaptersCodeEthereum {
         abi.encode(
           IPriceCapAdapter.CapAdapterParams({
             aclManager: AaveV3Ethereum.ACL_MANAGER,
-            baseAggregatorAddress: BTC_SVR_PRICE_FEED,
+            baseAggregatorAddress: ChainlinkEthereum.SVR_BTC_USD,
             ratioProviderAddress: eBTC_ACCOUNTANT,
             pairDescription: 'Capped eBTC / BTC / USD',
             minimumSnapshotDelay: 1 days,
@@ -352,7 +348,7 @@ library CapAdaptersCodeEthereum {
         abi.encode(
           IPriceCapAdapter.CapAdapterParams({
             aclManager: AaveV3Ethereum.ACL_MANAGER,
-            baseAggregatorAddress: WETH_SVR_PRICE_FEED,
+            baseAggregatorAddress: ChainlinkEthereum.SVR_ETH_USD,
             ratioProviderAddress: stETH,
             pairDescription: 'Capped wstETH / stETH(ETH) / USD',
             minimumSnapshotDelay: 7 days,
@@ -373,7 +369,7 @@ library CapAdaptersCodeEthereum {
         abi.encode(
           IPriceCapAdapter.CapAdapterParams({
             aclManager: AaveV3Ethereum.ACL_MANAGER,
-            baseAggregatorAddress: WETH_SVR_PRICE_FEED,
+            baseAggregatorAddress: ChainlinkEthereum.SVR_ETH_USD,
             ratioProviderAddress: rETH,
             pairDescription: 'Capped rETH / ETH / USD',
             minimumSnapshotDelay: 7 days,
@@ -394,7 +390,7 @@ library CapAdaptersCodeEthereum {
         abi.encode(
           IPriceCapAdapter.CapAdapterParams({
             aclManager: AaveV3Ethereum.ACL_MANAGER,
-            baseAggregatorAddress: WETH_SVR_PRICE_FEED,
+            baseAggregatorAddress: ChainlinkEthereum.SVR_ETH_USD,
             ratioProviderAddress: AaveV3EthereumAssets.cbETH_UNDERLYING,
             pairDescription: 'Capped cbETH / ETH / USD',
             minimumSnapshotDelay: 7 days,
@@ -415,7 +411,7 @@ library CapAdaptersCodeEthereum {
         abi.encode(
           IPriceCapAdapterStable.CapAdapterStableParams({
             aclManager: AaveV3Ethereum.ACL_MANAGER,
-            assetToUsdAggregator: IChainlinkAggregator(USDC_SVR_PRICE_FEED),
+            assetToUsdAggregator: IChainlinkAggregator(ChainlinkEthereum.SVR_USDC_USD),
             adapterDescription: 'Capped USDC / USD',
             priceCap: int256(1.04 * 1e8)
           })
@@ -430,7 +426,7 @@ library CapAdaptersCodeEthereum {
         abi.encode(
           IPriceCapAdapterStable.CapAdapterStableParams({
             aclManager: AaveV3Ethereum.ACL_MANAGER,
-            assetToUsdAggregator: IChainlinkAggregator(USDT_SVR_PRICE_FEED),
+            assetToUsdAggregator: IChainlinkAggregator(ChainlinkEthereum.SVR_USDT_USD),
             adapterDescription: 'Capped USDT / USD',
             priceCap: int256(1.04 * 1e8)
           })
@@ -443,7 +439,7 @@ library CapAdaptersCodeEthereum {
       abi.encodePacked(
         type(CLSynchronicityPriceAdapterPegToBase).creationCode,
         abi.encode(
-          BTC_SVR_PRICE_FEED,
+          ChainlinkEthereum.SVR_BTC_USD,
           BaseAggregatorsMainnet.WBTC_BTC_AGGREGATOR,
           8,
           'wBTC/BTC/USD'
