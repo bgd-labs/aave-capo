@@ -129,7 +129,7 @@ abstract contract BaseTestSvr is BaseTest {
     string memory outPath = string(abi.encodePacked('./reports/', reportName, '.md'));
 
     string[] memory inputs = new string[](7);
-    inputs[0] = 'node';
+    inputs[0] = 'npx';
     inputs[1] = '@bgd-labs/aave-cli';
     inputs[2] = 'capo-svr-report';
     inputs[3] = sourcePath;
