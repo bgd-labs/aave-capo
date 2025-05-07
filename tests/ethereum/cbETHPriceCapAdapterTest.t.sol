@@ -3,22 +3,22 @@ pragma solidity ^0.8.0;
 
 import '../BaseTest.sol';
 
-import {EzETHPriceCapAdapter} from '../../src/contracts/lst-adapters/EzETHPriceCapAdapter.sol';
+import {CbETHPriceCapAdapter} from '../../src/contracts/lst-adapters/CbETHPriceCapAdapter.sol';
 import {CapAdaptersCodeEthereum} from '../../scripts/DeployEthereum.s.sol';
 
-contract ezETHPriceCapAdapterTest is BaseTest {
+contract CbETHPriceCapAdapterTest is BaseTest {
   constructor()
     BaseTest(
-      CapAdaptersCodeEthereum.ezETHAdapterCode(),
-      1,
-      ForkParams({network: 'mainnet', blockNumber: 22195655}),
-      'EzETH_EthereumLido'
+      CapAdaptersCodeEthereum.cbETHAdapterCode(),
+      7,
+      ForkParams({network: 'mainnet', blockNumber: 22375088}),
+      'cbETH_Ethereum'
     )
   {}
 
   function _createAdapter(
     IPriceCapAdapter.CapAdapterParams memory capAdapterParams
   ) internal override returns (IPriceCapAdapter) {
-    return new EzETHPriceCapAdapter(capAdapterParams);
+    return new CbETHPriceCapAdapter(capAdapterParams);
   }
 }
