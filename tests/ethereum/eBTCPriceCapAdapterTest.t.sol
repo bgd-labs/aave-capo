@@ -11,8 +11,8 @@ contract EBTCPriceCapAdapterTest is BaseTest {
   constructor()
     BaseTest(
       CapAdaptersCodeEthereum.eBTCAdapterCode(),
-      90,
-      ForkParams({network: 'mainnet', blockNumber: 22088333}),
+      14,
+      ForkParams({network: 'mainnet', blockNumber: 22195655}),
       'eBTC_Ethereum'
     )
   {}
@@ -24,7 +24,7 @@ contract EBTCPriceCapAdapterTest is BaseTest {
   }
 
   function _mockRatioProviderRate(uint256 amount) internal override {
-      vm.mockCall(
+    vm.mockCall(
       CapAdaptersCodeEthereum.eBTC_ACCOUNTANT,
       abi.encodeWithSelector(IEBTC.getRate.selector),
       abi.encode(amount)
