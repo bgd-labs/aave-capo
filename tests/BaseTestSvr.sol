@@ -102,7 +102,7 @@ abstract contract BaseTestSvr is BaseTest {
     uint8 decimals,
     uint256 snapshotDelayDays
   ) internal returns (string memory) {
-    string memory path = string(abi.encodePacked('./reports/', reportName, '.json'));
+    string memory path = string(abi.encodePacked('./reports/svr/', string(abi.encodePacked(reportName, '_svr_comparative')), '.json'));
     vm.serializeString('root', 'sourceName', sourceName);
     vm.serializeUint('root', 'decimals', decimals);
     vm.serializeUint('root', 'minSnapshotDelay', snapshotDelayDays);
@@ -126,7 +126,7 @@ abstract contract BaseTestSvr is BaseTest {
   }
 
   function _generateSvrMdReport(string memory sourcePath) internal {
-    string memory outPath = string(abi.encodePacked('./reports/', reportName, '.md'));
+    string memory outPath = string(abi.encodePacked('./reports/svr/', string(abi.encodePacked(reportName, '_svr_comparative')), '.md'));
 
     string[] memory inputs = new string[](7);
     inputs[0] = 'npx';
