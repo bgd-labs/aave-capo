@@ -51,6 +51,7 @@ scroll="${RPC_SCROLL}"
 zksync = "${RPC_ZKSYNC}"
 linea = "${RPC_LINEA}"
 sonic = "${RPC_SONIC}"
+mantle = "${RPC_MANTLE}"
 
 [etherscan]
 mainnet = { key="${ETHERSCAN_API_KEY_MAINNET}", chainId=1 }
@@ -68,5 +69,6 @@ scroll = { key="${ETHERSCAN_API_KEY_SCROLL}", chainId=534352 }
 zksync = { key="${ETHERSCAN_API_KEY_ZKSYNC}", chain = 324 }
 linea = { key="${ETHERSCAN_API_KEY_LINEA}", chain = 59144 }
 sonic = { key="${ETHERSCAN_API_KEY_SONIC}", chain = 146 }
+mantle = { key = "${ETHERSCAN_API_KEY_MANTLE}", chainId = 5000 }
 
 # See more config options https://github.com/gakonst/foundry/tree/master/config

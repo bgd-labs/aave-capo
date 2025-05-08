@@ -67,6 +67,9 @@ deploy-pt-eudse-29-may-2025-mainnet :; forge script scripts/DeployEthereum.s.sol
 
 deploy-eUSDe-mainnet :; forge script scripts/DeployEthereum.s.sol:DeployEUSDeEthereum --rpc-url mainnet $(common-flags)
 
+deploy-usdc-mantle :; FOUNDRY_PROFILE=mantle forge script scripts/DeployMantle.s.sol:DeployUSDCMantle --rpc-url mantle $(common-flags)
+deploy-usdt-mantle :; FOUNDRY_PROFILE=mantle forge script scripts/DeployMantle.s.sol:DeployUSDTMantle --rpc-url mantle $(common-flags)
+
 # Utilities
 download :; cast etherscan-source --chain ${chain} -d src/etherscan/${chain}_${address} ${address}
 git-diff :
