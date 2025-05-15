@@ -197,8 +197,8 @@ library CapAdaptersCodeEthereum {
             pairDescription: 'Capped sDAI / DAI / USD',
             minimumSnapshotDelay: 7 days,
             priceCapParams: IPriceCapAdapter.PriceCapUpdateParams({
-              snapshotRatio: 1_114312383890349337561189736,
-              snapshotTimestamp: 1729467251,
+              snapshotRatio: 1_155737072956268043878995612,
+              snapshotTimestamp: 1745242379,
               maxYearlyRatioGrowthPercent: 9_69
             })
           })
