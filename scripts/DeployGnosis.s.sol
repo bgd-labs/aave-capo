@@ -23,8 +23,8 @@ library CapAdaptersCodeGnosis {
             pairDescription: 'Capped sDAI / DAI / USD',
             minimumSnapshotDelay: 7 days,
             priceCapParams: IPriceCapAdapter.PriceCapUpdateParams({
-              snapshotRatio: 1_118618102334074883,
-              snapshotTimestamp: 1729423540,
+              snapshotRatio: 1_175603447581596870,
+              snapshotTimestamp: 1746358275,
               maxYearlyRatioGrowthPercent: 9_69
             })
           })

@@ -10,7 +10,7 @@ contract sDAIGnosisPriceCapAdapterTest is BaseTest {
     BaseTest(
       CapAdaptersCodeGnosis.sDAIAdapterCode(),
       20,
-      ForkParams({network: 'gnosis', blockNumber: 36769758}),
+      ForkParams({network: 'gnosis', blockNumber: 40076139}),
       'sDAI_Gnosis'
     )
   {}

@@ -10,7 +10,7 @@ contract sDAIMainnetPriceCapAdapterTest is BaseTest {
     BaseTest(
       CapAdaptersCodeEthereum.sDAIAdapterCode(),
       20,
-      ForkParams({network: 'mainnet', blockNumber: 21079105}),
+      ForkParams({network: 'mainnet', blockNumber: 22489138}),
       'sDAI_Ethereum'
     )
   {}

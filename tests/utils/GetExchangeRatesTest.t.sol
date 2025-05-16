@@ -75,7 +75,7 @@ contract ExchangeRatesEth is Test {
 
     // console.log('cbEthRate', cbEthRate);
     // console.log('rEthRate', rEthRate);
-    // console.log('sDaiRate', sDaiRate);
+    console.log('sDaiRate', sDaiRate);
     // console.log('wstEthRate', wstEthRate);
     // console.log('stEurRate', stEurRate);
     // console.log('weEthRate', weEthRate);
@@ -179,7 +179,7 @@ contract ExchangeRatesBase is Test {
 
 contract ExchangeRatesGnosis is Test {
   function setUp() public {
-    vm.createSelectFork(vm.rpcUrl('gnosis'), 36600000); // Oct-20-2024
+    vm.createSelectFork(vm.rpcUrl('gnosis'), 39890000); // May-4-2025
   }
 
   function test_getExchangeRate() public view {
