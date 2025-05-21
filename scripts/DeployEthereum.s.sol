@@ -49,6 +49,8 @@ library CapAdaptersCodeEthereum {
   address public constant eUSDe = 0x90D2af7d622ca3141efA4d8f1F24d86E5974Cc8F;
   address public constant PT_sUSDe_31_JULY_2025 = 0x3b3fB9C57858EF816833dC91565EFcd85D96f634;
   address public constant PT_eUSDe_29_MAY_2025 = 0x50D2C7992b802Eef16c04FeADAB310f31866a545;
+  address public constant PT_eUSDe_14_AUG_2025 = 0x14Bdc3A3AE09f5518b923b69489CBcAfB238e617;
+  address public constant PT_USDe_31_JUL_2025 = 0x917459337CaAC939D41d7493B3999f571D20D667;
   address public constant stETH = 0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84;
   address public constant rETH = 0xae78736Cd615f374D3085123A210448E74Fc6393;
 
@@ -81,6 +83,40 @@ library CapAdaptersCodeEthereum {
             discountRatePerYear: uint256(7.87e16).toUint64(),
             aclManager: address(AaveV3Ethereum.ACL_MANAGER),
             description: 'PT Capped eUSDe USDT/USD linear discount 29MAY2025'
+          })
+        )
+      );
+  }
+
+  function ptEUSDeAugust2025AdapterCode() internal pure returns (bytes memory) {
+    return
+      abi.encodePacked(
+        type(PendlePriceCapAdapter).creationCode,
+        abi.encode(
+          IPendlePriceCapAdapter.PendlePriceCapAdapterParams({
+            assetToUsdAggregator: AaveV3EthereumAssets.USDT_ORACLE,
+            pendlePrincipalToken: PT_eUSDe_14_AUG_2025,
+            maxDiscountRatePerYear: uint256(29.781e16).toUint64(),
+            discountRatePerYear: uint256(9.037e16).toUint64(),
+            aclManager: address(AaveV3Ethereum.ACL_MANAGER),
+            description: 'PT Capped eUSDe USDT/USD linear discount 14AUG2025'
+          })
+        )
+      );
+  }
+
+  function ptUSDeJuly2025AdapterCode() internal pure returns (bytes memory) {
+    return
+      abi.encodePacked(
+        type(PendlePriceCapAdapter).creationCode,
+        abi.encode(
+          IPendlePriceCapAdapter.PendlePriceCapAdapterParams({
+            assetToUsdAggregator: AaveV3EthereumAssets.USDT_ORACLE,
+            pendlePrincipalToken: PT_USDe_31_JUL_2025,
+            maxDiscountRatePerYear: uint256(29.21e16).toUint64(),
+            discountRatePerYear: uint256(8.47e16).toUint64(),
+            aclManager: address(AaveV3Ethereum.ACL_MANAGER),
+            description: 'PT Capped USDe USDT/USD linear discount 31JUL2025'
           })
         )
       );
@@ -586,6 +622,18 @@ contract DeployPtSUSDe31JUL2025Ethereum is EthereumScript {
 contract DeployPtEUSDe29MAY2025Ethereum is EthereumScript {
   function run() external broadcast {
     GovV3Helpers.deployDeterministic(CapAdaptersCodeEthereum.ptEUSDeMay2025AdapterCode());
+  }
+}
+
+contract DeployPtEUSDe14AUG2025Ethereum is EthereumScript {
+  function run() external broadcast {
+    GovV3Helpers.deployDeterministic(CapAdaptersCodeEthereum.ptEUSDeAugust2025AdapterCode());
+  }
+}
+
+contract DeployPtUSDe31JUL2025Ethereum is EthereumScript {
+  function run() external broadcast {
+    GovV3Helpers.deployDeterministic(CapAdaptersCodeEthereum.ptUSDeJuly2025AdapterCode());
   }
 }
 
