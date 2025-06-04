@@ -29,6 +29,7 @@ import {CbETHPriceCapAdapter} from '../src/contracts/lst-adapters/CbETHPriceCapA
 
 import {CLSynchronicityPriceAdapterPegToBase} from 'cl-synchronicity-price-adapter/contracts/CLSynchronicityPriceAdapterPegToBase.sol';
 import {BaseAggregatorsMainnet} from 'cl-synchronicity-price-adapter/lib/BaseAggregatorsMainnet.sol';
+import {EURPriceCapAdapterStable, IEURPriceCapAdapterStable} from '../src/contracts/misc-adapters/EURPriceCapAdapterStable.sol';
 
 library CapAdaptersCodeEthereum {
   using SafeCast for uint256;
@@ -53,6 +54,9 @@ library CapAdaptersCodeEthereum {
   address public constant PT_USDe_31_JUL_2025 = 0x917459337CaAC939D41d7493B3999f571D20D667;
   address public constant stETH = 0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84;
   address public constant rETH = 0xae78736Cd615f374D3085123A210448E74Fc6393;
+
+  address public constant EURC_PRICE_FEED = 0x04F84020Fdf10d9ee64D1dcC2986EDF2F556DA11;
+  address public constant EUR_PRICE_FEED = 0xb49f677943BC038e9857d61E7d053CaA2C1734C1;
 
   function ptSUSDeJuly2025AdapterCode() internal pure returns (bytes memory) {
     return
@@ -496,6 +500,29 @@ library CapAdaptersCodeEthereum {
           'wBTC/BTC/USD'
         )
       );
+  }
+
+  function EURCAdapterCode() internal pure returns (bytes memory) {
+    return
+      abi.encodePacked(
+        type(EURPriceCapAdapterStable).creationCode,
+        abi.encode(
+          IEURPriceCapAdapterStable.CapAdapterStableParamsEUR({
+            aclManager: AaveV3Ethereum.ACL_MANAGER,
+            assetToUsdAggregator: IChainlinkAggregator(EURC_PRICE_FEED),
+            baseToUsdAggregator: IChainlinkAggregator(EUR_PRICE_FEED),
+            adapterDescription: 'Capped EURC/USD',
+            priceCapRatio: int256(1.04 * 1e8),
+            ratioDecimals: 8
+          })
+        )
+      );
+  }
+}
+
+contract DeployEURCEthereum is EthereumScript {
+  function run() external broadcast {
+    GovV3Helpers.deployDeterministic(CapAdaptersCodeEthereum.EURCAdapterCode());
   }
 }
 

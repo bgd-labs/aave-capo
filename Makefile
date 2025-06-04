@@ -59,6 +59,8 @@ deploy-USDe-zksync :; forge script --zksync scripts/DeployZkSync.s.sol:DeployUSD
 
 deploy-eurc-base :; forge script scripts/DeployBase.s.sol:DeployEURCBase --rpc-url base $(common-flags)
 
+deploy-eurc-mainnet :; forge script scripts/DeployEthereum.s.sol:DeployEURCEthereum --rpc-url mainnet $(common-flags)
+
 deploy-rlusd-mainnet :; forge script scripts/DeployEthereum.s.sol:DeployRLUSDEthereum --rpc-url mainnet $(common-flags)
 deploy-usdtb-mainnet :; forge script scripts/DeployEthereum.s.sol:DeployUSDtbEthereum --rpc-url mainnet $(common-flags)
 
