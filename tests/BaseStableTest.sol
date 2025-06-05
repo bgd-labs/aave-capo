@@ -8,6 +8,7 @@ import {GovV3Helpers} from 'aave-helpers/GovV3Helpers.sol';
 import {IPriceCapAdapterStable, ICLSynchronicityPriceAdapter} from '../src/interfaces/IPriceCapAdapterStable.sol';
 import {BlockUtils} from './utils/BlockUtils.sol';
 import {PriceCapAdapterStable} from '../src/contracts/PriceCapAdapterStable.sol';
+import {IEURPriceCapAdapterStable} from '../src/interfaces/IEURPriceCapAdapterStable.sol';
 
 abstract contract BaseStableTest is Test {
   uint256 public constant RETROSPECTIVE_STEP = 3;
@@ -54,7 +55,13 @@ abstract contract BaseStableTest is Test {
   function test_configuration() public {
     IPriceCapAdapterStable adapter = _createAdapter();
 
-    uint256 priceCap = uint256(adapter.getPriceCap());
+    uint256 priceCap;
+    try adapter.getPriceCap() returns (int256 _priceCap) {
+      priceCap = uint256(_priceCap);
+    } catch {
+      priceCap = uint256(IEURPriceCapAdapterStable(address(adapter)).getPriceCapRatio());
+    }
+
     uint256 decimals = 10 ** adapter.decimals();
 
     assertEq(priceCap / (decimals * 10), 0);
