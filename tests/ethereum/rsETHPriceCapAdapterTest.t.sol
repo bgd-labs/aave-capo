@@ -1,17 +1,19 @@
 // SPDX-License-Identifier: BUSL-1.1
 pragma solidity ^0.8.0;
 
-import '../BaseTest.sol';
+import '../BaseTestSvr.sol';
+import {AaveV3EthereumAssets} from 'aave-address-book/AaveV3Ethereum.sol';
 
 import {RsETHPriceCapAdapter} from '../../src/contracts/lst-adapters/RsETHPriceCapAdapter.sol';
 import {CapAdaptersCodeEthereum} from '../../scripts/DeployEthereum.s.sol';
 
-contract RsETHPriceCapAdapterTest is BaseTest {
+contract RsETHPriceCapAdapterTest is BaseTestSvr {
   constructor()
-    BaseTest(
+    BaseTestSvr(
+      AaveV3EthereumAssets.rsETH_ORACLE,
       CapAdaptersCodeEthereum.rsETHAdapterCode(),
-      1,
-      ForkParams({network: 'mainnet', blockNumber: 22195655}),
+      30,
+      ForkParams({network: 'mainnet', blockNumber: 22441800}),
       'RsETH_EthereumLido'
     )
   {}
