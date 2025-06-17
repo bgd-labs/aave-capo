@@ -46,7 +46,7 @@ import {CapAdaptersCodeSonic} from '../../scripts/DeploySonic.s.sol';
 
 contract ExchangeRatesEth is Test {
   function setUp() public {
-    vm.createSelectFork(vm.rpcUrl('mainnet'), (22317700)); // Apr-21-2025
+    vm.createSelectFork(vm.rpcUrl('mainnet'), (22621800)); // Jun-03-2025
   }
 
   function test_getExchangeRate() public view {
@@ -72,10 +72,11 @@ contract ExchangeRatesEth is Test {
     uint256 rsETHRate = IRsETH(CapAdaptersCodeEthereum.rsETH_LRT_ORACLE).rsETHPrice();
     uint256 eBTCRate = IEBTC(CapAdaptersCodeEthereum.eBTC_ACCOUNTANT).getRate();
     uint256 eUSDeRate = IERC4626(CapAdaptersCodeEthereum.eUSDe).convertToAssets(10 ** 18);
+    uint256 tETHRate = IERC4626(CapAdaptersCodeEthereum.tETH).convertToAssets(10 ** 18);
 
     // console.log('cbEthRate', cbEthRate);
     // console.log('rEthRate', rEthRate);
-    console.log('sDaiRate', sDaiRate);
+    // console.log('sDaiRate', sDaiRate);
     // console.log('wstEthRate', wstEthRate);
     // console.log('stEurRate', stEurRate);
     // console.log('weEthRate', weEthRate);
@@ -87,6 +88,7 @@ contract ExchangeRatesEth is Test {
     console.log('rsETHRate', rsETHRate);
     console.log('eBTCRate', eBTCRate);
     console.log('eUSDeRate', eUSDeRate);
+    console.log('tETHRate', tETHRate);
 
     console.log(block.timestamp);
   }
