@@ -26,7 +26,7 @@ import {EUSDePriceCapAdapter} from '../src/contracts/lst-adapters/EUSDePriceCapA
 import {WstETHPriceCapAdapter} from '../src/contracts/lst-adapters/WstETHPriceCapAdapter.sol';
 import {RETHPriceCapAdapter} from '../src/contracts/lst-adapters/RETHPriceCapAdapter.sol';
 import {CbETHPriceCapAdapter} from '../src/contracts/lst-adapters/CbETHPriceCapAdapter.sol';
-
+import {TETHPriceCapAdapter} from '../src/contracts/lst-adapters/TETHPriceCapAdapter.sol';
 import {CLSynchronicityPriceAdapterPegToBase} from 'cl-synchronicity-price-adapter/contracts/CLSynchronicityPriceAdapterPegToBase.sol';
 import {BaseAggregatorsMainnet} from 'cl-synchronicity-price-adapter/lib/BaseAggregatorsMainnet.sol';
 import {EURPriceCapAdapterStable, IEURPriceCapAdapterStable} from '../src/contracts/misc-adapters/EURPriceCapAdapterStable.sol';
@@ -54,7 +54,7 @@ library CapAdaptersCodeEthereum {
   address public constant PT_USDe_31_JUL_2025 = 0x917459337CaAC939D41d7493B3999f571D20D667;
   address public constant stETH = 0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84;
   address public constant rETH = 0xae78736Cd615f374D3085123A210448E74Fc6393;
-
+  address public constant tETH = 0xD11c452fc99cF405034ee446803b6F6c1F6d5ED8;
   address public constant EURC_PRICE_FEED = 0x04F84020Fdf10d9ee64D1dcC2986EDF2F556DA11;
   address public constant EUR_PRICE_FEED = 0xb49f677943BC038e9857d61E7d053CaA2C1734C1;
 
@@ -517,6 +517,33 @@ library CapAdaptersCodeEthereum {
           })
         )
       );
+  }
+
+  function tETHAdapterCode() internal pure returns (bytes memory) {
+    return
+      abi.encodePacked(
+        type(TETHPriceCapAdapter).creationCode,
+        abi.encode(
+          IPriceCapAdapter.CapAdapterParams({
+            aclManager: AaveV3EthereumLido.ACL_MANAGER,
+            baseAggregatorAddress: ChainlinkEthereum.SVR_ETH_USD,
+            ratioProviderAddress: tETH,
+            pairDescription: 'Capped tETH / ETH / USD',
+            minimumSnapshotDelay: 14 days,
+            priceCapParams: IPriceCapAdapter.PriceCapUpdateParams({
+              snapshotRatio: 1_002302911335141630,
+              snapshotTimestamp: 1748925539, // Jun-03-2025
+              maxYearlyRatioGrowthPercent: 12_04
+            })
+          })
+        )
+      );
+  }
+}
+
+contract DeployTETHEthereum is EthereumScript {
+  function run() external broadcast {
+    GovV3Helpers.deployDeterministic(CapAdaptersCodeEthereum.tETHAdapterCode());
   }
 }
 
