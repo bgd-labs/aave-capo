@@ -66,6 +66,7 @@ deploy-rlusd-mainnet :; forge script scripts/DeployEthereum.s.sol:DeployRLUSDEth
 deploy-usdtb-mainnet :; forge script scripts/DeployEthereum.s.sol:DeployUSDtbEthereum --rpc-url mainnet $(common-flags)
 
 deploy-pt-susde-31-jul-2025-mainnet :; forge script scripts/DeployEthereum.s.sol:DeployPtSUSDe31JUL2025Ethereum --rpc-url mainnet $(common-flags)
+deploy-pt-susde-25-sep-2025-mainnet :; forge script scripts/DeployEthereum.s.sol:DeployPtSUSDe25SEP2025Ethereum --rpc-url mainnet $(common-flags)
 deploy-pt-eusde-29-may-2025-mainnet :; forge script scripts/DeployEthereum.s.sol:DeployPtEUSDe29MAY2025Ethereum --rpc-url mainnet $(common-flags)
 
 deploy-eUSDe-mainnet :; forge script scripts/DeployEthereum.s.sol:DeployEUSDeEthereum --rpc-url mainnet $(common-flags)
