@@ -546,7 +546,7 @@ library CapAdaptersCodeEthereum {
             aclManager: AaveV3EthereumLido.ACL_MANAGER,
             baseAggregatorAddress: ChainlinkEthereum.SVR_ETH_USD,
             ratioProviderAddress: tETH,
-            pairDescription: 'Capped tETH / wstETH(ETH) / USD',
+            pairDescription: 'Capped tETH / wstETH / ETH / USD',
             minimumSnapshotDelay: 14 days,
             priceCapParams: IPriceCapAdapter.PriceCapUpdateParams({
               snapshotRatio: 1_207148153557508708,
