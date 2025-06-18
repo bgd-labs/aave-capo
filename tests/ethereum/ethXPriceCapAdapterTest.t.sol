@@ -1,19 +1,19 @@
 // SPDX-License-Identifier: BUSL-1.1
 pragma solidity ^0.8.0;
 
-import '../BaseTest.sol';
-
-import {AaveV3Ethereum, AaveV3EthereumAssets} from 'aave-address-book/AaveV3Ethereum.sol';
+import '../BaseTestSvr.sol';
+import {AaveV3EthereumAssets} from 'aave-address-book/AaveV3Ethereum.sol';
 
 import {EthXPriceCapAdapter} from '../../src/contracts/lst-adapters/EthXPriceCapAdapter.sol';
 import {CapAdaptersCodeEthereum} from '../../scripts/DeployEthereum.s.sol';
 
-contract ethXPriceCapAdapterTest is BaseTest {
+contract ethXPriceCapAdapterTest is BaseTestSvr {
   constructor()
-    BaseTest(
+    BaseTestSvr(
+      AaveV3EthereumAssets.ETHx_ORACLE,
       CapAdaptersCodeEthereum.ethXAdapterCode(),
-      7,
-      ForkParams({network: 'mainnet', blockNumber: 22195655}),
+      30,
+      ForkParams({network: 'mainnet', blockNumber: 22441800}),
       'EthX_Ethereum'
     )
   {}
