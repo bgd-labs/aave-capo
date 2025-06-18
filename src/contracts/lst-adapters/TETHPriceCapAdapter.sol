@@ -2,15 +2,18 @@
 pragma solidity ^0.8.19;
 
 import {IERC4626} from 'forge-std/interfaces/IERC4626.sol';
+import {IStETH} from 'cl-synchronicity-price-adapter/interfaces/IStETH.sol';
 import {PriceCapAdapterBase, IPriceCapAdapter} from '../PriceCapAdapterBase.sol';
 
 /**
  * @title TETHPriceCapAdapter
  * @author BGD Labs
  * @notice Price capped adapter to calculate price of (tETH / USD) pair by using
- * @notice Chainlink data feed for (ETH / USD) and (tETH / ETH) ratio.
+ * @notice Chainlink data feed for (ETH / USD) and (tETH / WSTETH / ETH) ratio.
  */
 contract TETHPriceCapAdapter is PriceCapAdapterBase {
+  address public constant STETH = 0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84;
+
   /**
    * @param capAdapterParams parameters to create cap adapter
    */
@@ -32,6 +35,7 @@ contract TETHPriceCapAdapter is PriceCapAdapterBase {
 
   /// @inheritdoc IPriceCapAdapter
   function getRatio() public view override returns (int256) {
-    return int256(IERC4626(RATIO_PROVIDER).convertToAssets(10 ** RATIO_DECIMALS));
+    uint256 tETHToWstETH = IERC4626(RATIO_PROVIDER).convertToAssets(10 ** RATIO_DECIMALS);
+    return int256(IStETH(STETH).getPooledEthByShares(tETHToWstETH));
   }
 }

@@ -72,7 +72,10 @@ contract ExchangeRatesEth is Test {
     uint256 rsETHRate = IRsETH(CapAdaptersCodeEthereum.rsETH_LRT_ORACLE).rsETHPrice();
     uint256 eBTCRate = IEBTC(CapAdaptersCodeEthereum.eBTC_ACCOUNTANT).getRate();
     uint256 eUSDeRate = IERC4626(CapAdaptersCodeEthereum.eUSDe).convertToAssets(10 ** 18);
-    uint256 tETHRate = IERC4626(CapAdaptersCodeEthereum.tETH).convertToAssets(10 ** 18);
+    uint256 tETHtoWstETH = IERC4626(CapAdaptersCodeEthereum.tETH).convertToAssets(10 ** 18);
+    uint256 tETHRate = IStETH(AaveV2EthereumAssets.stETH_UNDERLYING).getPooledEthByShares(
+      tETHtoWstETH
+    );
 
     // console.log('cbEthRate', cbEthRate);
     // console.log('rEthRate', rEthRate);
