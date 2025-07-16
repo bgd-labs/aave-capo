@@ -149,7 +149,7 @@ contract ExchangeRatesAvax is Test {
 
 contract ExchangeRatesBase is Test {
   function setUp() public {
-    vm.createSelectFork(vm.rpcUrl('base'), 26024000); // 2025-02-06
+    vm.createSelectFork(vm.rpcUrl('base'), 31620903); // 2025-15-06
   }
 
   function test_getExchangeRate() public view {
