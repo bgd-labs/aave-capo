@@ -54,6 +54,7 @@ library CapAdaptersCodeEthereum {
   address public constant PT_eUSDe_29_MAY_2025 = 0x50D2C7992b802Eef16c04FeADAB310f31866a545;
   address public constant PT_eUSDe_14_AUG_2025 = 0x14Bdc3A3AE09f5518b923b69489CBcAfB238e617;
   address public constant PT_USDe_31_JUL_2025 = 0x917459337CaAC939D41d7493B3999f571D20D667;
+  address public constant PT_USDe_25_SEP_2025 = 0xBC6736d346a5eBC0dEbc997397912CD9b8FAe10a;
   address public constant stETH = 0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84;
   address public constant rETH = 0xae78736Cd615f374D3085123A210448E74Fc6393;
   address public constant tETH = 0xD11c452fc99cF405034ee446803b6F6c1F6d5ED8;
@@ -141,6 +142,23 @@ library CapAdaptersCodeEthereum {
             discountRatePerYear: uint256(8.47e16).toUint64(),
             aclManager: address(AaveV3Ethereum.ACL_MANAGER),
             description: 'PT Capped USDe USDT/USD linear discount 31JUL2025'
+          })
+        )
+      );
+  }
+
+  function ptUSDeSeptember2025AdapterCode() internal pure returns (bytes memory) {
+    return
+      abi.encodePacked(
+        type(PendlePriceCapAdapter).creationCode,
+        abi.encode(
+          IPendlePriceCapAdapter.PendlePriceCapAdapterParams({
+            assetToUsdAggregator: AaveV3EthereumAssets.USDT_ORACLE,
+            pendlePrincipalToken: PT_USDe_25_SEP_2025,
+            maxDiscountRatePerYear: uint256(29.10e16).toUint64(),
+            discountRatePerYear: uint256(9.65e16).toUint64(),
+            aclManager: address(AaveV3Ethereum.ACL_MANAGER),
+            description: 'PT Capped USDe USDT/USD linear discount 25SEP2025'
           })
         )
       );
@@ -741,6 +759,12 @@ contract DeployPtEUSDe14AUG2025Ethereum is EthereumScript {
 contract DeployPtUSDe31JUL2025Ethereum is EthereumScript {
   function run() external broadcast {
     GovV3Helpers.deployDeterministic(CapAdaptersCodeEthereum.ptUSDeJuly2025AdapterCode());
+  }
+}
+
+contract DeployPtUSDe25SEP2025Ethereum is EthereumScript {
+  function run() external broadcast {
+    GovV3Helpers.deployDeterministic(CapAdaptersCodeEthereum.ptUSDeSeptember2025AdapterCode());
   }
 }
 
