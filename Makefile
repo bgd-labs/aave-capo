@@ -78,6 +78,9 @@ deploy-pt-usde-25-sep-2025-mainnet :; forge script scripts/DeployEthereum.s.sol:
 deploy-usdc-soneium :; forge script scripts/DeploySoneium.s.sol:DeployUSDCSoneium --rpc-url soneium $(common-flags)
 deploy-usdt-soneium :; forge script scripts/DeploySoneium.s.sol:DeployUSDTSoneium --rpc-url soneium $(common-flags)
 
+deploy-usdg-ink :; forge script scripts/DeployInk.s.sol:DeployUSDGInk --rpc-url ink $(common-flags)
+deploy-usdt-ink :; forge script scripts/DeployInk.s.sol:DeployUSDTInk --rpc-url ink $(common-flags)
+
 # Utilities
 download :; cast etherscan-source --chain ${chain} -d src/etherscan/${chain}_${address} ${address}
 git-diff :

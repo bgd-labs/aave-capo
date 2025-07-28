@@ -1,0 +1,17 @@
+{
+  "lib/forge-std": {
+    "rev": "8ba9031ffcbe25aa0d1224d3ca263a995026e477"
+  },
+  "lib/aave-address-book": {
+    "branch": {
+      "name": "feat/ink",
+      "rev": "ef86878abeeb257055cbdaba00ec85365d9afbc1"
+    }
+  },
+  "lib/cl-synchronicity-price-adapter": {
+    "rev": "67124f2e85ad91e7e2a9d61c9343d68d20ea3fdb"
+  },
+  "lib/aave-helpers": {
+    "rev": "b54777fe8ef24af64002fcc6c48f6179bd3ad9e9"
+  }
+}
