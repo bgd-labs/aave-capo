@@ -354,11 +354,11 @@ library CapAdaptersCodeEthereum {
             baseAggregatorAddress: ChainlinkEthereum.SVR_BTC_USD,
             ratioProviderAddress: eBTC_ACCOUNTANT,
             pairDescription: 'Capped eBTC / BTC / USD',
-            minimumSnapshotDelay: 1 days,
+            minimumSnapshotDelay: 7 days,
             priceCapParams: IPriceCapAdapter.PriceCapUpdateParams({
-              snapshotRatio: 100000000,
-              snapshotTimestamp: 1742388719, // Mar-19-2025
-              maxYearlyRatioGrowthPercent: 0
+              snapshotRatio: 1e18,
+              snapshotTimestamp: 1752286019, // Jul-12-2025
+              maxYearlyRatioGrowthPercent: 190
             })
           })
         )
