@@ -157,7 +157,7 @@ abstract contract BaseTest is Test {
     IPriceCapAdapter adapter = _createAdapter();
 
     uint256 growthPercent = adapter.getMaxYearlyGrowthRatePercent();
-    if (growthPercent > 0) {
+    if (growthPercent > 0 && uint256(adapter.getRatio()) > adapter.getSnapshotRatio()) {
       // set cap to 1%
       _setCapParametersByAdmin(
         adapter,
@@ -295,9 +295,17 @@ abstract contract BaseTest is Test {
 
   function _mockRatioProviderRate(uint256 amount) internal virtual {}
 
-  /// @dev verifies that growth in a year won't be more than 100% 
+  /// @dev verifies that if growth in a year is greater than zero, growth per second must be greater than zero
+  /// and growth in a year won't be more than 100% 
   function _validateGrowth(IPriceCapAdapter adapter) private view {
+    uint256 maxYearlyGrowthRatePercent = adapter.getMaxYearlyGrowthRatePercent();
+
+    if(maxYearlyGrowthRatePercent > 0) {
+      assertGt(adapter.getMaxRatioGrowthPerSecond(), 0);
+    }
+    
     assertLe(adapter.getMaxYearlyGrowthRatePercent(), adapter.PERCENTAGE_FACTOR());
+
   }
 
   /// @dev verifies ratio(snapshot, current, max) are at the same decimal places

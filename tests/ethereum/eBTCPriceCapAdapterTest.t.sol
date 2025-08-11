@@ -11,8 +11,8 @@ contract EBTCPriceCapAdapterTest is BaseTest {
   constructor()
     BaseTest(
       CapAdaptersCodeEthereum.eBTCAdapterCode(),
-      14,
-      ForkParams({network: 'mainnet', blockNumber: 22195655}),
+      30,
+      ForkParams({network: 'mainnet', blockNumber: 23116000}),
       'eBTC_Ethereum'
     )
   {}
