@@ -33,6 +33,10 @@ contract EBTCPriceCapAdapter is PriceCapAdapterBase {
 
   /// @inheritdoc IPriceCapAdapter
   function getRatio() public view override returns (int256) {
+    /// @dev The eBTC ratio provider uses 8 decimal places.
+    /// @dev Considering the current configuration of `maxYearlyRatioGrowthPercent`,
+    /// it is necessary to add an extra precision of `1e10` to ensure that
+    /// `maxRatioGrowthPerSecond` is accurately configured.
     return int256(IEBTC(RATIO_PROVIDER).getRate()) * 1e10;
   }
 }
