@@ -74,11 +74,6 @@ interface IPriceCapAdapter is ICLSynchronicityPriceAdapter {
   function SCALING_FACTOR() external view returns (uint256);
 
   /**
-   * @notice Minimal time while ratio should not overflow, in years
-   */
-  function MINIMAL_RATIO_INCREASE_LIFETIME() external view returns (uint256);
-
-  /**
    * @notice Number of seconds per year (365 days)
    */
   function SECONDS_PER_YEAR() external view returns (uint256);

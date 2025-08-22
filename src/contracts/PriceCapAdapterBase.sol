@@ -16,9 +16,6 @@ abstract contract PriceCapAdapterBase is IPriceCapAdapter {
   uint256 public constant SCALING_FACTOR = 1e6;
 
   /// @inheritdoc IPriceCapAdapter
-  uint256 public constant MINIMAL_RATIO_INCREASE_LIFETIME = 3;
-
-  /// @inheritdoc IPriceCapAdapter
   uint256 public constant SECONDS_PER_YEAR = 365 days;
 
   /// @inheritdoc IPriceCapAdapter
