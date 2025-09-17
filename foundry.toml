@@ -53,6 +53,7 @@ linea = "${RPC_LINEA}"
 sonic = "${RPC_SONIC}"
 soneium = "${RPC_SONEIUM}"
 ink = "${RPC_INK}"
+plasma = "${RPC_PLASMA}"
 
 [etherscan]
 mainnet = { key="${ETHERSCAN_API_KEY_MAINNET}", chainId=1 }
@@ -72,5 +73,6 @@ linea = { key="${ETHERSCAN_API_KEY_LINEA}", chain = 59144 }
 sonic = { key="${ETHERSCAN_API_KEY_SONIC}", chain = 146 }
 soneium = { key="any", chainId=1868, url='https://soneium.blockscout.com/api' }
 ink = { key="any", chainId=57073, url='https://explorer.inkonchain.com/api' }
+plasma = { key="any", chainId=9745 }
 
 # See more config options https://github.com/gakonst/foundry/tree/master/config
