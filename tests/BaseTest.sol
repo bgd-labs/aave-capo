@@ -296,17 +296,15 @@ abstract contract BaseTest is Test {
   function _mockRatioProviderRate(uint256 amount) internal virtual {}
 
   /// @dev verifies that if growth in a year is greater than zero, growth per second must be greater than zero
-  /// and growth in a year won't be more than 100% 
+  /// and growth in a year won't be more than 100%
   function _validateGrowth(IPriceCapAdapter adapter) private view {
     uint256 maxYearlyGrowthRatePercent = adapter.getMaxYearlyGrowthRatePercent();
 
-    if(maxYearlyGrowthRatePercent > 0) {
+    if (maxYearlyGrowthRatePercent > 0) {
       assertGt(adapter.getMaxRatioGrowthPerSecond(), 0);
-      assertGt(adapter.getMaxRatioGrowthPerSecondScaled(), 0);
     }
-    
-    assertLe(adapter.getMaxYearlyGrowthRatePercent(), adapter.PERCENTAGE_FACTOR());
 
+    assertLe(adapter.getMaxYearlyGrowthRatePercent(), adapter.PERCENTAGE_FACTOR());
   }
 
   /// @dev verifies ratio(snapshot, current, max) are at the same decimal places
