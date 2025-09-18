@@ -12,6 +12,9 @@ contract PriceCapAdapterStable is IPriceCapAdapterStable {
   /// @inheritdoc IPriceCapAdapterStable
   IChainlinkAggregator public immutable ASSET_TO_USD_AGGREGATOR;
 
+  /// @dev Update: Cap is moved here, cause it will take free space after address and will pack in 1 slot
+  uint96 internal _priceCap;
+
   /// @inheritdoc IPriceCapAdapterStable
   IACLManager public immutable ACL_MANAGER;
 
@@ -20,8 +23,6 @@ contract PriceCapAdapterStable is IPriceCapAdapterStable {
 
   /// @inheritdoc ICLSynchronicityPriceAdapter
   string public description;
-
-  int256 internal _priceCap;
 
   /**
    * @param capAdapterStableParams parameters to create stable cap adapter
@@ -40,9 +41,9 @@ contract PriceCapAdapterStable is IPriceCapAdapterStable {
   }
 
   /// @inheritdoc ICLSynchronicityPriceAdapter
-  function latestAnswer() external view override returns (int256) {
+  function latestAnswer() public view override returns (int256) {
     int256 basePrice = ASSET_TO_USD_AGGREGATOR.latestAnswer();
-    int256 priceCap = _priceCap;
+    int256 priceCap = int256(uint256(_priceCap));
 
     if (basePrice > priceCap) {
       return priceCap;
@@ -62,12 +63,12 @@ contract PriceCapAdapterStable is IPriceCapAdapterStable {
 
   /// @inheritdoc IPriceCapAdapterStable
   function getPriceCap() external view returns (int256) {
-    return _priceCap;
+    return int256(uint256(_priceCap));
   }
 
   /// @inheritdoc IPriceCapAdapterStable
   function isCapped() public view virtual returns (bool) {
-    return (ASSET_TO_USD_AGGREGATOR.latestAnswer() > this.latestAnswer());
+    return ASSET_TO_USD_AGGREGATOR.latestAnswer() > int256(uint256(_priceCap));
   }
 
   /**
@@ -75,13 +76,17 @@ contract PriceCapAdapterStable is IPriceCapAdapterStable {
    * @param priceCap the new price cap
    */
   function _setPriceCap(int256 priceCap) internal {
-    int256 basePrice = ASSET_TO_USD_AGGREGATOR.latestAnswer();
+    if (priceCap > int256(uint256(type(uint96).max))) {
+      revert NewPriceCapIsTooHigh();
+    }
 
+    // Even if Aggregator is not active (but deployed) it will return at least 0, so priceCap can't be less than 0
+    int256 basePrice = ASSET_TO_USD_AGGREGATOR.latestAnswer();
     if (priceCap < basePrice) {
       revert CapLowerThanActualPrice();
     }
 
-    _priceCap = priceCap;
+    _priceCap = uint96(uint256(priceCap));
 
     emit PriceCapUpdated(priceCap);
   }
