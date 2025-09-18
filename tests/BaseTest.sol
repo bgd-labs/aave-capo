@@ -302,6 +302,7 @@ abstract contract BaseTest is Test {
 
     if(maxYearlyGrowthRatePercent > 0) {
       assertGt(adapter.getMaxRatioGrowthPerSecond(), 0);
+      assertGt(adapter.getMaxRatioGrowthPerSecondScaled(), 0);
     }
     
     assertLe(adapter.getMaxYearlyGrowthRatePercent(), adapter.PERCENTAGE_FACTOR());
