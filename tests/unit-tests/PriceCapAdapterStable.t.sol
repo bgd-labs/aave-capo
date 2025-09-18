@@ -6,7 +6,7 @@ import {Test} from 'forge-std/Test.sol';
 import {PriceCapAdapterStable, IPriceCapAdapterStable, IACLManager, IChainlinkAggregator} from '../../src/contracts/PriceCapAdapterStable.sol';
 
 import {ChainlinkAggregatorMock} from './mocks/ChainlinkAggregatorMock.sol';
-import {ACLManager} from './mocks/ACLManager.sol';
+import {ACLManagerMock} from './mocks/ACLManagerMock.sol';
 
 contract StSPriceCapAdapterTest is Test {
   ChainlinkAggregatorMock public chainlinkAggregator;
@@ -19,7 +19,7 @@ contract StSPriceCapAdapterTest is Test {
 
   function setUp() public {
     chainlinkAggregator = new ChainlinkAggregatorMock(1e8);
-    manager = IACLManager(address(new ACLManager(poolAdmin, riskAdmin)));
+    manager = IACLManager(address(new ACLManagerMock(poolAdmin, riskAdmin)));
 
     IPriceCapAdapterStable.CapAdapterStableParams memory params = IPriceCapAdapterStable
       .CapAdapterStableParams({
