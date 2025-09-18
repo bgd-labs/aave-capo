@@ -181,7 +181,7 @@ abstract contract PriceCapAdapterBase is IPriceCapAdapter {
     _maxYearlyRatioGrowthPercent = priceCapParams.maxYearlyRatioGrowthPercent;
 
     // Lowest possible value of `maxRatioGrowthPerSecondScaled` with non-zero `maxYearlyRatioGrowthPercent` is 317 wei
-    uint104 maxRatioGrowthPerSecondScaled = uint104(
+    _maxRatioGrowthPerSecondScaled = uint104(
       (uint256(priceCapParams.snapshotRatio) *
         priceCapParams.maxYearlyRatioGrowthPercent *
         SCALING_FACTOR) /
@@ -192,7 +192,7 @@ abstract contract PriceCapAdapterBase is IPriceCapAdapter {
     emit CapParametersUpdated(
       priceCapParams.snapshotRatio,
       priceCapParams.snapshotTimestamp,
-      maxRatioGrowthPerSecondScaled / SCALING_FACTOR,
+      _maxRatioGrowthPerSecondScaled / SCALING_FACTOR,
       priceCapParams.maxYearlyRatioGrowthPercent
     );
   }
