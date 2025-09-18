@@ -40,19 +40,9 @@ abstract contract PriceCapAdapterBase is IPriceCapAdapter {
   uint48 public immutable MAXIMUM_SNAPSHOT_TERM = 180 days;
 
   /**
-   * @notice Description of the pair
-   */
-  string private _description;
-
-  /**
    * @notice Ratio at the time of snapshot
    */
   uint104 private _snapshotRatio;
-
-  /**
-   * @notice Timestamp at the time of snapshot
-   */
-  uint48 private _snapshotTimestamp;
 
   /**
    * @notice Ratio growth per second
@@ -60,9 +50,20 @@ abstract contract PriceCapAdapterBase is IPriceCapAdapter {
   uint104 private _maxRatioGrowthPerSecondScaled;
 
   /**
+   * @notice Timestamp at the time of snapshot
+   * @dev Timestamp size adjusted to fit everything in 1 slot
+   */
+  uint32 private _snapshotTimestamp;
+
+  /**
    * @notice Max yearly growth percent
    */
   uint16 private _maxYearlyRatioGrowthPercent;
+
+  /**
+   * @notice Description of the pair
+   */
+  string private _description;
 
   /**
    * @param capAdapterBaseParams parameters to create adapter
@@ -177,7 +178,7 @@ abstract contract PriceCapAdapterBase is IPriceCapAdapter {
     }
 
     _snapshotRatio = priceCapParams.snapshotRatio;
-    _snapshotTimestamp = priceCapParams.snapshotTimestamp;
+    _snapshotTimestamp = uint32(priceCapParams.snapshotTimestamp);
     _maxYearlyRatioGrowthPercent = priceCapParams.maxYearlyRatioGrowthPercent;
 
     // Lowest possible value of `maxRatioGrowthPerSecondScaled` with non-zero `maxYearlyRatioGrowthPercent` is 317 wei

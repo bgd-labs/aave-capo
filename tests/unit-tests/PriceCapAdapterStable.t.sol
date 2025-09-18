@@ -102,6 +102,12 @@ contract StSPriceCapAdapterTest is Test {
     vm.assertEq(stableCapo.getPriceCap(), 1.04e8);
     vm.assertEq(stableCapo.latestAnswer(), 0);
     vm.assertEq(stableCapo.isCapped(), false);
+
+    // In case price somehow become negative
+    chainlinkAggregator.setLatestAnswer(-1);
+    vm.assertEq(stableCapo.getPriceCap(), 1.04e8);
+    vm.assertEq(stableCapo.latestAnswer(), 0);
+    vm.assertEq(stableCapo.isCapped(), false);
   }
 
   function test_manager() public {

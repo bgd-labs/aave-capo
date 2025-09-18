@@ -49,6 +49,10 @@ contract PriceCapAdapterStable is IPriceCapAdapterStable {
       return priceCap;
     }
 
+    if (basePrice <= 0) {
+      return 0;
+    }
+
     return basePrice;
   }
 
