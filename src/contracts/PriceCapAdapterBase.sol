@@ -13,7 +13,7 @@ abstract contract PriceCapAdapterBase is IPriceCapAdapter {
   uint256 public constant PERCENTAGE_FACTOR = 1e4;
 
   /// @inheritdoc IPriceCapAdapter
-  uint256 public constant SCALING_FACTOR = 1e6;
+  uint256 public constant MINIMAL_RATIO_INCREASE_LIFETIME = 3;
 
   /// @inheritdoc IPriceCapAdapter
   uint256 public constant SECONDS_PER_YEAR = 365 days;
@@ -36,9 +36,6 @@ abstract contract PriceCapAdapterBase is IPriceCapAdapter {
   /// @inheritdoc IPriceCapAdapter
   uint48 public immutable MINIMUM_SNAPSHOT_DELAY;
 
-  /// @inheritdoc IPriceCapAdapter
-  uint48 public immutable MAXIMUM_SNAPSHOT_TERM = 365 days;
-
   /**
    * @notice Description of the pair
    */
@@ -57,7 +54,7 @@ abstract contract PriceCapAdapterBase is IPriceCapAdapter {
   /**
    * @notice Ratio growth per second
    */
-  uint104 private _maxRatioGrowthPerSecondScaled;
+  uint104 private _maxRatioGrowthPerSecond;
 
   /**
    * @notice Max yearly growth percent
@@ -71,11 +68,6 @@ abstract contract PriceCapAdapterBase is IPriceCapAdapter {
     if (address(capAdapterBaseParams.aclManager) == address(0)) {
       revert ACLManagerIsZeroAddress();
     }
-
-    if (capAdapterBaseParams.ratioDecimals < 8 || capAdapterBaseParams.ratioDecimals > 24) {
-      revert WrongRatioDecimals();
-    }
-
     ACL_MANAGER = capAdapterBaseParams.aclManager;
     BASE_TO_USD_AGGREGATOR = IChainlinkAggregator(capAdapterBaseParams.baseAggregatorAddress);
     RATIO_PROVIDER = capAdapterBaseParams.ratioProviderAddress;
@@ -115,12 +107,7 @@ abstract contract PriceCapAdapterBase is IPriceCapAdapter {
 
   /// @inheritdoc IPriceCapAdapter
   function getMaxRatioGrowthPerSecond() external view returns (uint256) {
-    return _maxRatioGrowthPerSecondScaled / SCALING_FACTOR;
-  }
-
-  /// @inheritdoc IPriceCapAdapter
-  function getMaxRatioGrowthPerSecondScaled() external view returns (uint256) {
-    return _maxRatioGrowthPerSecondScaled;
+    return _maxRatioGrowthPerSecond;
   }
 
   /// @inheritdoc IPriceCapAdapter
@@ -166,33 +153,39 @@ abstract contract PriceCapAdapterBase is IPriceCapAdapter {
       revert SnapshotRatioIsZero();
     }
 
-    // new snapshot timestamp should be greater than stored one,
-    // also snapshot timestamp must be older than `MINIMUM_SNAPSHOT_DELAY` but no older than `MAXIMUM_SNAPSHOT_TERM`
+    // new snapshot timestamp should be gt then stored one, but not gt then timestamp of the current block
     if (
       _snapshotTimestamp >= priceCapParams.snapshotTimestamp ||
-      priceCapParams.snapshotTimestamp > block.timestamp - MINIMUM_SNAPSHOT_DELAY ||
-      priceCapParams.snapshotTimestamp < block.timestamp - MAXIMUM_SNAPSHOT_TERM
+      priceCapParams.snapshotTimestamp > block.timestamp - MINIMUM_SNAPSHOT_DELAY
     ) {
       revert InvalidRatioTimestamp(priceCapParams.snapshotTimestamp);
     }
-
     _snapshotRatio = priceCapParams.snapshotRatio;
     _snapshotTimestamp = priceCapParams.snapshotTimestamp;
     _maxYearlyRatioGrowthPercent = priceCapParams.maxYearlyRatioGrowthPercent;
 
-    // Lowest possible value of `maxRatioGrowthPerSecondScaled` with non-zero `maxYearlyRatioGrowthPercent` is 317 wei
-    _maxRatioGrowthPerSecondScaled = uint104(
-      (uint256(priceCapParams.snapshotRatio) *
-        priceCapParams.maxYearlyRatioGrowthPercent *
-        SCALING_FACTOR) /
+    _maxRatioGrowthPerSecond = uint104(
+      (uint256(priceCapParams.snapshotRatio) * priceCapParams.maxYearlyRatioGrowthPercent) /
         PERCENTAGE_FACTOR /
         SECONDS_PER_YEAR
     );
 
+    // if the ratio on the current growth speed can overflow less then in a MINIMAL_RATIO_INCREASE_LIFETIME years, revert
+    if (
+      uint256(_snapshotRatio) +
+        (_maxRatioGrowthPerSecond * SECONDS_PER_YEAR * MINIMAL_RATIO_INCREASE_LIFETIME) >
+      type(uint104).max
+    ) {
+      revert SnapshotMayOverflowSoon(
+        priceCapParams.snapshotRatio,
+        priceCapParams.maxYearlyRatioGrowthPercent
+      );
+    }
+
     emit CapParametersUpdated(
       priceCapParams.snapshotRatio,
       priceCapParams.snapshotTimestamp,
-      _maxRatioGrowthPerSecondScaled / SCALING_FACTOR,
+      _maxRatioGrowthPerSecond,
       priceCapParams.maxYearlyRatioGrowthPercent
     );
   }
@@ -213,10 +206,6 @@ abstract contract PriceCapAdapterBase is IPriceCapAdapter {
 
   function _getMaxRatio() internal view returns (int256) {
     return
-      int256(
-        _snapshotRatio +
-          (_maxRatioGrowthPerSecondScaled * (block.timestamp - _snapshotTimestamp)) /
-          SCALING_FACTOR
-      );
+      int256(_snapshotRatio + _maxRatioGrowthPerSecond * (block.timestamp - _snapshotTimestamp));
   }
 }
