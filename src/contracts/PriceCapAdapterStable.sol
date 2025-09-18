@@ -41,7 +41,7 @@ contract PriceCapAdapterStable is IPriceCapAdapterStable {
   }
 
   /// @inheritdoc ICLSynchronicityPriceAdapter
-  function latestAnswer() public view override returns (int256) {
+  function latestAnswer() external view override returns (int256) {
     int256 basePrice = ASSET_TO_USD_AGGREGATOR.latestAnswer();
     int256 priceCap = int256(uint256(_priceCap));
 
