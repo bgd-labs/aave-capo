@@ -1,5 +1,5 @@
 // SPDX-License-Identifier:  BUSL-1.1
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.19;
 
 import {Test} from 'forge-std/Test.sol';
 
@@ -8,14 +8,14 @@ import {PriceCapAdapterStable, IPriceCapAdapterStable, IACLManager, IChainlinkAg
 import {ChainlinkAggregatorMock} from './mocks/ChainlinkAggregatorMock.sol';
 import {ACLManagerMock} from './mocks/ACLManagerMock.sol';
 
-contract StSPriceCapAdapterTest is Test {
+contract PriceCapAdapterStableTest is Test {
   ChainlinkAggregatorMock public chainlinkAggregator;
   IACLManager public manager;
 
   PriceCapAdapterStable public stableCapo;
 
-  address poolAdmin = vm.addr(0x01);
-  address riskAdmin = vm.addr(0x02);
+  address public poolAdmin = vm.addr(0x01);
+  address public riskAdmin = vm.addr(0x02);
 
   function setUp() public {
     chainlinkAggregator = new ChainlinkAggregatorMock(1e8);

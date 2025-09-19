@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: BUSL-1.1
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.19;
 
 import 'forge-std/Test.sol';
 import 'forge-std/Vm.sol';
@@ -11,15 +11,15 @@ import {ChainlinkAggregatorMock} from './mocks/ChainlinkAggregatorMock.sol';
 import {PPTMock} from './mocks/PendlePrincipalTokenMock.sol';
 import {ACLManagerMock} from './mocks/ACLManagerMock.sol';
 
-contract TestAdapter is Test {
-  ChainlinkAggregatorMock assetToUsdAggregator;
-  ACLManagerMock aclManager;
-  PPTMock pptToken;
+contract PendleCapAdapterTest is Test {
+  ChainlinkAggregatorMock public assetToUsdAggregator;
+  ACLManagerMock public aclManager;
+  PPTMock public pptToken;
 
-  PendlePriceCapAdapter pendleCapAdapter;
+  PendlePriceCapAdapter public pendleCapAdapter;
 
-  address riskAdmin = address(0xDead);
-  address poolAdmin = address(0xBeef);
+  address public riskAdmin = address(0xDead);
+  address public poolAdmin = address(0xBeef);
 
   function setUp() public {
     assetToUsdAggregator = new ChainlinkAggregatorMock(1e8);
