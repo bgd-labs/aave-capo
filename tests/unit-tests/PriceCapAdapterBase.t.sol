@@ -255,4 +255,49 @@ contract PriceCapAdapterBaseTest is Test {
     assertEq(capAdapter.isCapped(), true);
     assertGe(ratioProviderMock.latestAnswer(), capAdapter.latestAnswer());
   }
+
+  function test_manager() public {
+    skip(1);
+
+    vm.startPrank(poolAdmin);
+    IPriceCapAdapter.PriceCapUpdateParams memory priceCapParams = IPriceCapAdapter
+      .PriceCapUpdateParams({
+        snapshotRatio: uint104(1e10),
+        snapshotTimestamp: uint48(block.timestamp),
+        maxYearlyRatioGrowthPercent: 10_00
+      });
+
+    capAdapter.setCapParameters(priceCapParams);
+    assertEq(capAdapter.getSnapshotRatio(), 1e10);
+
+    vm.stopPrank();
+
+    skip(1);
+
+    vm.startPrank(riskAdmin);
+
+    priceCapParams = IPriceCapAdapter.PriceCapUpdateParams({
+      snapshotRatio: uint104(1e8),
+      snapshotTimestamp: uint48(block.timestamp),
+      maxYearlyRatioGrowthPercent: 10_00
+    });
+    capAdapter.setCapParameters(priceCapParams);
+    assertEq(capAdapter.getSnapshotRatio(), 1e8);
+  }
+
+  function test_access(address someone) public {
+    vm.assume(someone != riskAdmin && someone != poolAdmin);
+
+    skip(1);
+
+    IPriceCapAdapter.PriceCapUpdateParams memory priceCapParams = IPriceCapAdapter
+      .PriceCapUpdateParams({
+        snapshotRatio: uint104(1e8),
+        snapshotTimestamp: uint48(block.timestamp),
+        maxYearlyRatioGrowthPercent: 10_00
+      });
+
+    vm.expectRevert(abi.encodeWithSelector(IPriceCapAdapter.CallerIsNotRiskOrPoolAdmin.selector));
+    capAdapter.setCapParameters(priceCapParams);
+  }
 }

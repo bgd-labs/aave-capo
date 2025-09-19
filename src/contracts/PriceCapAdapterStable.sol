@@ -12,11 +12,10 @@ contract PriceCapAdapterStable is IPriceCapAdapterStable {
   /// @inheritdoc IPriceCapAdapterStable
   IChainlinkAggregator public immutable ASSET_TO_USD_AGGREGATOR;
 
-  /// @dev Update: Cap is moved here, cause it will take free space after address and will pack in 1 slot
-  uint96 internal _priceCap;
-
   /// @inheritdoc IPriceCapAdapterStable
   IACLManager public immutable ACL_MANAGER;
+
+  int96 internal _priceCap;
 
   /// @inheritdoc ICLSynchronicityPriceAdapter
   uint8 public decimals;
@@ -43,7 +42,7 @@ contract PriceCapAdapterStable is IPriceCapAdapterStable {
   /// @inheritdoc ICLSynchronicityPriceAdapter
   function latestAnswer() external view override returns (int256) {
     int256 basePrice = ASSET_TO_USD_AGGREGATOR.latestAnswer();
-    int256 priceCap = int256(uint256(_priceCap));
+    int256 priceCap = _priceCap;
 
     if (basePrice > priceCap) {
       return priceCap;
@@ -67,12 +66,12 @@ contract PriceCapAdapterStable is IPriceCapAdapterStable {
 
   /// @inheritdoc IPriceCapAdapterStable
   function getPriceCap() external view returns (int256) {
-    return int256(uint256(_priceCap));
+    return _priceCap;
   }
 
   /// @inheritdoc IPriceCapAdapterStable
   function isCapped() public view virtual returns (bool) {
-    return ASSET_TO_USD_AGGREGATOR.latestAnswer() > int256(uint256(_priceCap));
+    return ASSET_TO_USD_AGGREGATOR.latestAnswer() > _priceCap;
   }
 
   /**
@@ -80,7 +79,7 @@ contract PriceCapAdapterStable is IPriceCapAdapterStable {
    * @param priceCap the new price cap
    */
   function _setPriceCap(int256 priceCap) internal {
-    if (priceCap > int256(uint256(type(uint96).max))) {
+    if (priceCap > type(int96).max) {
       revert NewPriceCapIsTooHigh();
     }
 
@@ -90,7 +89,7 @@ contract PriceCapAdapterStable is IPriceCapAdapterStable {
       revert CapLowerThanActualPrice();
     }
 
-    _priceCap = uint96(uint256(priceCap));
+    _priceCap = int96(priceCap);
 
     emit PriceCapUpdated(priceCap);
   }
