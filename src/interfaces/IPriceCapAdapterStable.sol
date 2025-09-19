@@ -53,4 +53,5 @@ interface IPriceCapAdapterStable is ICLSynchronicityPriceAdapter {
   error ACLManagerIsZeroAddress();
   error CallerIsNotRiskOrPoolAdmin();
   error CapLowerThanActualPrice();
+  error NewPriceCapIsTooHigh();
 }

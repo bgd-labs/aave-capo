@@ -15,13 +15,13 @@ contract PriceCapAdapterStable is IPriceCapAdapterStable {
   /// @inheritdoc IPriceCapAdapterStable
   IACLManager public immutable ACL_MANAGER;
 
+  int96 internal _priceCap;
+
   /// @inheritdoc ICLSynchronicityPriceAdapter
   uint8 public decimals;
 
   /// @inheritdoc ICLSynchronicityPriceAdapter
   string public description;
-
-  int256 internal _priceCap;
 
   /**
    * @param capAdapterStableParams parameters to create stable cap adapter
@@ -48,6 +48,10 @@ contract PriceCapAdapterStable is IPriceCapAdapterStable {
       return priceCap;
     }
 
+    if (basePrice <= 0) {
+      return 0;
+    }
+
     return basePrice;
   }
 
@@ -67,7 +71,7 @@ contract PriceCapAdapterStable is IPriceCapAdapterStable {
 
   /// @inheritdoc IPriceCapAdapterStable
   function isCapped() public view virtual returns (bool) {
-    return (ASSET_TO_USD_AGGREGATOR.latestAnswer() > this.latestAnswer());
+    return ASSET_TO_USD_AGGREGATOR.latestAnswer() > _priceCap;
   }
 
   /**
@@ -75,13 +79,17 @@ contract PriceCapAdapterStable is IPriceCapAdapterStable {
    * @param priceCap the new price cap
    */
   function _setPriceCap(int256 priceCap) internal {
-    int256 basePrice = ASSET_TO_USD_AGGREGATOR.latestAnswer();
+    if (priceCap > type(int96).max) {
+      revert NewPriceCapIsTooHigh();
+    }
 
+    // Even if Aggregator is not active (but deployed) it will return at least 0, so priceCap can't be less than 0
+    int256 basePrice = ASSET_TO_USD_AGGREGATOR.latestAnswer();
     if (priceCap < basePrice) {
       revert CapLowerThanActualPrice();
     }
 
-    _priceCap = priceCap;
+    _priceCap = int96(priceCap);
 
     emit PriceCapUpdated(priceCap);
   }
