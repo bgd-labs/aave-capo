@@ -15,7 +15,7 @@ contract PriceCapAdapterStable is IPriceCapAdapterStable {
   /// @inheritdoc IPriceCapAdapterStable
   IACLManager public immutable ACL_MANAGER;
 
-  int96 internal _priceCap;
+  int32 internal _priceCap;
 
   /// @inheritdoc ICLSynchronicityPriceAdapter
   uint8 public decimals;
@@ -79,8 +79,8 @@ contract PriceCapAdapterStable is IPriceCapAdapterStable {
    * @param priceCap the new price cap
    */
   function _setPriceCap(int256 priceCap) internal {
-    if (priceCap > type(int96).max) {
-      revert NewPriceCapIsTooHigh();
+    if (priceCap > 2e8) {
+      revert NewStablePriceCapIsTooHigh();
     }
 
     // Even if Aggregator is not active (but deployed) it will return at least 0, so priceCap can't be less than 0
@@ -89,7 +89,7 @@ contract PriceCapAdapterStable is IPriceCapAdapterStable {
       revert CapLowerThanActualPrice();
     }
 
-    _priceCap = int96(priceCap);
+    _priceCap = int32(priceCap);
 
     emit PriceCapUpdated(priceCap);
   }
