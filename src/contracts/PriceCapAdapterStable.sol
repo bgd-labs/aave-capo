@@ -82,7 +82,7 @@ contract PriceCapAdapterStable is IPriceCapAdapterStable {
    * @param priceCap the new price cap
    */
   function _setPriceCap(int256 priceCap) internal {
-    if (priceCap > 2e8) {
+    if (priceCap > MAX_STABLE_CAP_VALUE) {
       revert NewStablePriceCapIsTooHigh();
     }
 
