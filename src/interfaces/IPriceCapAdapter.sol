@@ -154,8 +154,6 @@ interface IPriceCapAdapter is ICLSynchronicityPriceAdapter {
   error ACLManagerIsZeroAddress();
   error WrongRatioDecimals();
   error SnapshotRatioIsZero();
-  error SnapshotMayOverflowSoon(uint104 snapshotRatio, uint16 maxYearlyRatioGrowthPercent);
   error InvalidRatioTimestamp(uint48 timestamp);
-  error RatioGrowthRoundedToZero();
   error CallerIsNotRiskOrPoolAdmin();
 }

@@ -92,7 +92,7 @@ contract PriceCapAdapterStable is IPriceCapAdapterStable {
       revert CapLowerThanActualPrice();
     }
 
-    _priceCap = int32(priceCap);
+    _priceCap = priceCap;
 
     emit PriceCapUpdated(priceCap);
   }

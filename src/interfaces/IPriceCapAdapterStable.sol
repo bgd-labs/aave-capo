@@ -35,7 +35,7 @@ interface IPriceCapAdapterStable is ICLSynchronicityPriceAdapter {
   function ACL_MANAGER() external view returns (IACLManager);
 
   /**
-   * @notice Maximum capped value, that could be set
+   * @notice Maximum capped value that could be set
    */
   function MAX_STABLE_CAP_VALUE() external view returns (int256);
 
