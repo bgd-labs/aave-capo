@@ -10,18 +10,21 @@ import {IPriceCapAdapterStable, ICLSynchronicityPriceAdapter, IACLManager, IChai
  */
 contract PriceCapAdapterStable is IPriceCapAdapterStable {
   /// @inheritdoc IPriceCapAdapterStable
+  int256 public constant MAX_STABLE_CAP_VALUE = 2e8;
+
+  /// @inheritdoc IPriceCapAdapterStable
   IChainlinkAggregator public immutable ASSET_TO_USD_AGGREGATOR;
 
   /// @inheritdoc IPriceCapAdapterStable
   IACLManager public immutable ACL_MANAGER;
-
-  int32 internal _priceCap;
 
   /// @inheritdoc ICLSynchronicityPriceAdapter
   uint8 public decimals;
 
   /// @inheritdoc ICLSynchronicityPriceAdapter
   string public description;
+
+  int256 internal _priceCap;
 
   /**
    * @param capAdapterStableParams parameters to create stable cap adapter
