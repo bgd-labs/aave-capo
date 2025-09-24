@@ -300,4 +300,8 @@ contract PriceCapAdapterBaseTest is Test {
     vm.expectRevert(abi.encodeWithSelector(IPriceCapAdapter.CallerIsNotRiskOrPoolAdmin.selector));
     capAdapter.setCapParameters(priceCapParams);
   }
+
+  function test_add_failed_test() public pure {
+    assert(false);
+  }
 }
