@@ -32,6 +32,13 @@ jobs:
         with:
           MODE: "CHANGED"
 
+      - name: Run common tests
+        id: common_tests
+        run: |
+          forge test --match-path tests/unit-tests/PendlePriceCapAdapter.t.sol
+          forge test --match-path tests/unit-tests/PriceCapAdapterBase.t.sol
+          forge test --match-path tests/unit-tests/PriceCapAdapterStable.t.sol
+
       - name: Run ZK tests
         id: zktest
         uses: bgd-labs/github-workflows/.github/actions/foundry-test@main
@@ -45,7 +52,7 @@ jobs:
 
       # we let failing tests pass so we can log them in the comment, still we want the ci to fail
       - name: Post test
-        if: ${{ steps.test.outputs.testStatus != 0 || steps.zktest.outputs.testStatus != 0 }}
+        if: ${{ steps.test.outputs.testStatus != 0 || steps.zktest.outputs.testStatus != 0 || steps.common_tests.outputs.testStatus != 0 }}
         run: |
           echo "tests failed"
           exit 1
