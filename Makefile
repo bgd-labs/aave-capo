@@ -86,6 +86,7 @@ deploy-usdt-ink :; forge script scripts/DeployInk.s.sol:DeployUSDTInk --rpc-url 
 deploy-susde-plasma :; forge script scripts/DeployPlasma.s.sol:DeploySUSDePlasma --rpc-url plasma $(common-flags)
 deploy-weETH-plasma :; forge script scripts/DeployPlasma.s.sol:DeployWeEthPlasma --rpc-url plasma $(common-flags)
 deploy-usdt-plasma :; forge script scripts/DeployPlasma.s.sol:DeployUSDTPlasma --rpc-url plasma $(common-flags)
+deploy-wrsETH-plasma :; forge script scripts/DeployPlasma.s.sol:DeployWrsEthPlasma --rpc-url plasma $(common-flags)
 
 # Utilities
 download :; cast etherscan-source --chain ${chain} -d src/etherscan/${chain}_${address} ${address}
