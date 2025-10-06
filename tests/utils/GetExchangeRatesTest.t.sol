@@ -46,7 +46,7 @@ import {CapAdaptersCodeSonic} from '../../scripts/DeploySonic.s.sol';
 
 contract ExchangeRatesEth is Test {
   function setUp() public {
-    vm.createSelectFork(vm.rpcUrl('mainnet'), (23280000)); // Sept-3-2025
+    vm.createSelectFork(vm.rpcUrl('mainnet'), (23355000)); // Sept-13-2025
   }
 
   function test_getExchangeRate() public view {
