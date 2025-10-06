@@ -74,9 +74,7 @@ contract PriceCapAdapterStableTest is Test {
       priceCap: type(int256).max
     });
 
-    vm.expectRevert(
-      abi.encodeWithSelector(IPriceCapAdapterStable.NewStablePriceCapIsTooHigh.selector)
-    );
+    vm.expectRevert(abi.encodeWithSelector(IPriceCapAdapterStable.InvalidNewPriceCap.selector));
     newStableCapo = new PriceCapAdapterStable(params);
   }
 

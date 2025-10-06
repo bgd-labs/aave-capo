@@ -82,11 +82,10 @@ contract PriceCapAdapterStable is IPriceCapAdapterStable {
    * @param priceCap the new price cap
    */
   function _setPriceCap(int256 priceCap) internal {
-    if (priceCap > MAX_STABLE_CAP_VALUE) {
-      revert NewStablePriceCapIsTooHigh();
+    if (priceCap > MAX_STABLE_CAP_VALUE || priceCap < 0) {
+      revert InvalidNewPriceCap();
     }
 
-    // Even if Aggregator is not active (but deployed) it will return at least 0, so priceCap can't be less than 0
     int256 basePrice = ASSET_TO_USD_AGGREGATOR.latestAnswer();
     if (priceCap < basePrice) {
       revert CapLowerThanActualPrice();
