@@ -45,7 +45,7 @@ deploy-rseth-arbitrum :; forge script scripts/DeployArbitrum.s.sol:DeployRsETHAr
 deploy-rseth-base :; forge script scripts/DeployBase.s.sol:DeployRsETHBase --rpc-url base $(common-flags)
 
 deploy-ausd-avalanche :; forge script scripts/DeployAvalanche.s.sol:DeployAUSDAvalanche --rpc-url avalanche $(common-flags)
-deploy-susde-avalanche :; forge script scripts/DeployAvalanche.s.sol:DeploySUSDeAvalanche --rpc-url avalanche $(common-flags)
+
 
 deploy-weeth-linea :; FOUNDRY_PROFILE=linea forge script scripts/DeployLinea.s.sol:DeployWeEthLinea --rpc-url linea $(common-flags)
 deploy-ezeth-linea :; FOUNDRY_PROFILE=linea forge script scripts/DeployLinea.s.sol:DeployEzEthLinea --rpc-url linea $(common-flags)
@@ -87,8 +87,6 @@ deploy-susde-plasma :; forge script scripts/DeployPlasma.s.sol:DeploySUSDePlasma
 deploy-weETH-plasma :; forge script scripts/DeployPlasma.s.sol:DeployWeEthPlasma --rpc-url plasma $(common-flags)
 deploy-usdt-plasma :; forge script scripts/DeployPlasma.s.sol:DeployUSDTPlasma --rpc-url plasma $(common-flags)
 deploy-wrsETH-plasma :; forge script scripts/DeployPlasma.s.sol:DeployWrsEthPlasma --rpc-url plasma $(common-flags)
-deploy-pt-susde-15-jan-2026-plasma :; forge script scripts/DeployPlasma.s.sol:DeployPtSUSDe15JAN2026Plasma --rpc-url plasma $(common-flags)
-deploy-pt-usde-15-jan-2026-plasma :; forge script scripts/DeployPlasma.s.sol:DeployPtUSDe15JAN2026Plasma --rpc-url plasma $(common-flags)
 
 # Utilities
 download :; cast etherscan-source --chain ${chain} -d src/etherscan/${chain}_${address} ${address}
