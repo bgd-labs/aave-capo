@@ -19,7 +19,7 @@ contract PriceCapAdapterStable is IPriceCapAdapterStable {
   IACLManager public immutable ACL_MANAGER;
 
   /// @inheritdoc ICLSynchronicityPriceAdapter
-  uint8 public decimals;
+  uint8 public immutable decimals;
 
   /// @inheritdoc ICLSynchronicityPriceAdapter
   string public description;
