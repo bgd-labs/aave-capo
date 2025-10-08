@@ -18,7 +18,7 @@ contract FixedPriceAdapter is IFixedPriceAdapter {
   int256 internal _price;
   string internal _description;
 
-  constructor (
+  constructor(
     address _aclManager,
     uint8 _decimals,
     int256 _adapterPrice,

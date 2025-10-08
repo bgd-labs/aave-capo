@@ -17,7 +17,12 @@ contract FixedPriceAdapterTest is Test {
 
   function setUp() public {
     aclManager = IACLManager(address(new ACLManagerMock(POOL_ADMIN, address(0))));
-    fixedPriceAdapter = new FixedPriceAdapter(address(aclManager), DECIMALS, FIXED_PRICE, DESCRIPTION);
+    fixedPriceAdapter = new FixedPriceAdapter(
+      address(aclManager),
+      DECIMALS,
+      FIXED_PRICE,
+      DESCRIPTION
+    );
   }
 
   function test_latestAnswer() external view {
@@ -58,4 +63,3 @@ contract FixedPriceAdapterTest is Test {
     fixedPriceAdapter.setPrice(1);
   }
 }
-
