@@ -54,4 +54,5 @@ interface IFixedPriceAdapter {
 
   error ACLManagerIsZeroAddress();
   error CallerIsNotPoolAdmin();
+  error InvalidPrice();
 }

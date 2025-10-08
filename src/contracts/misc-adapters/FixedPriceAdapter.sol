@@ -63,6 +63,7 @@ contract FixedPriceAdapter is IFixedPriceAdapter {
    * @param newPrice the new fixed price to set
    */
   function _setPrice(int256 newPrice) internal {
+    if (newPrice < 0) revert InvalidPrice();
     int256 currentPrice = _price;
     _price = newPrice;
 

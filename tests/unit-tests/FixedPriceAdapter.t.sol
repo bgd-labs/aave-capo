@@ -2,8 +2,8 @@
 pragma solidity ^0.8.0;
 
 import {Test} from 'forge-std/Test.sol';
-import {FixedPriceAdapter, IFixedPriceAdapter, IACLManager} from '../src/contracts/misc-adapters/FixedPriceAdapter.sol';
-import {ACLManagerMock} from './unit-tests/mocks/ACLManagerMock.sol';
+import {FixedPriceAdapter, IFixedPriceAdapter, IACLManager} from '../../src/contracts/misc-adapters/FixedPriceAdapter.sol';
+import {ACLManagerMock} from './mocks/ACLManagerMock.sol';
 
 contract FixedPriceAdapterTest is Test {
   FixedPriceAdapter fixedPriceAdapter;
@@ -36,13 +36,18 @@ contract FixedPriceAdapterTest is Test {
 
   function test_setPrice(int256 newFixedPrice) external {
     int256 initialPrice = fixedPriceAdapter.price();
-
-    vm.expectEmit(true, true, true, true);
-    emit IFixedPriceAdapter.FixedPriceUpdated(initialPrice, newFixedPrice);
-
     vm.prank(POOL_ADMIN);
-    fixedPriceAdapter.setPrice(newFixedPrice);
-    assertEq(fixedPriceAdapter.price(), newFixedPrice);
+
+    if (newFixedPrice >= 0) {
+      vm.expectEmit(true, true, true, true);
+      emit IFixedPriceAdapter.FixedPriceUpdated(initialPrice, newFixedPrice);
+
+      fixedPriceAdapter.setPrice(newFixedPrice);
+      assertEq(fixedPriceAdapter.price(), newFixedPrice);
+    } else {
+      vm.expectRevert(IFixedPriceAdapter.InvalidPrice.selector);
+      fixedPriceAdapter.setPrice(newFixedPrice);
+    }
   }
 
   function test_setPrice_callerNotPoolAdmin(address caller) external {

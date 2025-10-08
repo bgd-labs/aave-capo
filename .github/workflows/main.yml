@@ -43,9 +43,7 @@ jobs:
       - name: Run common unit tests
         id: unit_tests
         run: |
-          forge test --match-path tests/unit-tests/PendlePriceCapAdapter.t.sol
-          forge test --match-path tests/unit-tests/PriceCapAdapterBase.t.sol
-          forge test --match-path tests/unit-tests/PriceCapAdapterStable.t.sol
+          forge test --match-path 'tests/unit-tests/*'
 
       - name: Run Forge tests
         uses: bgd-labs/github-workflows/.github/actions/comment-artifact@main
