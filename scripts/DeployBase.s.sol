@@ -10,7 +10,6 @@ import {EURPriceCapAdapterStable, IEURPriceCapAdapterStable, IChainlinkAggregato
 import {CLRatePriceCapAdapter, IPriceCapAdapter} from '../src/contracts/CLRatePriceCapAdapter.sol';
 import {LBTCPriceCapAdapter} from '../src/contracts/lst-adapters/LBTCPriceCapAdapter.sol';
 
-
 library CapAdaptersCodeBase {
   address public constant weETH_eETH_AGGREGATOR = 0x35e9D7001819Ea3B39Da906aE6b06A62cfe2c181;
   address public constant ezETH_ETH_AGGREGATOR = 0xC4300B7CF0646F0Fe4C5B2ACFCCC4dCA1346f5d8;
