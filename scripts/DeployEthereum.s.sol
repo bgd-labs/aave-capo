@@ -642,9 +642,14 @@ library CapAdaptersCodeEthereum {
     return
       abi.encodePacked(
         type(FixedPriceAdapter).creationCode,
-        abi.encode(address(AaveV3Ethereum.ACL_MANAGER), 18, int256(0.022767 * 1e18), 'Fixed DPI/ETH')
+        abi.encode(
+          address(AaveV3Ethereum.ACL_MANAGER),
+          18,
+          int256(0.022767 * 1e18),
+          'Fixed DPI/ETH'
+        )
       );
-   }
+  }
 
   function syrupUSDCAdapterCode() internal pure returns (bytes memory) {
     return
