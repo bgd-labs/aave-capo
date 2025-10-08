@@ -29,7 +29,7 @@ library CapAdaptersCodeInk {
     return
       abi.encodePacked(
         type(FixedPriceAdapter).creationCode,
-        abi.encode(8, int256(1 * 1e8), 'Fixed USDG/USD')
+        abi.encode(address(AaveV3InkWhitelabel.ACL_MANAGER), 8, int256(1 * 1e8), 'Fixed USDG/USD')
       );
   }
 }

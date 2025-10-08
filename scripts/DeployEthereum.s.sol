@@ -9,6 +9,7 @@ import {MiscEthereum} from 'aave-address-book/MiscEthereum.sol';
 import {ChainlinkEthereum} from 'aave-address-book/ChainlinkEthereum.sol';
 
 import {PriceCapAdapterStable} from '../src/contracts/PriceCapAdapterStable.sol';
+import {FixedPriceAdapter} from '../src/contracts/misc-adapters/FixedPriceAdapter.sol';
 import {IPriceCapAdapter, IChainlinkAggregator} from '../src/interfaces/IPriceCapAdapter.sol';
 import {IPriceCapAdapterStable} from '../src/interfaces/IPriceCapAdapterStable.sol';
 import {WeETHPriceCapAdapter} from '../src/contracts/lst-adapters/WeETHPriceCapAdapter.sol';
@@ -637,6 +638,19 @@ library CapAdaptersCodeEthereum {
       );
   }
 
+  function fixedDpiEthAdapterCode() internal pure returns (bytes memory) {
+    return
+      abi.encodePacked(
+        type(FixedPriceAdapter).creationCode,
+        abi.encode(
+          address(AaveV3Ethereum.ACL_MANAGER),
+          18,
+          int256(0.022767 * 1e18),
+          'Fixed DPI/ETH'
+        )
+      );
+  }
+
   function syrupUSDCAdapterCode() internal pure returns (bytes memory) {
     return
       abi.encodePacked(
@@ -842,5 +856,11 @@ contract DeployEUSDeEthereum is EthereumScript {
 contract DeployPtUSDe27NOV2025Ethereum is EthereumScript {
   function run() external broadcast {
     GovV3Helpers.deployDeterministic(CapAdaptersCodeEthereum.ptUSDeNovember2025AdapterCode());
+  }
+}
+
+contract DeployFixedDpiEthEthereum is EthereumScript {
+  function run() external broadcast {
+    GovV3Helpers.deployDeterministic(CapAdaptersCodeEthereum.fixedDpiEthAdapterCode());
   }
 }

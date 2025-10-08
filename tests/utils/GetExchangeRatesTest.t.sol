@@ -77,7 +77,9 @@ contract ExchangeRatesEth is Test {
     uint256 tETHRate = IStETH(AaveV2EthereumAssets.stETH_UNDERLYING).getPooledEthByShares(
       tETHtoWstETH
     );
-    uint256 syrupUSDCRate = IMaplePool(CapAdaptersCodeEthereum.syrupUSDC).convertToExitAssets(10 ** 18);
+    uint256 syrupUSDCRate = IMaplePool(CapAdaptersCodeEthereum.syrupUSDC).convertToExitAssets(
+      10 ** 18
+    );
 
     // console.log('cbEthRate', cbEthRate);
     // console.log('rEthRate', rEthRate);

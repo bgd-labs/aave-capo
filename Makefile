@@ -89,6 +89,10 @@ deploy-usdt-plasma :; forge script scripts/DeployPlasma.s.sol:DeployUSDTPlasma -
 deploy-pt-susde-15-jan-2026-plasma :; forge script scripts/DeployPlasma.s.sol:DeployPtSUSDe15JAN2026Plasma --rpc-url plasma $(common-flags)
 deploy-pt-usde-15-jan-2026-plasma :; forge script scripts/DeployPlasma.s.sol:DeployPtUSDe15JAN2026Plasma --rpc-url plasma $(common-flags)
 
+deploy-dpi-eth-mainnet :; forge script scripts/DeployEthereum.s.sol:DeployFixedDpiEthEthereum --rpc-url mainnet $(common-flags)
+deploy-dpi-usd-polygon :; forge script scripts/DeployPolygon.s.sol:DeployFixedDpiUsdPolygon --rpc-url polygon $(common-flags)
+deploy-dpi-eth-polygon :; forge script scripts/DeployPolygon.s.sol:DeployFixedDpiEthPolygon --rpc-url polygon $(common-flags)
+
 # Utilities
 download :; cast etherscan-source --chain ${chain} -d src/etherscan/${chain}_${address} ${address}
 git-diff :
