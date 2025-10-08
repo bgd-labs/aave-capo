@@ -34,6 +34,7 @@ import {IBNBx} from '../../src/interfaces/IBNBx.sol';
 import {IRsETHL2} from '../../src/interfaces/IRsETHL2.sol';
 import {IEBTC} from '../../src/interfaces/IEBTC.sol';
 import {IStS} from '../../src/interfaces/IStS.sol';
+import {IMaplePool} from '../../src/interfaces/IMaplePool.sol';
 
 import {CapAdaptersCodeEthereum} from '../../scripts/DeployEthereum.s.sol';
 import {CapAdaptersCodeArbitrum} from '../../scripts/DeployArbitrum.s.sol';
@@ -46,7 +47,7 @@ import {CapAdaptersCodeSonic} from '../../scripts/DeploySonic.s.sol';
 
 contract ExchangeRatesEth is Test {
   function setUp() public {
-    vm.createSelectFork(vm.rpcUrl('mainnet'), (23280000)); // Sept-3-2025
+    vm.createSelectFork(vm.rpcUrl('mainnet'), (23456789)); // Sept-27-2025
   }
 
   function test_getExchangeRate() public view {
@@ -76,13 +77,14 @@ contract ExchangeRatesEth is Test {
     uint256 tETHRate = IStETH(AaveV2EthereumAssets.stETH_UNDERLYING).getPooledEthByShares(
       tETHtoWstETH
     );
+    uint256 syrupUSDCRate = IMaplePool(CapAdaptersCodeEthereum.syrupUSDC).convertToExitAssets(10 ** 18);
 
     // console.log('cbEthRate', cbEthRate);
     // console.log('rEthRate', rEthRate);
     // console.log('sDaiRate', sDaiRate);
     // console.log('wstEthRate', wstEthRate);
     // console.log('stEurRate', stEurRate);
-    console.log('weEthRate', weEthRate);
+    // console.log('weEthRate', weEthRate);
     // console.log('osEthRate', osEthRate);
     console.log('ethXRate', ethXRate);
     console.log('sUSDe', sUSDeRate);
@@ -92,6 +94,7 @@ contract ExchangeRatesEth is Test {
     console.log('eBTCRate', eBTCRate);
     console.log('eUSDeRate', eUSDeRate);
     console.log('tETHRate', tETHRate);
+    console.log('syrupUSDCRate', syrupUSDCRate);
 
     console.log(block.timestamp);
   }
