@@ -636,14 +636,6 @@ library CapAdaptersCodeEthereum {
       );
   }
 
-  function fixedDpiUsdAdapterCode() internal pure returns (bytes memory) {
-    return
-      abi.encodePacked(
-        type(FixedPriceAdapter).creationCode,
-        abi.encode(address(AaveV3Ethereum.ACL_MANAGER), 8, int256(102 * 1e8), 'Fixed DPI/USD')
-      );
-  }
-
   function fixedDpiEthAdapterCode() internal pure returns (bytes memory) {
     return
       abi.encodePacked(
@@ -836,12 +828,6 @@ contract DeployEUSDeEthereum is EthereumScript {
 contract DeployPtUSDe27NOV2025Ethereum is EthereumScript {
   function run() external broadcast {
     GovV3Helpers.deployDeterministic(CapAdaptersCodeEthereum.ptUSDeNovember2025AdapterCode());
-  }
-}
-
-contract DeployFixedDpiUsdEthereum is EthereumScript {
-  function run() external broadcast {
-    GovV3Helpers.deployDeterministic(CapAdaptersCodeEthereum.fixedDpiUsdAdapterCode());
   }
 }
 
