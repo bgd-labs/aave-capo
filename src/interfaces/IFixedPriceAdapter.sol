@@ -22,7 +22,8 @@ interface IFixedPriceAdapter {
   function ACL_MANAGER() external view returns (IACLManager);
 
   /**
-   * @notice method called by the POOL_ADMIN to update the fixed price
+   * @notice Sets new fixed price
+   * @dev Method could called only by the POOL_ADMIN
    * @param newPrice the new fixed price to set
    */
   function setPrice(int256 newPrice) external;
