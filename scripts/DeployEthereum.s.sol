@@ -43,6 +43,7 @@ library CapAdaptersCodeEthereum {
   address public constant STADER_STAKE_POOLS_MANAGER = 0xcf5EA1b38380f6aF39068375516Daf40Ed70D299;
   address public constant sUSDe = 0x9D39A5DE30e57443BfF2A8307A4256c8797A3497;
   address public constant DAI_PRICE_FEED = 0xAed0c38402a5d19df6E4c03F4E2DceD6e29c1ee9;
+  address public constant USDC_PRICE_FEED = 0xB6557F02F0a5dA7b9D3C2d979cc19e00e756F6dA;
   address public constant sUSDS = 0xa3931d71877C0E7a3148CB7Eb4463524FEc27fbD;
   address public constant ezETH_RESTAKE_MANAGER = 0x74a09653A083691711cF8215a6ab074BB4e99ef5;
   address public constant rsETH_LRT_ORACLE = 0x349A73444b1a310BAe67ef67973022020d70020d;
@@ -658,7 +659,7 @@ library CapAdaptersCodeEthereum {
         abi.encode(
           IPriceCapAdapter.CapAdapterParams({
             aclManager: AaveV3Ethereum.ACL_MANAGER,
-            baseAggregatorAddress: ChainlinkEthereum.USDC_USD,
+            baseAggregatorAddress: USDC_PRICE_FEED,
             ratioProviderAddress: syrupUSDC,
             pairDescription: 'Capped SyrupUSDC / USDC / USD',
             minimumSnapshotDelay: 7 days,
@@ -862,5 +863,11 @@ contract DeployPtUSDe27NOV2025Ethereum is EthereumScript {
 contract DeployFixedDpiEthEthereum is EthereumScript {
   function run() external broadcast {
     GovV3Helpers.deployDeterministic(CapAdaptersCodeEthereum.fixedDpiEthAdapterCode());
+  }
+}
+
+contract DeploySyrupUSDCEthereum is EthereumScript {
+  function run() external broadcast {
+    GovV3Helpers.deployDeterministic(CapAdaptersCodeEthereum.syrupUSDCAdapterCode());
   }
 }
