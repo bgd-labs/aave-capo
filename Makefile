@@ -70,6 +70,8 @@ deploy-pt-susde-25-sep-2025-mainnet :; forge script scripts/DeployEthereum.s.sol
 deploy-pt-susde-27-nov-2025-mainnet :; forge script scripts/DeployEthereum.s.sol:DeployPtSUSDe27NOV2025Ethereum --rpc-url mainnet $(common-flags)
 deploy-pt-eusde-29-may-2025-mainnet :; forge script scripts/DeployEthereum.s.sol:DeployPtEUSDe29MAY2025Ethereum --rpc-url mainnet $(common-flags)
 
+deploy-syrupUSDC-mainnet :; forge script scripts/DeployEthereum.s.sol:DeploySyrupUSDCEthereum --rpc-url mainnet $(common-flags)
+
 deploy-eUSDe-mainnet :; forge script scripts/DeployEthereum.s.sol:DeployEUSDeEthereum --rpc-url mainnet $(common-flags)
 
 deploy-pt-eusde-14-aug-2025-mainnet :; forge script scripts/DeployEthereum.s.sol:DeployPtEUSDe14AUG2025Ethereum --rpc-url mainnet $(common-flags)
