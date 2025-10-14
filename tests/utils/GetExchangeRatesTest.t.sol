@@ -47,7 +47,7 @@ import {CapAdaptersCodeSonic} from '../../scripts/DeploySonic.s.sol';
 
 contract ExchangeRatesEth is Test {
   function setUp() public {
-    vm.createSelectFork(vm.rpcUrl('mainnet'), (23456789)); // Sept-27-2025
+    vm.createSelectFork(vm.rpcUrl('mainnet'), (23525700)); // Oct-07-2025
   }
 
   function test_getExchangeRate() public view {
@@ -57,46 +57,46 @@ contract ExchangeRatesEth is Test {
     uint256 wstEthRate = IStETH(AaveV2EthereumAssets.stETH_UNDERLYING).getPooledEthByShares(
       10 ** 18
     );
-    uint256 stEurRate = IStEUR(MiscEthereum.stEUR).convertToAssets(10 ** 18);
-    uint256 weEthRate = IWeEth(CapAdaptersCodeEthereum.weETH).getRate();
-    uint256 osEthRate = IOsTokenVaultController(CapAdaptersCodeEthereum.osETH_VAULT_CONTROLLER)
-      .convertToAssets(10 ** 18);
-    uint256 ethXRate = IEthX(CapAdaptersCodeEthereum.STADER_STAKE_POOLS_MANAGER).getExchangeRate();
-    uint256 sUSDeRate = IERC4626(CapAdaptersCodeEthereum.sUSDe).convertToAssets(10 ** 18);
-    uint256 sUSDSRate = IERC4626(CapAdaptersCodeEthereum.sUSDS).convertToAssets(10 ** 18);
+    // uint256 stEurRate = IStEUR(MiscEthereum.stEUR).convertToAssets(10 ** 18);
+    // uint256 weEthRate = IWeEth(CapAdaptersCodeEthereum.weETH).getRate();
+    // uint256 osEthRate = IOsTokenVaultController(CapAdaptersCodeEthereum.osETH_VAULT_CONTROLLER)
+    //   .convertToAssets(10 ** 18);
+    // uint256 ethXRate = IEthX(CapAdaptersCodeEthereum.STADER_STAKE_POOLS_MANAGER).getExchangeRate();
+    // uint256 sUSDeRate = IERC4626(CapAdaptersCodeEthereum.sUSDe).convertToAssets(10 ** 18);
+    // uint256 sUSDSRate = IERC4626(CapAdaptersCodeEthereum.sUSDS).convertToAssets(10 ** 18);
 
-    (, , uint256 totalTVL) = IEzETHRestakeManager(CapAdaptersCodeEthereum.ezETH_RESTAKE_MANAGER)
-      .calculateTVLs();
-    uint256 ezETHRate = ((totalTVL * 1 ether) /
-      IEzETHRestakeManager(CapAdaptersCodeEthereum.ezETH_RESTAKE_MANAGER).ezETH().totalSupply());
+    // (, , uint256 totalTVL) = IEzETHRestakeManager(CapAdaptersCodeEthereum.ezETH_RESTAKE_MANAGER)
+    //   .calculateTVLs();
+    // uint256 ezETHRate = ((totalTVL * 1 ether) /
+    //   IEzETHRestakeManager(CapAdaptersCodeEthereum.ezETH_RESTAKE_MANAGER).ezETH().totalSupply());
 
-    uint256 rsETHRate = IRsETH(CapAdaptersCodeEthereum.rsETH_LRT_ORACLE).rsETHPrice();
-    uint256 eBTCRate = IEBTC(CapAdaptersCodeEthereum.eBTC_ACCOUNTANT).getRate();
-    uint256 eUSDeRate = IERC4626(CapAdaptersCodeEthereum.eUSDe).convertToAssets(10 ** 18);
-    uint256 tETHtoWstETH = IERC4626(CapAdaptersCodeEthereum.tETH).convertToAssets(10 ** 18);
-    uint256 tETHRate = IStETH(AaveV2EthereumAssets.stETH_UNDERLYING).getPooledEthByShares(
-      tETHtoWstETH
-    );
-    uint256 syrupUSDCRate = IMaplePool(CapAdaptersCodeEthereum.syrupUSDC).convertToExitAssets(
-      10 ** 18
-    );
+    // uint256 rsETHRate = IRsETH(CapAdaptersCodeEthereum.rsETH_LRT_ORACLE).rsETHPrice();
+    // uint256 eBTCRate = IEBTC(CapAdaptersCodeEthereum.eBTC_ACCOUNTANT).getRate();
+    // uint256 eUSDeRate = IERC4626(CapAdaptersCodeEthereum.eUSDe).convertToAssets(10 ** 18);
+    // uint256 tETHtoWstETH = IERC4626(CapAdaptersCodeEthereum.tETH).convertToAssets(10 ** 18);
+    // uint256 tETHRate = IStETH(AaveV2EthereumAssets.stETH_UNDERLYING).getPooledEthByShares(
+    //   tETHtoWstETH
+    // );
+    // uint256 syrupUSDCRate = IMaplePool(CapAdaptersCodeEthereum.syrupUSDC).convertToExitAssets(
+    //   10 ** 18
+    // );
 
     // console.log('cbEthRate', cbEthRate);
     // console.log('rEthRate', rEthRate);
     // console.log('sDaiRate', sDaiRate);
-    // console.log('wstEthRate', wstEthRate);
+    console.log('wstEthRate', wstEthRate);
     // console.log('stEurRate', stEurRate);
     // console.log('weEthRate', weEthRate);
     // console.log('osEthRate', osEthRate);
-    console.log('ethXRate', ethXRate);
-    console.log('sUSDe', sUSDeRate);
-    console.log('sUSDS', sUSDSRate);
-    console.log('ezETHRate', ezETHRate);
-    console.log('rsETHRate', rsETHRate);
-    console.log('eBTCRate', eBTCRate);
-    console.log('eUSDeRate', eUSDeRate);
-    console.log('tETHRate', tETHRate);
-    console.log('syrupUSDCRate', syrupUSDCRate);
+    // console.log('ethXRate', ethXRate);
+    // console.log('sUSDe', sUSDeRate);
+    // console.log('sUSDS', sUSDSRate);
+    // console.log('ezETHRate', ezETHRate);
+    // console.log('rsETHRate', rsETHRate);
+    // console.log('eBTCRate', eBTCRate);
+    // console.log('eUSDeRate', eUSDeRate);
+    // console.log('tETHRate', tETHRate);
+    // console.log('syrupUSDCRate', syrupUSDCRate);
 
     console.log(block.timestamp);
   }

@@ -1,0 +1,14 @@
+{
+  "lib/aave-address-book": {
+    "rev": "54cd1596467ace7799a2d0699dbc294f43dddc13"
+  },
+  "lib/aave-helpers": {
+    "rev": "9b4186648a6e6606e41b2842a857dbbd67cc1067"
+  },
+  "lib/cl-synchronicity-price-adapter": {
+    "rev": "67124f2e85ad91e7e2a9d61c9343d68d20ea3fdb"
+  },
+  "lib/forge-std": {
+    "rev": "0c71116a218268ee8c0157be8efcb13af0f7beaf"
+  }
+}

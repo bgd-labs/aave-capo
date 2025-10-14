@@ -14,6 +14,7 @@ library CapAdaptersCodePlasma {
   using SafeCast for uint256;
 
   address public constant weETH_eETH_AGGREGATOR = 0x00D7d8816E969EA6cA9125c3f5D279f9a6D253f6;
+  address public constant wstETH_stETH_AGGREGATOR = 0xd64d26cAd5f672463c33f91cE5b243d24cF7a903;
   address public constant sUSDe_USDe_AGGREGATOR = 0x802033dc696B92e5ED5bF68E1750F7Ed3329eabD;
   address public constant PT_sUSDe_15_JAN_2026 = 0x02FCC4989B4C9D435b7ceD3fE1Ba4CF77BBb5Dd8;
   address public constant PT_USDe_15_JAN_2026 = 0x93B544c330F60A2aa05ceD87aEEffB8D38FD8c9a;
@@ -109,6 +110,27 @@ library CapAdaptersCodePlasma {
         )
       );
   }
+
+  function wstETHAdapterCode() internal pure returns (bytes memory) {
+    return
+      abi.encodePacked(
+        type(CLRatePriceCapAdapter).creationCode,
+        abi.encode(
+          IPriceCapAdapter.CapAdapterParams({
+            aclManager: AaveV3Plasma.ACL_MANAGER,
+            baseAggregatorAddress: AaveV3PlasmaAssets.WETH_ORACLE,
+            ratioProviderAddress: wstETH_stETH_AGGREGATOR,
+            pairDescription: 'Capped wstETH / stETH(ETH) / USD',
+            minimumSnapshotDelay: 7 days,
+            priceCapParams: IPriceCapAdapter.PriceCapUpdateParams({
+              snapshotRatio: 1215622312207690269,
+              snapshotTimestamp: 1759837943, // Oct-07-2025
+              maxYearlyRatioGrowthPercent: 9_68
+            })
+          })
+        )
+      );
+  }
 }
 
 contract DeploySUSDePlasma is PlasmaScript {
@@ -140,5 +162,11 @@ contract DeployPtSUSDe15JAN2026Plasma is PlasmaScript {
 contract DeployPtUSDe15JAN2026Plasma is PlasmaScript {
   function run() external broadcast {
     GovV3Helpers.deployDeterministic(CapAdaptersCodePlasma.ptUSDeJanuary2026AdapterCode());
+  }
+}
+
+contract DeployWstETHPlasma is PlasmaScript {
+  function run() external broadcast {
+    GovV3Helpers.deployDeterministic(CapAdaptersCodePlasma.wstETHAdapterCode());
   }
 }
