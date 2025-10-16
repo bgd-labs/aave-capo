@@ -86,6 +86,7 @@ deploy-usdg-ink :; forge script scripts/DeployInk.s.sol:DeployUSDGInk --rpc-url 
 deploy-usdt-ink :; forge script scripts/DeployInk.s.sol:DeployUSDTInk --rpc-url ink $(common-flags)
 
 deploy-susde-plasma :; forge script scripts/DeployPlasma.s.sol:DeploySUSDePlasma --rpc-url plasma $(common-flags)
+deploy-wsteth-plasma :; forge script scripts/DeployPlasma.s.sol:DeployWstETHPlasma --rpc-url plasma $(common-flags)
 deploy-weETH-plasma :; forge script scripts/DeployPlasma.s.sol:DeployWeEthPlasma --rpc-url plasma $(common-flags)
 deploy-usdt-plasma :; forge script scripts/DeployPlasma.s.sol:DeployUSDTPlasma --rpc-url plasma $(common-flags)
 deploy-pt-susde-15-jan-2026-plasma :; forge script scripts/DeployPlasma.s.sol:DeployPtSUSDe15JAN2026Plasma --rpc-url plasma $(common-flags)

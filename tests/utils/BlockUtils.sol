@@ -64,6 +64,10 @@ library BlockUtils {
       return 230_000;
     }
 
+    if (keccak256(bytes(network)) == keccak256(bytes('plasma'))) {
+      return 86_400;
+    }
+
     return 7300;
   }
 }
