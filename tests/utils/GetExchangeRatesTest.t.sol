@@ -44,6 +44,7 @@ import {CapAdaptersCodeBNB} from '../../scripts/DeployBnb.s.sol';
 import {CapAdaptersCodeZkSync} from '../../scripts/DeployZkSync.s.sol';
 import {CapAdaptersCodeLinea} from '../../scripts/DeployLinea.s.sol';
 import {CapAdaptersCodeSonic} from '../../scripts/DeploySonic.s.sol';
+import {CapAdaptersCodePlasma} from '../../scripts/DeployPlasma.s.sol';
 
 contract ExchangeRatesEth is Test {
   function setUp() public {
@@ -368,6 +369,20 @@ contract ExchangeRatesSonic is Test {
     uint256 stSRate = IStS(CapAdaptersCodeSonic.StS).convertToAssets(1 ether);
 
     console.log('stSRate', stSRate);
+    console.log(block.timestamp);
+  }
+}
+
+contract ExchangeRatesPlasma is Test {
+  function setUp() public {
+    vm.createSelectFork(vm.rpcUrl('plasma'), 3076200); // Oct-09-2025
+  }
+
+  function test_exchangeRate() public view {
+    int256 syrupUSDTRate = IChainlinkAggregator(CapAdaptersCodePlasma.syrupUSDT_AGGREGATOR)
+      .latestAnswer();
+
+    console.log('syrupUSDTRate', syrupUSDTRate);
     console.log(block.timestamp);
   }
 }

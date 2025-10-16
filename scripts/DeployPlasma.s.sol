@@ -12,7 +12,7 @@ import {PendlePriceCapAdapter, IPendlePriceCapAdapter} from '../src/contracts/Pe
 
 library CapAdaptersCodePlasma {
   using SafeCast for uint256;
-
+  address public constant syrupUSDT_AGGREGATOR = 0x89a0e204591Fce2611e89CA7634c12B400d347fe;
   address public constant weETH_eETH_AGGREGATOR = 0x00D7d8816E969EA6cA9125c3f5D279f9a6D253f6;
   address public constant wstETH_stETH_AGGREGATOR = 0xd64d26cAd5f672463c33f91cE5b243d24cF7a903;
   address public constant sUSDe_USDe_AGGREGATOR = 0x802033dc696B92e5ED5bF68E1750F7Ed3329eabD;
@@ -131,6 +131,27 @@ library CapAdaptersCodePlasma {
         )
       );
   }
+
+  function syrupUSDTAdapterCode() internal pure returns (bytes memory) {
+    return
+      abi.encodePacked(
+        type(CLRatePriceCapAdapter).creationCode,
+        abi.encode(
+          IPriceCapAdapter.CapAdapterParams({
+            aclManager: AaveV3Plasma.ACL_MANAGER,
+            baseAggregatorAddress: AaveV3PlasmaAssets.USDT0_ORACLE,
+            ratioProviderAddress: syrupUSDT_AGGREGATOR,
+            pairDescription: 'Capped syrupUSDT / USDT / USD',
+            minimumSnapshotDelay: 7 days,
+            priceCapParams: IPriceCapAdapter.PriceCapUpdateParams({
+              snapshotRatio: 1_096519278600264915,
+              snapshotTimestamp: 1760005389, // Oct-09-2025
+              maxYearlyRatioGrowthPercent: 8_45
+            })
+          })
+        )
+      );
+  }
 }
 
 contract DeploySUSDePlasma is PlasmaScript {
@@ -168,5 +189,11 @@ contract DeployPtUSDe15JAN2026Plasma is PlasmaScript {
 contract DeployWstETHPlasma is PlasmaScript {
   function run() external broadcast {
     GovV3Helpers.deployDeterministic(CapAdaptersCodePlasma.wstETHAdapterCode());
+  }
+}
+
+contract DeploySyrupUSDTPlasma is PlasmaScript {
+  function run() external broadcast {
+    GovV3Helpers.deployDeterministic(CapAdaptersCodePlasma.syrupUSDTAdapterCode());
   }
 }
