@@ -48,16 +48,16 @@ import {CapAdaptersCodePlasma} from '../../scripts/DeployPlasma.s.sol';
 
 contract ExchangeRatesEth is Test {
   function setUp() public {
-    vm.createSelectFork(vm.rpcUrl('mainnet'), (23525700)); // Oct-07-2025
+    vm.createSelectFork(vm.rpcUrl('mainnet'), (23646700)); // Oct-24-2025
   }
 
   function test_getExchangeRate() public view {
-    uint256 cbEthRate = ICbEthRateProvider(AaveV3EthereumAssets.cbETH_UNDERLYING).exchangeRate();
-    uint256 rEthRate = IrETH(AaveV3EthereumAssets.rETH_UNDERLYING).getExchangeRate();
-    uint256 sDaiRate = IPot(MiscEthereum.sDAI_POT).chi();
-    uint256 wstEthRate = IStETH(AaveV2EthereumAssets.stETH_UNDERLYING).getPooledEthByShares(
-      10 ** 18
-    );
+    // uint256 cbEthRate = ICbEthRateProvider(AaveV3EthereumAssets.cbETH_UNDERLYING).exchangeRate();
+    // uint256 rEthRate = IrETH(AaveV3EthereumAssets.rETH_UNDERLYING).getExchangeRate();
+    // uint256 sDaiRate = IPot(MiscEthereum.sDAI_POT).chi();
+    // uint256 wstEthRate = IStETH(AaveV2EthereumAssets.stETH_UNDERLYING).getPooledEthByShares(
+    //   10 ** 18
+    // );
     // uint256 stEurRate = IStEUR(MiscEthereum.stEUR).convertToAssets(10 ** 18);
     // uint256 weEthRate = IWeEth(CapAdaptersCodeEthereum.weETH).getRate();
     // uint256 osEthRate = IOsTokenVaultController(CapAdaptersCodeEthereum.osETH_VAULT_CONTROLLER)
@@ -81,11 +81,14 @@ contract ExchangeRatesEth is Test {
     // uint256 syrupUSDCRate = IMaplePool(CapAdaptersCodeEthereum.syrupUSDC).convertToExitAssets(
     //   10 ** 18
     // );
+    uint256 syrupUSDTRate = IMaplePool(CapAdaptersCodeEthereum.syrupUSDT).convertToExitAssets(
+      10 ** 18
+    );
 
     // console.log('cbEthRate', cbEthRate);
     // console.log('rEthRate', rEthRate);
     // console.log('sDaiRate', sDaiRate);
-    console.log('wstEthRate', wstEthRate);
+    // console.log('wstEthRate', wstEthRate);
     // console.log('stEurRate', stEurRate);
     // console.log('weEthRate', weEthRate);
     // console.log('osEthRate', osEthRate);
@@ -98,6 +101,7 @@ contract ExchangeRatesEth is Test {
     // console.log('eUSDeRate', eUSDeRate);
     // console.log('tETHRate', tETHRate);
     // console.log('syrupUSDCRate', syrupUSDCRate);
+    console.log('syrupUSDTRate', syrupUSDTRate);
 
     console.log(block.timestamp);
   }
