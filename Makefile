@@ -54,6 +54,9 @@ deploy-usdt-linea :; FOUNDRY_PROFILE=linea forge script scripts/DeployLinea.s.so
 deploy-wsteth-linea :; FOUNDRY_PROFILE=linea forge script scripts/DeployLinea.s.sol:DeployWstETHLinea --rpc-url linea $(common-flags)
 deploy-wrseth-linea :; FOUNDRY_PROFILE=linea forge script scripts/DeployLinea.s.sol:DeployWRstETHLinea --rpc-url linea $(common-flags)
 
+deploy-musd-linea :; FOUNDRY_PROFILE=linea forge script scripts/DeployLinea.s.sol:DeployMUSDLinea --rpc-url linea $(common-flags)
+deploy-musd-mainnet :; forge script scripts/DeployEthereum.s.sol:DeployMUSDEthereum --rpc-url mainnet $(common-flags)
+
 deploy-weETH-zksync :; forge script --zksync scripts/DeployZkSync.s.sol:DeployWeEthZkSync --rpc-url zksync $(common-flags)
 deploy-sUSDe-zksync :; forge script --zksync scripts/DeployZkSync.s.sol:DeploySUSDeZkSync --rpc-url zksync $(common-flags)
 deploy-USDe-zksync :; forge script --zksync scripts/DeployZkSync.s.sol:DeployUSDeZkSync --rpc-url zksync $(common-flags)

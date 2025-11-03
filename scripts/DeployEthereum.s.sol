@@ -695,6 +695,21 @@ library CapAdaptersCodeEthereum {
         )
       );
   }
+
+  function mUSDAdapterCode() internal pure returns (bytes memory) {
+    return
+      abi.encodePacked(
+        type(PriceCapAdapterStable).creationCode,
+        abi.encode(
+          IPriceCapAdapterStable.CapAdapterStableParams({
+            aclManager: AaveV3Ethereum.ACL_MANAGER,
+            assetToUsdAggregator: IChainlinkAggregator(ChainlinkEthereum.MUSD_USD),
+            adapterDescription: 'Capped mUSD / USD',
+            priceCap: int256(1.04 * 1e8)
+          })
+        )
+      );
+  }
 }
 
 contract DeployLBTCEthereum is EthereumScript {
@@ -892,5 +907,11 @@ contract DeployFixedDpiEthEthereum is EthereumScript {
 contract DeploySyrupUSDCEthereum is EthereumScript {
   function run() external broadcast {
     GovV3Helpers.deployDeterministic(CapAdaptersCodeEthereum.syrupUSDCAdapterCode());
+  }
+}
+
+contract DeployMUSDEthereum is EthereumScript {
+  function run() external broadcast {
+    GovV3Helpers.deployDeterministic(CapAdaptersCodeEthereum.mUSDAdapterCode());
   }
 }
