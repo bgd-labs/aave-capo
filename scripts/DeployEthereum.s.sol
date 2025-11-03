@@ -33,6 +33,7 @@ import {BaseAggregatorsMainnet} from 'cl-synchronicity-price-adapter/lib/BaseAgg
 import {EURPriceCapAdapterStable, IEURPriceCapAdapterStable} from '../src/contracts/misc-adapters/EURPriceCapAdapterStable.sol';
 import {LBTCPriceCapAdapter} from '../src/contracts/lst-adapters/LBTCPriceCapAdapter.sol';
 import {SyrupUSDCPriceCapAdapter} from '../src/contracts/lst-adapters/SyrupUSDCPriceCapAdapter.sol';
+import {SyrupUSDTPriceCapAdapter} from '../src/contracts/lst-adapters/SyrupUSDTPriceCapAdapter.sol';
 
 library CapAdaptersCodeEthereum {
   using SafeCast for uint256;
@@ -64,6 +65,7 @@ library CapAdaptersCodeEthereum {
   address public constant rETH = 0xae78736Cd615f374D3085123A210448E74Fc6393;
   address public constant tETH = 0xD11c452fc99cF405034ee446803b6F6c1F6d5ED8;
   address public constant syrupUSDC = 0x80ac24aA929eaF5013f6436cdA2a7ba190f5Cc0b;
+  address public constant syrupUSDT = 0x356B8d89c1e1239Cbbb9dE4815c39A1474d5BA7D;
   address public constant EURC_PRICE_FEED = 0x04F84020Fdf10d9ee64D1dcC2986EDF2F556DA11;
   address public constant EUR_PRICE_FEED = 0xb49f677943BC038e9857d61E7d053CaA2C1734C1;
   address public constant LBTC_STAKE_ORACLE = 0x1De9fcfeDF3E51266c188ee422fbA1c7860DA0eF;
@@ -667,6 +669,27 @@ library CapAdaptersCodeEthereum {
               snapshotRatio: 1_127239115102023991,
               snapshotTimestamp: 1759005635, // Sept-27-2025
               maxYearlyRatioGrowthPercent: 19_94
+            })
+          })
+        )
+      );
+  }
+
+  function syrupUSDTAdapterCode() internal pure returns (bytes memory) {
+    return
+      abi.encodePacked(
+        type(SyrupUSDTPriceCapAdapter).creationCode,
+        abi.encode(
+          IPriceCapAdapter.CapAdapterParams({
+            aclManager: AaveV3Ethereum.ACL_MANAGER,
+            baseAggregatorAddress: AaveV3EthereumAssets.USDT_ORACLE,
+            ratioProviderAddress: syrupUSDT,
+            pairDescription: 'Capped SyrupUSDT / USDT / USD',
+            minimumSnapshotDelay: 7 days,
+            priceCapParams: IPriceCapAdapter.PriceCapUpdateParams({
+              snapshotRatio: 1_099237959474338773,
+              snapshotTimestamp: 1761301343, // Oct-24-2025
+              maxYearlyRatioGrowthPercent: 8_45
             })
           })
         )
