@@ -8,6 +8,7 @@ import {IERC4626} from 'forge-std/interfaces/IERC4626.sol';
 import {AaveV3EthereumAssets} from 'aave-address-book/AaveV3Ethereum.sol';
 import {AaveV2EthereumAssets} from 'aave-address-book/AaveV2Ethereum.sol';
 import {AaveV3AvalancheAssets} from 'aave-address-book/AaveV3Avalanche.sol';
+import {ChainlinkAvalanche} from 'aave-address-book/ChainlinkAvalanche.sol';
 import {AaveV3GnosisAssets} from 'aave-address-book/AaveV3Gnosis.sol';
 import {MiscEthereum} from 'aave-address-book/MiscEthereum.sol';
 import {MiscArbitrum} from 'aave-address-book/MiscArbitrum.sol';
@@ -142,7 +143,7 @@ contract ExchangeRatesArbitrum is Test {
 
 contract ExchangeRatesAvax is Test {
   function setUp() public {
-    vm.createSelectFork(vm.rpcUrl('avalanche'), 41384761); // 7th of February
+    vm.createSelectFork(vm.rpcUrl('avalanche'), 70585400); // Oct-19-2025
   }
 
   function test_getExchangeRate() public view {
@@ -150,8 +151,12 @@ contract ExchangeRatesAvax is Test {
       10 ** 18
     );
 
+    int256 wrsETHRate = IChainlinkAggregator(ChainlinkAvalanche.WRSETH_ETH_Exchange_Rate)
+      .latestAnswer();
+
     console.log('Avalanche');
-    console.log('sAvaxRate', sAvaxRate);
+    // console.log('sAvaxRate', sAvaxRate);
+    console.log('wrsETHRate', wrsETHRate);
 
     console.log(block.timestamp);
   }

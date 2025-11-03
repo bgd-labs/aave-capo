@@ -44,6 +44,7 @@ deploy-rseth-mainnet :; forge script scripts/DeployEthereum.s.sol:DeployRsEthEth
 deploy-rseth-arbitrum :; forge script scripts/DeployArbitrum.s.sol:DeployRsETHArbitrum --rpc-url arbitrum $(common-flags)
 deploy-rseth-base :; forge script scripts/DeployBase.s.sol:DeployRsETHBase --rpc-url base $(common-flags)
 
+deploy-rseth-avalanche :; forge script scripts/DeployAvalanche.s.sol:DeployWrsETHeAvalanche --rpc-url avalanche $(common-flags)
 deploy-ausd-avalanche :; forge script scripts/DeployAvalanche.s.sol:DeployAUSDAvalanche --rpc-url avalanche $(common-flags)
 deploy-susde-avalanche :; forge script scripts/DeployAvalanche.s.sol:DeploySUSDeAvalanche --rpc-url avalanche $(common-flags)
 
