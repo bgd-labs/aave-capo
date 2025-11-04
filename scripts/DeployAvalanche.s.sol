@@ -60,7 +60,7 @@ library CapAdaptersCodeAvalanche {
             aclManager: AaveV3Avalanche.ACL_MANAGER,
             baseAggregatorAddress: ChainlinkAvalanche.ETH_USD,
             ratioProviderAddress: ChainlinkAvalanche.WRSETH_ETH_Exchange_Rate,
-            pairDescription: 'Capped wrsETH / rsETH(ETH) / USD',
+            pairDescription: 'Capped wrsETH / ETH / USD',
             minimumSnapshotDelay: 14 days,
             priceCapParams: IPriceCapAdapter.PriceCapUpdateParams({
               snapshotRatio: 1_056504040539383578,

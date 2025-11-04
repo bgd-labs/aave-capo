@@ -1,8 +1,8 @@
 # Capo Report
 
-| Capped wrsETH / rsETH(ETH) / USD | ETH / USD | Diff  | Date        | 14-day growth in yearly % |
-| -------------------------------- | --------- | ----- | ----------- | ------------------------- |
-| 3909.77588521                    | 3697.57   | 5.58% | 03 Nov 2025 | 2.08%                     |
+| Capped wrsETH / ETH / USD | ETH / USD | Diff  | Date        | 14-day growth in yearly % |
+| ------------------------- | --------- | ----- | ----------- | ------------------------- |
+| 3909.77588521             | 3697.57   | 5.58% | 03 Nov 2025 | 2.08%                     |
 
 - 14-day growth is calculated as an annualized percentage relative to the value of the rate 14 days prior.
 
