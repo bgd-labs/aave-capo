@@ -25,7 +25,7 @@ library BlockUtils {
     }
 
     if (keccak256(bytes(network)) == keccak256(bytes('avalanche'))) {
-      return 43000;
+      return 55000;
     }
 
     if (keccak256(bytes(network)) == keccak256(bytes('base'))) {

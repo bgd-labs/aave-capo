@@ -4,6 +4,7 @@ pragma solidity ^0.8.0;
 import {GovV3Helpers} from 'aave-helpers/GovV3Helpers.sol';
 import {AvalancheScript} from 'solidity-utils/contracts/utils/ScriptUtils.sol';
 import {AaveV3Avalanche, AaveV3AvalancheAssets} from 'aave-address-book/AaveV3Avalanche.sol';
+import {ChainlinkAvalanche} from 'aave-address-book/ChainlinkAvalanche.sol';
 
 import {CLRatePriceCapAdapter, IPriceCapAdapter} from '../src/contracts/CLRatePriceCapAdapter.sol';
 import {PriceCapAdapterStable} from '../src/contracts/PriceCapAdapterStable.sol';
@@ -49,6 +50,27 @@ library CapAdaptersCodeAvalanche {
         )
       );
   }
+
+  function wrsETHAdapterCode() internal pure returns (bytes memory) {
+    return
+      abi.encodePacked(
+        type(CLRatePriceCapAdapter).creationCode,
+        abi.encode(
+          IPriceCapAdapter.CapAdapterParams({
+            aclManager: AaveV3Avalanche.ACL_MANAGER,
+            baseAggregatorAddress: ChainlinkAvalanche.ETH_USD,
+            ratioProviderAddress: ChainlinkAvalanche.WRSETH_ETH_Exchange_Rate,
+            pairDescription: 'Capped wrsETH / ETH / USD',
+            minimumSnapshotDelay: 14 days,
+            priceCapParams: IPriceCapAdapter.PriceCapUpdateParams({
+              snapshotRatio: 1_056504040539383578,
+              snapshotTimestamp: 1760911946, // Oct-19-2025
+              maxYearlyRatioGrowthPercent: 9_83
+            })
+          })
+        )
+      );
+  }
 }
 
 contract DeployAUSDAvalanche is AvalancheScript {
@@ -60,5 +82,11 @@ contract DeployAUSDAvalanche is AvalancheScript {
 contract DeploySUSDeAvalanche is AvalancheScript {
   function run() external broadcast {
     GovV3Helpers.deployDeterministic(CapAdaptersCodeAvalanche.sUSDeAdapterCode());
+  }
+}
+
+contract DeployWrsETHeAvalanche is AvalancheScript {
+  function run() external broadcast {
+    GovV3Helpers.deployDeterministic(CapAdaptersCodeAvalanche.wrsETHAdapterCode());
   }
 }
