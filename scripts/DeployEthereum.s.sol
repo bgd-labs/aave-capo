@@ -721,7 +721,7 @@ library CapAdaptersCodeEthereum {
           IPendlePriceCapAdapter.PendlePriceCapAdapterParams({
             assetToUsdAggregator: AaveV3EthereumAssets.USDT_ORACLE,
             pendlePrincipalToken: PT_USDe_05_FEB_2026,
-            maxDiscountRatePerYear: uint256(27.163e16).toUint64(),
+            maxDiscountRatePerYear: uint256(27.1629e16).toUint64(),
             discountRatePerYear: uint256(5.5266e16).toUint64(),
             aclManager: address(AaveV3Ethereum.ACL_MANAGER),
             description: 'PT Capped USDe USDT/USD linear discount 05FEB2026'
