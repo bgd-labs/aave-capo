@@ -9,6 +9,7 @@ import {PriceCapAdapterStable, IPriceCapAdapterStable, IChainlinkAggregator} fro
 
 library CapAdaptersCodeInk {
   address public constant USDT_PRICE_FEED = 0x176A9536feaC0340de9f9811f5272E39E80b424f;
+  address public constant USDC_PRICE_FEED = 0xCffB7b219A6Ee67468B02fE4e34E33Fd393c76Ff;
 
   function USDTAdapterCode() internal pure returns (bytes memory) {
     return
@@ -32,6 +33,21 @@ library CapAdaptersCodeInk {
         abi.encode(address(AaveV3InkWhitelabel.ACL_MANAGER), 8, int256(1 * 1e8), 'Fixed USDG/USD')
       );
   }
+
+  function USDCAdapterCode() internal pure returns (bytes memory) {
+    return
+      abi.encodePacked(
+        type(PriceCapAdapterStable).creationCode,
+        abi.encode(
+          IPriceCapAdapterStable.CapAdapterStableParams({
+            aclManager: AaveV3InkWhitelabel.ACL_MANAGER,
+            assetToUsdAggregator: IChainlinkAggregator(USDC_PRICE_FEED),
+            adapterDescription: 'Capped USDC/USD',
+            priceCap: int256(1.04 * 1e8)
+          })
+        )
+      );
+  }
 }
 
 contract DeployUSDGInk is InkScript {
@@ -43,5 +59,11 @@ contract DeployUSDGInk is InkScript {
 contract DeployUSDTInk is InkScript {
   function run() external broadcast {
     GovV3Helpers.deployDeterministic(CapAdaptersCodeInk.USDTAdapterCode());
+  }
+}
+
+contract DeployUSDCInk is InkScript {
+  function run() external broadcast {
+    GovV3Helpers.deployDeterministic(CapAdaptersCodeInk.USDCAdapterCode());
   }
 }
