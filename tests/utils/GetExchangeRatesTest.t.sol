@@ -46,21 +46,22 @@ import {CapAdaptersCodeZkSync} from '../../scripts/DeployZkSync.s.sol';
 import {CapAdaptersCodeLinea} from '../../scripts/DeployLinea.s.sol';
 import {CapAdaptersCodeSonic} from '../../scripts/DeploySonic.s.sol';
 import {CapAdaptersCodePlasma} from '../../scripts/DeployPlasma.s.sol';
+import {CapAdaptersCodeInk} from '../../scripts/DeployInk.s.sol';
 
 contract ExchangeRatesEth is Test {
   function setUp() public {
-    vm.createSelectFork(vm.rpcUrl('mainnet'), (23646700)); // Oct-24-2025
+    vm.createSelectFork(vm.rpcUrl('mainnet'), (23774600)); // Nov 11 2025
   }
 
   function test_getExchangeRate() public view {
     // uint256 cbEthRate = ICbEthRateProvider(AaveV3EthereumAssets.cbETH_UNDERLYING).exchangeRate();
     // uint256 rEthRate = IrETH(AaveV3EthereumAssets.rETH_UNDERLYING).getExchangeRate();
     // uint256 sDaiRate = IPot(MiscEthereum.sDAI_POT).chi();
-    // uint256 wstEthRate = IStETH(AaveV2EthereumAssets.stETH_UNDERLYING).getPooledEthByShares(
-    //   10 ** 18
-    // );
+    uint256 wstEthRate = IStETH(AaveV2EthereumAssets.stETH_UNDERLYING).getPooledEthByShares(
+      10 ** 18
+    );
     // uint256 stEurRate = IStEUR(MiscEthereum.stEUR).convertToAssets(10 ** 18);
-    // uint256 weEthRate = IWeEth(CapAdaptersCodeEthereum.weETH).getRate();
+    uint256 weEthRate = IWeEth(CapAdaptersCodeEthereum.weETH).getRate();
     // uint256 osEthRate = IOsTokenVaultController(CapAdaptersCodeEthereum.osETH_VAULT_CONTROLLER)
     //   .convertToAssets(10 ** 18);
     // uint256 ethXRate = IEthX(CapAdaptersCodeEthereum.STADER_STAKE_POOLS_MANAGER).getExchangeRate();
@@ -89,9 +90,9 @@ contract ExchangeRatesEth is Test {
     // console.log('cbEthRate', cbEthRate);
     // console.log('rEthRate', rEthRate);
     // console.log('sDaiRate', sDaiRate);
-    // console.log('wstEthRate', wstEthRate);
+    console.log('wstEthRate', wstEthRate);
     // console.log('stEurRate', stEurRate);
-    // console.log('weEthRate', weEthRate);
+    console.log('weEthRate', weEthRate);
     // console.log('osEthRate', osEthRate);
     // console.log('ethXRate', ethXRate);
     // console.log('sUSDe', sUSDeRate);
@@ -102,7 +103,7 @@ contract ExchangeRatesEth is Test {
     // console.log('eUSDeRate', eUSDeRate);
     // console.log('tETHRate', tETHRate);
     // console.log('syrupUSDCRate', syrupUSDCRate);
-    console.log('syrupUSDTRate', syrupUSDTRate);
+    // console.log('syrupUSDTRate', syrupUSDTRate);
 
     console.log(block.timestamp);
   }
@@ -392,6 +393,22 @@ contract ExchangeRatesPlasma is Test {
       .latestAnswer();
 
     console.log('syrupUSDTRate', syrupUSDTRate);
+    console.log(block.timestamp);
+  }
+}
+
+contract ExchangeRatesInk is Test {
+  function setUp() public {
+    vm.createSelectFork(vm.rpcUrl('ink'), 29360402);
+  }
+
+  function test_exchangeRate() public view {
+    int256 wrstETHRate = IChainlinkAggregator(CapAdaptersCodeInk.WrsETH_ETH_PRICE_FEED)
+      .latestAnswer();
+    int256 ezETHRate = IChainlinkAggregator(CapAdaptersCodeInk.EzETH_ETH_PRICE_FEED).latestAnswer();
+
+    console.log('wrstETHRate', wrstETHRate);
+    console.log('ezETHRate', ezETHRate);
     console.log(block.timestamp);
   }
 }
