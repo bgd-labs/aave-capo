@@ -89,6 +89,10 @@ deploy-usdt-soneium :; forge script scripts/DeploySoneium.s.sol:DeployUSDTSoneiu
 deploy-usdg-ink :; forge script scripts/DeployInk.s.sol:DeployUSDGInk --rpc-url ink $(common-flags)
 deploy-usdt-ink :; forge script scripts/DeployInk.s.sol:DeployUSDTInk --rpc-url ink $(common-flags)
 deploy-usdc-ink :; forge script scripts/DeployInk.s.sol:DeployUSDCInk --rpc-url ink $(common-flags)
+deploy-wrseth-ink :; forge script scripts/DeployInk.s.sol:DeployWRsETHInk --rpc-url ink $(common-flags)
+deploy-wsteth-ink :; forge script scripts/DeployInk.s.sol:DeployWStETHInk --rpc-url ink $(common-flags)
+deploy-weeth-ink :; forge script scripts/DeployInk.s.sol:DeployWeETHInk --rpc-url ink $(common-flags)
+deploy-ezeth-ink :; forge script scripts/DeployInk.s.sol:DeployEzETHInk --rpc-url ink $(common-flags)
 
 deploy-susde-plasma :; forge script scripts/DeployPlasma.s.sol:DeploySUSDePlasma --rpc-url plasma $(common-flags)
 deploy-wsteth-plasma :; forge script scripts/DeployPlasma.s.sol:DeployWstETHPlasma --rpc-url plasma $(common-flags)

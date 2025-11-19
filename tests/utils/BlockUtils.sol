@@ -68,6 +68,10 @@ library BlockUtils {
       return 86_400;
     }
 
+    if (keccak256(bytes(network)) == keccak256(bytes('ink'))) {
+      return 86_400;
+    }
+
     return 7300;
   }
 }
