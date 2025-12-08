@@ -656,6 +656,32 @@ library CapAdaptersCodeEthereum {
       );
   }
 
+  function fixedMUsdAdapterCode() internal pure returns (bytes memory) {
+    return
+      abi.encodePacked(
+        type(FixedPriceAdapter).creationCode,
+        abi.encode(
+          address(AaveV3Ethereum.ACL_MANAGER),
+          8,
+          int256(1 * 1e8),
+          'Fixed mUSD/USD'
+        )
+      );
+  }
+
+  function fixedUSDGAdapterCode() internal pure returns (bytes memory) {
+    return
+      abi.encodePacked(
+        type(FixedPriceAdapter).creationCode,
+        abi.encode(
+          address(AaveV3Ethereum.ACL_MANAGER),
+          8,
+          int256(1 * 1e8),
+          'Fixed USDG/USD'
+        )
+      );
+  }
+
   function syrupUSDCAdapterCode() internal pure returns (bytes memory) {
     return
       abi.encodePacked(
@@ -949,6 +975,18 @@ contract DeploySyrupUSDCEthereum is EthereumScript {
 contract DeployMUSDEthereum is EthereumScript {
   function run() external broadcast {
     GovV3Helpers.deployDeterministic(CapAdaptersCodeEthereum.mUSDAdapterCode());
+  }
+}
+
+contract DeployFixedMUSDEthereum is EthereumScript {
+  function run() external broadcast {
+    GovV3Helpers.deployDeterministic(CapAdaptersCodeEthereum.fixedMUsdAdapterCode());
+  }
+}
+
+contract DeployFixedUSDGEthereum is EthereumScript {
+  function run() external broadcast {
+    GovV3Helpers.deployDeterministic(CapAdaptersCodeEthereum.fixedUSDGAdapterCode());
   }
 }
 
