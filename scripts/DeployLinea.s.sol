@@ -6,6 +6,7 @@ import {LineaScript} from 'solidity-utils/contracts/utils/ScriptUtils.sol';
 import {AaveV3Linea} from 'aave-address-book/AaveV3Linea.sol';
 import {ChainlinkLinea} from 'aave-address-book/ChainlinkLinea.sol';
 import {CLRatePriceCapAdapter} from '../src/contracts/CLRatePriceCapAdapter.sol';
+import {FixedPriceAdapter} from '../src/contracts/misc-adapters/FixedPriceAdapter.sol';
 import {PriceCapAdapterStable, IPriceCapAdapterStable} from '../src/contracts/PriceCapAdapterStable.sol';
 import {IPriceCapAdapter, IChainlinkAggregator} from '../src/interfaces/IPriceCapAdapter.sol';
 
@@ -146,6 +147,19 @@ library CapAdaptersCodeLinea {
         )
       );
   }
+
+  function fixedMUsdAdapterCode() internal pure returns (bytes memory) {
+    return
+      abi.encodePacked(
+        type(FixedPriceAdapter).creationCode,
+        abi.encode(
+          address(AaveV3Linea.ACL_MANAGER),
+          8,
+          int256(1 * 1e8),
+          'Fixed mUSD/USD'
+        )
+      );
+  }
 }
 
 contract DeployWeEthLinea is LineaScript {
@@ -187,5 +201,11 @@ contract DeployWRstETHLinea is LineaScript {
 contract DeployMUSDLinea is LineaScript {
   function run() external broadcast {
     GovV3Helpers.deployDeterministic(CapAdaptersCodeLinea.mUSDAdapterCode());
+  }
+}
+
+contract DeployFixedMUSDLinea is LineaScript {
+  function run() external broadcast {
+    GovV3Helpers.deployDeterministic(CapAdaptersCodeLinea.fixedMUsdAdapterCode());
   }
 }
