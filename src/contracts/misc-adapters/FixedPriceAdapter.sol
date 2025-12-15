@@ -48,8 +48,8 @@ contract FixedPriceAdapter is IFixedPriceAdapter {
   }
 
   /// @inheritdoc IFixedPriceAdapter
-  function latestAnswer() external view virtual returns (int256) {
-    return _price;
+  function latestAnswer() external view returns (int256) {
+    return _latestAnswer();
   }
 
   /// @inheritdoc IFixedPriceAdapter
@@ -65,7 +65,7 @@ contract FixedPriceAdapter is IFixedPriceAdapter {
     )
   {
     uint256 timestamp = block.timestamp;
-    return (uint80(timestamp), _price, timestamp, timestamp, uint80(timestamp));
+    return (uint80(timestamp), _latestAnswer(), timestamp, timestamp, uint80(timestamp));
   }
 
   /// @inheritdoc IFixedPriceAdapter
@@ -84,5 +84,9 @@ contract FixedPriceAdapter is IFixedPriceAdapter {
     _price = newPrice;
 
     emit FixedPriceUpdated(currentPrice, newPrice);
+  }
+
+  function _latestAnswer() internal view virtual returns (int256) {
+    return _price;
   }
 }

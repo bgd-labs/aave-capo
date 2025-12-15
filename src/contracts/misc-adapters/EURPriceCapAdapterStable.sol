@@ -50,15 +50,7 @@ contract EURPriceCapAdapterStable is IEURPriceCapAdapterStable {
 
   /// @inheritdoc ICLSynchronicityPriceAdapter
   function latestAnswer() external view returns (int256) {
-    int256 assetPrice = ASSET_TO_USD_AGGREGATOR.latestAnswer();
-    int256 basePrice = BASE_TO_USD_AGGREGATOR.latestAnswer();
-    int256 maxPrice = (basePrice * _priceCapRatio) / int256(10 ** RATIO_DECIMALS);
-
-    if (assetPrice > maxPrice) {
-      return maxPrice;
-    }
-
-    return assetPrice;
+    return _latestAnswer();
   }
 
   /// @inheritdoc IEURPriceCapAdapterStable
@@ -74,7 +66,7 @@ contract EURPriceCapAdapterStable is IEURPriceCapAdapterStable {
     )
   {
     uint256 timestamp = block.timestamp;
-    answer = this.latestAnswer();
+    answer = _latestAnswer();
     return (uint80(timestamp), answer, timestamp, timestamp, uint80(timestamp));
   }
 
@@ -112,5 +104,17 @@ contract EURPriceCapAdapterStable is IEURPriceCapAdapterStable {
     _priceCapRatio = priceCapRatio;
 
     emit PriceCapRatioUpdated(priceCapRatio);
+  }
+
+  function _latestAnswer() internal view virtual returns (int256) {
+    int256 assetPrice = ASSET_TO_USD_AGGREGATOR.latestAnswer();
+    int256 basePrice = BASE_TO_USD_AGGREGATOR.latestAnswer();
+    int256 maxPrice = (basePrice * _priceCapRatio) / int256(10 ** RATIO_DECIMALS);
+
+    if (assetPrice > maxPrice) {
+      return maxPrice;
+    }
+
+    return assetPrice;
   }
 }
