@@ -62,6 +62,23 @@ contract EURPriceCapAdapterStable is IEURPriceCapAdapterStable {
   }
 
   /// @inheritdoc IEURPriceCapAdapterStable
+  function latestRoundData()
+    external
+    view
+    returns (
+      uint80 roundId,
+      int256 answer,
+      uint256 startedAt,
+      uint256 updatedAt,
+      uint80 answeredInRound
+    )
+  {
+    uint256 timestamp = block.timestamp;
+    answer = this.latestAnswer();
+    return (uint80(timestamp), answer, timestamp, timestamp, uint80(timestamp));
+  }
+
+  /// @inheritdoc IEURPriceCapAdapterStable
   function setPriceCapRatio(int256 priceCapRatio) external {
     if (!ACL_MANAGER.isRiskAdmin(msg.sender) && !ACL_MANAGER.isPoolAdmin(msg.sender)) {
       revert CallerIsNotRiskOrPoolAdmin();

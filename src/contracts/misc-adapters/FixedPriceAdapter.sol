@@ -53,6 +53,22 @@ contract FixedPriceAdapter is IFixedPriceAdapter {
   }
 
   /// @inheritdoc IFixedPriceAdapter
+  function latestRoundData()
+    external
+    view
+    returns (
+      uint80 roundId,
+      int256 answer,
+      uint256 startedAt,
+      uint256 updatedAt,
+      uint80 answeredInRound
+    )
+  {
+    uint256 timestamp = block.timestamp;
+    return (uint80(timestamp), _price, timestamp, timestamp, uint80(timestamp));
+  }
+
+  /// @inheritdoc IFixedPriceAdapter
   function setPrice(int256 newPrice) external {
     if (!ACL_MANAGER.isPoolAdmin(msg.sender)) revert CallerIsNotPoolAdmin();
     _setPrice(newPrice);
