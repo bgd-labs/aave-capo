@@ -106,6 +106,8 @@ deploy-usdt-plasma :; forge script scripts/DeployPlasma.s.sol:DeployUSDTPlasma -
 deploy-syrupusdt-plasma :; forge script scripts/DeployPlasma.s.sol:DeploySyrupUSDTPlasma --rpc-url plasma $(common-flags)
 deploy-pt-susde-15-jan-2026-plasma :; forge script scripts/DeployPlasma.s.sol:DeployPtSUSDe15JAN2026Plasma --rpc-url plasma $(common-flags)
 deploy-pt-usde-15-jan-2026-plasma :; forge script scripts/DeployPlasma.s.sol:DeployPtUSDe15JAN2026Plasma --rpc-url plasma $(common-flags)
+deploy-pt-susde-09-apr-2026-plasma :; forge script scripts/DeployPlasma.s.sol:DeployPtSUSDe09APR2026Plasma --rpc-url plasma $(deploy-pk)
+deploy-pt-usde-09-apr-2026-plasma :; forge script scripts/DeployPlasma.s.sol:DeployPtUSDe09APR2026Plasma --rpc-url plasma $(deploy-pk)
 
 deploy-pt-susde-05-feb-2026-mainnet :; forge script scripts/DeployEthereum.s.sol:DeployPtSUSDe05FEB2026Ethereum --rpc-url mainnet $(common-flags)
 deploy-pt-usde-05-feb-2026-mainnet :; forge script scripts/DeployEthereum.s.sol:DeployPtUSDe05FEB2026Ethereum --rpc-url mainnet $(common-flags)
