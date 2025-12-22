@@ -117,6 +117,11 @@ deploy-dpi-eth-mainnet :; forge script scripts/DeployEthereum.s.sol:DeployFixedD
 deploy-dpi-usd-polygon :; forge script scripts/DeployPolygon.s.sol:DeployFixedDpiUsdPolygon --rpc-url polygon $(common-flags)
 deploy-dpi-eth-polygon :; forge script scripts/DeployPolygon.s.sol:DeployFixedDpiEthPolygon --rpc-url polygon $(common-flags)
 
+deploy-usdc-mantle :; forge script scripts/DeployMantle.s.sol:DeployUSDCMantle --rpc-url mantle $(common-flags)
+deploy-usdt-mantle :; forge script scripts/DeployMantle.s.sol:DeployUSDTMantle --rpc-url mantle $(common-flags)
+deploy-usde-mantle :; forge script scripts/DeployMantle.s.sol:DeployUSDeMantle --rpc-url mantle $(common-flags)
+deploy-susde-mantle :; forge script scripts/DeployMantle.s.sol:DeploySUSDeMantle --rpc-url mantle $(common-flags)
+
 # Utilities
 download :; cast etherscan-source --chain ${chain} -d src/etherscan/${chain}_${address} ${address}
 git-diff :
