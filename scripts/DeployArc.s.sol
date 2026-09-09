@@ -16,7 +16,7 @@ library CapAdaptersCodeArc {
 
   address public constant USDC_SVR_USD_PRICE_FEED = 0xBC88A5182848151AE1f7b4877021F828d8F4D735;
   address public constant EURC_SVR_USD_PRICE_FEED = 0x71B0305ACA6A29d6485f9e4ac5a333af5Df2b62c;
-  address public constant EUR_USD_PRICE_FEED = 0xDd5B15443cd733D3966a50a3E48cB7DF9Fb5DE0D;
+  address public constant EUR_SVR_USD_PRICE_FEED = 0xa4266689D107aF71c7dBE975cfB92aB40E7b4EFE;
 
   function USDCAdapterCode() internal pure returns (bytes memory) {
     return
@@ -41,7 +41,7 @@ library CapAdaptersCodeArc {
           IEURPriceCapAdapterStable.CapAdapterStableParamsEUR({
             aclManager: ACL_MANAGER,
             assetToUsdAggregator: IChainlinkAggregator(EURC_SVR_USD_PRICE_FEED),
-            baseToUsdAggregator: IChainlinkAggregator(EUR_USD_PRICE_FEED),
+            baseToUsdAggregator: IChainlinkAggregator(EUR_SVR_USD_PRICE_FEED),
             adapterDescription: 'Capped EURC/USD',
             priceCapRatio: int256(1.04 * 1e8),
             ratioDecimals: 8
