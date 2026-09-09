@@ -1,0 +1,14 @@
+scripts/DeployArc.s.sol
+  h_739c25e72c37fb 19,44
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.2",
+  "base_commit_sha": "bb7f63f0f4acb0ff602eb88ca5236401a9db5753",
+  "prompts": {},
+  "humans": {
+    "h_739c25e72c37fb": {
+      "author": "DhairyaSethi <55102840+DhairyaSethi@users.noreply.github.com>"
+    }
+  }
+}
