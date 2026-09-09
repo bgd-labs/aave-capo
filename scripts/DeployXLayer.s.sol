@@ -17,6 +17,7 @@ import {PendlePriceCapAdapter, IPendlePriceCapAdapter} from '../src/contracts/Pe
 library CapAdaptersCodeXLayer {
   using SafeCast for uint256;
 
+  address public constant CL_USDC_USD_FEED = 0xB8a08c178D96C315FbFB5661ABD208477391BC40;
   address public constant CL_USDT_USD_FEED = 0xb928a0678352005a2e51F614efD0b54C9830dB80;
   address public constant CL_USDG_USD_FEED = 0x385C6bDDE06b0E438319bF4ddBfFe51C521ABf3D;
   address public constant CL_SOL_USD_FEED = 0xF959E1B5cA535C28aD24F7f672Bf1A93900810cF;
@@ -64,6 +65,21 @@ library CapAdaptersCodeXLayer {
               snapshotTimestamp: 1772539036, // Mar 03 2026 (Block: 53770000)
               maxYearlyRatioGrowthPercent: 9_68
             })
+          })
+        )
+      );
+  }
+
+  function USDCAdapterCode() internal pure returns (bytes memory) {
+    return
+      abi.encodePacked(
+        type(PriceCapAdapterStable).creationCode,
+        abi.encode(
+          IPriceCapAdapterStable.CapAdapterStableParams({
+            aclManager: AaveV3XLayer.ACL_MANAGER,
+            assetToUsdAggregator: IChainlinkAggregator(CL_USDC_USD_FEED),
+            adapterDescription: 'Capped USDC / USD',
+            priceCap: int256(1.04 * 1e8)
           })
         )
       );
@@ -118,6 +134,12 @@ library CapAdaptersCodeXLayer {
           })
         )
       );
+  }
+}
+
+contract DeployUSDCXLayer is XLayerScript {
+  function run() external broadcast {
+    GovV3Helpers.deployDeterministic(CapAdaptersCodeXLayer.USDCAdapterCode());
   }
 }
 
