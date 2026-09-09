@@ -2,16 +2,16 @@
   "lib/aave-address-book": {
     "branch": {
       "name": "main",
-      "rev": "d3ce2debd23b4bca3982c3b44db75695128b8213"
+      "rev": "12963110f29699d214531b9ab4c7cfcec460c298"
     }
   },
   "lib/aave-helpers": {
     "branch": {
       "name": "main",
-      "rev": "d8cd786068323dfde3adf1246b03b76e4d7ecd2c"
+      "rev": "ae8ae2308670cf74e84ca0e17264d0b05f8833b2"
     }
   },
   "lib/forge-std": {
-    "rev": "0c71116a218268ee8c0157be8efcb13af0f7beaf"
+    "rev": "bf647bd6046f2f7da30d0c2bf435e5c76a780c1b"
   }
 }

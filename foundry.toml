@@ -15,6 +15,9 @@ bytecode_hash = "none"
 [profile.sonic]
 evm_version = 'cancun'
 
+[profile.monad]
+network = 'monad'
+
 [rpc_endpoints]
 mainnet = "${RPC_MAINNET}"
 optimism = "${RPC_OPTIMISM}"
