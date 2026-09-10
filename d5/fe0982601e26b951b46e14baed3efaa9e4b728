@@ -1,0 +1,30 @@
+scripts/DeployArc.s.sol
+  h_739c25e72c37fb 6-7,25,40
+foundry.lock
+  s_8ea1abb7d91d77::t_966524402975a1 5,11
+lib/aave-address-book
+  s_8ea1abb7d91d77::t_5fef62dd16356c 1
+lib/aave-helpers
+  s_8ea1abb7d91d77::t_f6611457da9355 1
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "d5fe0982601e26b951b46e14baed3efaa9e4b728",
+  "prompts": {},
+  "humans": {
+    "h_739c25e72c37fb": {
+      "author": "DhairyaSethi <55102840+DhairyaSethi@users.noreply.github.com>"
+    }
+  },
+  "sessions": {
+    "s_8ea1abb7d91d77": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "6d9189af-4fbb-4d06-96b5-2c9b54d767f6",
+        "model": "claude-fable-5-1"
+      },
+      "human_author": "DhairyaSethi <55102840+DhairyaSethi@users.noreply.github.com>"
+    }
+  }
+}
