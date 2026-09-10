@@ -3,7 +3,8 @@ pragma solidity ^0.8.0;
 
 import {GovV3Helpers} from 'aave-helpers/GovV3Helpers.sol';
 import {ArcScript} from 'solidity-utils/contracts/utils/ScriptUtils.sol';
-import {IACLManager} from 'aave-address-book/AaveV3.sol';
+import {MiscArc} from "aave-address-book/MiscArc.sol";
+import {IACLManager} from "aave-address-book/AaveV3.sol";
 
 import {PriceCapAdapterStable, IPriceCapAdapterStable} from '../src/contracts/PriceCapAdapterStable.sol';
 import {EURPriceCapAdapterStable, IEURPriceCapAdapterStable} from '../src/contracts/misc-adapters/EURPriceCapAdapterStable.sol';
@@ -11,9 +12,6 @@ import {IChainlinkAggregator} from '../src/interfaces/IChainlinkAggregator.sol';
 
 
 library CapAdaptersCodeArc {
-  /// @dev Arc is not covered by the address book yet, so the pool ACL manager is set explicitly.
-  IACLManager public constant ACL_MANAGER = IACLManager(0x4d4B307857eFff79E786923F2A277ea298E88aEA);
-
   address public constant USDC_SVR_USD_PRICE_FEED = 0xBC88A5182848151AE1f7b4877021F828d8F4D735;
   address public constant EURC_SVR_USD_PRICE_FEED = 0x71B0305ACA6A29d6485f9e4ac5a333af5Df2b62c;
   address public constant EUR_SVR_USD_PRICE_FEED = 0xa4266689D107aF71c7dBE975cfB92aB40E7b4EFE;
@@ -24,7 +22,7 @@ library CapAdaptersCodeArc {
         type(PriceCapAdapterStable).creationCode,
         abi.encode(
           IPriceCapAdapterStable.CapAdapterStableParams({
-            aclManager: ACL_MANAGER,
+            aclManager: IACLManager(MiscArc.ACL_MANAGER),
             assetToUsdAggregator: IChainlinkAggregator(USDC_SVR_USD_PRICE_FEED),
             adapterDescription: 'Capped USDC/USD',
             priceCap: int256(1.04 * 1e8)
@@ -39,7 +37,7 @@ library CapAdaptersCodeArc {
         type(EURPriceCapAdapterStable).creationCode,
         abi.encode(
           IEURPriceCapAdapterStable.CapAdapterStableParamsEUR({
-            aclManager: ACL_MANAGER,
+            aclManager: IACLManager(MiscArc.ACL_MANAGER),
             assetToUsdAggregator: IChainlinkAggregator(EURC_SVR_USD_PRICE_FEED),
             baseToUsdAggregator: IChainlinkAggregator(EUR_SVR_USD_PRICE_FEED),
             adapterDescription: 'Capped EURC/USD',
